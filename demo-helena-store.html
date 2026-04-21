@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Demo Helena Store - Bot + Tienda Online</title>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; }
+body { background: #0a0a0a; color: #fff; min-height: 100vh; padding: 10px; }
+.container { max-width: 1600px; margin: 0 auto; }
+
+.header { text-align: center; margin-bottom: 15px; padding: 20px; background: linear-gradient(135deg, #c9a227, #a88820); border-radius: 12px; }
+.header h1 { font-size: clamp(18px, 3vw, 28px); margin-bottom: 5px; font-family: 'Playfair Display', Georgia, serif; color: #0a0a0a; }
+.header p { opacity: 0.85; font-size: clamp(11px, 1.5vw, 14px); color: #0a0a0a; letter-spacing: 2px; text-transform: uppercase; }
+
+.controls { display: flex; gap: 8px; justify-content: center; margin-bottom: 15px; flex-wrap: wrap; }
+.btn { padding: 10px 18px; border: none; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 13px; transition: all 0.2s; white-space: nowrap; }
+.btn-play { background: #c9a227; color: #0a0a0a; }
+.btn-play:hover { background: #e0b830; }
+.btn-reset { background: #ef4444; color: white; }
+.btn-speed { background: #3b82f6; color: white; }
+.btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.progress { background: rgba(255,255,255,0.1); height: 4px; border-radius: 2px; overflow: hidden; margin-bottom: 15px; }
+.progress-bar { height: 100%; background: linear-gradient(90deg, #c9a227, #10b981); width: 0%; transition: width 0.5s; }
+
+.grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-bottom: 15px; }
+
+.screen { background: #141414; border-radius: 12px; overflow: hidden; height: 60vh; min-height: 450px; display: flex; flex-direction: column; box-shadow: 0 10px 30px rgba(0,0,0,0.5); border: 1px solid #2a2a2a; }
+.screen-header { padding: 12px; border-bottom: 1px solid #2a2a2a; display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
+.screen-header.telegram { background: #17212b; }
+.screen-header.web { background: #0a0a0a; border-bottom-color: #c9a227; }
+.screen-header.client { background: #075e54; }
+
+.avatar { width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 15px; font-weight: bold; flex-shrink: 0; color: white; }
+.avatar.elena { background: linear-gradient(135deg, #c9a227, #a88820); color: #0a0a0a; }
+.avatar.web { background: linear-gradient(135deg, #c9a227, #a88820); color: #0a0a0a; font-family: 'Playfair Display', serif; }
+.avatar.client { background: linear-gradient(135deg, #25d366, #128c7e); }
+
+.screen-info h3 { font-size: 13px; margin-bottom: 1px; }
+.screen-info p { font-size: 10px; color: #8a99a8; }
+
+.chat { flex: 1; overflow-y: auto; padding: 10px; display: flex; flex-direction: column; gap: 6px; background: #0e1621; }
+.chat.wa { background: #0b141a; }
+.chat::-webkit-scrollbar { width: 4px; }
+.chat::-webkit-scrollbar-thumb { background: #232e3c; border-radius: 2px; }
+
+.msg { max-width: 92%; padding: 8px 11px; border-radius: 10px; font-size: 12px; line-height: 1.35; animation: slide 0.3s ease-out; word-wrap: break-word; white-space: pre-line; }
+.msg-user { align-self: flex-end; background: #2b5278; color: white; border-bottom-right-radius: 3px; }
+.msg-bot { align-self: flex-start; background: #182533; color: white; border-bottom-left-radius: 3px; }
+.msg-wa-user { align-self: flex-end; background: #005c4b; color: white; border-bottom-right-radius: 3px; }
+.msg-wa-bot { align-self: flex-start; background: #202c33; color: white; border-bottom-left-radius: 3px; }
+.msg-time { font-size: 9px; opacity: 0.6; margin-top: 4px; }
+.msg-title { font-weight: bold; color: #c9a227; margin-bottom: 4px; font-size: 11px; }
+.msg-bot.success .msg-title { color: #10b981; }
+.msg-bot.warning .msg-title { color: #f59e0b; }
+.msg-bot.info .msg-title { color: #3b82f6; }
+
+.typing { display: flex; gap: 3px; padding: 10px; background: #182533; border-radius: 10px; align-self: flex-start; width: fit-content; }
+.typing span { width: 6px; height: 6px; border-radius: 50%; background: #8a99a8; animation: typing 1.4s infinite; }
+.typing span:nth-child(2) { animation-delay: 0.2s; }
+.typing span:nth-child(3) { animation-delay: 0.4s; }
+
+.web-screen { flex: 1; overflow-y: auto; background: #0a0a0a; padding: 12px; }
+.web-screen::-webkit-scrollbar { width: 4px; }
+.web-screen::-webkit-scrollbar-thumb { background: #c9a227; border-radius: 2px; }
+
+.web-hero { text-align: center; padding: 15px 5px; border-bottom: 1px solid #2a2a2a; margin-bottom: 12px; }
+.web-hero h2 { font-family: 'Playfair Display', Georgia, serif; font-size: 16px; margin-bottom: 4px; }
+.web-hero p { font-size: 10px; opacity: 0.6; letter-spacing: 2px; text-transform: uppercase; }
+
+.web-nav { display: flex; justify-content: center; gap: 10px; padding: 8px 0; border-bottom: 1px solid #2a2a2a; margin-bottom: 12px; font-size: 9px; letter-spacing: 1.5px; text-transform: uppercase; opacity: 0.8; }
+.web-nav span { cursor: pointer; }
+.web-nav span:hover { color: #c9a227; }
+
+.product-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.product-card { background: #141414; border: 1px solid #2a2a2a; border-radius: 4px; overflow: hidden; transition: all 0.3s; animation: slide 0.4s; }
+.product-card:hover { border-color: #c9a227; transform: translateY(-2px); }
+.product-card.new { border-color: #c9a227; box-shadow: 0 0 15px rgba(201, 162, 39, 0.3); }
+.product-img { aspect-ratio: 1; background: linear-gradient(135deg, #1a1a1a, #0a0a0a); display: flex; align-items: center; justify-content: center; font-family: 'Playfair Display', serif; font-size: 24px; opacity: 0.4; color: #c9a227; position: relative; }
+.product-badge { position: absolute; top: 4px; left: 4px; padding: 2px 6px; font-size: 7px; background: #c9a227; color: #0a0a0a; font-weight: bold; letter-spacing: 1px; }
+.product-info { padding: 8px; }
+.product-brand { font-size: 8px; letter-spacing: 1.5px; text-transform: uppercase; color: #c9a227; margin-bottom: 2px; }
+.product-name { font-family: 'Playfair Display', serif; font-size: 12px; margin-bottom: 3px; }
+.product-price { color: #c9a227; font-size: 14px; font-weight: 500; }
+
+.dashboard { background: #141414; border-radius: 12px; padding: 15px; margin-top: 15px; border: 1px solid #2a2a2a; }
+.dashboard-title { font-size: 15px; margin-bottom: 15px; display: flex; align-items: center; gap: 8px; font-family: 'Playfair Display', serif; }
+.stats { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; margin-bottom: 15px; }
+.stat { background: linear-gradient(135deg, #1a1a1a, #0a0a0a); padding: 12px; border-radius: 8px; border-left: 3px solid #c9a227; transition: transform 0.3s; }
+.stat:hover { transform: translateY(-3px); }
+.stat-value { font-size: clamp(14px, 2.2vw, 20px); font-weight: bold; margin-bottom: 3px; color: #c9a227; font-family: 'Playfair Display', serif; }
+.stat-label { font-size: 9px; color: #888; letter-spacing: 1px; text-transform: uppercase; }
+.stat.green { border-left-color: #10b981; }
+.stat.green .stat-value { color: #10b981; }
+.stat.blue { border-left-color: #3b82f6; }
+.stat.blue .stat-value { color: #3b82f6; }
+.stat.purple { border-left-color: #a855f7; }
+.stat.purple .stat-value { color: #a855f7; }
+
+.section-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+.section { background: #1a1a1a; padding: 15px; border-radius: 10px; border: 1px solid #2a2a2a; }
+.section h3 { font-size: 12px; margin-bottom: 12px; color: #c9a227; letter-spacing: 1.5px; text-transform: uppercase; }
+
+.timeline-item { display: flex; gap: 10px; padding: 8px; background: #0a0a0a; border-radius: 6px; margin-bottom: 6px; animation: slide 0.4s; border: 1px solid #2a2a2a; }
+.timeline-dot { width: 26px; height: 26px; border-radius: 50%; background: #c9a227; color: #0a0a0a; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 11px; font-weight: bold; }
+.timeline-dot.green { background: #10b981; color: white; }
+.timeline-dot.blue { background: #3b82f6; color: white; }
+.timeline-content { flex: 1; }
+.timeline-time { font-size: 10px; color: #888; margin-bottom: 1px; }
+.timeline-text { font-size: 11px; }
+
+.log-entry { background: #0a0a0a; border-left: 3px solid #c9a227; padding: 8px 10px; border-radius: 5px; margin-bottom: 5px; font-family: 'Monaco', monospace; font-size: 10px; animation: slide 0.4s; word-break: break-word; }
+.log-entry.green { border-left-color: #10b981; }
+.log-entry.blue { border-left-color: #3b82f6; }
+.log-entry.purple { border-left-color: #a855f7; }
+.log-time { color: #888; font-size: 9px; margin-bottom: 2px; }
+
+@keyframes slide { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes typing { 0%, 60%, 100% { opacity: 0.3; } 30% { opacity: 1; } }
+
+/* TABLET */
+@media (max-width: 1024px) {
+    .grid { grid-template-columns: 1fr; }
+    .screen { height: 50vh; min-height: 400px; }
+    .section-grid { grid-template-columns: 1fr; }
+    .stats { grid-template-columns: repeat(3, 1fr); }
+}
+
+/* MOBILE */
+@media (max-width: 640px) {
+    body { padding: 6px; }
+    .grid { gap: 6px; }
+    .screen { height: 45vh; min-height: 340px; border-radius: 10px; }
+    .screen-header { padding: 8px; }
+    .avatar { width: 30px; height: 30px; font-size: 12px; }
+    .screen-info h3 { font-size: 11px; }
+    .screen-info p { font-size: 9px; }
+    .chat { padding: 6px; gap: 4px; }
+    .msg { font-size: 11px; padding: 6px 8px; }
+    .msg-title { font-size: 10px; }
+    .msg-time { font-size: 8px; }
+    .stats { grid-template-columns: repeat(2, 1fr); gap: 6px; }
+    .stat { padding: 8px; }
+    .controls { gap: 5px; }
+    .btn { padding: 8px 12px; font-size: 11px; }
+    .product-img { font-size: 18px; }
+}
+</style>
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <h1>Helena Store</h1>
+        <p>Bot Telegram + Tienda Online · Demo en vivo</p>
+    </div>
+
+    <div class="controls">
+        <button class="btn btn-play" id="playBtn" onclick="startDemo()">▶ Reproducir</button>
+        <button class="btn btn-reset" onclick="resetDemo()">↻ Reiniciar</button>
+        <button class="btn btn-speed" onclick="toggleSpeed()" id="speedBtn">⚡ 1x</button>
+    </div>
+
+    <div class="progress"><div class="progress-bar" id="progress"></div></div>
+
+    <div class="grid">
+        <!-- 1. ELENA EN TELEGRAM -->
+        <div class="screen">
+            <div class="screen-header telegram">
+                <div class="avatar elena">E</div>
+                <div class="screen-info">
+                    <h3>Helena Bot</h3>
+                    <p>Elena · Administradora</p>
+                </div>
+            </div>
+            <div class="chat" id="chatElena"></div>
+        </div>
+
+        <!-- 2. TIENDA WEB -->
+        <div class="screen">
+            <div class="screen-header web">
+                <div class="avatar web">H</div>
+                <div class="screen-info">
+                    <h3 style="font-family: 'Playfair Display', serif;">helenastore.com</h3>
+                    <p style="color: #c9a227;">Tienda online · Sincronizada</p>
+                </div>
+            </div>
+            <div class="web-screen" id="webScreen">
+                <div class="web-hero">
+                    <h2>Tecnología premium</h2>
+                    <p>Santa Cruz · desde 2018</p>
+                </div>
+                <div class="web-nav">
+                    <span>Home</span>
+                    <span>Celulares</span>
+                    <span>Accesorios</span>
+                    <span>Hogar</span>
+                </div>
+                <div class="product-grid" id="productGrid"></div>
+            </div>
+        </div>
+
+        <!-- 3. CLIENTE WHATSAPP -->
+        <div class="screen">
+            <div class="screen-header client">
+                <div class="avatar client">M</div>
+                <div class="screen-info">
+                    <h3>María · Cliente</h3>
+                    <p>Comprando desde la web</p>
+                </div>
+            </div>
+            <div class="chat wa" id="chatCliente"></div>
+        </div>
+    </div>
+
+    <!-- DASHBOARD -->
+    <div class="dashboard">
+        <div class="dashboard-title">Panel en tiempo real</div>
+        <div class="stats">
+            <div class="stat">
+                <div class="stat-value" id="statStock">0</div>
+                <div class="stat-label">Productos</div>
+            </div>
+            <div class="stat green">
+                <div class="stat-value" id="statVentas">0</div>
+                <div class="stat-label">Ventas hoy</div>
+            </div>
+            <div class="stat blue">
+                <div class="stat-value" id="statIngresos">$0</div>
+                <div class="stat-label">Ingresos</div>
+            </div>
+            <div class="stat purple">
+                <div class="stat-value" id="statVisitas">0</div>
+                <div class="stat-label">Visitas web</div>
+            </div>
+            <div class="stat">
+                <div class="stat-value" id="statUtilidad">$0</div>
+                <div class="stat-label">Utilidad</div>
+            </div>
+        </div>
+
+        <div class="section-grid">
+            <div class="section">
+                <h3>Actividad del día</h3>
+                <div id="timeline"></div>
+            </div>
+            <div class="section">
+                <h3>Sistema · Base de datos</h3>
+                <div id="systemLog"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+let isPlaying = false;
+let currentStep = 0;
+let speed = 1;
+
+const script = [
+    // --- ESCENA 1: ELENA CARGA UN PRODUCTO ---
+    { chat: 'chatElena', type: 'user', text: 'Llegó un iPhone 13 128gb negro. Compré a 450 y lo vendo a 580.', delay: 1500, typing: true },
+    { chat: 'chatElena', type: 'bot', status: 'success', title: '✓ Producto registrado', text: 'iPhone 13 · 128GB · Negro\nCompra: $450 USD\nVenta: $580 USD\n\n¿Subimos fotos ahora?', delay: 1500 },
+    { log: { text: 'INSERT INTO products · iPhone 13 128gb', color: 'blue' }, delay: 300 },
+    
+    { chat: 'chatElena', type: 'user', text: '[📷 3 fotos]', delay: 1500, typing: false },
+    { chat: 'chatElena', type: 'bot', status: 'success', title: '✓ Fotos subidas', text: '3 imágenes guardadas.\nProducto publicado en la web.', delay: 1200 },
+    { product: { id: 1, brand: 'iPhone', name: 'iPhone 13', price: 580, badge: 'NUEVO' }, dashboard: { stock: 1 }, timeline: { time: '09:15', text: 'Producto nuevo en catálogo', color: 'blue' }, log: { text: 'Supabase Storage · 3 imágenes · sync OK', color: 'blue' }, delay: 400 },
+
+    // --- ESCENA 2: MÁS PRODUCTOS ---
+    { chat: 'chatElena', type: 'user', text: 'agregar producto hogar: pava eléctrica Liliana, compré a 80 vendo a 120', delay: 2000, typing: true },
+    { chat: 'chatElena', type: 'bot', status: 'success', title: '✓ Producto registrado', text: 'Pava eléctrica Liliana\nCategoría: Hogar\nVenta: $120 USD', delay: 1200 },
+    { product: { id: 2, brand: 'Hogar', name: 'Pava Liliana', price: 120 }, dashboard: { stock: 2 }, log: { text: 'INSERT INTO products · Hogar', color: 'blue' }, delay: 300 },
+
+    { chat: 'chatElena', type: 'user', text: 'funda iPhone 13 silicona negra, 15 dólares', delay: 1800, typing: true },
+    { chat: 'chatElena', type: 'bot', status: 'success', title: '✓ Accesorio cargado', text: 'Funda iPhone 13 silicona\nVenta: $15 USD', delay: 1000 },
+    { product: { id: 3, brand: 'Accesorios', name: 'Funda iPhone 13', price: 15 }, dashboard: { stock: 3 }, log: { text: 'INSERT INTO products · Accesorios', color: 'blue' }, delay: 300 },
+
+    // --- ESCENA 3: CLIENTE ENTRA A LA WEB ---
+    { dashboard: { visitas: 1 }, timeline: { time: '10:22', text: 'María visita helenastore.com', color: 'blue' }, log: { text: 'GET / · 200 OK · mobile', color: 'purple' }, delay: 1500 },
+    { dashboard: { visitas: 3 }, log: { text: 'GET /categoria/celulares', color: 'purple' }, delay: 800 },
+    { dashboard: { visitas: 5 }, log: { text: 'GET /producto/1 · iPhone 13', color: 'purple' }, delay: 600 },
+
+    // --- ESCENA 4: CLIENTE CONSULTA POR WHATSAPP ---
+    { chat: 'chatCliente', type: 'wa-user', text: 'Hola! Vi el iPhone 13 negro en la web, ¿está disponible?', delay: 2000, typing: true },
+    { chat: 'chatCliente', type: 'wa-bot', text: '¡Hola María! Sí, disponible. $580 USD.\n¿Lo envío o lo retirás?', delay: 1500 },
+    { timeline: { time: '10:35', text: 'Consulta de María por WhatsApp', color: 'blue' }, delay: 300 },
+
+    { chat: 'chatCliente', type: 'wa-user', text: 'Lo quiero! Hago la transferencia ahora', delay: 2000, typing: true },
+    { chat: 'chatCliente', type: 'wa-bot', text: 'Perfecto. Te paso los datos y cuando envíes el comprobante confirmo.', delay: 1200 },
+
+    // --- ESCENA 5: CLIENTE COMPRA POR WEB ---
+    { dashboard: { visitas: 8 }, timeline: { time: '10:42', text: 'María agrega al carrito', color: 'green' }, log: { text: 'POST /api/cart · add item', color: 'purple' }, delay: 1200 },
+    { dashboard: { visitas: 9 }, log: { text: 'POST /api/order · checkout iniciado', color: 'purple' }, delay: 800 },
+    { log: { text: 'POST /api/upload-receipt · comprobante.jpg', color: 'green' }, delay: 600 },
+
+    // --- ESCENA 6: BOT NOTIFICA A ELENA ---
+    { chat: 'chatElena', type: 'bot', status: 'success', title: '🛒 NUEVA VENTA WEB', text: 'Cliente: María López\nProducto: iPhone 13 128GB\nMonto: $580 USD\nPago: Transferencia\n\n📎 Comprobante adjunto', delay: 1800 },
+    { timeline: { time: '10:45', text: 'Venta web · iPhone 13 · $580', color: 'green' }, log: { text: 'INSERT INTO orders · $580 USD', color: 'green' }, delay: 400 },
+
+    { chat: 'chatElena', type: 'user', text: 'confirmar venta iPhone 13', delay: 2000, typing: true },
+    { chat: 'chatElena', type: 'bot', status: 'success', title: '✓ Venta confirmada', text: 'Stock actualizado.\nProducto retirado de la web.\nUtilidad: $130 USD', delay: 1500 },
+    { dashboard: { ventas: 1, ingresos: 580, utilidad: 130, stock: 2 }, timeline: { time: '10:47', text: 'Venta confirmada · utilidad $130', color: 'green' }, log: { text: 'UPDATE products SET status=vendido', color: 'green' }, delay: 400 },
+
+    // --- ESCENA 7: CLIENTE RECIBE CONFIRMACIÓN ---
+    { chat: 'chatCliente', type: 'wa-bot', text: '¡Confirmado! Tu iPhone 13 está apartado. ¿Te lo envío hoy o mañana?', delay: 1500 },
+    { chat: 'chatCliente', type: 'wa-user', text: 'Hoy si se puede, gracias!', delay: 2000, typing: true },
+    { chat: 'chatCliente', type: 'wa-bot', text: 'Listo, sale hoy por la tarde. Te paso el tracking.', delay: 1200 },
+
+    // --- ESCENA 8: SEGUNDA VENTA ---
+    { dashboard: { visitas: 14 }, log: { text: 'GET /categoria/accesorios', color: 'purple' }, delay: 1500 },
+    { log: { text: 'POST /api/order · funda iPhone 13', color: 'green' }, delay: 800 },
+    
+    { chat: 'chatElena', type: 'bot', status: 'success', title: '🛒 NUEVA VENTA WEB', text: 'Cliente: Carlos R.\nProducto: Funda iPhone 13\nMonto: $15 USD', delay: 1500 },
+    { dashboard: { ventas: 2, ingresos: 595, utilidad: 140, stock: 2 }, timeline: { time: '11:20', text: 'Venta web · Funda · $15', color: 'green' }, log: { text: 'INSERT INTO orders · $15 USD', color: 'green' }, delay: 400 },
+
+    // --- ESCENA 9: CIERRE DEL DÍA ---
+    { chat: 'chatElena', type: 'bot', status: 'info', title: '📊 CIERRE DEL DÍA', text: '⏰ 21:00\n\n📦 Ventas: 2\n💰 Ingresos: $595 USD\n📈 Utilidad: $140 USD\n👀 Visitas web: 14\n📱 Nuevos productos: 3\n\n✓ Backup automático realizado\n✓ Reporte enviado por email', delay: 2500 },
+    { timeline: { time: '21:00', text: 'Cierre automático del día', color: 'blue' }, log: { text: 'CRON · daily_backup · Supabase', color: 'blue' }, delay: 400 }
+];
+
+function sleep(ms) { return new Promise(r => setTimeout(r, ms / speed)); }
+
+function addMessage(chatId, msg) {
+    const chat = document.getElementById(chatId);
+    const div = document.createElement('div');
+    div.className = `msg msg-${msg.type} ${msg.status || ''}`;
+    let content = '';
+    if (msg.title) content += `<div class="msg-title">${msg.title}</div>`;
+    content += msg.text.replace(/\n/g, '<br>');
+    const now = new Date();
+    content += `<div class="msg-time">${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}</div>`;
+    div.innerHTML = content;
+    chat.appendChild(div);
+    chat.scrollTop = chat.scrollHeight;
+}
+
+function showTyping(chatId) {
+    const chat = document.getElementById(chatId);
+    const div = document.createElement('div');
+    div.className = 'typing';
+    div.id = 'typing-' + chatId;
+    div.innerHTML = '<span></span><span></span><span></span>';
+    chat.appendChild(div);
+    chat.scrollTop = chat.scrollHeight;
+}
+
+function removeTyping(chatId) {
+    const t = document.getElementById('typing-' + chatId);
+    if (t) t.remove();
+}
+
+function addProduct(p) {
+    const grid = document.getElementById('productGrid');
+    const card = document.createElement('div');
+    card.className = 'product-card new';
+    card.innerHTML = `
+        <div class="product-img">
+            ${p.badge ? `<span class="product-badge">${p.badge}</span>` : ''}
+            ${p.brand.substring(0, 3)}
+        </div>
+        <div class="product-info">
+            <div class="product-brand">${p.brand}</div>
+            <div class="product-name">${p.name}</div>
+            <div class="product-price">$${p.price} USD</div>
+        </div>
+    `;
+    grid.appendChild(card);
+    setTimeout(() => card.classList.remove('new'), 2000);
+    const webScreen = document.getElementById('webScreen');
+    webScreen.scrollTop = webScreen.scrollHeight;
+}
+
+function updateDashboard(data) {
+    if (data.stock !== undefined) document.getElementById('statStock').textContent = data.stock;
+    if (data.ventas !== undefined) document.getElementById('statVentas').textContent = data.ventas;
+    if (data.ingresos !== undefined) document.getElementById('statIngresos').textContent = '$' + data.ingresos;
+    if (data.visitas !== undefined) document.getElementById('statVisitas').textContent = data.visitas;
+    if (data.utilidad !== undefined) document.getElementById('statUtilidad').textContent = '$' + data.utilidad;
+}
+
+function addTimeline(item) {
+    const t = document.getElementById('timeline');
+    const div = document.createElement('div');
+    div.className = 'timeline-item';
+    div.innerHTML = `<div class="timeline-dot ${item.color}">✓</div><div class="timeline-content"><div class="timeline-time">${item.time}</div><div class="timeline-text">${item.text}</div></div>`;
+    t.appendChild(div);
+    t.scrollTop = t.scrollHeight;
+}
+
+function addLog(log) {
+    const l = document.getElementById('systemLog');
+    const div = document.createElement('div');
+    div.className = `log-entry ${log.color}`;
+    const now = new Date();
+    const time = `${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}:${String(now.getSeconds()).padStart(2,'0')}`;
+    div.innerHTML = `<div class="log-time">[${time}]</div>${log.text}`;
+    l.appendChild(div);
+    l.scrollTop = l.scrollHeight;
+}
+
+async function startDemo() {
+    if (isPlaying) return;
+    isPlaying = true;
+    document.getElementById('playBtn').disabled = true;
+    for (let i = currentStep; i < script.length; i++) {
+        if (!isPlaying) break;
+        const step = script[i];
+        document.getElementById('progress').style.width = ((i+1)/script.length * 100) + '%';
+        if (step.delay) await sleep(step.delay);
+        if (step.typing && step.chat) {
+            showTyping(step.chat);
+            await sleep(800);
+            removeTyping(step.chat);
+        }
+        if (step.chat) addMessage(step.chat, step);
+        if (step.product) addProduct(step.product);
+        if (step.dashboard) updateDashboard(step.dashboard);
+        if (step.timeline) addTimeline(step.timeline);
+        if (step.log) addLog(step.log);
+        currentStep = i + 1;
+    }
+    isPlaying = false;
+    document.getElementById('playBtn').disabled = false;
+    document.getElementById('playBtn').textContent = '✓ Completado';
+}
+
+function resetDemo() {
+    isPlaying = false;
+    currentStep = 0;
+    ['chatElena','chatCliente','timeline','systemLog','productGrid'].forEach(id => document.getElementById(id).innerHTML = '');
+    document.getElementById('statStock').textContent = '0';
+    document.getElementById('statVentas').textContent = '0';
+    document.getElementById('statIngresos').textContent = '$0';
+    document.getElementById('statVisitas').textContent = '0';
+    document.getElementById('statUtilidad').textContent = '$0';
+    document.getElementById('progress').style.width = '0%';
+    document.getElementById('playBtn').disabled = false;
+    document.getElementById('playBtn').textContent = '▶ Reproducir';
+}
+
+function toggleSpeed() {
+    speed = speed === 1 ? 2 : speed === 2 ? 4 : 1;
+    document.getElementById('speedBtn').textContent = `⚡ ${speed}x`;
+}
+
+window.addEventListener('load', () => setTimeout(startDemo, 500));
+</script>
+</body>
+</html>
