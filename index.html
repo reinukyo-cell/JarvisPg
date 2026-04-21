@@ -1284,21 +1284,25 @@ function selectNeed(type) {
 }
 
 // FORM
-function submitForm(e) {
+async function submitForm(e) {
   e.preventDefault();
   const name = document.getElementById('fname').value;
   const email = document.getElementById('femail').value;
   const company = document.getElementById('fcompany').value;
   const message = document.getElementById('fmessage').value;
-  
-  // Here you'd connect to your bot/backend
-  console.log('Lead captured:', { name, email, company, message });
-  
+  const TOKEN = '8574653382:AAGVm8dbxZef9pvMCu_C2hEZhfcyNctGBLk';
+  const CHAT_ID = '980257381';
+  const text = `🔥 Nuevo lead Jarvis Agency\n\nNombre: ${name}\nEmail: ${email}\nEmpresa: ${company}\nMensaje: ${message}`;
+  try {
+    await fetch(`https://api.telegram.org/bot${TOKEN}/sendMessage`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ chat_id: CHAT_ID, text })
+    });
+  } catch(err) { console.error(err); }
   document.getElementById('formSuccess').style.display = 'block';
   e.target.reset();
-  setTimeout(() => {
-    document.getElementById('formSuccess').style.display = 'none';
-  }, 5000);
+  setTimeout(() => { document.getElementById('formSuccess').style.display = 'none'; }, 5000);
 }
 
 // COUNTER ANIMATION
