@@ -1,13 +1,1315 @@
 <!DOCTYPE html>
-<html lang="es">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>J.A.R.V.I.S</title>
-    <style>body{margin:0;background:#020508}</style>
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="./src/main.jsx"></script>
-  </body>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Jarvis Agency AI — Automate. Scale. Dominate.</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Syne:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #020610;
+  --surface: #050d1a;
+  --cyan: #00d4ff;
+  --cyan-dim: #0094b3;
+  --cyan-glow: rgba(0,212,255,0.15);
+  --blue: #0057ff;
+  --text: #e8f4ff;
+  --muted: #6a8aaa;
+  --border: rgba(0,212,255,0.12);
+  --glass: rgba(5,15,35,0.7);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Syne', sans-serif;
+  overflow-x: hidden;
+  cursor: none;
+}
+
+/* CUSTOM CURSOR */
+.cursor {
+  width: 12px; height: 12px;
+  background: var(--cyan);
+  border-radius: 50%;
+  position: fixed;
+  pointer-events: none;
+  z-index: 9999;
+  mix-blend-mode: screen;
+  transition: transform 0.1s;
+}
+.cursor-ring {
+  width: 36px; height: 36px;
+  border: 1px solid rgba(0,212,255,0.5);
+  border-radius: 50%;
+  position: fixed;
+  pointer-events: none;
+  z-index: 9998;
+  transition: all 0.15s ease;
+}
+
+/* NOISE OVERLAY */
+body::before {
+  content: '';
+  position: fixed; inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 1;
+  opacity: 0.4;
+}
+
+/* GRID BACKGROUND */
+body::after {
+  content: '';
+  position: fixed; inset: 0;
+  background-image:
+    linear-gradient(rgba(0,212,255,0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,212,255,0.03) 1px, transparent 1px);
+  background-size: 60px 60px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* NAV */
+nav {
+  position: fixed; top: 0; left: 0; right: 0;
+  z-index: 100;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 20px 60px;
+  background: rgba(2,6,16,0.8);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+}
+
+.nav-logo {
+  font-family: 'Orbitron', monospace;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--cyan);
+  letter-spacing: 0.1em;
+  text-decoration: none;
+}
+
+.nav-links {
+  display: flex; gap: 36px; list-style: none;
+}
+.nav-links a {
+  color: var(--muted);
+  text-decoration: none;
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  transition: color 0.2s;
+}
+.nav-links a:hover { color: var(--cyan); }
+
+.lang-toggle {
+  display: flex; gap: 4px;
+  background: rgba(0,212,255,0.08);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  overflow: hidden;
+}
+.lang-btn {
+  padding: 6px 14px;
+  background: none;
+  border: none;
+  color: var(--muted);
+  font-family: 'Syne', sans-serif;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.lang-btn.active {
+  background: var(--cyan);
+  color: var(--bg);
+}
+
+/* HERO */
+.hero {
+  min-height: 100vh;
+  display: flex; flex-direction: column; justify-content: center;
+  padding: 140px 60px 80px;
+  position: relative;
+  z-index: 2;
+}
+
+.hero-badge {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: rgba(0,212,255,0.08);
+  border: 1px solid rgba(0,212,255,0.25);
+  border-radius: 100px;
+  padding: 6px 16px;
+  font-size: 0.75rem;
+  color: var(--cyan);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  margin-bottom: 32px;
+  width: fit-content;
+  animation: fadeUp 0.8s ease both;
+}
+.badge-dot {
+  width: 6px; height: 6px;
+  background: var(--cyan);
+  border-radius: 50%;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.4; transform: scale(0.8); }
+}
+
+.hero h1 {
+  font-family: 'Orbitron', monospace;
+  font-size: clamp(2.8rem, 6vw, 5.5rem);
+  font-weight: 900;
+  line-height: 1.05;
+  letter-spacing: -0.01em;
+  max-width: 820px;
+  animation: fadeUp 0.8s 0.1s ease both;
+}
+
+.hero h1 span {
+  color: var(--cyan);
+  position: relative;
+}
+.hero h1 span::after {
+  content: '';
+  position: absolute;
+  bottom: -4px; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--cyan), transparent);
+}
+
+.hero-sub {
+  margin-top: 24px;
+  font-size: 1.15rem;
+  color: var(--muted);
+  max-width: 520px;
+  line-height: 1.7;
+  font-weight: 300;
+  animation: fadeUp 0.8s 0.2s ease both;
+}
+
+.hero-ctas {
+  display: flex; gap: 16px; flex-wrap: wrap;
+  margin-top: 44px;
+  animation: fadeUp 0.8s 0.3s ease both;
+}
+
+.btn-primary {
+  padding: 16px 36px;
+  background: var(--cyan);
+  color: var(--bg);
+  border: none;
+  border-radius: 6px;
+  font-family: 'Orbitron', monospace;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-flex; align-items: center; gap: 10px;
+  transition: all 0.25s;
+  box-shadow: 0 0 30px rgba(0,212,255,0.3);
+}
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0 50px rgba(0,212,255,0.5);
+}
+
+.btn-ghost {
+  padding: 16px 36px;
+  background: transparent;
+  color: var(--cyan);
+  border: 1px solid rgba(0,212,255,0.35);
+  border-radius: 6px;
+  font-family: 'Orbitron', monospace;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-flex; align-items: center; gap: 10px;
+  transition: all 0.25s;
+}
+.btn-ghost:hover {
+  background: rgba(0,212,255,0.08);
+  transform: translateY(-2px);
+}
+
+.hero-stats {
+  display: flex; gap: 48px;
+  margin-top: 72px;
+  padding-top: 48px;
+  border-top: 1px solid var(--border);
+  animation: fadeUp 0.8s 0.4s ease both;
+}
+.stat-item { display: flex; flex-direction: column; gap: 4px; }
+.stat-number {
+  font-family: 'Orbitron', monospace;
+  font-size: 2rem;
+  font-weight: 900;
+  color: var(--cyan);
+}
+.stat-label {
+  font-size: 0.75rem;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+/* HERO VISUAL */
+.hero-visual {
+  position: absolute;
+  right: -100px; top: 50%;
+  transform: translateY(-50%);
+  width: 600px; height: 600px;
+  pointer-events: none;
+}
+
+.orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+  animation: orbFloat 8s ease-in-out infinite;
+}
+.orb-1 {
+  width: 400px; height: 400px;
+  background: radial-gradient(circle, rgba(0,87,255,0.2) 0%, transparent 70%);
+  top: 50px; left: 50px;
+}
+.orb-2 {
+  width: 300px; height: 300px;
+  background: radial-gradient(circle, rgba(0,212,255,0.15) 0%, transparent 70%);
+  top: 150px; right: 0;
+  animation-delay: -3s;
+}
+
+@keyframes orbFloat {
+  0%, 100% { transform: translateY(0) scale(1); }
+  50% { transform: translateY(-30px) scale(1.05); }
+}
+
+.hex-grid {
+  position: absolute; inset: 0;
+  opacity: 0.15;
+}
+
+/* SECTIONS */
+section {
+  position: relative;
+  z-index: 2;
+  padding: 100px 60px;
+}
+
+.section-label {
+  font-family: 'Orbitron', monospace;
+  font-size: 0.7rem;
+  color: var(--cyan);
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  margin-bottom: 16px;
+}
+
+.section-title {
+  font-family: 'Orbitron', monospace;
+  font-size: clamp(1.8rem, 3vw, 3rem);
+  font-weight: 900;
+  line-height: 1.15;
+  max-width: 600px;
+}
+
+/* SERVICES */
+.services-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1px;
+  background: var(--border);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  margin-top: 60px;
+}
+
+.service-card {
+  background: var(--surface);
+  padding: 40px;
+  transition: background 0.3s;
+  position: relative;
+  overflow: hidden;
+}
+.service-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--cyan), transparent);
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+.service-card:hover { background: rgba(0,212,255,0.04); }
+.service-card:hover::before { opacity: 1; }
+
+.service-icon {
+  width: 48px; height: 48px;
+  background: rgba(0,212,255,0.1);
+  border: 1px solid rgba(0,212,255,0.2);
+  border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.4rem;
+  margin-bottom: 20px;
+}
+
+.service-name {
+  font-family: 'Orbitron', monospace;
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--cyan);
+  letter-spacing: 0.05em;
+  margin-bottom: 12px;
+}
+
+.service-desc {
+  font-size: 0.9rem;
+  color: var(--muted);
+  line-height: 1.65;
+}
+
+.service-benefit {
+  margin-top: 16px;
+  font-size: 0.8rem;
+  color: var(--text);
+  font-weight: 600;
+}
+
+/* DEMOS */
+.demos-section { background: var(--surface); }
+.demos-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; margin-top: 60px; }
+
+.demo-card {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+.demo-card:hover {
+  border-color: rgba(0,212,255,0.4);
+  box-shadow: 0 0 40px rgba(0,212,255,0.08);
+}
+.demo-iframe-wrapper {
+  position: relative;
+  width: 100%;
+  height: 540px;
+  overflow: hidden;
+  border-radius: 0 0 12px 12px;
+}
+.demo-iframe-wrapper iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+  display: block;
+}
+.demo-expand-btn {
+  position: absolute;
+  bottom: 12px; right: 12px;
+  background: rgba(0,212,255,0.15);
+  border: 1px solid rgba(0,212,255,0.35);
+  color: var(--cyan);
+  padding: 8px 14px;
+  border-radius: 6px;
+  font-family: 'Orbitron', monospace;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  cursor: pointer;
+  backdrop-filter: blur(10px);
+  transition: all 0.2s;
+  text-decoration: none;
+  display: inline-flex; align-items: center; gap: 6px;
+}
+.demo-expand-btn:hover {
+  background: rgba(0,212,255,0.25);
+}
+
+.demo-header {
+  padding: 24px;
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; gap: 12px;
+}
+.demo-avatar {
+  width: 44px; height: 44px;
+  background: linear-gradient(135deg, var(--blue), var(--cyan));
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Orbitron', monospace;
+  font-size: 0.9rem;
+  font-weight: 900;
+  color: var(--bg);
+}
+.demo-name {
+  font-family: 'Orbitron', monospace;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--text);
+}
+.demo-role { font-size: 0.78rem; color: var(--cyan); }
+.demo-status {
+  margin-left: auto;
+  display: flex; align-items: center; gap: 6px;
+  font-size: 0.72rem;
+  color: #00ff88;
+}
+.status-dot {
+  width: 6px; height: 6px;
+  background: #00ff88;
+  border-radius: 50%;
+  animation: pulse 2s infinite;
+}
+
+.demo-chat {
+  padding: 20px 24px;
+  display: flex; flex-direction: column; gap: 14px;
+  min-height: 220px;
+}
+
+.chat-msg {
+  display: flex; flex-direction: column; gap: 4px;
+  max-width: 85%;
+}
+.chat-msg.user { align-self: flex-end; align-items: flex-end; }
+.chat-msg.bot { align-self: flex-start; }
+
+.msg-bubble {
+  padding: 10px 14px;
+  border-radius: 10px;
+  font-size: 0.82rem;
+  line-height: 1.5;
+}
+.chat-msg.user .msg-bubble {
+  background: rgba(0,212,255,0.15);
+  border: 1px solid rgba(0,212,255,0.25);
+  color: var(--text);
+}
+.chat-msg.bot .msg-bubble {
+  background: rgba(255,255,255,0.05);
+  border: 1px solid var(--border);
+  color: var(--text);
+}
+.msg-time { font-size: 0.68rem; color: var(--muted); }
+
+.demo-footer {
+  padding: 20px 24px;
+  border-top: 1px solid var(--border);
+  display: grid; grid-template-columns: 1fr 1fr 1fr;
+  gap: 16px;
+}
+.demo-metric {
+  text-align: center;
+}
+.demo-metric-value {
+  font-family: 'Orbitron', monospace;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--cyan);
+}
+.demo-metric-label {
+  font-size: 0.68rem;
+  color: var(--muted);
+  margin-top: 2px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+/* HOW IT WORKS */
+.steps { display: flex; gap: 0; margin-top: 60px; position: relative; }
+.steps::before {
+  content: '';
+  position: absolute;
+  top: 30px; left: 60px; right: 60px;
+  height: 1px;
+  background: linear-gradient(90deg, var(--cyan), var(--blue), var(--cyan));
+  opacity: 0.3;
+}
+
+.step {
+  flex: 1;
+  display: flex; flex-direction: column; align-items: center;
+  text-align: center;
+  padding: 0 20px;
+  position: relative;
+}
+
+.step-num {
+  width: 60px; height: 60px;
+  background: var(--surface);
+  border: 1px solid rgba(0,212,255,0.4);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Orbitron', monospace;
+  font-size: 1.1rem;
+  font-weight: 900;
+  color: var(--cyan);
+  margin-bottom: 24px;
+  position: relative;
+  z-index: 1;
+  box-shadow: 0 0 20px rgba(0,212,255,0.15);
+}
+
+.step-title {
+  font-family: 'Orbitron', monospace;
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 10px;
+  letter-spacing: 0.05em;
+}
+.step-desc { font-size: 0.85rem; color: var(--muted); line-height: 1.6; }
+
+/* INTERACTIVE */
+.interactive-section { background: var(--surface); }
+
+.need-selector {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+  max-width: 700px;
+  margin: 48px auto 0;
+}
+
+.need-option {
+  padding: 24px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  cursor: pointer;
+  text-align: left;
+  transition: all 0.25s;
+  font-family: 'Syne', sans-serif;
+}
+.need-option:hover, .need-option.selected {
+  border-color: var(--cyan);
+  background: rgba(0,212,255,0.05);
+  box-shadow: 0 0 20px rgba(0,212,255,0.1);
+}
+.need-option-icon { font-size: 1.8rem; margin-bottom: 12px; }
+.need-option-title {
+  font-weight: 700;
+  font-size: 0.9rem;
+  margin-bottom: 6px;
+}
+.need-option-sub { font-size: 0.78rem; color: var(--muted); }
+
+.need-response {
+  max-width: 700px;
+  margin: 32px auto 0;
+  padding: 28px;
+  background: rgba(0,212,255,0.05);
+  border: 1px solid rgba(0,212,255,0.3);
+  border-radius: 10px;
+  display: none;
+  animation: fadeUp 0.4s ease;
+}
+.need-response.show { display: block; }
+.need-response-title {
+  font-family: 'Orbitron', monospace;
+  font-size: 0.85rem;
+  color: var(--cyan);
+  margin-bottom: 12px;
+  font-weight: 700;
+}
+.need-response-text { font-size: 0.88rem; color: var(--muted); line-height: 1.7; }
+
+/* VALUE */
+.value-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 24px;
+  margin-top: 60px;
+}
+
+.value-item {
+  padding: 32px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  position: relative;
+  overflow: hidden;
+}
+.value-item::before {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--cyan), var(--blue));
+  transform: scaleX(0);
+  transition: transform 0.3s;
+}
+.value-item:hover::before { transform: scaleX(1); }
+
+.value-number {
+  font-family: 'Orbitron', monospace;
+  font-size: 2.5rem;
+  font-weight: 900;
+  color: var(--cyan);
+  opacity: 0.3;
+  margin-bottom: 12px;
+}
+.value-title {
+  font-weight: 700;
+  font-size: 1rem;
+  margin-bottom: 10px;
+}
+.value-desc { font-size: 0.85rem; color: var(--muted); line-height: 1.6; }
+
+/* CTA FINAL */
+.cta-section {
+  text-align: center;
+  padding: 120px 60px;
+  position: relative;
+}
+.cta-glow {
+  position: absolute;
+  width: 600px; height: 400px;
+  background: radial-gradient(ellipse, rgba(0,212,255,0.08) 0%, transparent 70%);
+  left: 50%; top: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+.cta-section h2 {
+  font-family: 'Orbitron', monospace;
+  font-size: clamp(2rem, 4vw, 3.5rem);
+  font-weight: 900;
+  margin-bottom: 20px;
+}
+.cta-sub { font-size: 1rem; color: var(--muted); margin-bottom: 44px; }
+
+/* CONTACT FORM */
+.contact-form {
+  display: flex; flex-direction: column; gap: 16px;
+  max-width: 500px;
+  margin: 0 auto;
+}
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.form-input {
+  padding: 14px 18px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: var(--text);
+  font-family: 'Syne', sans-serif;
+  font-size: 0.9rem;
+  transition: border-color 0.2s;
+  width: 100%;
+}
+.form-input:focus {
+  outline: none;
+  border-color: rgba(0,212,255,0.5);
+}
+.form-input::placeholder { color: var(--muted); }
+
+/* FOOTER */
+footer {
+  border-top: 1px solid var(--border);
+  padding: 40px 60px;
+  display: flex; align-items: center; justify-content: space-between;
+  position: relative; z-index: 2;
+}
+.footer-logo {
+  font-family: 'Orbitron', monospace;
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--cyan);
+}
+.footer-text { font-size: 0.78rem; color: var(--muted); }
+
+/* ANIMATIONS */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.reveal {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* LANG CONTENT */
+[data-lang="es"] { display: none; }
+body.lang-es [data-lang="en"] { display: none; }
+body.lang-es [data-lang="es"] { display: block; }
+span[data-lang="es"], a[data-lang="es"] { display: none; }
+body.lang-es span[data-lang="en"] { display: none; }
+body.lang-es span[data-lang="es"] { display: inline; }
+
+/* RESPONSIVE */
+@media (max-width: 900px) {
+  nav { padding: 16px 24px; }
+  .nav-links { display: none; }
+  section { padding: 70px 24px; }
+  .hero { padding: 110px 24px 70px; }
+  .hero-visual { display: none; }
+  .hero-stats { gap: 24px; flex-wrap: wrap; }
+  .demos-grid { grid-template-columns: 1fr; }
+  .steps { flex-direction: column; gap: 32px; }
+  .steps::before { display: none; }
+  .need-selector { grid-template-columns: 1fr; }
+  .form-row { grid-template-columns: 1fr; }
+  footer { flex-direction: column; gap: 12px; text-align: center; }
+}
+
+/* SCAN LINE EFFECT */
+@keyframes scanline {
+  0% { top: -100%; }
+  100% { top: 200%; }
+}
+.scanline {
+  position: fixed;
+  left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, rgba(0,212,255,0.1), transparent);
+  pointer-events: none;
+  z-index: 5;
+  animation: scanline 8s linear infinite;
+  opacity: 0.5;
+}
+
+/* TYPING ANIMATION */
+.typing::after {
+  content: '|';
+  animation: blink 1s step-end infinite;
+  color: var(--cyan);
+}
+@keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+<div class="scanline"></div>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">JARVIS<span style="color:var(--muted)"> AI</span></a>
+  <ul class="nav-links">
+    <li><a href="#services" data-lang="en">Services</a><a href="#services" data-lang="es">Servicios</a></li>
+    <li><a href="#demos">Demos</a></li>
+    <li><a href="#how" data-lang="en">How it Works</a><a href="#how" data-lang="es">Proceso</a></li>
+    <li><a href="#contact" data-lang="en">Contact</a><a href="#contact" data-lang="es">Contacto</a></li>
+  </ul>
+  <div class="lang-toggle">
+    <button class="lang-btn active" onclick="setLang('en')">EN</button>
+    <button class="lang-btn" onclick="setLang('es')">ES</button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-visual">
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <svg class="hex-grid" viewBox="0 0 500 500" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="250" cy="250" r="200" stroke="rgba(0,212,255,0.1)" stroke-width="1"/>
+      <circle cx="250" cy="250" r="150" stroke="rgba(0,212,255,0.08)" stroke-width="1"/>
+      <circle cx="250" cy="250" r="100" stroke="rgba(0,212,255,0.06)" stroke-width="1"/>
+      <line x1="50" y1="250" x2="450" y2="250" stroke="rgba(0,212,255,0.06)" stroke-width="1"/>
+      <line x1="250" y1="50" x2="250" y2="450" stroke="rgba(0,212,255,0.06)" stroke-width="1"/>
+      <line x1="100" y1="100" x2="400" y2="400" stroke="rgba(0,212,255,0.04)" stroke-width="1"/>
+      <line x1="400" y1="100" x2="100" y2="400" stroke="rgba(0,212,255,0.04)" stroke-width="1"/>
+    </svg>
+  </div>
+
+  <div class="hero-badge">
+    <span class="badge-dot"></span>
+    <span data-lang="en">AI Automation Agency</span>
+    <span data-lang="es">Agencia de Automatización IA</span>
+  </div>
+
+  <h1>
+    <span data-lang="en">Automate.<br><span style="color:var(--cyan)">Scale.</span><br>Dominate.</span>
+    <span data-lang="es">Automatiza.<br><span style="color:var(--cyan)">Escala.</span><br>Domina.</span>
+  </h1>
+
+  <p class="hero-sub">
+    <span data-lang="en">We build custom AI bots and automation systems that eliminate repetitive work, cut costs, and multiply your revenue — while you focus on what matters.</span>
+    <span data-lang="es">Construimos bots de IA y sistemas de automatización que eliminan el trabajo repetitivo, reducen costos y multiplican tus ingresos — mientras tú te enfocas en lo que importa.</span>
+  </p>
+
+  <div class="hero-ctas">
+    <a href="#contact" class="btn-primary">
+      <span data-lang="en">Build My Bot →</span>
+      <span data-lang="es">Construir Mi Bot →</span>
+    </a>
+    <a href="#demos" class="btn-ghost">
+      <span data-lang="en">See Live Demos</span>
+      <span data-lang="es">Ver Demos</span>
+    </a>
+  </div>
+
+  <div class="hero-stats">
+    <div class="stat-item">
+      <span class="stat-number">80%</span>
+      <span class="stat-label" data-lang="en">Time Saved</span>
+      <span class="stat-label" data-lang="es">Tiempo Ahorrado</span>
+    </div>
+    <div class="stat-item">
+      <span class="stat-number">24/7</span>
+      <span class="stat-label" data-lang="en">Automated</span>
+      <span class="stat-label" data-lang="es">Automatizado</span>
+    </div>
+    <div class="stat-item">
+      <span class="stat-number">3x</span>
+      <span class="stat-label" data-lang="en">Revenue Growth</span>
+      <span class="stat-label" data-lang="es">Crecimiento</span>
+    </div>
+    <div class="stat-item">
+      <span class="stat-number">0</span>
+      <span class="stat-label" data-lang="en">Human Error</span>
+      <span class="stat-label" data-lang="es">Error Humano</span>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section id="services">
+  <div class="section-label" data-lang="en">What We Do</div>
+  <div class="section-label" data-lang="es">Qué Hacemos</div>
+  <h2 class="section-title">
+    <span data-lang="en">AI Solutions Built<br>For Your Business</span>
+    <span data-lang="es">Soluciones IA<br>Para Tu Negocio</span>
+  </h2>
+
+  <div class="services-grid reveal">
+    <div class="service-card">
+      <div class="service-icon">🤖</div>
+      <div class="service-name" data-lang="en">AI Chatbots</div>
+      <div class="service-name" data-lang="es">Chatbots de IA</div>
+      <p class="service-desc">
+        <span data-lang="en">Intelligent assistants that handle customer queries, qualify leads, and close sales — automatically, 24/7.</span>
+        <span data-lang="es">Asistentes inteligentes que gestionan consultas, califican leads y cierran ventas — automáticamente, 24/7.</span>
+      </p>
+      <div class="service-benefit">→ <span data-lang="en">Convert leads while you sleep</span><span data-lang="es">Convierte leads mientras duermes</span></div>
+    </div>
+    <div class="service-card">
+      <div class="service-icon">⚙️</div>
+      <div class="service-name" data-lang="en">Business Automation</div>
+      <div class="service-name" data-lang="es">Automatización de Negocios</div>
+      <p class="service-desc">
+        <span data-lang="en">End-to-end process automation — from invoicing to inventory to reporting. Zero manual work.</span>
+        <span data-lang="es">Automatización completa de procesos — facturación, inventario, reportes. Cero trabajo manual.</span>
+      </p>
+      <div class="service-benefit">→ <span data-lang="en">Eliminate human bottlenecks</span><span data-lang="es">Elimina cuellos de botella</span></div>
+    </div>
+    <div class="service-card">
+      <div class="service-icon">📊</div>
+      <div class="service-name" data-lang="en">Internal Systems</div>
+      <div class="service-name" data-lang="es">Sistemas Internos</div>
+      <p class="service-desc">
+        <span data-lang="en">Custom dashboards, tracking systems, and internal bots that give you real-time control of your operations.</span>
+        <span data-lang="es">Dashboards, sistemas de seguimiento y bots internos que te dan control total de tus operaciones.</span>
+      </p>
+      <div class="service-benefit">→ <span data-lang="en">Full visibility, zero blind spots</span><span data-lang="es">Visibilidad total, cero puntos ciegos</span></div>
+    </div>
+    <div class="service-card">
+      <div class="service-icon">🔮</div>
+      <div class="service-name" data-lang="en">Custom AI Solutions</div>
+      <div class="service-name" data-lang="es">Soluciones IA Personalizadas</div>
+      <p class="service-desc">
+        <span data-lang="en">Bespoke AI integrations tailored to your exact business model. If you can imagine it, we can build it.</span>
+        <span data-lang="es">Integraciones IA hechas a medida para tu modelo de negocio exacto. Si lo imaginas, lo construimos.</span>
+      </p>
+      <div class="service-benefit">→ <span data-lang="en">Built for your specific workflow</span><span data-lang="es">Hecho para tu flujo exacto</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- DEMOS -->
+<section id="demos" class="demos-section">
+  <div class="section-label">Live Demos</div>
+  <h2 class="section-title">
+    <span data-lang="en">Meet Your AI Team</span>
+    <span data-lang="es">Conoce Tu Equipo IA</span>
+  </h2>
+
+  <div class="demos-grid reveal">
+    <!-- HELENA -->
+    <div class="demo-card">
+      <div class="demo-header">
+        <div class="demo-avatar">H</div>
+        <div>
+          <div class="demo-name">Helena Bot</div>
+          <div class="demo-role" data-lang="en">Sales, Inventory & Payments AI</div>
+          <div class="demo-role" data-lang="es">IA de Ventas, Inventario y Pagos</div>
+        </div>
+        <div class="demo-status">
+          <span class="status-dot"></span>
+          <span data-lang="en">Live Demo</span>
+          <span data-lang="es">Demo en Vivo</span>
+        </div>
+      </div>
+      <div class="demo-iframe-wrapper">
+        <iframe src="demo-helena-store.html" title="Helena Bot Demo" loading="lazy"></iframe>
+        <a href="demo-helena-store.html" target="_blank" class="demo-expand-btn">⛶ <span data-lang="en">Full Screen</span><span data-lang="es">Pantalla Completa</span></a>
+      </div>
+    </div>
+
+    <!-- RAFAEL -->
+    <div class="demo-card">
+      <div class="demo-header">
+        <div class="demo-avatar" style="background: linear-gradient(135deg, #0057ff, #2AABEE)">R</div>
+        <div>
+          <div class="demo-name">Rafael Bot</div>
+          <div class="demo-role" data-lang="en">Fleet & Operations Control AI</div>
+          <div class="demo-role" data-lang="es">IA de Control de Flota y Operaciones</div>
+        </div>
+        <div class="demo-status">
+          <span class="status-dot"></span>
+          <span data-lang="en">Live Demo</span>
+          <span data-lang="es">Demo en Vivo</span>
+        </div>
+      </div>
+      <div class="demo-iframe-wrapper">
+        <iframe src="demo-flota.html" title="Rafael Bot Demo" loading="lazy"></iframe>
+        <a href="demo-flota.html" target="_blank" class="demo-expand-btn">⛶ <span data-lang="en">Full Screen</span><span data-lang="es">Pantalla Completa</span></a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section id="how">
+  <div class="section-label" data-lang="en">The Process</div>
+  <div class="section-label" data-lang="es">El Proceso</div>
+  <h2 class="section-title">
+    <span data-lang="en">From Idea to<br>Deployed in Days</span>
+    <span data-lang="es">De Idea a<br>Desplegado en Días</span>
+  </h2>
+
+  <div class="steps reveal">
+    <div class="step">
+      <div class="step-num">01</div>
+      <div class="step-title" data-lang="en">Analyze</div>
+      <div class="step-title" data-lang="es">Analizar</div>
+      <p class="step-desc">
+        <span data-lang="en">We map your business — workflows, bottlenecks, opportunities. Deep audit.</span>
+        <span data-lang="es">Mapeamos tu negocio — flujos, cuellos de botella, oportunidades. Auditoría profunda.</span>
+      </p>
+    </div>
+    <div class="step">
+      <div class="step-num">02</div>
+      <div class="step-title" data-lang="en">Design</div>
+      <div class="step-title" data-lang="es">Diseñar</div>
+      <p class="step-desc">
+        <span data-lang="en">We architect your automation system — custom logic, integrations, flows.</span>
+        <span data-lang="es">Arquitecturamos tu sistema — lógica personalizada, integraciones, flujos.</span>
+      </p>
+    </div>
+    <div class="step">
+      <div class="step-num">03</div>
+      <div class="step-title" data-lang="en">Build</div>
+      <div class="step-title" data-lang="es">Construir</div>
+      <p class="step-desc">
+        <span data-lang="en">We build, test, and refine your bot. Fully connected to your existing tools.</span>
+        <span data-lang="es">Construimos, probamos y afinamos tu bot. Conectado a todas tus herramientas.</span>
+      </p>
+    </div>
+    <div class="step">
+      <div class="step-num">04</div>
+      <div class="step-title" data-lang="en">Scale</div>
+      <div class="step-title" data-lang="es">Escalar</div>
+      <p class="step-desc">
+        <span data-lang="en">You launch and scale. We monitor, optimize, and expand your automation.</span>
+        <span data-lang="es">Lanzas y escalas. Nosotros monitoreamos, optimizamos y expandimos tu automatización.</span>
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- INTERACTIVE -->
+<section id="needs" class="interactive-section">
+  <div style="text-align:center">
+    <div class="section-label" data-lang="en">What Do You Need?</div>
+    <div class="section-label" data-lang="es">¿Qué Necesitas?</div>
+    <h2 class="section-title" style="max-width:100%">
+      <span data-lang="en">Find Your Solution</span>
+      <span data-lang="es">Encuentra Tu Solución</span>
+    </h2>
+    <p style="color:var(--muted); font-size:0.9rem; margin-top:12px">
+      <span data-lang="en">Select your biggest challenge — we'll show you exactly what to build.</span>
+      <span data-lang="es">Selecciona tu mayor reto — te mostramos exactamente qué construir.</span>
+    </p>
+  </div>
+
+  <div class="need-selector">
+    <button class="need-option" onclick="selectNeed('sales')">
+      <div class="need-option-icon">💰</div>
+      <div class="need-option-title">
+        <span data-lang="en">I need more sales</span>
+        <span data-lang="es">Necesito más ventas</span>
+      </div>
+      <div class="need-option-sub">
+        <span data-lang="en">Leads, conversion, follow-up</span>
+        <span data-lang="es">Leads, conversión, seguimiento</span>
+      </div>
+    </button>
+    <button class="need-option" onclick="selectNeed('tasks')">
+      <div class="need-option-icon">⚡</div>
+      <div class="need-option-title">
+        <span data-lang="en">Automate my tasks</span>
+        <span data-lang="es">Automatizar mis tareas</span>
+      </div>
+      <div class="need-option-sub">
+        <span data-lang="en">Save time, eliminate manual work</span>
+        <span data-lang="es">Ahorrar tiempo, eliminar trabajo manual</span>
+      </div>
+    </button>
+    <button class="need-option" onclick="selectNeed('control')">
+      <div class="need-option-icon">📊</div>
+      <div class="need-option-title">
+        <span data-lang="en">Internal control system</span>
+        <span data-lang="es">Sistema de control interno</span>
+      </div>
+      <div class="need-option-sub">
+        <span data-lang="en">Reports, tracking, visibility</span>
+        <span data-lang="es">Reportes, seguimiento, visibilidad</span>
+      </div>
+    </button>
+    <button class="need-option" onclick="selectNeed('help')">
+      <div class="need-option-icon">🤔</div>
+      <div class="need-option-title">
+        <span data-lang="en">Not sure — help me</span>
+        <span data-lang="es">No sé — ayúdame</span>
+      </div>
+      <div class="need-option-sub">
+        <span data-lang="en">Let's figure it out together</span>
+        <span data-lang="es">Descubrámoslo juntos</span>
+      </div>
+    </button>
+  </div>
+
+  <div class="need-response" id="needResponse">
+    <div class="need-response-title" id="needTitle"></div>
+    <div class="need-response-text" id="needText"></div>
+    <div style="margin-top:20px">
+      <a href="#contact" class="btn-primary" style="display:inline-flex">
+        <span data-lang="en">Build This For Me →</span>
+        <span data-lang="es">Construir Esto Para Mí →</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- VALUE -->
+<section id="value">
+  <div class="section-label" data-lang="en">Why Automate</div>
+  <div class="section-label" data-lang="es">Por Qué Automatizar</div>
+  <h2 class="section-title">
+    <span data-lang="en">The ROI Is<br>Undeniable</span>
+    <span data-lang="es">El ROI Es<br>Innegable</span>
+  </h2>
+
+  <div class="value-grid reveal">
+    <div class="value-item">
+      <div class="value-number">01</div>
+      <div class="value-title" data-lang="en">Save 40+ Hours/Week</div>
+      <div class="value-title" data-lang="es">Ahorra 40+ Horas/Semana</div>
+      <p class="value-desc">
+        <span data-lang="en">Stop doing repetitive work. Let AI handle emails, reports, follow-ups, and data entry automatically.</span>
+        <span data-lang="es">Deja de hacer trabajo repetitivo. Que IA maneje emails, reportes, seguimientos y captura de datos.</span>
+      </p>
+    </div>
+    <div class="value-item">
+      <div class="value-number">02</div>
+      <div class="value-title" data-lang="en">Zero Human Error</div>
+      <div class="value-title" data-lang="es">Cero Error Humano</div>
+      <p class="value-desc">
+        <span data-lang="en">Bots don't forget, don't get tired, don't make mistakes. Every process executed perfectly every time.</span>
+        <span data-lang="es">Los bots no olvidan, no se cansan, no cometen errores. Cada proceso ejecutado perfectamente.</span>
+      </p>
+    </div>
+    <div class="value-item">
+      <div class="value-number">03</div>
+      <div class="value-title" data-lang="en">Scale Without Hiring</div>
+      <div class="value-title" data-lang="es">Escala Sin Contratar</div>
+      <p class="value-desc">
+        <span data-lang="en">Handle 10x the volume with the same team. AI scales with your business at zero marginal cost.</span>
+        <span data-lang="es">Maneja 10x el volumen con el mismo equipo. IA escala con tu negocio sin costo marginal.</span>
+      </p>
+    </div>
+    <div class="value-item">
+      <div class="value-number">04</div>
+      <div class="value-title" data-lang="en">Real-Time Intelligence</div>
+      <div class="value-title" data-lang="es">Inteligencia en Tiempo Real</div>
+      <p class="value-desc">
+        <span data-lang="en">Always know what's happening in your business. Automated reports, alerts, and insights delivered instantly.</span>
+        <span data-lang="es">Siempre sabe qué pasa en tu negocio. Reportes, alertas e insights entregados al instante.</span>
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- CTA FINAL -->
+<section id="contact" class="cta-section">
+  <div class="cta-glow"></div>
+  <div class="section-label" style="justify-content:center;display:flex" data-lang="en">Let's Build</div>
+  <div class="section-label" style="justify-content:center;display:flex" data-lang="es">Construyamos</div>
+  <h2>
+    <span data-lang="en">Ready to Automate<br><span style="color:var(--cyan)">Your Business?</span></span>
+    <span data-lang="es">¿Listo Para Automatizar<br><span style="color:var(--cyan)">Tu Negocio?</span></span>
+  </h2>
+  <p class="cta-sub">
+    <span data-lang="en">Tell us what you need. We'll design your custom AI system — fast.</span>
+    <span data-lang="es">Dinos qué necesitas. Diseñaremos tu sistema IA personalizado — rápido.</span>
+  </p>
+
+  <form class="contact-form" onsubmit="submitForm(event)">
+    <div class="form-row">
+      <input type="text" class="form-input" id="fname" placeholder="Name / Nombre" required>
+      <input type="email" class="form-input" id="femail" placeholder="Email" required>
+    </div>
+    <input type="text" class="form-input" id="fcompany"
+      data-placeholder-en="Company / Negocio"
+      data-placeholder-es="Empresa / Negocio"
+      placeholder="Company / Negocio">
+    <textarea class="form-input" id="fmessage" rows="4"
+      data-placeholder-en="Describe what you want to automate..."
+      data-placeholder-es="Describe qué quieres automatizar..."
+      placeholder="Describe what you want to automate..."
+      style="resize:vertical"></textarea>
+    <button type="submit" class="btn-primary" style="width:100%; justify-content:center;">
+      <span data-lang="en">Send Request →</span>
+      <span data-lang="es">Enviar Solicitud →</span>
+    </button>
+    <div id="formSuccess" style="display:none; color:var(--cyan); text-align:center; font-size:0.9rem; padding:12px;">
+      <span data-lang="en">Message sent. We'll contact you within 24 hours.</span>
+      <span data-lang="es">Mensaje enviado. Te contactamos en menos de 24 horas.</span>
+    </div>
+  </form>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">JARVIS AGENCY AI</div>
+  <div class="footer-text">
+    <span data-lang="en">© 2025 Jarvis Agency AI. All rights reserved.</span>
+    <span data-lang="es">© 2025 Jarvis Agency AI. Todos los derechos reservados.</span>
+  </div>
+  <div style="font-size:0.78rem; color:var(--muted)">
+    <span data-lang="en">Built with AI. Powered by results.</span>
+    <span data-lang="es">Construido con IA. Impulsado por resultados.</span>
+  </div>
+</footer>
+
+<script>
+// CURSOR
+const cursor = document.getElementById('cursor');
+const ring = document.getElementById('cursorRing');
+let mx = 0, my = 0, rx = 0, ry = 0;
+document.addEventListener('mousemove', e => {
+  mx = e.clientX; my = e.clientY;
+  cursor.style.left = mx - 6 + 'px';
+  cursor.style.top = my - 6 + 'px';
+});
+function animateRing() {
+  rx += (mx - rx - 18) * 0.15;
+  ry += (my - ry - 18) * 0.15;
+  ring.style.left = rx + 'px';
+  ring.style.top = ry + 'px';
+  requestAnimationFrame(animateRing);
+}
+animateRing();
+
+// LANG TOGGLE
+let currentLang = 'en';
+function setLang(lang) {
+  currentLang = lang;
+  document.body.classList.toggle('lang-es', lang === 'es');
+  document.querySelectorAll('.lang-btn').forEach((btn, i) => {
+    btn.classList.toggle('active', (i === 0 && lang === 'en') || (i === 1 && lang === 'es'));
+  });
+}
+
+// REVEAL ON SCROLL
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: 0.1 });
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+// INTERACTIVE NEEDS
+const responses = {
+  sales: {
+    en: { title: '→ You need a Sales Bot', text: "We'll build you an AI chatbot that qualifies leads 24/7, sends follow-up sequences automatically, answers questions, and pushes prospects to purchase — without a single salesperson involved. Helena Bot is exactly this." },
+    es: { title: '→ Necesitas un Bot de Ventas', text: "Construiremos un chatbot IA que califica leads 24/7, envía secuencias de seguimiento automático, responde preguntas y empuja prospectos a comprar — sin un solo vendedor involucrado. Helena Bot es exactamente esto." }
+  },
+  tasks: {
+    en: { title: '→ You need a Process Automation System', text: "We identify your most time-consuming repetitive tasks and automate them entirely — data entry, report generation, email responses, invoice processing, scheduling. You get your time back immediately." },
+    es: { title: '→ Necesitas un Sistema de Automatización de Procesos', text: "Identificamos tus tareas más repetitivas y las automatizamos por completo — captura de datos, reportes, respuestas de email, facturación, agendamiento. Recuperas tu tiempo de inmediato." }
+  },
+  control: {
+    en: { title: '→ You need an Internal Control Bot', text: "Rafael Bot is built for this. A custom AI system that monitors your team's performance, generates real-time reports, detects bottlenecks, sends alerts, and gives you full visibility into every corner of your operations." },
+    es: { title: '→ Necesitas un Bot de Control Interno', text: "Rafael Bot fue creado para esto. Un sistema IA que monitorea el rendimiento de tu equipo, genera reportes en tiempo real, detecta cuellos de botella, envía alertas y te da visibilidad total de todas tus operaciones." }
+  },
+  help: {
+    en: { title: '→ Let\'s Figure It Out Together', text: "No problem. Most clients don't know exactly what they need — they just know they're drowning in manual work or missing revenue. We do a free business audit, map your workflows, and design the perfect automation architecture for you." },
+    es: { title: '→ Lo Descubrimos Juntos', text: "No hay problema. La mayoría de clientes no saben exactamente qué necesitan — solo saben que están ahogados en trabajo manual o perdiendo ingresos. Hacemos una auditoría gratuita, mapeamos tus flujos y diseñamos la arquitectura perfecta para ti." }
+  }
+};
+
+function selectNeed(type) {
+  document.querySelectorAll('.need-option').forEach(el => el.classList.remove('selected'));
+  event.currentTarget.classList.add('selected');
+  const r = responses[type][currentLang];
+  document.getElementById('needTitle').textContent = r.title;
+  document.getElementById('needText').textContent = r.text;
+  const resp = document.getElementById('needResponse');
+  resp.classList.add('show');
+  resp.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+// FORM
+function submitForm(e) {
+  e.preventDefault();
+  const name = document.getElementById('fname').value;
+  const email = document.getElementById('femail').value;
+  const company = document.getElementById('fcompany').value;
+  const message = document.getElementById('fmessage').value;
+  
+  // Here you'd connect to your bot/backend
+  console.log('Lead captured:', { name, email, company, message });
+  
+  document.getElementById('formSuccess').style.display = 'block';
+  e.target.reset();
+  setTimeout(() => {
+    document.getElementById('formSuccess').style.display = 'none';
+  }, 5000);
+}
+
+// COUNTER ANIMATION
+function animateCounters() {
+  // Already handled via CSS — numbers are static for clarity
+}
+
+// TYPING EFFECT ON HERO
+document.addEventListener('DOMContentLoaded', () => {
+  // Small stagger for hero elements already handled by CSS animation-delay
+});
+</script>
+</body>
 </html>
