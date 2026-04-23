@@ -433,7 +433,92 @@ body.lang-es span[data-lang="es"] { display: inline; }
 .sc-trigger-bubble{display:inline-flex;align-items:center;gap:12px;background:rgba(0,212,255,.03);border:1px solid var(--border);border-radius:100px;padding:12px 24px;font-size:0.88rem;font-weight:600}
 .sc-trigger-sub{font-size:0.78rem;color:var(--muted);margin-top:10px}
 .sc-split{display:grid;grid-template-columns:1fr 64px 1fr;gap:0;max-width:1100px;margin:0 auto;align-items:start}
-@media(max-width:900px){.sc-split{grid-template-columns:1fr;gap:40px}.sc-vs-col{display:none}.sc-nav{flex-direction:column;gap:4px;max-width:320px}}
+@media(max-width:900px){
+  .sc-split{grid-template-columns:1fr;gap:0}
+  .sc-vs-col{display:none}
+  .sc-nav{flex-direction:row;gap:2px;max-width:100%;border-radius:8px;padding:4px}
+  .sc-tab{padding:10px 14px;font-size:0.5rem;flex:1;text-align:center;letter-spacing:0.06em}
+  .impact-header .section-title{font-size:clamp(1.4rem,5vw,2.5rem)}
+  .impact-sub{font-size:0.85rem}
+  .scenario{padding:32px 12px 40px}
+
+  /* Paneles side by side en mobile */
+  .sc-panel{
+    padding:16px 12px;
+    border:1px solid var(--border);border-radius:12px;
+    background:rgba(0,0,0,.15);margin-bottom:12px;
+  }
+  .sc-left{border-color:rgba(255,59,59,.1)}
+  .sc-right{border-color:rgba(0,212,255,.1)}
+
+  /* Stage: reduce y centra */
+  .sc-stage{height:220px}
+  .sc-person-emoji{width:56px;height:56px}
+  .sc-person-emoji svg{width:22px;height:22px}
+  .sc-person-label{font-size:0.5rem}
+
+  /* App bubbles smaller */
+  .sc-app-bubble{min-width:58px;padding:6px 8px;border-radius:6px}
+  .sc-ab-icon{font-size:18px}
+  .sc-ab-name{font-size:0.42rem}
+  .sc-ab-time{font-size:0.48rem;padding:2px 4px}
+
+  /* Bot chat smaller */
+  .sc-bot-chat{width:155px;border-radius:8px}
+  .sc-bc-header{padding:7px 10px}
+  .sc-bc-name{font-size:0.58rem}
+  .sc-bc-body{padding:7px;min-height:85px}
+  .sc-bc-msg{font-size:0.55rem;padding:5px 7px}
+
+  /* Speech */
+  .sc-speech{font-size:0.65rem;padding:6px 10px;border-radius:6px}
+
+  /* Counter + results */
+  .sc-time-counter{padding:12px;margin-top:16px}
+  .sc-tc-num{font-size:2.2rem}
+  .sc-tc-unit{font-size:0.68rem}
+  .sc-result{padding:12px;margin-top:12px}
+  .sc-rc-row{font-size:0.68rem;gap:5px;padding:3px 0}
+  .sc-rc-title{font-size:0.48rem}
+  .sc-panel-label{font-size:0.52rem;margin-bottom:16px}
+
+  /* VS separator between panels in mobile */
+  .sc-split::after{
+    content:'VS';
+    display:flex;align-items:center;justify-content:center;
+    font-family:'Orbitron',monospace;font-size:0.55rem;font-weight:900;
+    color:var(--cyan);
+    width:36px;height:36px;border-radius:50%;
+    border:2px solid rgba(0,212,255,.25);
+    background:var(--bg);
+    margin:-6px auto -6px;
+    position:relative;z-index:5;
+    box-shadow:0 0 12px rgba(0,212,255,.1);
+  }
+  /* Reorder: left panel, then ::after (VS), then right panel */
+  .sc-left{order:1}
+  .sc-right{order:3}
+}
+
+@media(max-width:420px){
+  .sc-stage{height:190px}
+  .sc-person-emoji{width:48px;height:48px}
+  .sc-person-emoji svg{width:18px;height:18px}
+  .sc-app-bubble{min-width:52px;padding:5px 6px}
+  .sc-ab-icon{font-size:15px}
+  .sc-ab-name{font-size:0.38rem}
+  .sc-ab-time{font-size:0.42rem}
+  .sc-bot-chat{width:130px}
+  .sc-bc-msg{font-size:0.48rem;padding:4px 6px}
+  .sc-bc-name{font-size:0.5rem}
+  .sc-bc-header div:first-child{font-size:14px!important}
+  .sc-tc-num{font-size:1.8rem}
+  .sc-speech{font-size:0.58rem;padding:5px 8px}
+  .sc-tab{padding:8px 8px;font-size:0.42rem}
+  .sc-panel-label{font-size:0.46rem;margin-bottom:12px}
+  .sc-rc-row{font-size:0.6rem}
+  .sc-replay-btn{font-size:0.5rem;padding:8px 16px}
+}
 .sc-vs-col{display:flex;flex-direction:column;align-items:center;padding-top:50px;gap:0}
 .sc-vs-line{width:1px;flex:1;min-height:200px}
 .sc-vs-line-top{background:linear-gradient(180deg,transparent,rgba(255,59,59,.3),rgba(255,59,59,.15))}
@@ -653,7 +738,18 @@ body.lang-es span[data-lang="es"] { display: inline; }
 
   <!-- SCENARIO 1 -->
   <div class="scenario active" id="sc1">
-    
+    <div class="sc-split">
+      <div class="sc-panel sc-left">
+        <div class="sc-panel-label sc-label-red"><div class="sc-dot sc-dot-red"></div><span data-lang="en">No system</span><span data-lang="es">Sin sistema</span></div>
+        <div class="sc-stage">
+          <div class="sc-speech" id="sp1l"><span data-lang="en">Wait, let me check...</span><span data-lang="es">Espera, déjame revisar...</span></div>
+          <div class="sc-person"><div class="sc-person-emoji" id="pe1l"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div><div class="sc-person-label"><span data-lang="en">Business owner</span><span data-lang="es">Dueño del negocio</span></div></div>
+          <div class="sc-app-bubble" id="ab1l1" style="top:10px;left:0"><div class="sc-ab-icon">📊</div><div class="sc-ab-name">Excel</div><div class="sc-ab-time sc-time-red" id="t1l1">+0 min</div></div>
+          <div class="sc-app-bubble" id="ab1l2" style="top:10px;right:0"><div class="sc-ab-icon">🌐</div><div class="sc-ab-name">Web</div><div class="sc-ab-time sc-time-red" id="t1l2">+0 min</div></div>
+          <div class="sc-app-bubble" id="ab1l3" style="bottom:20px;left:10px"><div class="sc-ab-icon">📝</div><div class="sc-ab-name"><span data-lang="en">Notes</span><span data-lang="es">Notas</span></div><div class="sc-ab-time sc-time-yellow" id="t1l3">+0 min</div></div>
+          <div class="sc-app-bubble" id="ab1l4" style="bottom:20px;right:10px"><div class="sc-ab-icon">🏦</div><div class="sc-ab-name"><span data-lang="en">Bank</span><span data-lang="es">Banco</span></div><div class="sc-ab-time sc-time-red" id="t1l4">+0 min</div></div>
+          <div class="sc-app-bubble" id="ab1l5" style="top:50%;left:-10px;transform:translateY(-50%)"><div class="sc-ab-icon">📱</div><div class="sc-ab-name">Chat</div><div class="sc-ab-time sc-time-yellow" id="t1l5">+0 min</div></div>
+        </div>
         <div class="sc-time-counter"><div class="sc-tc-label"><span data-lang="en">Time wasted</span><span data-lang="es">Tiempo perdido</span></div><div class="sc-tc-num sc-num-red"><span id="tc1l">0</span></div><div class="sc-tc-unit"><span data-lang="en">minutes doing this by hand</span><span data-lang="es">minutos haciendo esto a mano</span></div></div>
         <div class="sc-result sc-result-red" id="rc1l">
           <div class="sc-rc-title sc-rct-red"><span data-lang="en">What happened</span><span data-lang="es">Lo que pasó</span></div>
@@ -686,7 +782,17 @@ body.lang-es span[data-lang="es"] { display: inline; }
 
   <!-- SCENARIO 2 -->
   <div class="scenario" id="sc2">
-    
+    <div class="sc-split">
+      <div class="sc-panel sc-left">
+        <div class="sc-panel-label sc-label-red"><div class="sc-dot sc-dot-red"></div><span data-lang="en">No system</span><span data-lang="es">Sin sistema</span></div>
+        <div class="sc-stage">
+          <div class="sc-speech" id="sp2l"><span data-lang="en">Time to update everything...</span><span data-lang="es">Toca actualizar todo...</span></div>
+          <div class="sc-person"><div class="sc-person-emoji" id="pe2l"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div><div class="sc-person-label"><span data-lang="en">Business owner</span><span data-lang="es">Dueño del negocio</span></div></div>
+          <div class="sc-app-bubble" id="ab2l1" style="top:8px;left:0"><div class="sc-ab-icon">📊</div><div class="sc-ab-name">Excel</div><div class="sc-ab-time sc-time-red" id="t2l1">+0 min</div></div>
+          <div class="sc-app-bubble" id="ab2l2" style="top:8px;right:0"><div class="sc-ab-icon">🌐</div><div class="sc-ab-name">Web CMS</div><div class="sc-ab-time sc-time-red" id="t2l2">+0 min</div></div>
+          <div class="sc-app-bubble" id="ab2l3" style="bottom:20px;left:10px"><div class="sc-ab-icon">📝</div><div class="sc-ab-name"><span data-lang="en">Notes</span><span data-lang="es">Notas</span></div><div class="sc-ab-time sc-time-yellow" id="t2l3">+0 min</div></div>
+          <div class="sc-app-bubble" id="ab2l4" style="bottom:20px;right:10px"><div class="sc-ab-icon">📦</div><div class="sc-ab-name"><span data-lang="en">Supplier</span><span data-lang="es">Proveedor</span></div><div class="sc-ab-time sc-time-red" id="t2l4">+0 min</div></div>
+        </div>
         <div class="sc-time-counter"><div class="sc-tc-label"><span data-lang="en">Time wasted</span><span data-lang="es">Tiempo perdido</span></div><div class="sc-tc-num sc-num-red"><span id="tc2l">0</span></div><div class="sc-tc-unit"><span data-lang="en">minutes of manual work</span><span data-lang="es">minutos de trabajo manual</span></div></div>
         <div class="sc-result sc-result-red" id="rc2l">
           <div class="sc-rc-title sc-rct-red"><span data-lang="en">What happened</span><span data-lang="es">Lo que pasó</span></div>
@@ -719,7 +825,18 @@ body.lang-es span[data-lang="es"] { display: inline; }
 
   <!-- SCENARIO 3 -->
   <div class="scenario" id="sc3">
-    
+    <div class="sc-split">
+      <div class="sc-panel sc-left">
+        <div class="sc-panel-label sc-label-red"><div class="sc-dot sc-dot-red"></div><span data-lang="en">No system</span><span data-lang="es">Sin sistema</span></div>
+        <div class="sc-stage">
+          <div class="sc-speech" id="sp3l"><span data-lang="en">Time to add it all up...</span><span data-lang="es">A sumar todo esto...</span></div>
+          <div class="sc-person"><div class="sc-person-emoji" id="pe3l"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div><div class="sc-person-label"><span data-lang="en">Business owner</span><span data-lang="es">Dueño del negocio</span></div></div>
+          <div class="sc-app-bubble" id="ab3l1" style="top:8px;left:0"><div class="sc-ab-icon">📝</div><div class="sc-ab-name"><span data-lang="en">Notebook</span><span data-lang="es">Cuaderno</span></div><div class="sc-ab-time sc-time-red" id="t3l1">+0 min</div></div>
+          <div class="sc-app-bubble" id="ab3l2" style="top:8px;right:0"><div class="sc-ab-icon">🏦</div><div class="sc-ab-name">Nequi</div><div class="sc-ab-time sc-time-red" id="t3l2">+0 min</div></div>
+          <div class="sc-app-bubble" id="ab3l3" style="bottom:20px;left:10px"><div class="sc-ab-icon">🏦</div><div class="sc-ab-name">Bancolombia</div><div class="sc-ab-time sc-time-yellow" id="t3l3">+0 min</div></div>
+          <div class="sc-app-bubble" id="ab3l4" style="bottom:20px;right:10px"><div class="sc-ab-icon">📊</div><div class="sc-ab-name">Excel</div><div class="sc-ab-time sc-time-red" id="t3l4">+0 min</div></div>
+          <div class="sc-app-bubble" id="ab3l5" style="top:50%;left:-10px;transform:translateY(-50%)"><div class="sc-ab-icon">🧮</div><div class="sc-ab-name"><span data-lang="en">Calculator</span><span data-lang="es">Calculadora</span></div><div class="sc-ab-time sc-time-yellow" id="t3l5">+0 min</div></div>
+        </div>
         <div class="sc-time-counter"><div class="sc-tc-label"><span data-lang="en">Time wasted</span><span data-lang="es">Tiempo perdido</span></div><div class="sc-tc-num sc-num-red"><span id="tc3l">0</span></div><div class="sc-tc-unit"><span data-lang="en">minutes every single day</span><span data-lang="es">minutos al final de cada día</span></div></div>
         <div class="sc-result sc-result-red" id="rc3l">
           <div class="sc-rc-title sc-rct-red"><span data-lang="en">What happened</span><span data-lang="es">Lo que pasó</span></div>
