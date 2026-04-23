@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sin sistema vs Bot IA — Jarvis Agency</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Syne:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#020610;
+  --s1:#050d1a;
+  --s2:#0a1628;
+  --border:rgba(0,212,255,0.12);
+  --red:#ff3b3b;
+  --green:#00d4ff;
+  --blue:#0057ff;
+  --yellow:#ffd60a;
+  --text:#e8f4ff;
+  --muted:rgba(0,212,255,0.25);
+  --muted2:#6a8aaa;
+  --cyan:#00d4ff;
+}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:'Syne',sans-serif;overflow-x:hidden}
+body::after{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(0,212,255,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(0,212,255,0.03) 1px,transparent 1px);background-size:60px 60px;pointer-events:none;z-index:0}
+body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");pointer-events:none;z-index:1;opacity:0.4}
+
+.hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:60px 20px;position:relative;overflow:hidden;z-index:2}
+.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 70% 50% at 20% 50%,rgba(255,59,59,.05) 0%,transparent 60%),radial-gradient(ellipse 70% 50% at 80% 50%,rgba(0,212,255,.08) 0%,transparent 60%);pointer-events:none}
+.eyebrow{font-family:'Orbitron',monospace;font-size:0.65rem;letter-spacing:0.25em;text-transform:uppercase;color:var(--cyan);margin-bottom:24px;opacity:0;animation:up .6s .2s forwards;display:inline-flex;align-items:center;gap:8px}
+.eyebrow::before{content:'';width:6px;height:6px;background:var(--cyan);border-radius:50%;animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.8)}}
+.hero-h1{font-family:'Orbitron',monospace;font-size:clamp(48px,11vw,120px);line-height:.95;letter-spacing:0.02em;font-weight:900;opacity:0;animation:up .6s .4s forwards}
+.hero-h1 .r{color:var(--red)}
+.hero-h1 .g{color:var(--cyan)}
+.hero-p{margin-top:20px;font-size:1rem;color:var(--muted2);max-width:460px;line-height:1.65;font-weight:300;opacity:0;animation:up .6s .6s forwards}
+.hero-cta{margin-top:44px;opacity:0;animation:up .6s .8s forwards}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:16px 36px;background:var(--cyan);color:var(--bg);font-family:'Orbitron',monospace;font-size:0.8rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;border:none;cursor:pointer;transition:all .25s;text-decoration:none;border-radius:6px;box-shadow:0 0 30px rgba(0,212,255,.3)}
+.btn:hover{transform:translateY(-2px);box-shadow:0 0 50px rgba(0,212,255,.5)}
+
+.sc-nav{display:flex;justify-content:center;gap:0;border-bottom:1px solid var(--border);position:sticky;top:0;z-index:50;background:rgba(2,6,16,.9);backdrop-filter:blur(20px)}
+.sc-tab{padding:16px 28px;font-family:'Orbitron',monospace;font-size:0.6rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted2);cursor:pointer;border-bottom:2px solid transparent;transition:all .2s;background:none;border-top:none;border-left:none;border-right:none}
+.sc-tab:hover{color:var(--text)}
+.sc-tab.active{color:var(--cyan);border-bottom-color:var(--cyan)}
+
+.scenario{display:none;padding:60px 20px 80px;position:relative;z-index:2}
+.scenario.active{display:block}
+.trigger{text-align:center;margin-bottom:52px}
+.trigger-bubble{display:inline-flex;align-items:center;gap:10px;background:var(--s2);border:1px solid var(--border);border-radius:6px;padding:10px 22px;font-size:0.9rem}
+.trigger-emoji{font-size:22px}
+.trigger-text{color:var(--text);font-weight:600}
+.trigger-sub{font-size:0.78rem;color:var(--muted2);margin-top:8px}
+
+.split{display:grid;grid-template-columns:1fr 56px 1fr;gap:0;max-width:1100px;margin:0 auto;align-items:start}
+@media(max-width:760px){.split{grid-template-columns:1fr;gap:48px}.vs-col{display:none}}
+
+.vs-col{display:flex;flex-direction:column;align-items:center;padding-top:60px;gap:12px}
+.vs-line{width:1px;flex:1;background:linear-gradient(180deg,var(--cyan),var(--blue),var(--cyan));min-height:300px;opacity:.3}
+.vs-badge{background:var(--bg);border:1px solid rgba(0,212,255,.4);border-radius:50%;width:40px;height:40px;display:flex;align-items:center;justify-content:center;font-family:'Orbitron',monospace;font-size:0.55rem;font-weight:700;color:var(--cyan);box-shadow:0 0 15px rgba(0,212,255,.15)}
+
+.panel{padding:8px}
+.panel-label{font-family:'Orbitron',monospace;font-size:0.6rem;letter-spacing:0.2em;text-transform:uppercase;margin-bottom:32px;display:flex;align-items:center;gap:8px}
+.plbl-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+.panel.left .panel-label{color:var(--red)}
+.panel.left .plbl-dot{background:var(--red)}
+.panel.right .panel-label{color:var(--cyan)}
+.panel.right .plbl-dot{background:var(--cyan);animation:glow 1.5s infinite}
+
+.stage{position:relative;width:100%;height:340px;display:flex;align-items:center;justify-content:center}
+.person{position:relative;z-index:10;display:flex;flex-direction:column;align-items:center;gap:4px}
+.person-emoji{font-size:52px;line-height:1;transition:transform .3s}
+.person-label{font-size:0.6rem;color:var(--muted2);font-family:'Orbitron',monospace;letter-spacing:0.1em}
+
+.speech{position:absolute;top:-10px;background:var(--s2);border:1px solid var(--border);border-radius:8px;padding:8px 14px;font-size:0.78rem;color:var(--text);white-space:nowrap;opacity:0;transform:translateY(-8px) scale(.95);transition:all .4s cubic-bezier(.34,1.56,.64,1);z-index:20}
+.speech::after{content:'';position:absolute;bottom:-7px;left:50%;transform:translateX(-50%);border:7px solid transparent;border-top-color:var(--border);border-bottom:none}
+.speech.show{opacity:1;transform:translateY(0) scale(1)}
+
+.app-bubble{position:absolute;background:var(--s1);border:1px solid var(--border);border-radius:8px;padding:10px 12px;display:flex;flex-direction:column;align-items:center;gap:4px;min-width:80px;text-align:center;opacity:0;transform:scale(.3) translateY(20px);transition:all .5s cubic-bezier(.34,1.56,.64,1);z-index:8}
+.app-bubble.pop{opacity:1;transform:scale(1) translateY(0)}
+.app-bubble.stress{border-color:rgba(255,59,59,.5);animation:shake .4s ease}
+.ab-icon{font-size:24px}
+.ab-name{font-size:0.55rem;font-family:'Orbitron',monospace;letter-spacing:.05em;text-transform:uppercase;color:var(--muted2)}
+.ab-time{font-size:0.6rem;font-weight:700;padding:2px 6px;border-radius:4px;margin-top:2px}
+.time-red{background:rgba(255,59,59,.12);color:var(--red)}
+.time-yellow{background:rgba(255,214,10,.12);color:var(--yellow)}
+
+.bot-chat{position:absolute;right:0;top:50%;transform:translateY(-50%);width:210px;background:var(--s1);border:1px solid var(--border);border-radius:10px;overflow:hidden;opacity:0;transition:opacity .5s;z-index:12}
+.bot-chat.show{opacity:1}
+.bc-header{background:var(--s2);padding:10px 14px;display:flex;align-items:center;gap:8px;border-bottom:1px solid var(--border)}
+.bc-icon{font-size:20px}
+.bc-name{font-size:0.72rem;font-weight:700;color:var(--text);font-family:'Orbitron',monospace}
+.bc-status{font-size:0.6rem;color:#00ff88}
+.bc-body{padding:10px;display:flex;flex-direction:column;gap:6px;min-height:120px}
+.bc-msg{padding:7px 10px;border-radius:8px;font-size:0.68rem;line-height:1.4;opacity:0;transform:translateY(4px);transition:all .35s}
+.bc-msg.u{background:rgba(0,212,255,.12);align-self:flex-end;color:var(--text);border-bottom-right-radius:2px;border:1px solid rgba(0,212,255,.2)}
+.bc-msg.b{background:var(--s2);align-self:flex-start;color:var(--text);border-bottom-left-radius:2px;border:1px solid var(--border);border-left:2px solid var(--cyan)}
+.bc-msg.in{opacity:1;transform:translateY(0)}
+
+.time-counter{text-align:center;margin-top:20px}
+.tc-label{font-family:'Orbitron',monospace;font-size:0.55rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--muted2);margin-bottom:6px}
+.tc-num{font-family:'Orbitron',monospace;font-size:3rem;font-weight:900;line-height:1}
+.tc-unit{font-size:0.78rem;color:var(--muted2);margin-top:2px}
+.panel.left .tc-num{color:var(--red)}
+.panel.right .tc-num{color:var(--cyan)}
+
+.result-card{margin-top:20px;border-radius:8px;padding:16px;opacity:0;transition:opacity .5s}
+.result-card.show{opacity:1}
+.panel.left .result-card{background:rgba(255,59,59,.04);border:1px solid rgba(255,59,59,.12)}
+.panel.right .result-card{background:rgba(0,212,255,.04);border:1px solid rgba(0,212,255,.12)}
+.rc-title{font-family:'Orbitron',monospace;font-size:0.55rem;letter-spacing:0.15em;text-transform:uppercase;margin-bottom:10px}
+.panel.left .rc-title{color:var(--red)}
+.panel.right .rc-title{color:var(--cyan)}
+.rc-row{display:flex;align-items:center;gap:8px;font-size:0.78rem;padding:4px 0;border-bottom:1px solid rgba(255,255,255,.03)}
+.rc-row:last-child{border:none}
+.rc-icon{flex-shrink:0;font-size:0.78rem}
+.panel.left .rc-icon{color:var(--red)}
+.panel.right .rc-icon{color:var(--cyan)}
+
+.replay-wrap{text-align:center;margin-top:32px}
+.replay-btn{background:transparent;border:1px solid var(--border);color:var(--muted2);font-family:'Orbitron',monospace;font-size:0.6rem;letter-spacing:0.12em;text-transform:uppercase;padding:10px 22px;cursor:pointer;border-radius:6px;transition:all .25s}
+.replay-btn:hover{border-color:var(--cyan);color:var(--cyan);box-shadow:0 0 15px rgba(0,212,255,.15)}
+
+.final{padding:100px 20px;text-align:center;background:var(--s1);border-top:1px solid var(--border);position:relative;z-index:2}
+.final h2{font-family:'Orbitron',monospace;font-size:clamp(1.8rem,5vw,3.5rem);font-weight:900;letter-spacing:0.02em;margin-bottom:14px;line-height:1.1}
+.final h2 .g{color:var(--cyan)}
+.final p{color:var(--muted2);font-size:0.95rem;margin-bottom:40px;max-width:420px;margin-inline:auto;line-height:1.6}
+
+@keyframes up{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+@keyframes shake{0%,100%{transform:scale(1) rotate(0)}25%{transform:scale(1.02) rotate(-1.5deg)}75%{transform:scale(1.02) rotate(1.5deg)}}
+@keyframes glow{0%,100%{opacity:1;box-shadow:0 0 0 0 rgba(0,212,255,.4)}50%{opacity:.6;box-shadow:0 0 0 4px rgba(0,212,255,.0)}}
+@keyframes personStress{0%,100%{transform:scale(1)}50%{transform:scale(1.05) rotate(-2deg)}}
+#prog{position:fixed;top:0;left:0;height:2px;background:linear-gradient(90deg,var(--red),var(--cyan));z-index:200;transition:width .1s}
+@keyframes scanline{0%{top:-100%}100%{top:200%}}
+.scanline{position:fixed;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,rgba(0,212,255,.1),transparent);pointer-events:none;z-index:5;animation:scanline 8s linear infinite;opacity:.5}
+</style>
+</head>
+<body>
+<div id="prog"></div>
+<div class="scanline"></div>
+
+<section class="hero">
+  <div class="eyebrow">Jarvis Agency AI — Demo Visual</div>
+  <h1 class="hero-h1"><span class="r">Sin sistema.</span><br><span class="g">Con Bot IA.</span></h1>
+  <p class="hero-p">El mismo momento. Las dos realidades. Mira qué le pasa al dueño del negocio en cada una.</p>
+  <div class="hero-cta"><a href="#demo" class="btn">Ver demo</a></div>
+</section>
+
+<div id="demo">
+<div class="sc-nav">
+  <button class="sc-tab active" onclick="switchSc(1)">01 — Cliente compra</button>
+  <button class="sc-tab" onclick="switchSc(2)">02 — Llega mercancía</button>
+  <button class="sc-tab" onclick="switchSc(3)">03 — Cierre del día</button>
+</div>
+
+<div class="scenario active" id="sc1">
+  <div class="trigger"><div class="trigger-bubble"><span class="trigger-emoji">👤</span><span class="trigger-text">"Quiero comprar ese producto"</span></div><div class="trigger-sub">¿Qué pasa después en cada realidad?</div></div>
+  <div class="split">
+    <div class="panel left" id="p1l">
+      <div class="panel-label"><div class="plbl-dot"></div>Sin sistema</div>
+      <div class="stage" id="stage1l">
+        <div class="speech" id="sp1l">Espera, déjame revisar...</div>
+        <div class="person" id="person1l"><div class="person-emoji" id="pe1l">🧑‍💼</div><div class="person-label">Dueño del negocio</div></div>
+        <div class="app-bubble" id="ab1l1" style="top:10px;left:0"><div class="ab-icon">📊</div><div class="ab-name">Excel</div><div class="ab-time time-red" id="t1l1">+0 min</div></div>
+        <div class="app-bubble" id="ab1l2" style="top:10px;right:0"><div class="ab-icon">🌐</div><div class="ab-name">Web</div><div class="ab-time time-red" id="t1l2">+0 min</div></div>
+        <div class="app-bubble" id="ab1l3" style="bottom:20px;left:10px"><div class="ab-icon">📝</div><div class="ab-name">Notas</div><div class="ab-time time-yellow" id="t1l3">+0 min</div></div>
+        <div class="app-bubble" id="ab1l4" style="bottom:20px;right:10px"><div class="ab-icon">🏦</div><div class="ab-name">Banco</div><div class="ab-time time-red" id="t1l4">+0 min</div></div>
+        <div class="app-bubble" id="ab1l5" style="top:50%;left:-10px;transform:translateY(-50%)"><div class="ab-icon">📱</div><div class="ab-name">Chat</div><div class="ab-time time-yellow" id="t1l5">+0 min</div></div>
+      </div>
+      <div class="time-counter"><div class="tc-label">Tiempo perdido</div><div class="tc-num"><span id="tc1l">0</span></div><div class="tc-unit">minutos haciendo esto a mano</div></div>
+      <div class="result-card" id="rc1l"><div class="rc-title">Lo que pasó</div><div class="rc-row"><span class="rc-icon">✗</span><span>Inventario actualizado <em style="color:var(--muted2)">si te acordaste</em></span></div><div class="rc-row"><span class="rc-icon">✗</span><span>Venta anotada en cuaderno</span></div><div class="rc-row"><span class="rc-icon">✗</span><span>Web desactualizada</span></div><div class="rc-row"><span class="rc-icon">✗</span><span>Pago cruzado a mano al final</span></div></div>
+    </div>
+    <div class="vs-col"><div class="vs-line"></div><div class="vs-badge">VS</div><div class="vs-line"></div></div>
+    <div class="panel right" id="p1r">
+      <div class="panel-label"><div class="plbl-dot"></div>Con Bot IA</div>
+      <div class="stage" id="stage1r">
+        <div class="speech" id="sp1r" style="white-space:normal;text-align:center;max-width:180px">"venta Producto A<br>$150.000 Nequi" ✓</div>
+        <div class="person" id="person1r"><div class="person-emoji" id="pe1r">🧑‍💼</div><div class="person-label">Dueño del negocio</div></div>
+        <div class="bot-chat" id="bc1"><div class="bc-header"><div class="bc-icon">🤖</div><div><div class="bc-name">Bot IA</div><div class="bc-status">● activo</div></div></div><div class="bc-body" id="bcb1"></div></div>
+      </div>
+      <div class="time-counter"><div class="tc-label">Tiempo usado</div><div class="tc-num"><span id="tc1r">0</span></div><div class="tc-unit">segundos. Eso fue todo.</div></div>
+      <div class="result-card" id="rc1r"><div class="rc-title">Lo que pasó automáticamente</div><div class="rc-row"><span class="rc-icon">✓</span><span>Inventario actualizado</span></div><div class="rc-row"><span class="rc-icon">✓</span><span>Venta registrada con detalle</span></div><div class="rc-row"><span class="rc-icon">✓</span><span>Web sincronizada al instante</span></div><div class="rc-row"><span class="rc-icon">✓</span><span>Reporte del día actualizado</span></div></div>
+    </div>
+  </div>
+  <div class="replay-wrap"><button class="replay-btn" onclick="replayAll(1)">↺ Repetir</button></div>
+</div>
+
+<div class="scenario" id="sc2">
+  <div class="trigger"><div class="trigger-bubble"><span class="trigger-emoji">📦</span><span class="trigger-text">Llega mercancía nueva del proveedor</span></div><div class="trigger-sub">¿Qué hace el dueño del negocio en cada realidad?</div></div>
+  <div class="split">
+    <div class="panel left" id="p2l">
+      <div class="panel-label"><div class="plbl-dot"></div>Sin sistema</div>
+      <div class="stage" id="stage2l">
+        <div class="speech" id="sp2l">Toca actualizar todo...</div>
+        <div class="person" id="person2l"><div class="person-emoji" id="pe2l">🧑‍💼</div><div class="person-label">Dueño del negocio</div></div>
+        <div class="app-bubble" id="ab2l1" style="top:8px;left:0"><div class="ab-icon">📊</div><div class="ab-name">Excel</div><div class="ab-time time-red" id="t2l1">+0 min</div></div>
+        <div class="app-bubble" id="ab2l2" style="top:8px;right:0"><div class="ab-icon">🌐</div><div class="ab-name">Web CMS</div><div class="ab-time time-red" id="t2l2">+0 min</div></div>
+        <div class="app-bubble" id="ab2l3" style="bottom:20px;left:10px"><div class="ab-icon">📝</div><div class="ab-name">Notas</div><div class="ab-time time-yellow" id="t2l3">+0 min</div></div>
+        <div class="app-bubble" id="ab2l4" style="bottom:20px;right:10px"><div class="ab-icon">📦</div><div class="ab-name">Proveedor</div><div class="ab-time time-red" id="t2l4">+0 min</div></div>
+      </div>
+      <div class="time-counter"><div class="tc-label">Tiempo perdido</div><div class="tc-num"><span id="tc2l">0</span></div><div class="tc-unit">minutos de trabajo manual</div></div>
+      <div class="result-card" id="rc2l"><div class="rc-title">Lo que pasó</div><div class="rc-row"><span class="rc-icon">✗</span><span>Excel actualizado a mano</span></div><div class="rc-row"><span class="rc-icon">✗</span><span>Web <em style="color:var(--muted2)">probablemente</em> sin actualizar</span></div><div class="rc-row"><span class="rc-icon">✗</span><span>Deuda anotada en papel</span></div><div class="rc-row"><span class="rc-icon">✗</span><span>Sin recordatorio de pago</span></div></div>
+    </div>
+    <div class="vs-col"><div class="vs-line"></div><div class="vs-badge">VS</div><div class="vs-line"></div></div>
+    <div class="panel right" id="p2r">
+      <div class="panel-label"><div class="plbl-dot"></div>Con Bot IA</div>
+      <div class="stage" id="stage2r">
+        <div class="speech" id="sp2r" style="white-space:normal;text-align:center;max-width:180px">📸 Foto + "20 unidades<br>$45.000" ✓</div>
+        <div class="person" id="person2r"><div class="person-emoji" id="pe2r">🧑‍💼</div><div class="person-label">Dueño del negocio</div></div>
+        <div class="bot-chat" id="bc2"><div class="bc-header"><div class="bc-icon">🤖</div><div><div class="bc-name">Bot IA</div><div class="bc-status">● activo</div></div></div><div class="bc-body" id="bcb2"></div></div>
+      </div>
+      <div class="time-counter"><div class="tc-label">Tiempo usado</div><div class="tc-num"><span id="tc2r">0</span></div><div class="tc-unit">segundos por producto</div></div>
+      <div class="result-card" id="rc2r"><div class="rc-title">Lo que pasó automáticamente</div><div class="rc-row"><span class="rc-icon">✓</span><span>Inventario cargado con fotos</span></div><div class="rc-row"><span class="rc-icon">✓</span><span>Web publicada automáticamente</span></div><div class="rc-row"><span class="rc-icon">✓</span><span>Deuda del proveedor registrada</span></div><div class="rc-row"><span class="rc-icon">✓</span><span>Alerta de pago programada</span></div></div>
+    </div>
+  </div>
+  <div class="replay-wrap"><button class="replay-btn" onclick="replayAll(2)">↺ Repetir</button></div>
+</div>
+
+<div class="scenario" id="sc3">
+  <div class="trigger"><div class="trigger-bubble"><span class="trigger-emoji">🌙</span><span class="trigger-text">Fin del día — ¿Cuánto vendí hoy?</span></div><div class="trigger-sub">Son las 7 PM. El dueño quiere saber cómo le fue.</div></div>
+  <div class="split">
+    <div class="panel left" id="p3l">
+      <div class="panel-label"><div class="plbl-dot"></div>Sin sistema</div>
+      <div class="stage" id="stage3l">
+        <div class="speech" id="sp3l">A sumar todo esto...</div>
+        <div class="person" id="person3l"><div class="person-emoji" id="pe3l">🧑‍💼</div><div class="person-label">Dueño del negocio</div></div>
+        <div class="app-bubble" id="ab3l1" style="top:8px;left:0"><div class="ab-icon">📝</div><div class="ab-name">Cuaderno</div><div class="ab-time time-red" id="t3l1">+0 min</div></div>
+        <div class="app-bubble" id="ab3l2" style="top:8px;right:0"><div class="ab-icon">🏦</div><div class="ab-name">Nequi</div><div class="ab-time time-red" id="t3l2">+0 min</div></div>
+        <div class="app-bubble" id="ab3l3" style="bottom:20px;left:10px"><div class="ab-icon">🏦</div><div class="ab-name">Bancolombia</div><div class="ab-time time-yellow" id="t3l3">+0 min</div></div>
+        <div class="app-bubble" id="ab3l4" style="bottom:20px;right:10px"><div class="ab-icon">📊</div><div class="ab-name">Excel</div><div class="ab-time time-red" id="t3l4">+0 min</div></div>
+        <div class="app-bubble" id="ab3l5" style="top:50%;left:-10px;transform:translateY(-50%)"><div class="ab-icon">🧮</div><div class="ab-name">Calculadora</div><div class="ab-time time-yellow" id="t3l5">+0 min</div></div>
+      </div>
+      <div class="time-counter"><div class="tc-label">Tiempo perdido</div><div class="tc-num"><span id="tc3l">0</span></div><div class="tc-unit">minutos al final de cada día</div></div>
+      <div class="result-card" id="rc3l"><div class="rc-title">Lo que pasó</div><div class="rc-row"><span class="rc-icon">✗</span><span>Número aproximado, nunca exacto</span></div><div class="rc-row"><span class="rc-icon">✗</span><span>30-45 min de trabajo nocturno</span></div><div class="rc-row"><span class="rc-icon">✗</span><span>Sin info de pendientes ni señas</span></div><div class="rc-row"><span class="rc-icon">✗</span><span>Se repite esto cada día del año</span></div></div>
+    </div>
+    <div class="vs-col"><div class="vs-line"></div><div class="vs-badge">VS</div><div class="vs-line"></div></div>
+    <div class="panel right" id="p3r">
+      <div class="panel-label"><div class="plbl-dot"></div>Con Bot IA</div>
+      <div class="stage" id="stage3r">
+        <div class="speech" id="sp3r" style="white-space:normal;text-align:center;max-width:180px">"reporte del día" ✓</div>
+        <div class="person" id="person3r"><div class="person-emoji" id="pe3r">🧑‍💼</div><div class="person-label">Dueño del negocio</div></div>
+        <div class="bot-chat" id="bc3"><div class="bc-header"><div class="bc-icon">🤖</div><div><div class="bc-name">Bot IA</div><div class="bc-status">● activo</div></div></div><div class="bc-body" id="bcb3"></div></div>
+      </div>
+      <div class="time-counter"><div class="tc-label">Tiempo usado</div><div class="tc-num"><span id="tc3r">0</span></div><div class="tc-unit">segundos. Exacto al 100%.</div></div>
+      <div class="result-card" id="rc3r"><div class="rc-title">Lo que pasó automáticamente</div><div class="rc-row"><span class="rc-icon">✓</span><span>Total ventas: exacto</span></div><div class="rc-row"><span class="rc-icon">✓</span><span>Señas activas y pendientes</span></div><div class="rc-row"><span class="rc-icon">✓</span><span>Productos por reponer</span></div><div class="rc-row"><span class="rc-icon">✓</span><span>Reporte enviado a Telegram</span></div></div>
+    </div>
+  </div>
+  <div class="replay-wrap"><button class="replay-btn" onclick="replayAll(3)">↺ Repetir</button></div>
+</div>
+</div>
+
+<section class="final">
+  <h2>Un bot.<br>Todo <span class="g">resuelto.</span></h2>
+  <p>Sin cambiar cómo trabajas. Sin aprender nada nuevo. Solo escribirle al bot.</p>
+  <a href="https://wa.me/57TUNUMERO?text=Vi%20el%20demo%20y%20quiero%20saber%20m%C3%A1s" class="btn" target="_blank">Quiero esto para mi negocio</a>
+</section>
+
+<script>
+const d=ms=>new Promise(r=>setTimeout(r,ms));
+const el=id=>document.getElementById(id);
+window.addEventListener('scroll',()=>{const pct=(window.scrollY/(document.body.scrollHeight-window.innerHeight))*100;el('prog').style.width=pct+'%'});
+function switchSc(n){document.querySelectorAll('.scenario').forEach(s=>s.classList.remove('active'));document.querySelectorAll('.sc-tab').forEach(t=>t.classList.remove('active'));el('sc'+n).classList.add('active');document.querySelectorAll('.sc-tab')[n-1].classList.add('active');setTimeout(()=>runScenario(n),300)}
+function animNum(id,to,dur,suffix=''){const e=el(id);if(!e)return;const s=performance.now();const from=parseInt(e.textContent)||0;function f(now){const p=Math.min((now-s)/dur,1);const ease=1-Math.pow(1-p,3);e.textContent=Math.round(from+(to-from)*ease)+suffix;if(p<1)requestAnimationFrame(f)}requestAnimationFrame(f)}
+const scenarios={1:{leftBubbles:[{id:'ab1l1',timeId:'t1l1',delay:0,mins:5},{id:'ab1l2',timeId:'t1l2',delay:600,mins:8},{id:'ab1l3',timeId:'t1l3',delay:1200,mins:3},{id:'ab1l4',timeId:'t1l4',delay:1800,mins:7},{id:'ab1l5',timeId:'t1l5',delay:2400,mins:4}],leftTotal:18,rightMsgs:[{cls:'u',text:'venta Producto A $150.000 Nequi',delay:400},{cls:'b',text:'✓ Venta registrada\n✓ Stock -1\n✓ Web sincronizada\n✓ Reporte actualizado',delay:900}],rightTotal:3,personStress:'pe1l',speechIdL:'sp1l',speechIdR:'sp1r',tcL:'tc1l',tcR:'tc1r',rcL:'rc1l',rcR:'rc1r',bcBody:'bcb1',bcId:'bc1'},2:{leftBubbles:[{id:'ab2l1',timeId:'t2l1',delay:0,mins:20},{id:'ab2l2',timeId:'t2l2',delay:700,mins:25},{id:'ab2l3',timeId:'t2l3',delay:1400,mins:5},{id:'ab2l4',timeId:'t2l4',delay:2100,mins:10}],leftTotal:60,rightMsgs:[{cls:'u',text:'📸 Foto + "20 unidades $45.000"',delay:400},{cls:'b',text:'✓ Inventario cargado\n✓ Web publicada\n✓ Deuda registrada\n✓ Alerta programada',delay:900}],rightTotal:10,personStress:'pe2l',speechIdL:'sp2l',speechIdR:'sp2r',tcL:'tc2l',tcR:'tc2r',rcL:'rc2l',rcR:'rc2r',bcBody:'bcb2',bcId:'bc2'},3:{leftBubbles:[{id:'ab3l1',timeId:'t3l1',delay:0,mins:10},{id:'ab3l2',timeId:'t3l2',delay:600,mins:15},{id:'ab3l3',timeId:'t3l3',delay:1200,mins:8},{id:'ab3l4',timeId:'t3l4',delay:1800,mins:12},{id:'ab3l5',timeId:'t3l5',delay:2400,mins:5}],leftTotal:45,rightMsgs:[{cls:'u',text:'reporte del día',delay:400},{cls:'b',text:'📊 Ventas: 9 · $1.840.000\n📦 Stock bajo: Producto B\n💰 Señas: $280.000\n✓ Reporte completo',delay:900}],rightTotal:2,personStress:'pe3l',speechIdL:'sp3l',speechIdR:'sp3r',tcL:'tc3l',tcR:'tc3r',rcL:'rc3l',rcR:'rc3r',bcBody:'bcb3',bcId:'bc3'}};
+const ran={};
+async function runScenario(n){if(ran[n])return;ran[n]=true;const sc=scenarios[n];await d(300);el(sc.speechIdL).classList.add('show');for(const b of sc.leftBubbles){setTimeout(()=>{const bubble=el(b.id);if(bubble){bubble.classList.add('pop');setTimeout(()=>bubble.classList.add('stress'),300);animNum(b.timeId,b.mins,600,' min')}const pe=el(sc.personStress);if(pe){pe.style.animation='personStress .4s ease';setTimeout(()=>pe.style.animation='',400)}},b.delay)}setTimeout(()=>animNum(sc.tcL,sc.leftTotal,1800),800);setTimeout(()=>{const rc=el(sc.rcL);if(rc)rc.classList.add('show')},3400);await d(600);el(sc.speechIdR).classList.add('show');const bc=el(sc.bcId);if(bc){bc.classList.add('show');const body=el(sc.bcBody);for(const msg of sc.rightMsgs){await d(msg.delay);const div=document.createElement('div');div.className='bc-msg '+msg.cls;div.innerHTML=msg.text.replace(/\n/g,'<br>');body.appendChild(div);await d(20);div.classList.add('in')}}setTimeout(()=>animNum(sc.tcR,sc.rightTotal,600),1400);setTimeout(()=>{const rc=el(sc.rcR);if(rc)rc.classList.add('show')},2000)}
+function replayAll(n){ran[n]=false;const sc=scenarios[n];sc.leftBubbles.forEach(b=>{const bubble=el(b.id);if(bubble){bubble.classList.remove('pop','stress');el(b.timeId).textContent='+0 min'}});el(sc.speechIdL).classList.remove('show');el(sc.speechIdR).classList.remove('show');el(sc.tcL).textContent='0';el(sc.tcR).textContent='0';el(sc.rcL).classList.remove('show');el(sc.rcR).classList.remove('show');const body=el(sc.bcBody);if(body)body.innerHTML='';const bc=el(sc.bcId);if(bc)bc.classList.remove('show');setTimeout(()=>runScenario(n),400)}
+setTimeout(()=>runScenario(1),800);
+</script>
+</body>
+</html>
