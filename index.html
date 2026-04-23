@@ -373,68 +373,162 @@ body.lang-es span[data-lang="es"] { display: inline; }
 @keyframes scanline { 0% { top: -100%; } 100% { top: 200%; } }
 
 /* IMPACT / SCENARIO SECTION */
-.impact-section { background: var(--surface); }
-.sc-nav{display:flex;justify-content:center;gap:0;border-bottom:1px solid var(--border);background:rgba(5,13,26,.95);backdrop-filter:blur(10px)}
-.sc-tab{padding:14px 24px;font-family:'Orbitron',monospace;font-size:0.6rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;transition:all .2s;background:none;border-top:none;border-left:none;border-right:none}
-.sc-tab:hover{color:var(--text)}
-.sc-tab.active{color:var(--cyan);border-bottom-color:var(--cyan)}
-.scenario{display:none;padding:48px 20px 60px}
-.scenario.active{display:block}
-.sc-trigger{text-align:center;margin-bottom:44px}
-.sc-trigger-bubble{display:inline-flex;align-items:center;gap:10px;background:rgba(0,212,255,.04);border:1px solid var(--border);border-radius:6px;padding:10px 20px;font-size:0.88rem}
-.sc-trigger-sub{font-size:0.78rem;color:var(--muted);margin-top:8px}
-.sc-split{display:grid;grid-template-columns:1fr 56px 1fr;gap:0;max-width:1100px;margin:0 auto;align-items:start}
-@media(max-width:900px){.sc-split{grid-template-columns:1fr;gap:40px}.sc-vs-col{display:none}.sc-nav{flex-wrap:wrap}}
-.sc-vs-col{display:flex;flex-direction:column;align-items:center;padding-top:60px;gap:12px}
-.sc-vs-line{width:1px;flex:1;background:linear-gradient(180deg,var(--cyan),var(--blue),var(--cyan));min-height:280px;opacity:.25}
-.sc-vs-badge{background:var(--bg);border:1px solid rgba(0,212,255,.35);border-radius:50%;width:38px;height:38px;display:flex;align-items:center;justify-content:center;font-family:'Orbitron',monospace;font-size:0.55rem;font-weight:700;color:var(--cyan);box-shadow:0 0 12px rgba(0,212,255,.12)}
-.sc-panel{padding:8px}
-.sc-panel-label{font-family:'Orbitron',monospace;font-size:0.6rem;letter-spacing:0.18em;text-transform:uppercase;margin-bottom:28px;display:flex;align-items:center;gap:8px}
-.sc-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
-.sc-label-red{color:var(--red)}.sc-dot-red{background:var(--red)}
-.sc-label-cyan{color:var(--cyan)}.sc-dot-cyan{background:var(--cyan);animation:pulse 2s infinite}
-.sc-stage{position:relative;width:100%;height:320px;display:flex;align-items:center;justify-content:center}
-.sc-person{position:relative;z-index:10;display:flex;flex-direction:column;align-items:center;gap:4px}
-.sc-person-emoji{font-size:48px;line-height:1;transition:transform .3s}
-.sc-person-label{font-size:0.58rem;color:var(--muted);font-family:'Orbitron',monospace;letter-spacing:0.08em}
-.sc-speech{position:absolute;top:-10px;background:rgba(5,13,26,.9);border:1px solid var(--border);border-radius:8px;padding:8px 14px;font-size:0.76rem;color:var(--text);white-space:nowrap;opacity:0;transform:translateY(-8px) scale(.95);transition:all .4s cubic-bezier(.34,1.56,.64,1);z-index:20}
+.impact-section { background: var(--surface); position: relative; overflow: hidden; }
+.impact-section::before {
+  content: ''; position: absolute; inset: 0; pointer-events: none;
+  background:
+    radial-gradient(ellipse 60% 40% at 15% 30%, rgba(255,59,59,.06) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 40% at 85% 30%, rgba(0,212,255,.06) 0%, transparent 60%);
+}
+.impact-header {
+  text-align: center; max-width: 750px; margin: 0 auto 56px;
+  position: relative; z-index: 1;
+}
+.impact-header .section-title {
+  max-width: 100%;
+  font-size: clamp(2rem, 4vw, 3.2rem);
+}
+.impact-sub {
+  color: var(--muted); font-size: 0.95rem; margin-top: 18px;
+  line-height: 1.65; max-width: 520px; margin-left: auto; margin-right: auto;
+}
+.impact-vs-badge {
+  display: inline-flex; align-items: center; gap: 16px;
+  margin-top: 32px; padding: 10px 24px;
+  background: rgba(0,212,255,.04); border: 1px solid var(--border);
+  border-radius: 100px;
+}
+.impact-vs-side {
+  font-family: 'Orbitron', monospace; font-size: 0.65rem;
+  letter-spacing: 0.12em; text-transform: uppercase;
+}
+.impact-vs-side.red { color: #ff3b3b; }
+.impact-vs-side.cyan { color: var(--cyan); }
+.impact-vs-divider {
+  width: 1px; height: 20px;
+  background: linear-gradient(180deg, transparent, var(--border), transparent);
+}
+.sc-nav {
+  display: flex; justify-content: center; gap: 4px;
+  padding: 6px; margin: 0 auto; max-width: 600px;
+  background: rgba(0,212,255,.03); border: 1px solid var(--border);
+  border-radius: 10px; position: relative; z-index: 1;
+}
+.sc-tab {
+  padding: 12px 22px; font-family: 'Orbitron', monospace;
+  font-size: 0.58rem; letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--muted); cursor: pointer;
+  border: 1px solid transparent; border-radius: 7px;
+  transition: all .25s; background: none;
+}
+.sc-tab:hover { color: var(--text); background: rgba(0,212,255,.04); }
+.sc-tab.active {
+  color: var(--cyan); background: rgba(0,212,255,.08);
+  border-color: rgba(0,212,255,.25);
+  box-shadow: 0 0 16px rgba(0,212,255,.08);
+}
+.scenario{display:none;padding:56px 20px 60px;position:relative;z-index:1}
+.scenario.active{display:block;animation:fadeUp .5s ease}
+.sc-trigger{text-align:center;margin-bottom:48px}
+.sc-trigger-bubble{display:inline-flex;align-items:center;gap:12px;background:rgba(0,212,255,.03);border:1px solid var(--border);border-radius:100px;padding:12px 24px;font-size:0.88rem;font-weight:600}
+.sc-trigger-sub{font-size:0.78rem;color:var(--muted);margin-top:10px}
+.sc-split{display:grid;grid-template-columns:1fr 64px 1fr;gap:0;max-width:1100px;margin:0 auto;align-items:start}
+@media(max-width:900px){.sc-split{grid-template-columns:1fr;gap:40px}.sc-vs-col{display:none}.sc-nav{flex-direction:column;gap:4px;max-width:320px}}
+.sc-vs-col{display:flex;flex-direction:column;align-items:center;padding-top:50px;gap:0}
+.sc-vs-line{width:1px;flex:1;min-height:200px}
+.sc-vs-line-top{background:linear-gradient(180deg,transparent,rgba(255,59,59,.3),rgba(255,59,59,.15))}
+.sc-vs-line-bot{background:linear-gradient(180deg,rgba(0,212,255,.15),rgba(0,212,255,.3),transparent)}
+.sc-vs-badge{
+  background:var(--bg);border:2px solid rgba(0,212,255,.3);
+  border-radius:50%;width:44px;height:44px;
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Orbitron',monospace;font-size:0.6rem;font-weight:900;
+  color:var(--cyan);box-shadow:0 0 20px rgba(0,212,255,.12);
+  margin:8px 0;
+}
+.sc-panel{padding:12px}
+.sc-panel-label{font-family:'Orbitron',monospace;font-size:0.62rem;letter-spacing:0.2em;text-transform:uppercase;margin-bottom:24px;display:flex;align-items:center;gap:8px}
+.sc-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.sc-label-red{color:#ff3b3b}.sc-dot-red{background:#ff3b3b;box-shadow:0 0 8px rgba(255,59,59,.4)}
+.sc-label-cyan{color:var(--cyan)}.sc-dot-cyan{background:var(--cyan);animation:pulse 2s infinite;box-shadow:0 0 8px rgba(0,212,255,.4)}
+.sc-stage{position:relative;width:100%;height:340px;display:flex;align-items:center;justify-content:center}
+.sc-person{position:relative;z-index:10;display:flex;flex-direction:column;align-items:center;gap:6px}
+.sc-person-emoji{
+  width:72px;height:72px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:32px;line-height:1;transition:transform .3s;
+}
+.sc-left .sc-person-emoji{
+  background:rgba(255,59,59,.08);border:2px solid rgba(255,59,59,.25);
+  box-shadow:0 0 24px rgba(255,59,59,.1);
+}
+.sc-right .sc-person-emoji{
+  background:rgba(0,212,255,.08);border:2px solid rgba(0,212,255,.25);
+  box-shadow:0 0 24px rgba(0,212,255,.1);
+}
+.sc-person-label{font-size:0.58rem;color:var(--muted);font-family:'Orbitron',monospace;letter-spacing:0.08em;margin-top:2px}
+.sc-speech{position:absolute;top:-6px;background:rgba(2,6,16,.92);border:1px solid var(--border);border-radius:10px;padding:9px 16px;font-size:0.76rem;color:var(--text);white-space:nowrap;opacity:0;transform:translateY(-8px) scale(.95);transition:all .4s cubic-bezier(.34,1.56,.64,1);z-index:20;backdrop-filter:blur(8px)}
 .sc-speech::after{content:'';position:absolute;bottom:-7px;left:50%;transform:translateX(-50%);border:7px solid transparent;border-top-color:var(--border);border-bottom:none}
 .sc-speech.show{opacity:1;transform:translateY(0) scale(1)}
-.sc-app-bubble{position:absolute;background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:9px 11px;display:flex;flex-direction:column;align-items:center;gap:3px;min-width:76px;text-align:center;opacity:0;transform:scale(.3) translateY(20px);transition:all .5s cubic-bezier(.34,1.56,.64,1);z-index:8}
+.sc-app-bubble{
+  position:absolute;
+  background:rgba(2,6,16,.85);border:1px solid rgba(255,255,255,.06);
+  border-radius:10px;padding:10px 12px;
+  display:flex;flex-direction:column;align-items:center;gap:4px;
+  min-width:78px;text-align:center;
+  opacity:0;transform:scale(.3) translateY(20px);
+  transition:all .5s cubic-bezier(.34,1.56,.64,1);z-index:8;
+  backdrop-filter:blur(6px);
+}
 .sc-app-bubble.pop{opacity:1;transform:scale(1) translateY(0)}
-.sc-app-bubble.stress{border-color:rgba(255,59,59,.5);animation:shake .4s ease}
-.sc-ab-icon{font-size:22px}.sc-ab-name{font-size:0.5rem;font-family:'Orbitron',monospace;letter-spacing:.04em;text-transform:uppercase;color:var(--muted)}
-.sc-ab-time{font-size:0.58rem;font-weight:700;padding:2px 5px;border-radius:3px;margin-top:1px}
-.sc-time-red{background:rgba(255,59,59,.1);color:#ff3b3b}
+.sc-app-bubble.stress{
+  border-color:rgba(255,59,59,.6);
+  background:rgba(255,59,59,.06);
+  animation:shake .4s ease;
+  box-shadow:0 0 16px rgba(255,59,59,.12);
+}
+.sc-ab-icon{font-size:24px;filter:grayscale(.2)}
+.sc-app-bubble.stress .sc-ab-icon{filter:none}
+.sc-ab-name{font-size:0.5rem;font-family:'Orbitron',monospace;letter-spacing:.04em;text-transform:uppercase;color:var(--muted)}
+.sc-ab-time{font-size:0.6rem;font-weight:700;padding:3px 7px;border-radius:4px;margin-top:1px}
+.sc-time-red{background:rgba(255,59,59,.12);color:#ff3b3b}
 .sc-time-yellow{background:rgba(255,214,10,.1);color:#ffd60a}
-.sc-bot-chat{position:absolute;right:0;top:50%;transform:translateY(-50%);width:200px;background:var(--bg);border:1px solid var(--border);border-radius:10px;overflow:hidden;opacity:0;transition:opacity .5s;z-index:12}
+.sc-bot-chat{
+  position:absolute;right:0;top:50%;transform:translateY(-50%);
+  width:205px;background:rgba(2,6,16,.9);
+  border:1px solid rgba(0,212,255,.15);
+  border-radius:12px;overflow:hidden;
+  opacity:0;transition:opacity .5s;z-index:12;
+  backdrop-filter:blur(8px);
+  box-shadow:0 4px 24px rgba(0,0,0,.3);
+}
 .sc-bot-chat.show{opacity:1}
-.sc-bc-header{background:rgba(0,212,255,.04);padding:9px 12px;display:flex;align-items:center;gap:8px;border-bottom:1px solid var(--border)}
+.sc-bc-header{background:rgba(0,212,255,.04);padding:10px 13px;display:flex;align-items:center;gap:8px;border-bottom:1px solid rgba(0,212,255,.1)}
 .sc-bc-name{font-size:0.68rem;font-weight:700;color:var(--text);font-family:'Orbitron',monospace}
 .sc-bc-status{font-size:0.55rem;color:#00ff88}
 .sc-bc-body{padding:9px;display:flex;flex-direction:column;gap:5px;min-height:110px}
-.sc-bc-msg{padding:6px 9px;border-radius:7px;font-size:0.65rem;line-height:1.4;opacity:0;transform:translateY(4px);transition:all .35s}
-.sc-bc-msg.u{background:rgba(0,212,255,.1);align-self:flex-end;color:var(--text);border:1px solid rgba(0,212,255,.2);border-bottom-right-radius:2px}
-.sc-bc-msg.b{background:rgba(0,212,255,.03);align-self:flex-start;color:var(--text);border:1px solid var(--border);border-left:2px solid var(--cyan);border-bottom-left-radius:2px}
+.sc-bc-msg{padding:7px 10px;border-radius:8px;font-size:0.65rem;line-height:1.45;opacity:0;transform:translateY(4px);transition:all .35s}
+.sc-bc-msg.u{background:rgba(0,212,255,.08);align-self:flex-end;color:var(--text);border:1px solid rgba(0,212,255,.15);border-bottom-right-radius:2px}
+.sc-bc-msg.b{background:rgba(0,212,255,.03);align-self:flex-start;color:var(--text);border:1px solid rgba(0,212,255,.08);border-left:2px solid var(--cyan);border-bottom-left-radius:2px}
 .sc-bc-msg.in{opacity:1;transform:translateY(0)}
-.sc-time-counter{text-align:center;margin-top:18px}
+.sc-time-counter{text-align:center;margin-top:24px;padding:16px;background:rgba(0,0,0,.2);border-radius:10px}
 .sc-tc-label{font-family:'Orbitron',monospace;font-size:0.52rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--muted);margin-bottom:5px}
-.sc-tc-num{font-family:'Orbitron',monospace;font-size:2.8rem;font-weight:900;line-height:1}
-.sc-num-red{color:#ff3b3b}.sc-num-cyan{color:var(--cyan)}
-.sc-tc-unit{font-size:0.75rem;color:var(--muted);margin-top:2px}
-.sc-result{margin-top:18px;border-radius:8px;padding:14px;opacity:0;transition:opacity .5s}
+.sc-tc-num{font-family:'Orbitron',monospace;font-size:3.2rem;font-weight:900;line-height:1}
+.sc-num-red{color:#ff3b3b;text-shadow:0 0 30px rgba(255,59,59,.2)}.sc-num-cyan{color:var(--cyan);text-shadow:0 0 30px rgba(0,212,255,.2)}
+.sc-tc-unit{font-size:0.75rem;color:var(--muted);margin-top:4px}
+.sc-result{margin-top:18px;border-radius:10px;padding:16px;opacity:0;transition:opacity .5s}
 .sc-result.show{opacity:1}
-.sc-result-red{background:rgba(255,59,59,.03);border:1px solid rgba(255,59,59,.1)}
-.sc-result-cyan{background:rgba(0,212,255,.03);border:1px solid rgba(0,212,255,.1)}
+.sc-result-red{background:rgba(255,59,59,.03);border:1px solid rgba(255,59,59,.12)}
+.sc-result-cyan{background:rgba(0,212,255,.03);border:1px solid rgba(0,212,255,.12)}
 .sc-rc-title{font-family:'Orbitron',monospace;font-size:0.52rem;letter-spacing:0.14em;text-transform:uppercase;margin-bottom:9px}
 .sc-rct-red{color:#ff3b3b}.sc-rct-cyan{color:var(--cyan)}
 .sc-rc-row{display:flex;align-items:center;gap:7px;font-size:0.76rem;padding:3px 0;border-bottom:1px solid rgba(255,255,255,.025)}
 .sc-rc-row:last-child{border:none}
 .sc-rc-icon{flex-shrink:0;font-size:0.76rem}
 .sc-rci-red{color:#ff3b3b}.sc-rci-cyan{color:var(--cyan)}
-.sc-replay{text-align:center;margin-top:28px}
-.sc-replay-btn{background:transparent;border:1px solid var(--border);color:var(--muted);font-family:'Orbitron',monospace;font-size:0.6rem;letter-spacing:0.1em;text-transform:uppercase;padding:9px 20px;cursor:pointer;border-radius:6px;transition:all .25s}
-.sc-replay-btn:hover{border-color:var(--cyan);color:var(--cyan);box-shadow:0 0 12px rgba(0,212,255,.12)}
+.sc-replay{text-align:center;margin-top:36px}
+.sc-replay-btn{background:rgba(0,212,255,.04);border:1px solid var(--border);color:var(--muted);font-family:'Orbitron',monospace;font-size:0.6rem;letter-spacing:0.1em;text-transform:uppercase;padding:11px 24px;cursor:pointer;border-radius:100px;transition:all .25s}
+.sc-replay-btn:hover{border-color:var(--cyan);color:var(--cyan);box-shadow:0 0 20px rgba(0,212,255,.12);background:rgba(0,212,255,.06)}
 @keyframes shake{0%,100%{transform:scale(1) rotate(0)}25%{transform:scale(1.02) rotate(-1.5deg)}75%{transform:scale(1.02) rotate(1.5deg)}}
 @keyframes scPersonStress{0%,100%{transform:scale(1)}50%{transform:scale(1.05) rotate(-2deg)}}
 .scanline {
@@ -528,14 +622,14 @@ body.lang-es span[data-lang="es"] { display: inline; }
 
 <!-- IMPACT — See The Difference -->
 <section id="impact" class="impact-section">
-  <div style="text-align:center;max-width:700px;margin:0 auto 48px;">
+  <div class="impact-header">
     <div class="section-label" data-lang="en">See The Difference</div>
     <div class="section-label" data-lang="es">Mira La Diferencia</div>
-    <h2 class="section-title" style="max-width:100%">
+    <h2 class="section-title">
       <span data-lang="en">Your Business<br><span style="color:var(--cyan)">Before vs After</span></span>
       <span data-lang="es">Tu Negocio<br><span style="color:var(--cyan)">Antes vs Después</span></span>
     </h2>
-    <p style="color:var(--muted); font-size:0.95rem; margin-top:16px; line-height:1.65;">
+    <p class="impact-sub">
       <span data-lang="en">Same moment. Two realities. See what happens to a business owner with and without an AI bot.</span>
       <span data-lang="es">El mismo momento. Dos realidades. Mira qué le pasa al dueño del negocio con y sin un bot IA.</span>
     </p>
@@ -559,29 +653,7 @@ body.lang-es span[data-lang="es"] { display: inline; }
 
   <!-- SCENARIO 1 -->
   <div class="scenario active" id="sc1">
-    <div class="sc-trigger">
-      <div class="sc-trigger-bubble">
-        <span style="font-size:22px">👤</span>
-        <span data-lang="en">"I want to buy that product"</span>
-        <span data-lang="es">"Quiero comprar ese producto"</span>
-      </div>
-      <div class="sc-trigger-sub">
-        <span data-lang="en">What happens next in each reality?</span>
-        <span data-lang="es">¿Qué pasa después en cada realidad?</span>
-      </div>
-    </div>
-    <div class="sc-split">
-      <div class="sc-panel sc-left">
-        <div class="sc-panel-label sc-label-red"><div class="sc-dot sc-dot-red"></div><span data-lang="en">No system</span><span data-lang="es">Sin sistema</span></div>
-        <div class="sc-stage">
-          <div class="sc-speech" id="sp1l"><span data-lang="en">Wait, let me check...</span><span data-lang="es">Espera, déjame revisar...</span></div>
-          <div class="sc-person"><div class="sc-person-emoji" id="pe1l">🧑‍💼</div><div class="sc-person-label"><span data-lang="en">Business owner</span><span data-lang="es">Dueño del negocio</span></div></div>
-          <div class="sc-app-bubble" id="ab1l1" style="top:10px;left:0"><div class="sc-ab-icon">📊</div><div class="sc-ab-name">Excel</div><div class="sc-ab-time sc-time-red" id="t1l1">+0 min</div></div>
-          <div class="sc-app-bubble" id="ab1l2" style="top:10px;right:0"><div class="sc-ab-icon">🌐</div><div class="sc-ab-name">Web</div><div class="sc-ab-time sc-time-red" id="t1l2">+0 min</div></div>
-          <div class="sc-app-bubble" id="ab1l3" style="bottom:20px;left:10px"><div class="sc-ab-icon">📝</div><div class="sc-ab-name"><span data-lang="en">Notes</span><span data-lang="es">Notas</span></div><div class="sc-ab-time sc-time-yellow" id="t1l3">+0 min</div></div>
-          <div class="sc-app-bubble" id="ab1l4" style="bottom:20px;right:10px"><div class="sc-ab-icon">🏦</div><div class="sc-ab-name"><span data-lang="en">Bank</span><span data-lang="es">Banco</span></div><div class="sc-ab-time sc-time-red" id="t1l4">+0 min</div></div>
-          <div class="sc-app-bubble" id="ab1l5" style="top:50%;left:-10px;transform:translateY(-50%)"><div class="sc-ab-icon">📱</div><div class="sc-ab-name">Chat</div><div class="sc-ab-time sc-time-yellow" id="t1l5">+0 min</div></div>
-        </div>
+    
         <div class="sc-time-counter"><div class="sc-tc-label"><span data-lang="en">Time wasted</span><span data-lang="es">Tiempo perdido</span></div><div class="sc-tc-num sc-num-red"><span id="tc1l">0</span></div><div class="sc-tc-unit"><span data-lang="en">minutes doing this by hand</span><span data-lang="es">minutos haciendo esto a mano</span></div></div>
         <div class="sc-result sc-result-red" id="rc1l">
           <div class="sc-rc-title sc-rct-red"><span data-lang="en">What happened</span><span data-lang="es">Lo que pasó</span></div>
@@ -591,12 +663,12 @@ body.lang-es span[data-lang="es"] { display: inline; }
           <div class="sc-rc-row"><span class="sc-rc-icon sc-rci-red">✗</span><span><span data-lang="en">Payment reconciled manually</span><span data-lang="es">Pago cruzado a mano al final</span></span></div>
         </div>
       </div>
-      <div class="sc-vs-col"><div class="sc-vs-line"></div><div class="sc-vs-badge">VS</div><div class="sc-vs-line"></div></div>
+      <div class="sc-vs-col"><div class="sc-vs-line sc-vs-line-top"></div><div class="sc-vs-badge">VS</div><div class="sc-vs-line sc-vs-line-bot"></div></div>
       <div class="sc-panel sc-right">
         <div class="sc-panel-label sc-label-cyan"><div class="sc-dot sc-dot-cyan"></div><span data-lang="en">With AI Bot</span><span data-lang="es">Con Bot IA</span></div>
         <div class="sc-stage">
           <div class="sc-speech" id="sp1r" style="white-space:normal;text-align:center;max-width:180px">"venta Producto A<br>$150.000 Nequi" ✓</div>
-          <div class="sc-person"><div class="sc-person-emoji" id="pe1r">🧑‍💼</div><div class="sc-person-label"><span data-lang="en">Business owner</span><span data-lang="es">Dueño del negocio</span></div></div>
+          <div class="sc-person"><div class="sc-person-emoji" id="pe1r"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div><div class="sc-person-label"><span data-lang="en">Business owner</span><span data-lang="es">Dueño del negocio</span></div></div>
           <div class="sc-bot-chat" id="bc1"><div class="sc-bc-header"><div style="font-size:20px">🤖</div><div><div class="sc-bc-name">Bot IA</div><div class="sc-bc-status">● <span data-lang="en">active</span><span data-lang="es">activo</span></div></div></div><div class="sc-bc-body" id="bcb1"></div></div>
         </div>
         <div class="sc-time-counter"><div class="sc-tc-label"><span data-lang="en">Time used</span><span data-lang="es">Tiempo usado</span></div><div class="sc-tc-num sc-num-cyan"><span id="tc1r">0</span></div><div class="sc-tc-unit"><span data-lang="en">seconds. That was it.</span><span data-lang="es">segundos. Eso fue todo.</span></div></div>
@@ -614,21 +686,7 @@ body.lang-es span[data-lang="es"] { display: inline; }
 
   <!-- SCENARIO 2 -->
   <div class="scenario" id="sc2">
-    <div class="sc-trigger">
-      <div class="sc-trigger-bubble"><span style="font-size:22px">📦</span><span data-lang="en">New stock arrives from supplier</span><span data-lang="es">Llega mercancía nueva del proveedor</span></div>
-      <div class="sc-trigger-sub"><span data-lang="en">What does the owner do in each reality?</span><span data-lang="es">¿Qué hace el dueño del negocio en cada realidad?</span></div>
-    </div>
-    <div class="sc-split">
-      <div class="sc-panel sc-left">
-        <div class="sc-panel-label sc-label-red"><div class="sc-dot sc-dot-red"></div><span data-lang="en">No system</span><span data-lang="es">Sin sistema</span></div>
-        <div class="sc-stage">
-          <div class="sc-speech" id="sp2l"><span data-lang="en">Time to update everything...</span><span data-lang="es">Toca actualizar todo...</span></div>
-          <div class="sc-person"><div class="sc-person-emoji" id="pe2l">🧑‍💼</div><div class="sc-person-label"><span data-lang="en">Business owner</span><span data-lang="es">Dueño del negocio</span></div></div>
-          <div class="sc-app-bubble" id="ab2l1" style="top:8px;left:0"><div class="sc-ab-icon">📊</div><div class="sc-ab-name">Excel</div><div class="sc-ab-time sc-time-red" id="t2l1">+0 min</div></div>
-          <div class="sc-app-bubble" id="ab2l2" style="top:8px;right:0"><div class="sc-ab-icon">🌐</div><div class="sc-ab-name">Web CMS</div><div class="sc-ab-time sc-time-red" id="t2l2">+0 min</div></div>
-          <div class="sc-app-bubble" id="ab2l3" style="bottom:20px;left:10px"><div class="sc-ab-icon">📝</div><div class="sc-ab-name"><span data-lang="en">Notes</span><span data-lang="es">Notas</span></div><div class="sc-ab-time sc-time-yellow" id="t2l3">+0 min</div></div>
-          <div class="sc-app-bubble" id="ab2l4" style="bottom:20px;right:10px"><div class="sc-ab-icon">📦</div><div class="sc-ab-name"><span data-lang="en">Supplier</span><span data-lang="es">Proveedor</span></div><div class="sc-ab-time sc-time-red" id="t2l4">+0 min</div></div>
-        </div>
+    
         <div class="sc-time-counter"><div class="sc-tc-label"><span data-lang="en">Time wasted</span><span data-lang="es">Tiempo perdido</span></div><div class="sc-tc-num sc-num-red"><span id="tc2l">0</span></div><div class="sc-tc-unit"><span data-lang="en">minutes of manual work</span><span data-lang="es">minutos de trabajo manual</span></div></div>
         <div class="sc-result sc-result-red" id="rc2l">
           <div class="sc-rc-title sc-rct-red"><span data-lang="en">What happened</span><span data-lang="es">Lo que pasó</span></div>
@@ -638,12 +696,12 @@ body.lang-es span[data-lang="es"] { display: inline; }
           <div class="sc-rc-row"><span class="sc-rc-icon sc-rci-red">✗</span><span><span data-lang="en">No payment reminder</span><span data-lang="es">Sin recordatorio de pago</span></span></div>
         </div>
       </div>
-      <div class="sc-vs-col"><div class="sc-vs-line"></div><div class="sc-vs-badge">VS</div><div class="sc-vs-line"></div></div>
+      <div class="sc-vs-col"><div class="sc-vs-line sc-vs-line-top"></div><div class="sc-vs-badge">VS</div><div class="sc-vs-line sc-vs-line-bot"></div></div>
       <div class="sc-panel sc-right">
         <div class="sc-panel-label sc-label-cyan"><div class="sc-dot sc-dot-cyan"></div><span data-lang="en">With AI Bot</span><span data-lang="es">Con Bot IA</span></div>
         <div class="sc-stage">
           <div class="sc-speech" id="sp2r" style="white-space:normal;text-align:center;max-width:180px">📸 Foto + "20 unidades<br>$45.000" ✓</div>
-          <div class="sc-person"><div class="sc-person-emoji" id="pe2r">🧑‍💼</div><div class="sc-person-label"><span data-lang="en">Business owner</span><span data-lang="es">Dueño del negocio</span></div></div>
+          <div class="sc-person"><div class="sc-person-emoji" id="pe2r"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div><div class="sc-person-label"><span data-lang="en">Business owner</span><span data-lang="es">Dueño del negocio</span></div></div>
           <div class="sc-bot-chat" id="bc2"><div class="sc-bc-header"><div style="font-size:20px">🤖</div><div><div class="sc-bc-name">Bot IA</div><div class="sc-bc-status">● <span data-lang="en">active</span><span data-lang="es">activo</span></div></div></div><div class="sc-bc-body" id="bcb2"></div></div>
         </div>
         <div class="sc-time-counter"><div class="sc-tc-label"><span data-lang="en">Time used</span><span data-lang="es">Tiempo usado</span></div><div class="sc-tc-num sc-num-cyan"><span id="tc2r">0</span></div><div class="sc-tc-unit"><span data-lang="en">seconds per product</span><span data-lang="es">segundos por producto</span></div></div>
@@ -661,22 +719,7 @@ body.lang-es span[data-lang="es"] { display: inline; }
 
   <!-- SCENARIO 3 -->
   <div class="scenario" id="sc3">
-    <div class="sc-trigger">
-      <div class="sc-trigger-bubble"><span style="font-size:22px">🌙</span><span data-lang="en">End of day — How much did I sell?</span><span data-lang="es">Fin del día — ¿Cuánto vendí hoy?</span></div>
-      <div class="sc-trigger-sub"><span data-lang="en">It's 7 PM. The owner wants to know how the day went.</span><span data-lang="es">Son las 7 PM. El dueño quiere saber cómo le fue.</span></div>
-    </div>
-    <div class="sc-split">
-      <div class="sc-panel sc-left">
-        <div class="sc-panel-label sc-label-red"><div class="sc-dot sc-dot-red"></div><span data-lang="en">No system</span><span data-lang="es">Sin sistema</span></div>
-        <div class="sc-stage">
-          <div class="sc-speech" id="sp3l"><span data-lang="en">Time to add it all up...</span><span data-lang="es">A sumar todo esto...</span></div>
-          <div class="sc-person"><div class="sc-person-emoji" id="pe3l">🧑‍💼</div><div class="sc-person-label"><span data-lang="en">Business owner</span><span data-lang="es">Dueño del negocio</span></div></div>
-          <div class="sc-app-bubble" id="ab3l1" style="top:8px;left:0"><div class="sc-ab-icon">📝</div><div class="sc-ab-name"><span data-lang="en">Notebook</span><span data-lang="es">Cuaderno</span></div><div class="sc-ab-time sc-time-red" id="t3l1">+0 min</div></div>
-          <div class="sc-app-bubble" id="ab3l2" style="top:8px;right:0"><div class="sc-ab-icon">🏦</div><div class="sc-ab-name">Nequi</div><div class="sc-ab-time sc-time-red" id="t3l2">+0 min</div></div>
-          <div class="sc-app-bubble" id="ab3l3" style="bottom:20px;left:10px"><div class="sc-ab-icon">🏦</div><div class="sc-ab-name">Bancolombia</div><div class="sc-ab-time sc-time-yellow" id="t3l3">+0 min</div></div>
-          <div class="sc-app-bubble" id="ab3l4" style="bottom:20px;right:10px"><div class="sc-ab-icon">📊</div><div class="sc-ab-name">Excel</div><div class="sc-ab-time sc-time-red" id="t3l4">+0 min</div></div>
-          <div class="sc-app-bubble" id="ab3l5" style="top:50%;left:-10px;transform:translateY(-50%)"><div class="sc-ab-icon">🧮</div><div class="sc-ab-name"><span data-lang="en">Calculator</span><span data-lang="es">Calculadora</span></div><div class="sc-ab-time sc-time-yellow" id="t3l5">+0 min</div></div>
-        </div>
+    
         <div class="sc-time-counter"><div class="sc-tc-label"><span data-lang="en">Time wasted</span><span data-lang="es">Tiempo perdido</span></div><div class="sc-tc-num sc-num-red"><span id="tc3l">0</span></div><div class="sc-tc-unit"><span data-lang="en">minutes every single day</span><span data-lang="es">minutos al final de cada día</span></div></div>
         <div class="sc-result sc-result-red" id="rc3l">
           <div class="sc-rc-title sc-rct-red"><span data-lang="en">What happened</span><span data-lang="es">Lo que pasó</span></div>
@@ -686,12 +729,12 @@ body.lang-es span[data-lang="es"] { display: inline; }
           <div class="sc-rc-row"><span class="sc-rc-icon sc-rci-red">✗</span><span><span data-lang="en">This repeats every day of the year</span><span data-lang="es">Se repite esto cada día del año</span></span></div>
         </div>
       </div>
-      <div class="sc-vs-col"><div class="sc-vs-line"></div><div class="sc-vs-badge">VS</div><div class="sc-vs-line"></div></div>
+      <div class="sc-vs-col"><div class="sc-vs-line sc-vs-line-top"></div><div class="sc-vs-badge">VS</div><div class="sc-vs-line sc-vs-line-bot"></div></div>
       <div class="sc-panel sc-right">
         <div class="sc-panel-label sc-label-cyan"><div class="sc-dot sc-dot-cyan"></div><span data-lang="en">With AI Bot</span><span data-lang="es">Con Bot IA</span></div>
         <div class="sc-stage">
           <div class="sc-speech" id="sp3r" style="white-space:normal;text-align:center;max-width:180px">"reporte del día" ✓</div>
-          <div class="sc-person"><div class="sc-person-emoji" id="pe3r">🧑‍💼</div><div class="sc-person-label"><span data-lang="en">Business owner</span><span data-lang="es">Dueño del negocio</span></div></div>
+          <div class="sc-person"><div class="sc-person-emoji" id="pe3r"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div><div class="sc-person-label"><span data-lang="en">Business owner</span><span data-lang="es">Dueño del negocio</span></div></div>
           <div class="sc-bot-chat" id="bc3"><div class="sc-bc-header"><div style="font-size:20px">🤖</div><div><div class="sc-bc-name">Bot IA</div><div class="sc-bc-status">● <span data-lang="en">active</span><span data-lang="es">activo</span></div></div></div><div class="sc-bc-body" id="bcb3"></div></div>
         </div>
         <div class="sc-time-counter"><div class="sc-tc-label"><span data-lang="en">Time used</span><span data-lang="es">Tiempo usado</span></div><div class="sc-tc-num sc-num-cyan"><span id="tc3r">0</span></div><div class="sc-tc-unit"><span data-lang="en">seconds. 100% accurate.</span><span data-lang="es">segundos. Exacto al 100%.</span></div></div>
