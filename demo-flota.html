@@ -1,104 +1,125 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Syne:wght@300;400;600;700&display=swap" rel="stylesheet">
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Demo Sistema Flota - Rafael Transport</title>
 <style>
-* { margin:0; padding:0; box-sizing:border-box; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; }
-body { background: #0e1621; color: #fff; min-height: 100vh; padding: 20px; }
+* { margin:0; padding:0; box-sizing:border-box; font-family: 'Syne', sans-serif; }
+body { background: #020610; color: #fff; min-height: 100vh; padding: 10px; }
 .container { max-width: 1600px; margin: 0 auto; }
 
-.header { text-align: center; margin-bottom: 30px; padding: 20px; background: linear-gradient(135deg, #2AABEE, #229ED9); border-radius: 16px; }
-.header h1 { font-size: 28px; margin-bottom: 8px; }
-.header p { opacity: 0.9; font-size: 14px; }
+.header { text-align: center; margin-bottom: 15px; padding: 15px; background: linear-gradient(135deg, #0057ff, #00d4ff); border-radius: 12px; }
+.header h1 { font-size: clamp(18px, 3vw, 28px); margin-bottom: 5px; }
+.header p { opacity: 0.9; font-size: clamp(11px, 1.5vw, 14px); }
 
-.controls { display: flex; gap: 10px; justify-content: center; margin-bottom: 20px; flex-wrap: wrap; }
-.btn { padding: 12px 24px; border: none; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 14px; transition: all 0.2s; }
+.controls { display: flex; gap: 8px; justify-content: center; margin-bottom: 15px; flex-wrap: wrap; }
+.btn { padding: 10px 18px; border: none; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 13px; transition: all 0.2s; white-space: nowrap; }
 .btn-play { background: #10b981; color: white; }
-.btn-play:hover { background: #059669; transform: scale(1.05); }
+.btn-play:hover { background: #059669; }
 .btn-reset { background: #ef4444; color: white; }
 .btn-speed { background: #3b82f6; color: white; }
 .btn:disabled { opacity: 0.5; cursor: not-allowed; }
 
-.grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 15px; margin-bottom: 20px; }
+.progress { background: rgba(255,255,255,0.1); height: 4px; border-radius: 2px; overflow: hidden; margin-bottom: 15px; }
+.progress-bar { height: 100%; background: linear-gradient(90deg, #00d4ff, #10b981); width: 0%; transition: width 0.5s; }
 
-.phone { background: #17212b; border-radius: 20px; overflow: hidden; height: 650px; display: flex; flex-direction: column; box-shadow: 0 20px 60px rgba(0,0,0,0.5); border: 3px solid #232e3c; }
-.phone-header { background: #17212b; padding: 15px; border-bottom: 1px solid #232e3c; display: flex; align-items: center; gap: 12px; }
-.phone-avatar { width: 40px; height: 40px; border-radius: 50%; background: linear-gradient(135deg, #2AABEE, #229ED9); display: flex; align-items: center; justify-content: center; font-size: 18px; font-weight: bold; }
-.phone-info h3 { font-size: 15px; margin-bottom: 2px; }
-.phone-info p { font-size: 12px; color: #8a99a8; }
+.grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 15px; }
 
-.chat { flex: 1; overflow-y: auto; padding: 15px; display: flex; flex-direction: column; gap: 8px; background: #0e1621; }
-.chat::-webkit-scrollbar { width: 6px; }
-.chat::-webkit-scrollbar-thumb { background: #232e3c; border-radius: 3px; }
+.phone { background: #050d1a; border-radius: 12px; overflow: hidden; height: 55vh; min-height: 400px; display: flex; flex-direction: column; box-shadow: 0 10px 30px rgba(0,0,0,0.5); border: 2px solid rgba(0,212,255,0.15); }
+.phone-header { background: #050d1a; padding: 10px 12px; border-bottom: 1px solid rgba(0,212,255,0.15); display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
+.phone-avatar { width: 34px; height: 34px; border-radius: 50%; background: linear-gradient(135deg, #0057ff, #00d4ff); display: flex; align-items: center; justify-content: center; font-size: 15px; font-weight: bold; flex-shrink: 0; }
+.phone-info h3 { font-size: 13px; margin-bottom: 1px; }
+.phone-info p { font-size: 10px; color: #6a8aaa; }
 
-.msg { max-width: 80%; padding: 8px 12px; border-radius: 12px; font-size: 14px; line-height: 1.4; animation: slide 0.3s ease-out; word-wrap: break-word; white-space: pre-line; position: relative; }
-.msg-user { align-self: flex-end; background: #2b5278; color: white; border-bottom-right-radius: 4px; }
-.msg-bot { align-self: flex-start; background: #182533; color: white; border-bottom-left-radius: 4px; }
-.msg-time { font-size: 10px; opacity: 0.6; margin-top: 4px; }
-.msg-title { font-weight: bold; color: #2AABEE; margin-bottom: 4px; }
+.chat { flex: 1; overflow-y: auto; padding: 10px; display: flex; flex-direction: column; gap: 6px; background: #020610; }
+.chat::-webkit-scrollbar { width: 4px; }
+.chat::-webkit-scrollbar-thumb { background: rgba(0,212,255,0.15); border-radius: 2px; }
+
+.msg { max-width: 90%; padding: 7px 10px; border-radius: 10px; font-size: 12px; line-height: 1.3; animation: slide 0.3s ease-out; word-wrap: break-word; white-space: pre-line; }
+.msg-user { align-self: flex-end; background: rgba(0,212,255,0.15); color: white; border-bottom-right-radius: 3px; }
+.msg-bot { align-self: flex-start; background: #0a1628; color: white; border-bottom-left-radius: 3px; }
+.msg-time { font-size: 9px; opacity: 0.6; margin-top: 3px; }
+.msg-title { font-weight: bold; color: #00d4ff; margin-bottom: 3px; font-size: 11px; }
 .msg-bot.success .msg-title { color: #10b981; }
 .msg-bot.warning .msg-title { color: #f59e0b; }
 .msg-bot.error .msg-title { color: #ef4444; }
 
-.typing { display: flex; gap: 4px; padding: 12px; background: #182533; border-radius: 12px; align-self: flex-start; width: fit-content; }
-.typing span { width: 8px; height: 8px; border-radius: 50%; background: #8a99a8; animation: typing 1.4s infinite; }
+.typing { display: flex; gap: 3px; padding: 10px; background: #0a1628; border-radius: 10px; align-self: flex-start; width: fit-content; }
+.typing span { width: 6px; height: 6px; border-radius: 50%; background: #6a8aaa; animation: typing 1.4s infinite; }
 .typing span:nth-child(2) { animation-delay: 0.2s; }
 .typing span:nth-child(3) { animation-delay: 0.4s; }
 
-.dashboard { background: #17212b; border-radius: 16px; padding: 20px; margin-top: 20px; }
-.dashboard-title { font-size: 18px; margin-bottom: 20px; display: flex; align-items: center; gap: 10px; }
-.stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; margin-bottom: 20px; }
-.stat { background: linear-gradient(135deg, #1e2a3a, #232e3c); padding: 20px; border-radius: 12px; border-left: 4px solid #2AABEE; transition: transform 0.3s; }
-.stat:hover { transform: translateY(-5px); }
-.stat-icon { font-size: 24px; margin-bottom: 8px; }
-.stat-value { font-size: 28px; font-weight: bold; margin-bottom: 4px; }
-.stat-label { font-size: 12px; color: #8a99a8; }
+.dashboard { background: #050d1a; border-radius: 12px; padding: 15px; margin-top: 15px; }
+.dashboard-title { font-size: 15px; margin-bottom: 15px; display: flex; align-items: center; gap: 8px; }
+.stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 15px; }
+.stat { background: linear-gradient(135deg, #1e2a3a, rgba(0,212,255,0.15)); padding: 12px; border-radius: 10px; border-left: 3px solid #00d4ff; transition: transform 0.3s; }
+.stat:hover { transform: translateY(-3px); }
+.stat-icon { font-size: 18px; margin-bottom: 5px; }
+.stat-value { font-size: clamp(16px, 2.5vw, 22px); font-weight: bold; margin-bottom: 3px; }
+.stat-label { font-size: 10px; color: #6a8aaa; }
 .stat.green { border-left-color: #10b981; }
 .stat.yellow { border-left-color: #f59e0b; }
 .stat.red { border-left-color: #ef4444; }
 
-.section-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
-.section { background: #1e2a3a; padding: 20px; border-radius: 12px; }
-.section h3 { font-size: 16px; margin-bottom: 15px; color: #2AABEE; }
+.section-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+.section { background: #0a1628; padding: 15px; border-radius: 10px; }
+.section h3 { font-size: 13px; margin-bottom: 12px; color: #00d4ff; }
 
-.timeline-item { display: flex; gap: 12px; padding: 10px; background: #17212b; border-radius: 8px; margin-bottom: 8px; animation: slide 0.4s; }
-.timeline-dot { width: 32px; height: 32px; border-radius: 50%; background: #2AABEE; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 14px; }
+.timeline-item { display: flex; gap: 10px; padding: 8px; background: #050d1a; border-radius: 6px; margin-bottom: 6px; animation: slide 0.4s; }
+.timeline-dot { width: 26px; height: 26px; border-radius: 50%; background: #00d4ff; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 11px; }
 .timeline-dot.green { background: #10b981; }
 .timeline-dot.yellow { background: #f59e0b; }
 .timeline-content { flex: 1; }
-.timeline-time { font-size: 11px; color: #8a99a8; margin-bottom: 2px; }
-.timeline-text { font-size: 13px; }
+.timeline-time { font-size: 10px; color: #6a8aaa; margin-bottom: 1px; }
+.timeline-text { font-size: 11px; }
 
-.log-entry { background: #0e1621; border-left: 3px solid #2AABEE; padding: 10px 12px; border-radius: 6px; margin-bottom: 6px; font-family: 'Monaco', monospace; font-size: 11px; animation: slide 0.4s; }
+.log-entry { background: #020610; border-left: 3px solid #00d4ff; padding: 8px 10px; border-radius: 5px; margin-bottom: 5px; font-family: 'Monaco', monospace; font-size: 10px; animation: slide 0.4s; word-break: break-word; }
 .log-entry.green { border-left-color: #10b981; }
 .log-entry.yellow { border-left-color: #f59e0b; }
 .log-entry.red { border-left-color: #ef4444; }
-.log-time { color: #8a99a8; font-size: 10px; }
+.log-time { color: #6a8aaa; font-size: 9px; margin-bottom: 2px; }
 
-.excel-preview { background: white; color: #333; border-radius: 8px; padding: 15px; font-size: 12px; }
-.excel-row { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr 1fr; gap: 8px; padding: 8px; border-bottom: 1px solid #e5e7eb; }
+.excel-preview { background: white; color: #333; border-radius: 6px; padding: 10px; font-size: 11px; overflow-x: auto; }
+.excel-row { display: grid; grid-template-columns: 2fr 1.5fr 1fr 1fr 1fr; gap: 6px; padding: 6px; border-bottom: 1px solid #e5e7eb; min-width: 500px; }
 .excel-header { background: #10b981; color: white; font-weight: bold; }
 .excel-row.total { background: #f3f4f6; font-weight: bold; }
 
-.progress { background: #0e1621; height: 6px; border-radius: 3px; overflow: hidden; margin-top: 15px; }
-.progress-bar { height: 100%; background: linear-gradient(90deg, #2AABEE, #10b981); width: 0%; transition: width 0.5s; }
-
-.badge { display: inline-block; padding: 2px 8px; border-radius: 10px; font-size: 10px; font-weight: bold; }
-.badge-green { background: #10b98130; color: #10b981; }
-.badge-yellow { background: #f59e0b30; color: #f59e0b; }
-.badge-red { background: #ef444430; color: #ef4444; }
-
-@keyframes slide { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes slide { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
 @keyframes typing { 0%, 60%, 100% { opacity: 0.3; } 30% { opacity: 1; } }
-@keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
-.pulse { animation: pulse 2s infinite; }
 
-@media (max-width: 1200px) {
-    .grid { grid-template-columns: 1fr; }
-    .stats { grid-template-columns: repeat(2, 1fr); }
+/* TABLET */
+@media (max-width: 1024px) {
+    .phone { height: 50vh; min-height: 380px; }
     .section-grid { grid-template-columns: 1fr; }
+}
+
+/* MOBILE */
+@media (max-width: 640px) {
+    body { padding: 6px; }
+    .grid { gap: 6px; }
+    .phone { height: 42vh; min-height: 320px; border-radius: 10px; }
+    .phone-header { padding: 8px; }
+    .phone-avatar { width: 28px; height: 28px; font-size: 12px; }
+    .phone-info h3 { font-size: 11px; }
+    .phone-info p { font-size: 9px; }
+    .chat { padding: 6px; gap: 4px; }
+    .msg { font-size: 11px; padding: 6px 8px; border-radius: 8px; }
+    .msg-title { font-size: 10px; }
+    .msg-time { font-size: 8px; }
+    .stats { grid-template-columns: repeat(2, 1fr); gap: 6px; }
+    .stat { padding: 8px; }
+    .controls { gap: 5px; }
+    .btn { padding: 8px 12px; font-size: 11px; }
+}
+
+/* MOBILE MUY PEQUEÑO */
+@media (max-width: 380px) {
+    .phone { height: 38vh; min-height: 280px; }
+    .msg { font-size: 10px; }
+    .phone-info h3 { font-size: 10px; }
 }
 </style>
 </head>
@@ -106,18 +127,18 @@ body { background: #0e1621; color: #fff; min-height: 100vh; padding: 20px; }
 <div class="container">
     <div class="header">
         <h1>🚗 Sistema Operativo de Flota</h1>
-        <p>Demo Interactiva - Rafael Transport | Bot de Telegram + Dashboard + Reportes Automáticos</p>
+        <p>Demo Interactiva · Rafael Transport</p>
     </div>
 
     <div class="controls">
-        <button class="btn btn-play" id="playBtn" onclick="startDemo()">▶ Reproducir Demo</button>
+        <button class="btn btn-play" id="playBtn" onclick="startDemo()">▶ Reproducir</button>
         <button class="btn btn-reset" onclick="resetDemo()">🔄 Reiniciar</button>
-        <button class="btn btn-speed" onclick="toggleSpeed()" id="speedBtn">⚡ Velocidad: 1x</button>
+        <button class="btn btn-speed" onclick="toggleSpeed()" id="speedBtn">⚡ 1x</button>
     </div>
 
     <div class="progress"><div class="progress-bar" id="progress"></div></div>
 
-    <div class="grid" style="margin-top: 20px;">
+    <div class="grid">
         <div class="phone">
             <div class="phone-header">
                 <div class="phone-avatar">J</div>
@@ -142,10 +163,10 @@ body { background: #0e1621; color: #fff; min-height: 100vh; padding: 20px; }
 
         <div class="phone">
             <div class="phone-header">
-                <div class="phone-avatar" style="background: linear-gradient(135deg, #f59e0b, #d97706);">📋</div>
+                <div class="phone-avatar" style="background: linear-gradient(135deg, #0057ff, #00d4ff);">📋</div>
                 <div class="phone-info">
                     <h3>Chat Central</h3>
-                    <p>Log Operativo · Admin</p>
+                    <p>Log Operativo</p>
                 </div>
             </div>
             <div class="chat" id="chatCentral"></div>
@@ -163,40 +184,46 @@ body { background: #0e1621; color: #fff; min-height: 100vh; padding: 20px; }
             <div class="stat">
                 <div class="stat-icon">💰</div>
                 <div class="stat-value" id="statIngresos">$0</div>
-                <div class="stat-label">Ingresos del Día</div>
+                <div class="stat-label">Ingresos</div>
             </div>
             <div class="stat yellow">
                 <div class="stat-icon">⛽</div>
                 <div class="stat-value" id="statGastos">$0</div>
-                <div class="stat-label">Gastos Totales</div>
+                <div class="stat-label">Gastos</div>
             </div>
             <div class="stat green">
                 <div class="stat-icon">📈</div>
                 <div class="stat-value" id="statUtilidad">$0</div>
-                <div class="stat-label">Utilidad Neta</div>
+                <div class="stat-label">Utilidad</div>
             </div>
         </div>
 
         <div class="section-grid">
             <div class="section">
-                <h3>⏱️ Timeline de Operaciones</h3>
+                <h3>⏱️ Timeline</h3>
                 <div id="timeline"></div>
             </div>
             <div class="section">
-                <h3>📝 Log del Sistema (PostgreSQL)</h3>
+                <h3>📝 Log PostgreSQL</h3>
                 <div id="systemLog"></div>
             </div>
         </div>
 
-        <div class="section" style="margin-top: 20px;">
-            <h3>📊 Reporte Automático 8:00 PM → Google Sheets</h3>
+        <div class="section" style="margin-top: 15px; border: 2px solid #ef4444;">
+            <h3 style="color: #ef4444;">🚨 Alertas Técnicas (Solo Administradores)</h3>
+            <div id="adminAlerts"></div>
+            <p id="adminAlertsEmpty" style="color: #6a8aaa; text-align: center; padding: 10px; font-size: 11px;">Sin alertas activas</p>
+        </div>
+
+        <div class="section" style="margin-top: 15px;">
+            <h3>📊 Reporte 8:00 PM → Google Sheets</h3>
             <div class="excel-preview" id="excelPreview" style="display:none;">
                 <div class="excel-row excel-header">
                     <div>Servicio</div><div>Conductor</div><div>Ingresos</div><div>Gastos</div><div>Utilidad</div>
                 </div>
                 <div id="excelRows"></div>
             </div>
-            <p id="excelWaiting" style="color: #8a99a8; text-align: center; padding: 20px;">⏳ El reporte se genera automáticamente al final del día...</p>
+            <p id="excelWaiting" style="color: #6a8aaa; text-align: center; padding: 15px; font-size: 12px;">⏳ Reporte automático al final del día...</p>
         </div>
     </div>
 </div>
@@ -205,56 +232,64 @@ body { background: #0e1621; color: #fff; min-height: 100vh; padding: 20px; }
 let speed = 1;
 let isPlaying = false;
 let currentStep = 0;
-let totalSteps = 0;
 
 const script = [
-    // SERVICIO 1 - Juan
     { chat: 'chat1', type: 'user', text: 'Hola', delay: 500 },
-    { chat: 'chat1', type: 'bot', title: '🤖 Bot Sistema Flota', text: '¡Hola Juan! Bienvenido al sistema.\n\nComandos:\n📍 Iniciar servicio\n🚨 Reportar novedad\n💰 Registrar gasto\n✅ Terminar servicio', delay: 1000 },
+    { chat: 'chat1', type: 'bot', title: '🤖 Bot Sistema', text: '¡Hola Juan!\n\nComandos:\n📍 Iniciar servicio\n🚨 Reportar novedad\n💰 Registrar gasto\n✅ Terminar servicio', delay: 1000 },
     { chat: 'chat1', type: 'user', text: 'Arranqué VAN-01 desde Chapinero a las 8am, km inicial 15000', delay: 2000, typing: true },
-    { chat: 'chat1', type: 'bot', status: 'success', title: '✅ Servicio Iniciado', text: 'Código: SRV-001\nVehículo: VAN-01\nOrigen: Chapinero\nKm inicial: 15,000\nHora: 08:00 AM\n\n🟢 Estado: EN RUTA', delay: 1500 },
+    { chat: 'chat1', type: 'bot', status: 'success', title: '✅ Servicio Iniciado', text: 'Código: SRV-001\nVehículo: VAN-01\nOrigen: Chapinero\nKm: 15,000\n🟢 EN RUTA', delay: 1500 },
     { central: true, type: 'bot', status: 'success', title: '🚗 SERVICIO INICIADO', text: 'SRV-001 | Juan García\nVAN-01 · Chapinero\nKm: 15,000 · 08:00 AM', delay: 500 },
-    { dashboard: { servicios: 1 }, timeline: { time: '08:00 AM', text: 'Juan inició SRV-001 desde Chapinero', color: 'green' }, log: { text: 'INSERT INTO services (service_code, driver_id, km_start) VALUES (SRV-001, 1, 15000)', color: 'green' }, delay: 300 },
+    { dashboard: { servicios: 1 }, timeline: { time: '08:00 AM', text: 'Juan inició SRV-001', color: 'green' }, log: { text: 'INSERT INTO services · SRV-001 · km_start: 15000', color: 'green' }, delay: 300 },
     
-    // SERVICIO 2 - María (paralelo)
-    { chat: 'chat2', type: 'user', text: 'Inicié servicio con VAN-02 desde Usaquén 8:15am km 22500', delay: 3000, typing: true },
-    { chat: 'chat2', type: 'bot', status: 'success', title: '✅ Servicio Iniciado', text: 'Código: SRV-002\nVehículo: VAN-02\nOrigen: Usaquén\nKm inicial: 22,500\nHora: 08:15 AM', delay: 1500 },
+    { chat: 'chat2', type: 'user', text: 'Inicié VAN-02 desde Usaquén 8:15am km 22500', delay: 3000, typing: true },
+    { chat: 'chat2', type: 'bot', status: 'success', title: '✅ Servicio Iniciado', text: 'Código: SRV-002\nVehículo: VAN-02\nOrigen: Usaquén\nKm: 22,500', delay: 1500 },
     { central: true, type: 'bot', status: 'success', title: '🚗 SERVICIO INICIADO', text: 'SRV-002 | María López\nVAN-02 · Usaquén\nKm: 22,500 · 08:15 AM', delay: 500 },
-    { dashboard: { servicios: 2 }, timeline: { time: '08:15 AM', text: 'María inició SRV-002 desde Usaquén', color: 'green' }, log: { text: 'INSERT INTO services SRV-002 · driver_id: 2 · vehicle_id: VAN-02', color: 'green' }, delay: 300 },
+    { dashboard: { servicios: 2 }, timeline: { time: '08:15 AM', text: 'María inició SRV-002', color: 'green' }, log: { text: 'INSERT INTO services · SRV-002 · driver: María', color: 'green' }, delay: 300 },
     
-    // INCIDENCIA
     { chat: 'chat1', type: 'user', text: 'Hubo retraso fuerte por tráfico en la 80', delay: 2500, typing: true },
-    { chat: 'chat1', type: 'bot', status: 'warning', title: '⚠️ Incidencia Registrada', text: 'Código: INC-001\nTipo: Retraso\nSeveridad: Media\nUbicación: Calle 80\n\nAdmin ha sido notificado.', delay: 1500 },
-    { central: true, type: 'bot', status: 'warning', title: '⚠️ NOVEDAD REPORTADA', text: 'INC-001 | Juan (VAN-01)\nRetraso por tráfico · Calle 80\nSeveridad: MEDIA', delay: 500 },
-    { timeline: { time: '09:30 AM', text: 'Incidencia reportada: Retraso por tráfico', color: 'yellow' }, log: { text: 'INSERT INTO incidents · type: delay · severity: medium', color: 'yellow' }, delay: 300 },
+    { chat: 'chat1', type: 'bot', status: 'warning', title: '⚠️ Incidencia Registrada', text: 'Código: INC-001\nTipo: Retraso\nSeveridad: Media\nAdmin notificado.', delay: 1500 },
+    { central: true, type: 'bot', status: 'warning', title: '⚠️ NOVEDAD REPORTADA', text: 'INC-001 | Juan (VAN-01)\nRetraso · Calle 80\nSeveridad: MEDIA', delay: 500 },
+    { timeline: { time: '09:30 AM', text: 'Incidencia: Retraso por tráfico', color: 'yellow' }, log: { text: 'INSERT INTO incidents · type: delay', color: 'yellow' }, delay: 300 },
     
-    // GASTOS
     { chat: 'chat1', type: 'user', text: 'Gasté 35k en gasolina', delay: 2500, typing: true },
-    { chat: 'chat1', type: 'bot', status: 'success', title: '💰 Gasto Registrado', text: 'Tipo: Combustible\nMonto: $35,000\nAsociado a: SRV-001\n\n✓ Guardado en sistema', delay: 1200 },
-    { dashboard: { gastos: 35000 }, log: { text: 'INSERT INTO expenses · $35,000 · combustible', color: 'yellow' }, delay: 300 },
+    { chat: 'chat1', type: 'bot', status: 'success', title: '💰 Gasto Registrado', text: 'Tipo: Combustible\nMonto: $35,000\nAsociado: SRV-001', delay: 1200 },
+    { dashboard: { gastos: 35000 }, log: { text: 'INSERT INTO expenses · $35,000', color: 'yellow' }, delay: 300 },
     
     { chat: 'chat2', type: 'user', text: 'Peaje 8000', delay: 2000, typing: true },
-    { chat: 'chat2', type: 'bot', status: 'success', title: '💰 Gasto Registrado', text: 'Tipo: Peaje\nMonto: $8,000\nAsociado a: SRV-002', delay: 1000 },
+    { chat: 'chat2', type: 'bot', status: 'success', title: '💰 Gasto Registrado', text: 'Tipo: Peaje\nMonto: $8,000\nAsociado: SRV-002', delay: 1000 },
     { dashboard: { gastos: 43000 }, log: { text: 'INSERT INTO expenses · $8,000 · peaje', color: 'yellow' }, delay: 300 },
     
-    // FIN SERVICIO 1
     { chat: 'chat1', type: 'user', text: 'Terminé servicio 12pm, km final 18200', delay: 3000, typing: true },
-    { chat: 'chat1', type: 'bot', status: 'success', title: '✅ Servicio Finalizado', text: 'Código: SRV-001\nDuración: 4h 00min\nKm recorridos: 3,200\n\n💰 Ingresos: $150,000\n💸 Gastos: $35,000\n📈 Utilidad: $115,000\n\n¡Excelente trabajo Juan!', delay: 2000 },
-    { central: true, type: 'bot', status: 'success', title: '✅ SERVICIO COMPLETADO', text: 'SRV-001 | Juan García\nDuración: 4h · Km: 3,200\nIngresos: $150,000\nUtilidad: $115,000', delay: 500 },
-    { dashboard: { servicios: 1, ingresos: 150000, utilidad: 115000 }, timeline: { time: '12:00 PM', text: 'SRV-001 finalizado · Utilidad: $115,000', color: 'green' }, log: { text: 'UPDATE services SET status=completed WHERE code=SRV-001', color: 'green' }, delay: 300 },
+    { chat: 'chat1', type: 'bot', status: 'success', title: '✅ Servicio Finalizado', text: 'Duración: 4h\nKm: 3,200\n\n💰 Ingresos: $150,000\n💸 Gastos: $35,000\n📈 Utilidad: $115,000', delay: 2000 },
+    { central: true, type: 'bot', status: 'success', title: '✅ SRV-001 COMPLETADO', text: 'Juan García\nIngresos: $150,000\nUtilidad: $115,000', delay: 500 },
+    { dashboard: { servicios: 1, ingresos: 150000, utilidad: 115000 }, timeline: { time: '12:00 PM', text: 'SRV-001 · Utilidad $115,000', color: 'green' }, log: { text: 'UPDATE services SET status=completed', color: 'green' }, delay: 300 },
     
-    // FIN SERVICIO 2
-    { chat: 'chat2', type: 'user', text: 'Finalizado a las 1pm, km 24100', delay: 2500, typing: true },
-    { chat: 'chat2', type: 'bot', status: 'success', title: '✅ Servicio Finalizado', text: 'Código: SRV-002\nDuración: 4h 45min\nKm recorridos: 1,600\n\n💰 Ingresos: $120,000\n💸 Gastos: $8,000\n📈 Utilidad: $112,000', delay: 2000 },
-    { central: true, type: 'bot', status: 'success', title: '✅ SERVICIO COMPLETADO', text: 'SRV-002 | María López\nIngresos: $120,000\nUtilidad: $112,000', delay: 500 },
-    { dashboard: { servicios: 0, ingresos: 270000, utilidad: 227000 }, timeline: { time: '01:00 PM', text: 'SRV-002 finalizado · Utilidad: $112,000', color: 'green' }, log: { text: 'UPDATE services SET status=completed WHERE code=SRV-002', color: 'green' }, delay: 300 },
+    { chat: 'chat2', type: 'user', text: 'Finalizado 1pm, km 24100', delay: 2500, typing: true },
+    { chat: 'chat2', type: 'bot', status: 'success', title: '✅ Servicio Finalizado', text: 'Duración: 4h 45m\nKm: 1,600\n\n💰 Ingresos: $120,000\n💸 Gastos: $8,000\n📈 Utilidad: $112,000', delay: 2000 },
+    { central: true, type: 'bot', status: 'success', title: '✅ SRV-002 COMPLETADO', text: 'María López\nIngresos: $120,000\nUtilidad: $112,000', delay: 500 },
+    { dashboard: { servicios: 0, ingresos: 270000, utilidad: 227000 }, timeline: { time: '01:00 PM', text: 'SRV-002 · Utilidad $112,000', color: 'green' }, log: { text: 'UPDATE services · SRV-002 completed', color: 'green' }, delay: 300 },
     
-    // REPORTE 8PM
-    { central: true, type: 'bot', status: 'success', title: '📊 REPORTE DIARIO AUTOMÁTICO', text: '⏰ 08:00 PM - Generando...\n\n📋 Servicios: 2\n💰 Ingresos: $270,000\n💸 Gastos: $43,000\n📈 Utilidad: $227,000\n⚠️ Incidencias: 1\n\n📄 Excel enviado a Google Sheets ✓\n📧 Email al dueño enviado ✓', delay: 3000 },
-    { timeline: { time: '08:00 PM', text: 'Reporte diario generado automáticamente', color: 'green' }, log: { text: 'CRON · Reporte exportado a Google Sheets · utility: $227,000', color: 'green' }, excel: true, delay: 500 }
+    // ALERTA DE KIT DE HERRAMIENTAS FALTANTE - Reporte del conductor
+    { chat: 'chat2', type: 'user', text: 'Admin, la VAN-02 no tiene kit de herramientas, falta gato y llave de pernos', delay: 3500, typing: true },
+    { chat: 'chat2', type: 'bot', status: 'warning', title: '⚠️ Inventario Registrado', text: 'Código: INV-001\nVehículo: VAN-02\nFaltante: Kit herramientas\n• Gato hidráulico\n• Llave de pernos\n\n✓ Admin notificado\n✓ Queda en registro', delay: 1500 },
+    { central: true, type: 'bot', status: 'warning', title: '🧰 INVENTARIO FALTANTE', text: 'INV-001 | VAN-02 (María)\nFalta: Gato + Llave pernos\nAcción: Reponer kit\n⚠️ SOLO ADMIN', delay: 500 },
+    { timeline: { time: '02:15 PM', text: 'VAN-02 sin kit herramientas · Reponer', color: 'yellow' }, log: { text: 'INSERT INTO inventory_alerts · VAN-02 · kit incomplete', color: 'yellow' }, delay: 300 },
+    
+    // ALERTA TÉCNICA AUTOMÁTICA - SOAT
+    { central: true, type: 'bot', status: 'error', title: '🚨 ALERTA: SOAT POR VENCER', text: 'Vehículo: CAR-01 Toyota Corolla\nPlaca: DEF-9012\nVence: 7 días\nFecha: 29/Abr/2026\n\n📋 Acción: Renovar SOAT\n👤 Responsable: Admin\n⚠️ SOLO ADMINISTRADORES', delay: 3500 },
+    { timeline: { time: '02:30 PM', text: '🚨 SOAT CAR-01 vence en 7 días', color: 'yellow' }, log: { text: 'CRON alert · CAR-01 · soat_expiry in 7 days', color: 'red' }, delay: 300 },
+    
+    // ALERTA TÉCNICA AUTOMÁTICA - MANTENIMIENTO POR KILOMETRAJE
+    { central: true, type: 'bot', status: 'error', title: '🔧 ALERTA: MANTENIMIENTO KM', text: 'Vehículo: VAN-01 Chevrolet Express\nKm actual: 18,200\nÚltimo servicio: 10,000\nDiferencia: 8,200 km\n\n📋 Acción: Cambio aceite + revisión\n⚠️ Límite recomendado: 5,000 km\n👤 SOLO ADMINISTRADORES', delay: 2500 },
+    { timeline: { time: '02:32 PM', text: '🔧 VAN-01 requiere mantenimiento', color: 'yellow' }, log: { text: 'CRON alert · VAN-01 · km_overdue 3200', color: 'red' }, delay: 300 },
+    
+    // ALERTA TECNOMECÁNICA
+    { central: true, type: 'bot', status: 'warning', title: '📋 ALERTA: TECNOMECÁNICA', text: 'Vehículo: VAN-02\nPlaca: XYZ-5678\nVence: 21 días\nFecha: 13/May/2026\n\n📋 Agendar revisión técnica\n👤 SOLO ADMINISTRADORES', delay: 2500 },
+    { timeline: { time: '02:33 PM', text: '📋 VAN-02 tecnomecánica en 21 días', color: 'yellow' }, log: { text: 'CRON alert · VAN-02 · tech_expiry in 21 days', color: 'yellow' }, delay: 300 },
+    
+    { central: true, type: 'bot', status: 'success', title: '📊 REPORTE DIARIO', text: '⏰ 08:00 PM\n\n📋 Servicios: 2\n💰 Ingresos: $270,000\n💸 Gastos: $43,000\n📈 Utilidad: $227,000\n⚠️ Incidencias: 1\n🧰 Faltantes: 1\n🚨 Alertas técnicas: 3\n\n✓ Excel → Google Sheets\n✓ Email al dueño', delay: 3000 },
+    { timeline: { time: '08:00 PM', text: 'Reporte diario generado', color: 'green' }, log: { text: 'CRON · Export to Google Sheets', color: 'green' }, excel: true, delay: 500 }
 ];
-
-totalSteps = script.length;
 
 function sleep(ms) { return new Promise(r => setTimeout(r, ms / speed)); }
 
@@ -262,13 +297,11 @@ function addMessage(chatId, msg) {
     const chat = document.getElementById(chatId);
     const div = document.createElement('div');
     div.className = `msg msg-${msg.type} ${msg.status || ''}`;
-    
     let content = '';
     if (msg.title) content += `<div class="msg-title">${msg.title}</div>`;
     content += msg.text.replace(/\n/g, '<br>');
     const now = new Date();
     content += `<div class="msg-time">${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}</div>`;
-    
     div.innerHTML = content;
     chat.appendChild(div);
     chat.scrollTop = chat.scrollHeight;
@@ -300,13 +333,7 @@ function addTimeline(item) {
     const t = document.getElementById('timeline');
     const div = document.createElement('div');
     div.className = 'timeline-item';
-    div.innerHTML = `
-        <div class="timeline-dot ${item.color}">✓</div>
-        <div class="timeline-content">
-            <div class="timeline-time">${item.time}</div>
-            <div class="timeline-text">${item.text}</div>
-        </div>
-    `;
+    div.innerHTML = `<div class="timeline-dot ${item.color}">✓</div><div class="timeline-content"><div class="timeline-time">${item.time}</div><div class="timeline-text">${item.text}</div></div>`;
     t.appendChild(div);
     t.scrollTop = t.scrollHeight;
 }
@@ -322,13 +349,34 @@ function addLog(log) {
     l.scrollTop = l.scrollHeight;
 }
 
+function addAdminAlert(msg) {
+    const box = document.getElementById('adminAlerts');
+    const empty = document.getElementById('adminAlertsEmpty');
+    if (empty) empty.style.display = 'none';
+    
+    const div = document.createElement('div');
+    const colorMap = { error: '#ef4444', warning: '#f59e0b', success: '#10b981' };
+    const bgMap = { error: 'rgba(239,68,68,0.1)', warning: 'rgba(245,158,11,0.1)', success: 'rgba(16,185,129,0.1)' };
+    
+    div.style.cssText = `background: ${bgMap[msg.status]}; border-left: 3px solid ${colorMap[msg.status]}; padding: 10px 12px; border-radius: 6px; margin-bottom: 6px; animation: slide 0.4s;`;
+    
+    const now = new Date();
+    const time = `${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}`;
+    
+    div.innerHTML = `
+        <div style="display: flex; justify-content: space-between; align-items: start; gap: 8px; margin-bottom: 4px;">
+            <div style="font-weight: bold; font-size: 12px; color: ${colorMap[msg.status]};">${msg.title}</div>
+            <div style="font-size: 10px; color: #6a8aaa;">${time}</div>
+        </div>
+        <div style="font-size: 11px; white-space: pre-line; line-height: 1.4;">${msg.text}</div>
+    `;
+    box.appendChild(div);
+}
+
 function showExcel() {
     document.getElementById('excelWaiting').style.display = 'none';
-    const preview = document.getElementById('excelPreview');
-    preview.style.display = 'block';
-    
-    const rows = document.getElementById('excelRows');
-    rows.innerHTML = `
+    document.getElementById('excelPreview').style.display = 'block';
+    document.getElementById('excelRows').innerHTML = `
         <div class="excel-row"><div>SRV-001</div><div>Juan García</div><div>$150,000</div><div>$35,000</div><div style="color:#10b981;font-weight:bold;">$115,000</div></div>
         <div class="excel-row"><div>SRV-002</div><div>María López</div><div>$120,000</div><div>$8,000</div><div style="color:#10b981;font-weight:bold;">$112,000</div></div>
         <div class="excel-row total"><div>TOTAL</div><div>2 servicios</div><div>$270,000</div><div>$43,000</div><div style="color:#10b981;">$227,000</div></div>
@@ -339,44 +387,44 @@ async function startDemo() {
     if (isPlaying) return;
     isPlaying = true;
     document.getElementById('playBtn').disabled = true;
-    
     for (let i = currentStep; i < script.length; i++) {
         if (!isPlaying) break;
         const step = script[i];
-        
         document.getElementById('progress').style.width = ((i+1)/script.length * 100) + '%';
-        
         if (step.delay) await sleep(step.delay);
-        
         if (step.typing && step.chat) {
             showTyping(step.chat);
             await sleep(800);
             removeTyping(step.chat);
         }
-        
         if (step.chat) addMessage(step.chat, step);
-        if (step.central) addMessage('chatCentral', step);
+        if (step.central) {
+            addMessage('chatCentral', step);
+            // Si es alerta técnica/administrativa, también al panel admin
+            if (step.status === 'error' || (step.status === 'warning' && step.title && (step.title.includes('🚨') || step.title.includes('🔧') || step.title.includes('📋') || step.title.includes('🧰')))) {
+                addAdminAlert(step);
+            }
+        }
         if (step.dashboard) updateDashboard(step.dashboard);
         if (step.timeline) addTimeline(step.timeline);
         if (step.log) addLog(step.log);
         if (step.excel) showExcel();
-        
         currentStep = i + 1;
     }
-    
     isPlaying = false;
     document.getElementById('playBtn').disabled = false;
-    document.getElementById('playBtn').textContent = '✓ Demo Completada';
+    document.getElementById('playBtn').textContent = '✓ Completado';
 }
 
 function resetDemo() {
     isPlaying = false;
     currentStep = 0;
-    document.getElementById('chat1').innerHTML = '';
-    document.getElementById('chat2').innerHTML = '';
-    document.getElementById('chatCentral').innerHTML = '';
-    document.getElementById('timeline').innerHTML = '';
-    document.getElementById('systemLog').innerHTML = '';
+    ['chat1','chat2','chatCentral','timeline','systemLog','adminAlerts'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.innerHTML = '';
+    });
+    const empty = document.getElementById('adminAlertsEmpty');
+    if (empty) empty.style.display = 'block';
     document.getElementById('statServicios').textContent = '0';
     document.getElementById('statIngresos').textContent = '$0';
     document.getElementById('statGastos').textContent = '$0';
@@ -385,18 +433,15 @@ function resetDemo() {
     document.getElementById('excelPreview').style.display = 'none';
     document.getElementById('excelWaiting').style.display = 'block';
     document.getElementById('playBtn').disabled = false;
-    document.getElementById('playBtn').textContent = '▶ Reproducir Demo';
+    document.getElementById('playBtn').textContent = '▶ Reproducir';
 }
 
 function toggleSpeed() {
     speed = speed === 1 ? 2 : speed === 2 ? 4 : 1;
-    document.getElementById('speedBtn').textContent = `⚡ Velocidad: ${speed}x`;
+    document.getElementById('speedBtn').textContent = `⚡ ${speed}x`;
 }
 
-// Auto-start
-window.addEventListener('load', () => {
-    setTimeout(startDemo, 800);
-});
+window.addEventListener('load', () => setTimeout(startDemo, 500));
 </script>
 </body>
 </html>
