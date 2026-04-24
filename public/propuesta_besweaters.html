@@ -653,6 +653,120 @@
     to { opacity: 1; transform: scale(1); }
   }
 
+  @keyframes demoSlide { from{opacity:0;transform:translateY(6px)} to{opacity:1;transform:translateY(0)} }
+  @keyframes demoTyping { 0%,60%,100%{transform:translateY(0);opacity:0.3} 30%{transform:translateY(-4px);opacity:1} }
+
+  /* DEMO INTERACTIVO */
+  .demo-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 8px;
+    margin-bottom: 20px;
+  }
+
+  .demo-panel {
+    background: #141414;
+    border: 1px solid #2a2a2a;
+    border-radius: 12px;
+    overflow: hidden;
+    height: 58vh;
+    min-height: 420px;
+    max-height: 520px;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+  }
+
+  .demo-panel .panel-header {
+    padding: 10px 14px;
+  }
+
+  .demo-stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+  }
+
+  @media (max-width: 1024px) {
+    .demo-grid { gap: 6px; }
+    .demo-panel { height: 55vh; min-height: 380px; }
+  }
+
+  @media (max-width: 680px) {
+    /* Demo section full bleed on mobile */
+    .demo-section-mobile {
+      padding-left: 8px !important;
+      padding-right: 8px !important;
+    }
+    .demo-grid { gap: 4px; }
+    .demo-panel {
+      height: 65vh;
+      min-height: 440px;
+      max-height: 540px;
+      border-radius: 8px;
+    }
+    .demo-panel .panel-header {
+      padding: 6px 6px !important;
+      gap: 5px !important;
+    }
+    .demo-panel .panel-header > div:first-child {
+      width: 22px !important;
+      height: 22px !important;
+      font-size: 9px !important;
+    }
+    .demo-panel .panel-header .panel-name {
+      font-size: 9px !important;
+    }
+    .demo-panel .panel-header .panel-sub {
+      font-size: 8px !important;
+    }
+    .demo-chat {
+      padding: 5px !important;
+      gap: 4px !important;
+    }
+    .demo-chat .msg-bubble {
+      font-size: 9.5px !important;
+      padding: 5px 7px !important;
+      max-width: 98% !important;
+      line-height: 1.35 !important;
+      border-radius: 7px !important;
+    }
+    .demo-chat .msg-title {
+      font-size: 8.5px !important;
+      margin-bottom: 2px !important;
+    }
+    .demo-stats { grid-template-columns: repeat(2, 1fr); gap: 8px; }
+    .demo-stats > div { padding: 10px !important; }
+    .demo-stats > div > div:first-child { font-size: 18px !important; }
+  }
+
+  @media (max-width: 380px) {
+    .demo-grid { gap: 3px; }
+    .demo-panel { min-height: 400px; border-radius: 6px; }
+    .demo-panel .panel-header {
+      padding: 5px 4px !important;
+      gap: 4px !important;
+    }
+    .demo-panel .panel-header > div:first-child {
+      width: 18px !important;
+      height: 18px !important;
+      font-size: 8px !important;
+    }
+    .demo-panel .panel-header .panel-name {
+      font-size: 8.5px !important;
+    }
+    .demo-panel .panel-header .panel-sub {
+      font-size: 7.5px !important;
+    }
+    .demo-chat .msg-bubble {
+      font-size: 8.5px !important;
+      padding: 4px 6px !important;
+    }
+    .demo-chat .msg-title {
+      font-size: 8px !important;
+    }
+  }
+
   .fade-in {
     opacity: 0;
     transform: translateY(30px);
@@ -933,11 +1047,61 @@
   }
 
   /* MOBILE */
+  @media (max-width: 900px) {
+    section { padding: 70px 20px; }
+    .flow-section { padding: 70px 20px; }
+    .cta-section { padding: 70px 20px; }
+  }
+
   @media (max-width: 640px) {
     .flow-step:not(:last-child)::after { display: none; }
-    .modulo-header { flex-wrap: wrap; }
-    .modulo-price { margin-left: 0; }
-    .precio-grid { grid-template-columns: 1fr; }
+    .modulo-header { flex-wrap: wrap; gap: 12px; padding: 24px 20px; }
+    .modulo-num { font-size: 36px; min-width: 44px; }
+    .modulo-info h3 { font-size: 19px; }
+    .modulo-info p { font-size: 12px; }
+    .expand-hint { width: 100%; margin-left: 0; order: 3; text-align: left; }
+    .modulo-body.open { padding: 0 20px 24px; }
+    .modulo-body { padding: 0 20px; }
+    .modulo-features li { font-size: 13px; }
+    .mini-flow { padding: 12px; gap: 6px; }
+    .mini-step { font-size: 11px; padding: 5px 10px; }
+    .arrow-sep { font-size: 12px; }
+    .modulo-price-bottom .amount { font-size: 26px; }
+
+    .precio-grid { grid-template-columns: 1fr; gap: 16px; }
+    .precio-card { padding: 28px 22px; }
+    .precio-card .big-price { font-size: 38px; }
+
+    .problema-grid { grid-template-columns: 1fr; gap: 12px; }
+    .problema-card { padding: 22px 20px; }
+
+    .hero { padding: 80px 20px 60px; }
+    .hero h1 { font-size: clamp(36px, 12vw, 60px); }
+    .hero p { font-size: 14px; }
+
+    .section-title { font-size: clamp(28px, 8vw, 42px); }
+    section { padding: 60px 20px; }
+
+    .timeline { padding-left: 30px; }
+    .timeline-item h4 { font-size: 14px; }
+    .timeline-item p { font-size: 12px; }
+
+    .nota-box { padding: 24px 22px; }
+    .nota-box p { font-size: 13px; }
+
+    .cta-section::before { font-size: 180px; }
+    .btn-primary { padding: 14px 32px; font-size: 12px; }
+
+    footer p { font-size: 11px; line-height: 1.6; }
+  }
+
+  @media (max-width: 380px) {
+    .modulo-header { padding: 20px 16px; }
+    .modulo-body.open { padding: 0 16px 20px; }
+    .modulo-body { padding: 0 16px; }
+    .precio-card { padding: 24px 18px; }
+    section { padding: 50px 16px; }
+    .hero { padding: 70px 16px 50px; }
   }
 </style>
 </head>
@@ -984,7 +1148,7 @@
 </section>
 
 <!-- DEMO INTERACTIVO -->
-<div class="flow-section" style="padding: 80px 24px;">
+<div class="flow-section demo-section-mobile" style="padding: 80px 24px;">
   <div class="flow-inner">
     <p class="section-label">Demo en vivo</p>
     <h2 class="section-title fade-in">Así va a funcionar.</h2>
@@ -1002,48 +1166,48 @@
     </div>
 
     <!-- 3 PANTALLAS -->
-    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:20px;">
+    <div class="demo-grid">
 
       <!-- DIANA - ADMIN -->
-      <div style="background:#141414;border:1px solid #2a2a2a;border-radius:12px;overflow:hidden;height:58vh;min-height:420px;display:flex;flex-direction:column;">
-        <div style="background:#17212b;padding:10px 14px;display:flex;align-items:center;gap:10px;flex-shrink:0;border-bottom:1px solid #2a2a2a;">
+      <div class="demo-panel">
+        <div class="panel-header" style="background:#17212b;display:flex;align-items:center;gap:10px;flex-shrink:0;border-bottom:1px solid #2a2a2a;">
           <div style="width:34px;height:34px;border-radius:50%;background:var(--accent);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#0a0a0a;flex-shrink:0;">D</div>
-          <div>
-            <div style="font-size:12px;font-weight:500;">be.sweaters · Admin</div>
-            <div style="font-size:10px;color:#c8a96e;">Diana · Panel de control</div>
+          <div style="min-width:0;overflow:hidden;">
+            <div class="panel-name" style="font-size:12px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">be.sweaters · Admin</div>
+            <div class="panel-sub" style="font-size:10px;color:#c8a96e;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">Diana · Panel</div>
           </div>
         </div>
-        <div id="demoAdmin" style="flex:1;overflow-y:auto;padding:10px;display:flex;flex-direction:column;gap:6px;background:#0e1621;"></div>
+        <div id="demoAdmin" class="demo-chat" style="flex:1;overflow-y:auto;padding:10px;display:flex;flex-direction:column;gap:6px;background:#0e1621;"></div>
       </div>
 
       <!-- CLIENTE WA -->
-      <div style="background:#141414;border:1px solid #2a2a2a;border-radius:12px;overflow:hidden;height:58vh;min-height:420px;display:flex;flex-direction:column;">
-        <div style="background:#075e54;padding:10px 14px;display:flex;align-items:center;gap:10px;flex-shrink:0;border-bottom:1px solid #0a3d34;">
+      <div class="demo-panel">
+        <div class="panel-header" style="background:#075e54;display:flex;align-items:center;gap:10px;flex-shrink:0;border-bottom:1px solid #0a3d34;">
           <div style="width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,#25d366,#128c7e);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#fff;flex-shrink:0;">S</div>
-          <div>
-            <div style="font-size:12px;font-weight:500;">be.sweaters</div>
-            <div style="font-size:10px;color:#a8d5a2;">Sara · Cliente nueva</div>
+          <div style="min-width:0;overflow:hidden;">
+            <div class="panel-name" style="font-size:12px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">be.sweaters</div>
+            <div class="panel-sub" style="font-size:10px;color:#a8d5a2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">Sara · Cliente</div>
           </div>
         </div>
-        <div id="demoCliente" style="flex:1;overflow-y:auto;padding:10px;display:flex;flex-direction:column;gap:6px;background:#0b141a;"></div>
+        <div id="demoCliente" class="demo-chat" style="flex:1;overflow-y:auto;padding:10px;display:flex;flex-direction:column;gap:6px;background:#0b141a;"></div>
       </div>
 
       <!-- PROVEEDOR -->
-      <div style="background:#141414;border:1px solid #2a2a2a;border-radius:12px;overflow:hidden;height:58vh;min-height:420px;display:flex;flex-direction:column;">
-        <div style="background:#1a1a2e;padding:10px 14px;display:flex;align-items:center;gap:10px;flex-shrink:0;border-bottom:1px solid #2a2a3e;">
+      <div class="demo-panel">
+        <div class="panel-header" style="background:#1a1a2e;display:flex;align-items:center;gap:10px;flex-shrink:0;border-bottom:1px solid #2a2a3e;">
           <div style="width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,#6366f1,#4338ca);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#fff;flex-shrink:0;">P</div>
-          <div>
-            <div style="font-size:12px;font-weight:500;">Proveedor</div>
-            <div style="font-size:10px;color:#a5b4fc;">Notificaciones automáticas</div>
+          <div style="min-width:0;overflow:hidden;">
+            <div class="panel-name" style="font-size:12px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">Proveedor</div>
+            <div class="panel-sub" style="font-size:10px;color:#a5b4fc;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">Notif. auto</div>
           </div>
         </div>
-        <div id="demoProveedor" style="flex:1;overflow-y:auto;padding:10px;display:flex;flex-direction:column;gap:6px;background:#0a0a1a;"></div>
+        <div id="demoProveedor" class="demo-chat" style="flex:1;overflow-y:auto;padding:10px;display:flex;flex-direction:column;gap:6px;background:#0a0a1a;"></div>
       </div>
 
     </div>
 
     <!-- STATS -->
-    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;">
+    <div class="demo-stats">
       <div style="background:#1e1e1e;border:1px solid #2a2a2a;border-left:3px solid var(--accent);border-radius:6px;padding:14px;">
         <div id="ds_pedidos" style="font-family:'Playfair Display',serif;font-size:22px;color:var(--accent);">0</div>
         <div style="font-size:9px;color:#666;letter-spacing:1px;text-transform:uppercase;">Pedidos hoy</div>
@@ -1064,12 +1228,6 @@
 
   </div>
 </div>
-
-<style>
-@media(max-width:768px){
-  #demoGrid { grid-template-columns: 1fr !important; }
-}
-</style>
 
 <script>
 let demoPlaying = false;
@@ -1131,9 +1289,10 @@ function addDemoMsg(panelId, msg){
   let bg, align;
   if(isUser){ bg = isWA ? '#005c4b' : '#2b5278'; align = 'flex-end'; }
   else { bg = isWA ? '#202c33' : '#182533'; align = 'flex-start'; }
+  div.className = 'msg-bubble';
   div.style.cssText = `max-width:92%;padding:8px 11px;border-radius:10px;font-size:12px;line-height:1.4;align-self:${align};background:${bg};color:#fff;animation:demoSlide 0.3s ease;word-wrap:break-word;white-space:pre-line;`;
   let html = '';
-  if(msg.title) html += `<div style="font-weight:700;color:${msg.success?'#10b981':'var(--accent)'};font-size:11px;margin-bottom:4px;">${msg.title}</div>`;
+  if(msg.title) html += `<div class="msg-title" style="font-weight:700;color:${msg.success?'#10b981':'var(--accent)'};font-size:11px;margin-bottom:4px;">${msg.title}</div>`;
   html += msg.text.replace(/\*([^*]+)\*/g,'<strong>$1</strong>');
   div.innerHTML = html;
   panel.appendChild(div);
@@ -1198,14 +1357,6 @@ function toggleDemoSpeed(){
   document.getElementById('demoSpeedBtn').textContent = `⚡ ${demoSpeed}x`;
 }
 </script>
-
-<style>
-@keyframes demoSlide { from{opacity:0;transform:translateY(6px)} to{opacity:1;transform:translateY(0)} }
-@keyframes demoTyping { 0%,60%,100%{transform:translateY(0);opacity:0.3} 30%{transform:translateY(-4px);opacity:1} }
-@media(max-width:768px){
-  #demoAdmin,#demoCliente,#demoProveedor { min-height:300px !important; }
-}
-</style>
 
 <!-- MÓDULOS -->
 <section class="fade-in">
