@@ -725,6 +725,237 @@ body::after {
   color: var(--text-muted);
 }
 
+/* === DEMO HELENA === */
+.demo-section {
+  background: var(--bg-2);
+  position: relative;
+  overflow: hidden;
+}
+.demo-section::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 60% 40% at 80% 20%, rgba(0,195,255,0.06) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 40% at 20% 80%, rgba(0,136,255,0.05) 0%, transparent 60%);
+  pointer-events: none;
+}
+.demo-wrap {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: 1fr 1.25fr;
+  gap: 40px;
+  align-items: center;
+  margin-top: 40px;
+}
+.demo-info {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.demo-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 14px;
+  background: var(--accent-soft);
+  border: 1px solid var(--border-strong);
+  border-radius: 100px;
+  font-family: var(--body);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--accent);
+  width: fit-content;
+}
+.demo-badge-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--success);
+  box-shadow: 0 0 8px var(--success);
+  animation: demoPulse 2s infinite;
+}
+@keyframes demoPulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.5; transform: scale(0.8); }
+}
+.demo-info h3 {
+  font-family: var(--display);
+  font-size: clamp(28px, 3.5vw, 44px);
+  font-weight: 800;
+  line-height: 1.1;
+  letter-spacing: -1px;
+}
+.demo-info h3 .accent {
+  color: var(--accent);
+  font-style: italic;
+}
+.demo-info p {
+  font-size: 16px;
+  color: var(--text-muted);
+  line-height: 1.65;
+  max-width: 480px;
+}
+.demo-features {
+  list-style: none;
+  padding: 0;
+  margin: 8px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.demo-features li {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 14px;
+  color: var(--text);
+  font-family: var(--body);
+}
+.demo-features li::before {
+  content: '→';
+  color: var(--accent);
+  font-weight: 700;
+  flex-shrink: 0;
+}
+.demo-actions {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-top: 12px;
+}
+.demo-btn {
+  padding: 14px 24px;
+  border-radius: 10px;
+  font-family: var(--body);
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: all .3s ease;
+  cursor: pointer;
+  border: none;
+}
+.demo-btn-primary {
+  background: linear-gradient(90deg, var(--accent), var(--accent-2));
+  color: #000;
+  box-shadow: 0 4px 20px rgba(0,195,255,0.25);
+}
+.demo-btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 30px rgba(0,195,255,0.4);
+}
+.demo-btn-ghost {
+  background: transparent;
+  color: var(--accent);
+  border: 1px solid var(--border-strong);
+}
+.demo-btn-ghost:hover {
+  background: var(--accent-soft);
+  transform: translateY(-2px);
+}
+.demo-btn .arrow {
+  transition: transform .3s ease;
+}
+.demo-btn:hover .arrow {
+  transform: translateX(4px);
+}
+.demo-frame {
+  position: relative;
+  border-radius: 16px;
+  overflow: hidden;
+  border: 1px solid var(--border-strong);
+  background: var(--surface);
+  box-shadow:
+    0 30px 60px rgba(0,0,0,0.4),
+    0 0 40px rgba(0,195,255,0.08);
+  transition: transform .4s ease, box-shadow .4s ease;
+}
+.demo-frame:hover {
+  transform: translateY(-4px);
+  box-shadow:
+    0 40px 80px rgba(0,0,0,0.5),
+    0 0 60px rgba(0,195,255,0.15);
+}
+.demo-frame-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 16px;
+  background: var(--surface-2);
+  border-bottom: 1px solid var(--border);
+}
+.demo-frame-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+.demo-frame-dot.r { background: #ff5f57; }
+.demo-frame-dot.y { background: #febc2e; }
+.demo-frame-dot.g { background: #28c840; }
+.demo-frame-url {
+  flex: 1;
+  margin-left: 12px;
+  font-family: var(--body);
+  font-size: 12px;
+  color: var(--text-dim);
+  background: var(--bg);
+  padding: 6px 12px;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.demo-iframe {
+  width: 100%;
+  height: 560px;
+  border: none;
+  display: block;
+  background: #fff;
+}
+.demo-overlay-btn {
+  position: absolute;
+  bottom: 16px;
+  right: 16px;
+  background: rgba(4,7,13,0.85);
+  backdrop-filter: blur(10px);
+  border: 1px solid var(--border-strong);
+  color: var(--accent);
+  padding: 8px 14px;
+  border-radius: 8px;
+  font-family: var(--body);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: all .25s ease;
+  z-index: 2;
+}
+.demo-overlay-btn:hover {
+  background: var(--accent);
+  color: #000;
+}
+@media (max-width: 900px) {
+  .demo-wrap { grid-template-columns: 1fr; gap: 32px; }
+  .demo-iframe { height: 460px; }
+  .demo-info p { max-width: 100%; }
+}
+@media (max-width: 600px) {
+  .demo-iframe { height: 380px; }
+  .demo-frame-url { font-size: 10px; }
+}
+
 /* === BENEFICIOS === */
 .benefits-section { background: var(--bg-2); }
 .benefits-list {
@@ -897,27 +1128,12 @@ body::after {
 }
 .price-beta-value {
   font-family: var(--display);
-  font-size: clamp(56px, 12vw, 140px);
+  font-size: clamp(72px, 12vw, 140px);
   font-weight: 900;
   color: var(--text);
   line-height: 1;
   letter-spacing: -4px;
   text-shadow: 0 0 40px rgba(0,195,255,0.4);
-  word-break: break-word;
-  overflow-wrap: anywhere;
-}
-@media (max-width: 480px) {
-  .price-beta-value {
-    font-size: clamp(44px, 13vw, 80px);
-    letter-spacing: -2px;
-  }
-  .price-original {
-    font-size: clamp(36px, 11vw, 60px) !important;
-    letter-spacing: -1px;
-  }
-  .hero-price-block {
-    padding: 40px 20px !important;
-  }
 }
 .price-savings {
   font-size: 17px;
@@ -1713,6 +1929,54 @@ body::after {
       <div class="sector-card">
         <div class="sector-head"><h4>Retail móvil</h4><span class="sector-tag">Activo</span></div>
         <p>Agentes de ventas, inventario automatizado y atención post-venta por canales digitales.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DEMO HELENA -->
+<section class="section demo-section" id="demo-helena">
+  <div class="container">
+    <div class="demo-wrap">
+      <div class="demo-info reveal">
+        <div class="demo-badge">
+          <span class="demo-badge-dot"></span>
+          Caso en vivo · Helena Store
+        </div>
+        <h3>De idea a web con agente de ventas. <span class="accent">En días.</span></h3>
+        <p>Helena Store es un retail de tecnología real operando con Jarvis. Catálogo digital, agente de ventas por WhatsApp y control de inventario desde el mismo chat.</p>
+        <ul class="demo-features">
+          <li>E-commerce responsive con catálogo completo</li>
+          <li>Agente de ventas integrado a WhatsApp</li>
+          <li>Inventario sincronizado en tiempo real</li>
+          <li>Cero paneles: todo se maneja desde Telegram</li>
+        </ul>
+        <div class="demo-actions">
+          <a href="https://helena-store-web.vercel.app/" target="_blank" rel="noopener" class="demo-btn demo-btn-primary">
+            Ver la web en vivo <span class="arrow">→</span>
+          </a>
+          <a href="#precio" class="demo-btn demo-btn-ghost">
+            Quiero uno así <span class="arrow">→</span>
+          </a>
+        </div>
+      </div>
+
+      <div class="demo-frame reveal">
+        <div class="demo-frame-bar">
+          <span class="demo-frame-dot r"></span>
+          <span class="demo-frame-dot y"></span>
+          <span class="demo-frame-dot g"></span>
+          <span class="demo-frame-url">helena-store-web.vercel.app</span>
+        </div>
+        <iframe
+          class="demo-iframe"
+          src="https://helena-store-web.vercel.app/"
+          title="Helena Store — Demo en vivo"
+          loading="lazy"
+          sandbox="allow-scripts allow-same-origin allow-popups allow-forms"></iframe>
+        <a href="https://helena-store-web.vercel.app/" target="_blank" rel="noopener" class="demo-overlay-btn">
+          ⛶ Pantalla completa
+        </a>
       </div>
     </div>
   </div>
