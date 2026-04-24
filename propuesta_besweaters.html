@@ -1,0 +1,1071 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Propuesta Digital — be.sweaters</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --black: #0a0a0a;
+    --white: #f5f2ee;
+    --accent: #c8a96e;
+    --mid: #1e1e1e;
+    --soft: #2e2e2e;
+    --text-muted: #888;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--black);
+    color: var(--white);
+    font-family: 'DM Sans', sans-serif;
+    overflow-x: hidden;
+  }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 60px 24px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -200px; left: -200px;
+    width: 600px; height: 600px;
+    background: radial-gradient(circle, rgba(200,169,110,0.12) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .hero::after {
+    content: '';
+    position: absolute;
+    bottom: -200px; right: -200px;
+    width: 500px; height: 500px;
+    background: radial-gradient(circle, rgba(200,169,110,0.08) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .brand-tag {
+    font-size: 11px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 32px;
+    opacity: 0;
+    animation: fadeUp 0.8s 0.2s forwards;
+  }
+
+  .hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(42px, 8vw, 96px);
+    font-weight: 900;
+    line-height: 1;
+    margin-bottom: 24px;
+    opacity: 0;
+    animation: fadeUp 0.8s 0.4s forwards;
+  }
+
+  .hero h1 span { color: var(--accent); }
+
+  .hero p {
+    max-width: 560px;
+    font-size: 16px;
+    line-height: 1.7;
+    color: #aaa;
+    margin-bottom: 48px;
+    opacity: 0;
+    animation: fadeUp 0.8s 0.6s forwards;
+  }
+
+  .scroll-hint {
+    position: absolute;
+    bottom: 32px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    font-size: 10px;
+    letter-spacing: 3px;
+    color: var(--text-muted);
+    opacity: 0;
+    animation: fadeUp 0.8s 1s forwards;
+  }
+
+  .scroll-line {
+    width: 1px;
+    height: 40px;
+    background: linear-gradient(to bottom, var(--accent), transparent);
+    animation: pulse 2s infinite;
+  }
+
+  /* SECTION BASE */
+  section {
+    padding: 100px 24px;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  .section-label {
+    font-size: 10px;
+    letter-spacing: 5px;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 16px;
+  }
+
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(32px, 5vw, 56px);
+    font-weight: 700;
+    line-height: 1.1;
+    margin-bottom: 24px;
+  }
+
+  .divider {
+    width: 48px;
+    height: 2px;
+    background: var(--accent);
+    margin: 24px 0 48px;
+  }
+
+  /* PROBLEMA */
+  .problema-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 24px;
+    margin-top: 48px;
+  }
+
+  .problema-card {
+    background: var(--mid);
+    border: 1px solid #333;
+    border-radius: 4px;
+    padding: 28px 24px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .problema-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 3px; height: 100%;
+    background: #c0392b;
+  }
+
+  .problema-card .icon {
+    font-size: 28px;
+    margin-bottom: 12px;
+  }
+
+  .problema-card h4 {
+    font-size: 14px;
+    font-weight: 500;
+    margin-bottom: 8px;
+  }
+
+  .problema-card p {
+    font-size: 13px;
+    color: var(--text-muted);
+    line-height: 1.6;
+  }
+
+  /* FLOW ANIMATION */
+  .flow-section {
+    background: var(--mid);
+    padding: 100px 24px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .flow-section::before {
+    content: '';
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: 800px; height: 800px;
+    background: radial-gradient(circle, rgba(200,169,110,0.04) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .flow-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  .flow-steps {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0;
+    margin-top: 60px;
+    position: relative;
+  }
+
+  .flow-step {
+    flex: 1;
+    min-width: 160px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    position: relative;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.5s ease;
+  }
+
+  .flow-step.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .flow-step:not(:last-child)::after {
+    content: '→';
+    position: absolute;
+    right: -12px;
+    top: 28px;
+    font-size: 20px;
+    color: var(--accent);
+    z-index: 2;
+  }
+
+  .step-circle {
+    width: 56px; height: 56px;
+    border-radius: 50%;
+    background: var(--black);
+    border: 2px solid var(--accent);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    margin-bottom: 16px;
+    position: relative;
+    transition: all 0.3s ease;
+  }
+
+  .flow-step.active .step-circle {
+    background: var(--accent);
+    box-shadow: 0 0 24px rgba(200,169,110,0.5);
+    animation: ping 1s ease-out infinite;
+  }
+
+  .step-label {
+    font-size: 12px;
+    font-weight: 500;
+    margin-bottom: 4px;
+  }
+
+  .step-sub {
+    font-size: 11px;
+    color: var(--text-muted);
+    max-width: 120px;
+  }
+
+  /* MÓDULOS */
+  .modulos-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+    margin-top: 48px;
+  }
+
+  .modulo-card {
+    background: var(--mid);
+    border: 1px solid #2a2a2a;
+    border-radius: 8px;
+    overflow: hidden;
+    position: relative;
+    transition: border-color 0.3s ease;
+  }
+
+  .modulo-card:hover {
+    border-color: var(--accent);
+  }
+
+  .modulo-header {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 32px 36px;
+    cursor: pointer;
+  }
+
+  .modulo-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 48px;
+    font-weight: 900;
+    color: var(--accent);
+    line-height: 1;
+    min-width: 56px;
+  }
+
+  .modulo-info h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 24px;
+    margin-bottom: 4px;
+  }
+
+  .modulo-info p {
+    font-size: 13px;
+    color: var(--text-muted);
+  }
+
+  .modulo-price {
+    margin-left: auto;
+    text-align: right;
+  }
+
+  .modulo-price .amount {
+    font-family: 'Playfair Display', serif;
+    font-size: 28px;
+    color: var(--accent);
+  }
+
+  .modulo-price .label {
+    font-size: 11px;
+    color: var(--text-muted);
+    letter-spacing: 1px;
+  }
+
+  .modulo-body {
+    padding: 0 36px;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.5s ease, padding 0.3s ease;
+  }
+
+  .modulo-body.open {
+    max-height: 600px;
+    padding: 0 36px 32px;
+  }
+
+  .modulo-features {
+    list-style: none;
+    border-top: 1px solid #2a2a2a;
+    padding-top: 24px;
+  }
+
+  .modulo-features li {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 8px 0;
+    font-size: 14px;
+    color: #bbb;
+    line-height: 1.5;
+  }
+
+  .modulo-features li::before {
+    content: '✦';
+    color: var(--accent);
+    font-size: 10px;
+    margin-top: 4px;
+    flex-shrink: 0;
+  }
+
+  /* FLOW MINI POR MÓDULO */
+  .mini-flow {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 20px;
+    padding: 16px;
+    background: var(--black);
+    border-radius: 6px;
+  }
+
+  .mini-step {
+    background: var(--soft);
+    border: 1px solid #333;
+    border-radius: 20px;
+    padding: 6px 14px;
+    font-size: 12px;
+    color: #ccc;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    animation: flowIn 0.3s ease both;
+  }
+
+  .mini-step .dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--accent);
+  }
+
+  .arrow-sep {
+    color: var(--accent);
+    font-size: 14px;
+    align-self: center;
+  }
+
+  /* TIMELINE */
+  .timeline {
+    margin-top: 48px;
+    position: relative;
+    padding-left: 40px;
+  }
+
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 12px; top: 0; bottom: 0;
+    width: 1px;
+    background: linear-gradient(to bottom, var(--accent), transparent);
+  }
+
+  .timeline-item {
+    position: relative;
+    margin-bottom: 40px;
+  }
+
+  .timeline-item::before {
+    content: '';
+    position: absolute;
+    left: -34px; top: 6px;
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    background: var(--accent);
+    border: 2px solid var(--black);
+    box-shadow: 0 0 8px rgba(200,169,110,0.5);
+  }
+
+  .timeline-item h4 {
+    font-size: 15px;
+    font-weight: 500;
+    margin-bottom: 4px;
+  }
+
+  .timeline-item p {
+    font-size: 13px;
+    color: var(--text-muted);
+  }
+
+  /* PRECIOS */
+  .precio-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 24px;
+    margin-top: 48px;
+  }
+
+  .precio-card {
+    background: var(--mid);
+    border: 1px solid #2a2a2a;
+    border-radius: 8px;
+    padding: 36px 28px;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+  }
+
+  .precio-card:hover {
+    transform: translateY(-4px);
+    border-color: var(--accent);
+  }
+
+  .precio-card.destacado {
+    border-color: var(--accent);
+    background: linear-gradient(135deg, #1e1a14 0%, var(--mid) 100%);
+  }
+
+  .precio-card.destacado::before {
+    content: 'RECOMENDADO';
+    position: absolute;
+    top: 16px; right: -28px;
+    background: var(--accent);
+    color: var(--black);
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    padding: 4px 40px;
+    transform: rotate(45deg);
+  }
+
+  .precio-card h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px;
+    margin-bottom: 8px;
+  }
+
+  .precio-card .big-price {
+    font-family: 'Playfair Display', serif;
+    font-size: 44px;
+    color: var(--accent);
+    line-height: 1;
+    margin: 16px 0 4px;
+  }
+
+  .precio-card .price-sub {
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-bottom: 24px;
+  }
+
+  .precio-card ul {
+    list-style: none;
+    margin-bottom: 24px;
+  }
+
+  .precio-card ul li {
+    font-size: 13px;
+    color: #aaa;
+    padding: 6px 0;
+    border-bottom: 1px solid #2a2a2a;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .precio-card ul li::before {
+    content: '—';
+    color: var(--accent);
+    font-size: 10px;
+  }
+
+  .mensualidad {
+    font-size: 12px;
+    color: var(--text-muted);
+    padding: 12px 0;
+    border-top: 1px solid #2a2a2a;
+  }
+
+  .mensualidad span {
+    color: var(--accent);
+    font-weight: 500;
+  }
+
+  /* NOTA */
+  .nota-box {
+    background: linear-gradient(135deg, #1a1500, #1e1e1e);
+    border: 1px solid rgba(200,169,110,0.3);
+    border-radius: 8px;
+    padding: 32px 36px;
+    margin-top: 48px;
+  }
+
+  .nota-box p {
+    font-size: 14px;
+    color: #bbb;
+    line-height: 1.7;
+  }
+
+  .nota-box strong {
+    color: var(--accent);
+  }
+
+  /* CTA */
+  .cta-section {
+    text-align: center;
+    padding: 100px 24px;
+    background: var(--mid);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .cta-section::before {
+    content: 'be.';
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    font-family: 'Playfair Display', serif;
+    font-size: 280px;
+    font-weight: 900;
+    color: rgba(255,255,255,0.02);
+    pointer-events: none;
+    white-space: nowrap;
+  }
+
+  .cta-section h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(32px, 5vw, 56px);
+    margin-bottom: 16px;
+  }
+
+  .cta-section p {
+    color: var(--text-muted);
+    font-size: 15px;
+    margin-bottom: 40px;
+  }
+
+  .btn-primary {
+    display: inline-block;
+    background: var(--accent);
+    color: var(--black);
+    padding: 16px 40px;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    text-decoration: none;
+    border-radius: 2px;
+    transition: all 0.3s ease;
+  }
+
+  .btn-primary:hover {
+    background: #e0bf80;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(200,169,110,0.3);
+  }
+
+  /* FOOTER */
+  footer {
+    padding: 40px 24px;
+    text-align: center;
+    border-top: 1px solid #1a1a1a;
+  }
+
+  footer p {
+    font-size: 12px;
+    color: #555;
+  }
+
+  /* ANIMATIONS */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
+  }
+
+  @keyframes ping {
+    0% { box-shadow: 0 0 0 0 rgba(200,169,110,0.6); }
+    100% { box-shadow: 0 0 0 16px rgba(200,169,110,0); }
+  }
+
+  @keyframes flowIn {
+    from { opacity: 0; transform: scale(0.9); }
+    to { opacity: 1; transform: scale(1); }
+  }
+
+  .fade-in {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 0.7s ease;
+  }
+
+  .fade-in.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .expand-hint {
+    margin-left: auto;
+    font-size: 11px;
+    color: var(--accent);
+    letter-spacing: 1px;
+    white-space: nowrap;
+    transition: transform 0.3s ease;
+  }
+
+  .modulo-body.open ~ * .expand-hint,
+  .modulo-card:has(.modulo-body.open) .expand-hint {
+    transform: rotate(180deg);
+  }
+
+  .modulo-price-bottom {
+    margin-top: 24px;
+    padding-top: 20px;
+    border-top: 1px solid #2a2a2a;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .modulo-price-bottom .amount {
+    font-family: 'Playfair Display', serif;
+    font-size: 32px;
+    color: var(--accent);
+  }
+
+  .modulo-price-bottom .label {
+    font-size: 11px;
+    color: var(--text-muted);
+    letter-spacing: 2px;
+  }
+
+  /* MOBILE */
+  @media (max-width: 640px) {
+    .flow-step:not(:last-child)::after { display: none; }
+    .modulo-header { flex-wrap: wrap; }
+    .modulo-price { margin-left: 0; }
+    .precio-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+  <p class="brand-tag">Propuesta de Transformación Digital — be. sweaters</p>
+  <h1>Tu negocio<br><span>sin caos.</span></h1>
+  <p>Sistema de automatización en 3 módulos progresivos: del WhatsApp roto a una operación que vende sola, mide y crece.</p>
+  <div class="scroll-hint">
+    <span>EXPLORAR</span>
+    <div class="scroll-line"></div>
+  </div>
+</div>
+
+<!-- PROBLEMA -->
+<section class="fade-in">
+  <p class="section-label">El problema actual</p>
+  <h2 class="section-title">Así funciona hoy.<br>No debería.</h2>
+  <div class="divider"></div>
+  <div class="problema-grid">
+    <div class="problema-card">
+      <div class="icon">📵</div>
+      <h4>Mensajes sin respuesta</h4>
+      <p>3 personas en WhatsApp Business, sin coordinación. Los clientes esperan. Se van.</p>
+    </div>
+    <div class="problema-card">
+      <div class="icon">🔄</div>
+      <h4>Proceso manual y lento</h4>
+      <p>Ver catálogo → escribir → registrar → llamar al proveedor → confirmar. Todo a mano, todo dependiente de humanos.</p>
+    </div>
+    <div class="problema-card">
+      <div class="icon">📊</div>
+      <h4>Cero visibilidad</h4>
+      <p>No hay datos de qué vende más, qué cliente compra, ni qué promocionar. Se opera a ciegas.</p>
+    </div>
+    <div class="problema-card">
+      <div class="icon">⏳</div>
+      <h4>Tiempo malgastado</h4>
+      <p>Tu equipo hace trabajo que una máquina puede hacer mejor, más rápido y sin errores.</p>
+    </div>
+  </div>
+</section>
+
+<!-- FLUJO ANIMADO GENERAL -->
+<div class="flow-section">
+  <div class="flow-inner">
+    <p class="section-label">Flujo del nuevo sistema</p>
+    <h2 class="section-title fade-in">Así va a funcionar.</h2>
+    <div class="divider"></div>
+    <div class="flow-steps" id="mainFlow">
+      <div class="flow-step" data-delay="0">
+        <div class="step-circle">👤</div>
+        <div class="step-label">Cliente escribe</div>
+        <div class="step-sub">WhatsApp Business</div>
+      </div>
+      <div class="flow-step" data-delay="1">
+        <div class="step-circle">🤖</div>
+        <div class="step-label">Bot responde</div>
+        <div class="step-sub">Inmediato, 24/7</div>
+      </div>
+      <div class="flow-step" data-delay="2">
+        <div class="step-circle">🛍️</div>
+        <div class="step-label">Escoge producto</div>
+        <div class="step-sub">Catálogo interactivo</div>
+      </div>
+      <div class="flow-step" data-delay="3">
+        <div class="step-circle">💳</div>
+        <div class="step-label">Confirma pago</div>
+        <div class="step-sub">Transferencia</div>
+      </div>
+      <div class="flow-step" data-delay="4">
+        <div class="step-circle">📦</div>
+        <div class="step-label">Notifica proveedor</div>
+        <div class="step-sub">Automático</div>
+      </div>
+      <div class="flow-step" data-delay="5">
+        <div class="step-circle">✅</div>
+        <div class="step-label">Seguimiento 5 días</div>
+        <div class="step-sub">Recordatorio auto</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MÓDULOS -->
+<section class="fade-in">
+  <p class="section-label">La solución</p>
+  <h2 class="section-title">Tres módulos.<br>Un solo sistema.</h2>
+  <div class="divider"></div>
+  <p style="color: var(--text-muted); font-size:14px; margin-bottom: 48px;">Haz clic en cada módulo para ver el detalle y su flujo de funcionamiento.</p>
+
+  <div class="modulos-stack">
+
+    <!-- MÓDULO 1 -->
+    <div class="modulo-card">
+      <div class="modulo-header" onclick="toggleModulo(this)">
+        <div class="modulo-num">01</div>
+        <div class="modulo-info">
+          <h3>Bot de WhatsApp</h3>
+          <p>Automatización completa del canal de ventas</p>
+        </div>
+        <div class="expand-hint">Ver beneficios ↓</div>
+      </div>
+      <div class="modulo-body">
+        <ul class="modulo-features">
+          <li>Bot entrenado con respuestas personalizadas para be.sweaters</li>
+          <li>Catálogo completo cargado dentro del bot (todos los productos, referencias, colores y precios)</li>
+          <li>Flujo de pedido: bienvenida → producto → talla → pago → confirmación</li>
+          <li>Confirmación de pago automática al recibir comprobante</li>
+          <li>Notificación automática al proveedor al confirmar el pedido</li>
+          <li>Recordatorio de seguimiento a los 5 días si no hay novedad de envío</li>
+          <li>1 semana de programación + pruebas reales antes de salir en vivo</li>
+          <li>Coordinación con el equipo para ajustar respuestas y entrenar el bot</li>
+        </ul>
+        <div class="mini-flow">
+          <div class="mini-step"><div class="dot"></div>Cliente escribe</div>
+          <div class="arrow-sep">→</div>
+          <div class="mini-step"><div class="dot"></div>Bot saluda y muestra menú</div>
+          <div class="arrow-sep">→</div>
+          <div class="mini-step"><div class="dot"></div>Cliente escoge producto</div>
+          <div class="arrow-sep">→</div>
+          <div class="mini-step"><div class="dot"></div>Bot confirma y pide pago</div>
+          <div class="arrow-sep">→</div>
+          <div class="mini-step"><div class="dot"></div>Pedido a proveedor</div>
+          <div class="arrow-sep">→</div>
+          <div class="mini-step"><div class="dot"></div>Seguimiento 5 días</div>
+        </div>
+        <div class="modulo-price-bottom">
+          <div class="amount">$2.000.000</div>
+          <div class="label">PAGO ÚNICO</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- MÓDULO 2 -->
+    <div class="modulo-card">
+      <div class="modulo-header" onclick="toggleModulo(this)">
+        <div class="modulo-num">02</div>
+        <div class="modulo-info">
+          <h3>Página Web</h3>
+          <p>Vitrina digital con catálogo y botón de compra directo</p>
+        </div>
+        <div class="expand-hint">Ver beneficios ↓</div>
+      </div>
+      <div class="modulo-body">
+        <ul class="modulo-features">
+          <li>Landing page de marca con identidad visual de be.sweaters</li>
+          <li>Catálogo visual completo con fotos, nombre, referencia, colores y precio</li>
+          <li>Botón de compra por producto que abre WhatsApp con mensaje prellenado</li>
+          <li>Sección de contacto e información del negocio</li>
+          <li>Optimizada para móvil (donde compra tu cliente)</li>
+          <li>Carga de todo el contenido del catálogo incluida</li>
+          <li>1 semana de construcción y ajustes</li>
+        </ul>
+        <div class="mini-flow">
+          <div class="mini-step"><div class="dot"></div>Cliente visita la web</div>
+          <div class="arrow-sep">→</div>
+          <div class="mini-step"><div class="dot"></div>Navega el catálogo</div>
+          <div class="arrow-sep">→</div>
+          <div class="mini-step"><div class="dot"></div>Clic en "Comprar"</div>
+          <div class="arrow-sep">→</div>
+          <div class="mini-step"><div class="dot"></div>Abre WhatsApp con mensaje listo</div>
+          <div class="arrow-sep">→</div>
+          <div class="mini-step"><div class="dot"></div>Bot toma el pedido</div>
+        </div>
+        <div class="modulo-price-bottom">
+          <div class="amount">$2.000.000</div>
+          <div class="label">PAGO ÚNICO</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- MÓDULO 3 -->
+    <div class="modulo-card">
+      <div class="modulo-header" onclick="toggleModulo(this)">
+        <div class="modulo-num">03</div>
+        <div class="modulo-info">
+          <h3>Reportes + Marketing</h3>
+          <p>Datos reales + estrategia de contenido con IA</p>
+        </div>
+        <div class="expand-hint">Ver beneficios ↓</div>
+      </div>
+      <div class="modulo-body">
+        <ul class="modulo-features">
+          <li>Reporte semanal por email: ventas, productos más pedidos, comportamiento del cliente</li>
+          <li>Identificación del producto con mayor rotación cada semana</li>
+          <li>Prompts listos para usar en ChatGPT: subtítulos, stories, reels y textos para promocionar los top sellers</li>
+          <li>Recomendaciones de qué producto impulsar según los datos reales</li>
+          <li>Sin necesidad de saber de marketing — solo copiar y pegar</li>
+        </ul>
+        <div class="mini-flow">
+          <div class="mini-step"><div class="dot"></div>Sistema registra pedidos</div>
+          <div class="arrow-sep">→</div>
+          <div class="mini-step"><div class="dot"></div>Analiza rotación por producto</div>
+          <div class="arrow-sep">→</div>
+          <div class="mini-step"><div class="dot"></div>Genera reporte semanal</div>
+          <div class="arrow-sep">→</div>
+          <div class="mini-step"><div class="dot"></div>Envía por email</div>
+          <div class="arrow-sep">→</div>
+          <div class="mini-step"><div class="dot"></div>Prompts de marketing listos</div>
+        </div>
+        <div class="modulo-price-bottom">
+          <div class="amount">$500.000</div>
+          <div class="label">PAGO ÚNICO</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- TIMELINE -->
+<section class="fade-in" style="background: var(--mid); max-width:100%; padding: 80px 24px;">
+  <div style="max-width:1100px; margin:0 auto;">
+    <p class="section-label">Cronograma</p>
+    <h2 class="section-title">¿Cuándo está listo?</h2>
+    <div class="divider"></div>
+    <div class="timeline">
+      <div class="timeline-item">
+        <h4>Semana 1 — Módulo 1: Bot WhatsApp</h4>
+        <p>Programación, entrenamiento del bot, carga del catálogo, pruebas reales con el equipo.</p>
+      </div>
+      <div class="timeline-item">
+        <h4>Semana 2 — Módulo 2: Página Web</h4>
+        <p>Diseño, construcción, carga de todo el contenido visual del catálogo. Revisión y ajustes.</p>
+      </div>
+      <div class="timeline-item">
+        <h4>Semana 3 — Módulo 3 + Lanzamiento</h4>
+        <p>Configuración de reportes, prueba del flujo completo. Sistema activo y funcionando.</p>
+      </div>
+      <div class="timeline-item">
+        <h4>Meses 1–2 — Sin costo de mantenimiento</h4>
+        <p>2 meses gratis de soporte y actualizaciones incluidos tras el lanzamiento.</p>
+      </div>
+      <div class="timeline-item">
+        <h4>Mes 3 en adelante — Mantenimiento mensual</h4>
+        <p>Actualizaciones, ajustes del bot, soporte continuo. Desde $100.000/mes.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRECIOS -->
+<section class="fade-in">
+  <p class="section-label">Inversión</p>
+  <h2 class="section-title">Elige tu punto<br>de entrada.</h2>
+  <div class="divider"></div>
+
+  <div class="precio-grid">
+
+    <div class="precio-card">
+      <h3>Solo Módulo 1</h3>
+      <p style="font-size:13px; color:var(--text-muted); margin-bottom:8px;">Bot de WhatsApp únicamente</p>
+      <div class="big-price">$2.000.000</div>
+      <div class="price-sub">pago único</div>
+      <ul>
+        <li>Bot entrenado y personalizado</li>
+        <li>Catálogo cargado</li>
+        <li>Flujo completo de pedidos</li>
+        <li>Notificación automática proveedor</li>
+        <li>Seguimiento de envío</li>
+      </ul>
+      <div class="mensualidad">Mantenimiento: <span>$100.000/mes</span> (2 meses gratis)</div>
+    </div>
+
+    <div class="precio-card destacado">
+      <h3>Paquete Completo</h3>
+      <p style="font-size:13px; color:var(--text-muted); margin-bottom:8px;">Los 3 módulos juntos</p>
+      <div class="big-price">$3.000.000</div>
+      <div class="price-sub">vs $4.500.000 por separado — ahorras $1.500.000</div>
+      <ul>
+        <li>Bot WhatsApp completo</li>
+        <li>Página web con catálogo</li>
+        <li>Reportes semanales por email</li>
+        <li>Prompts de marketing con IA</li>
+        <li>3 semanas de implementación</li>
+      </ul>
+      <div class="mensualidad">Mantenimiento: <span>$150.000/mes</span> (2 meses gratis)</div>
+    </div>
+
+    <div class="precio-card">
+      <h3>Módulos por separado</h3>
+      <p style="font-size:13px; color:var(--text-muted); margin-bottom:8px;">Suma tu propio paquete</p>
+      <div class="big-price">$4.500.000</div>
+      <div class="price-sub">valor total si se contratan por separado</div>
+      <ul>
+        <li>Módulo 1 — $2.000.000</li>
+        <li>Módulo 2 — $2.000.000</li>
+        <li>Módulo 3 — $500.000</li>
+      </ul>
+      <div class="mensualidad">Mantenimiento según módulos activos</div>
+    </div>
+
+  </div>
+
+  <div class="nota-box">
+    <p><strong>Nota importante:</strong> Cada módulo requiere una semana de trabajo dedicado para programación, carga de contenido y pruebas reales. El bot necesita ser entrenado con las respuestas específicas de be.sweaters para sonar natural y funcionar correctamente. No es un bot genérico — es uno hecho a la medida del negocio.</p>
+  </div>
+</section>
+
+<!-- CTA -->
+<div class="cta-section">
+  <p class="section-label">¿Listo para empezar?</p>
+  <h2>Deja de perder clientes<br>por procesos rotos.</h2>
+  <p>El sistema puede estar funcionando en 3 semanas.</p>
+  <a href="https://wa.me/573228217636" class="btn-primary">Hablemos ahora</a>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <p>Propuesta elaborada para be.sweaters — Diana Hernandez &nbsp;|&nbsp; @be.tumarca &nbsp;|&nbsp; 3228217636</p>
+</footer>
+
+<script>
+  // Módulos accordion
+  function toggleModulo(header) {
+    const body = header.nextElementSibling;
+    body.classList.toggle('open');
+    const hint = header.querySelector('.expand-hint');
+    if (hint) {
+      hint.textContent = body.classList.contains('open') ? 'Cerrar ↑' : 'Ver beneficios ↓';
+    }
+  }
+
+  // Scroll animations
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(el => {
+      if (el.isIntersecting) {
+        el.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.15 });
+
+  document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+  // Flow steps animation
+  const flowObs = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const steps = entry.target.querySelectorAll('.flow-step');
+        steps.forEach((step, i) => {
+          setTimeout(() => {
+            step.classList.add('visible');
+            setTimeout(() => {
+              steps.forEach(s => s.classList.remove('active'));
+              step.classList.add('active');
+            }, 300);
+          }, i * 350);
+        });
+        // After all done, keep last active or loop
+        setTimeout(() => {
+          steps.forEach(s => s.classList.remove('active'));
+        }, steps.length * 350 + 1500);
+      }
+    });
+  }, { threshold: 0.3 });
+
+  const mainFlow = document.getElementById('mainFlow');
+  if (mainFlow) flowObs.observe(mainFlow);
+</script>
+</body>
+</html>
