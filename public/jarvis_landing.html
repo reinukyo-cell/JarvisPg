@@ -897,12 +897,27 @@ body::after {
 }
 .price-beta-value {
   font-family: var(--display);
-  font-size: clamp(72px, 12vw, 140px);
+  font-size: clamp(56px, 12vw, 140px);
   font-weight: 900;
   color: var(--text);
   line-height: 1;
   letter-spacing: -4px;
   text-shadow: 0 0 40px rgba(0,195,255,0.4);
+  word-break: break-word;
+  overflow-wrap: anywhere;
+}
+@media (max-width: 480px) {
+  .price-beta-value {
+    font-size: clamp(44px, 13vw, 80px);
+    letter-spacing: -2px;
+  }
+  .price-original {
+    font-size: clamp(36px, 11vw, 60px) !important;
+    letter-spacing: -1px;
+  }
+  .hero-price-block {
+    padding: 40px 20px !important;
+  }
 }
 .price-savings {
   font-size: 17px;
@@ -1246,6 +1261,139 @@ body::after {
   display: block;
   margin-bottom: 8px;
   letter-spacing: 4px;
+}
+
+/* ========================
+   RESPONSIVE TUNING
+   ======================== */
+
+/* Tablet y abajo */
+@media (max-width: 1024px) {
+  .container { padding: 0 20px; }
+  .section { padding: 80px 20px; }
+  .hero { padding: 120px 20px 70px; }
+}
+
+/* Móvil grande */
+@media (max-width: 768px) {
+  .nav { padding: 14px 18px; }
+  .nav-brand { font-size: 17px; letter-spacing: 1.5px; }
+  .nav-cta { padding: 8px 14px; font-size: 11px; }
+
+  .hero { padding: 110px 18px 60px; min-height: auto; }
+  .hero-orb { width: 400px; height: 400px; top: 5%; }
+  .hero-eyebrow { font-size: 11px; letter-spacing: 3px; margin-bottom: 16px; }
+  .hero-title { letter-spacing: -1.5px; margin-bottom: 20px; }
+  .hero-sub { font-size: 15px; margin-bottom: 28px; }
+  .hero-ctas { flex-direction: column; width: 100%; gap: 10px; }
+  .hero-ctas a { width: 100%; justify-content: center; padding: 14px 24px; }
+
+  .section { padding: 60px 18px; }
+  .section-eyebrow { font-size: 11px; letter-spacing: 3px; }
+  .section-title { letter-spacing: -1px; margin-bottom: 18px; }
+  .section-lead { font-size: 15px; margin-bottom: 40px; }
+
+  /* Antes vs Después */
+  .vs-scenarios { gap: 40px; }
+  .vs-scenario-label { font-size: 19px; padding-left: 12px; }
+  .vs-card { padding: 22px; border-radius: 12px; }
+  .vs-card h4 { font-size: 18px; }
+  .vs-time { font-size: 36px; }
+  .vs-apps { gap: 6px; }
+  .vs-app { font-size: 11px; padding: 5px 10px; }
+
+  /* Agente adaptativo */
+  .adaptive-grid { gap: 40px; }
+  .adaptive-visual { max-width: 320px; }
+  .adaptive-core { font-size: 34px; }
+  .adaptive-satellite { width: 48px; height: 48px; font-size: 10px; }
+  .adaptive-features li { padding: 16px 0; gap: 14px; }
+  .adaptive-features h4 { font-size: 18px; }
+  .adaptive-features p { font-size: 14px; }
+
+  /* Módulos */
+  .module-header { padding: 22px 20px; gap: 14px; flex-wrap: nowrap; }
+  .module-num { font-size: 38px; }
+  .module-text h3 { font-size: 20px; }
+  .module-text p { font-size: 14px; }
+  .module-toggle { font-size: 11px; letter-spacing: 1.5px; }
+  .module-inner { padding: 20px 20px 24px; }
+  .module-feature-list li { font-size: 13px; padding: 10px 14px; }
+
+  /* Sectores */
+  .sectors-grid { grid-template-columns: 1fr; gap: 12px; }
+  .sector-card { padding: 20px; }
+  .sector-head h4 { font-size: 16px; }
+
+  /* Beneficios */
+  .benefit-item { padding: 22px; gap: 14px; }
+  .benefit-num { font-size: 34px; }
+  .benefit-item h4 { font-size: 17px; }
+  .benefit-item p { font-size: 13.5px; }
+  .benefit-quote { margin-top: 36px; font-size: 19px; padding: 0 10px; }
+
+  /* Inversión */
+  .scarcity-top { font-size: 11px; letter-spacing: 1.5px; padding: 8px 16px; }
+  .hero-price-block { padding: 40px 22px; border-radius: 16px; margin-bottom: 32px; }
+  .price-original-label { font-size: 11px; letter-spacing: 2px; }
+  .price-original .approx { font-size: 0.35em; margin-left: 4px; }
+  .price-original-sub { font-size: 11px; margin-bottom: 22px; }
+  .price-explain { font-size: 13px; margin-bottom: 20px; }
+  .price-beta-label { font-size: 12px; letter-spacing: 3px; }
+  .price-savings { font-size: 14px; margin-top: 12px; }
+
+  .plans-title { font-size: 24px; }
+  .plans-subtitle { font-size: 14px; margin-bottom: 32px; }
+
+  .plan-big { padding: 28px 22px; border-radius: 14px; }
+  .plan-big-name { font-size: 26px; }
+  .plan-big-price { font-size: 42px; letter-spacing: -2px; }
+  .plan-big-price .currency { font-size: 18px; }
+  .plan-big-price .per { font-size: 15px; }
+  .plan-big-note, .plan-big-equiv { font-size: 13px; margin-bottom: 20px; }
+  .plan-big-list li { font-size: 13.5px; padding: 8px 0; }
+  .plan-big-tag { font-size: 10px; letter-spacing: 1.5px; padding: 5px 12px; margin-bottom: 16px; }
+
+  .plans-middle-label { font-size: 11px; letter-spacing: 2px; margin-bottom: 16px; }
+  .plans-middle-label::before, .plans-middle-label::after { width: 15%; }
+  .plan-mid { padding: 18px 20px; }
+  .plan-mid-price { font-size: 22px; }
+  .plan-mid-discount { font-size: 26px; }
+  .plan-mid-note { font-size: 12px; }
+
+  .final-cta { padding: 40px 24px; border-radius: 16px; margin-top: 40px; }
+  .final-cta h3 { letter-spacing: -0.5px; }
+  .final-cta p { font-size: 14px; margin-bottom: 22px; }
+  .final-cta .btn-dark { padding: 14px 26px; font-size: 13px; width: 100%; box-sizing: border-box; }
+
+  .footer { padding: 40px 18px 30px; font-size: 11px; letter-spacing: 1.5px; }
+  .footer .brand { font-size: 15px; letter-spacing: 3px; }
+}
+
+/* Móvil pequeño */
+@media (max-width: 420px) {
+  .hero { padding: 100px 16px 50px; }
+  .hero-title { font-size: 44px; }
+  .section { padding: 50px 16px; }
+  .section-title { font-size: 32px; }
+
+  .vs-card { padding: 20px; }
+  .vs-card h4 { font-size: 17px; }
+  .vs-time { font-size: 32px; }
+
+  .module-header { padding: 20px 16px; }
+  .module-num { font-size: 32px; }
+  .module-text h3 { font-size: 18px; }
+  .module-toggle { align-self: flex-start; margin-top: 10px; }
+  .module-inner { padding: 18px 16px 22px; }
+
+  .hero-price-block { padding: 32px 18px; }
+  .price-beta-value { letter-spacing: -3px; }
+
+  .plan-big { padding: 24px 18px; }
+  .plan-big-price { font-size: 36px; }
+  .benefit-item { padding: 20px 18px; flex-direction: column; gap: 8px; }
+  .benefit-num { font-size: 30px; }
 }
 
 </style>
