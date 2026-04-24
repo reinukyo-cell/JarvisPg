@@ -699,6 +699,239 @@
     letter-spacing: 2px;
   }
 
+  /* CHAT DEMO */
+  .chat-demo {
+    margin-top: 28px;
+    margin-bottom: 8px;
+  }
+
+  .chat-demo-label {
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 12px;
+  }
+
+  .chat-window {
+    background: #111;
+    border-radius: 16px;
+    overflow: hidden;
+    border: 1px solid #2a2a2a;
+    max-width: 360px;
+  }
+
+  .chat-header-bar {
+    background: #1a1a1a;
+    padding: 12px 16px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border-bottom: 1px solid #222;
+  }
+
+  .chat-avatar {
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    background: var(--accent);
+    color: var(--black);
+    font-size: 11px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .chat-name {
+    font-size: 13px;
+    font-weight: 500;
+  }
+
+  .chat-status {
+    font-size: 10px;
+    color: #4caf50;
+  }
+
+  .chat-messages {
+    padding: 16px;
+    min-height: 260px;
+    max-height: 320px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .chat-bubble {
+    max-width: 78%;
+    padding: 9px 13px;
+    border-radius: 14px;
+    font-size: 13px;
+    line-height: 1.45;
+    opacity: 0;
+    animation: bubbleIn 0.3s ease forwards;
+  }
+
+  .chat-bubble.bot {
+    background: #1e2a1e;
+    border: 1px solid #2a3d2a;
+    color: #d4f1d4;
+    align-self: flex-start;
+    border-bottom-left-radius: 4px;
+  }
+
+  .chat-bubble.user {
+    background: #2a2000;
+    border: 1px solid #3d3000;
+    color: #f5e6c0;
+    align-self: flex-end;
+    border-bottom-right-radius: 4px;
+  }
+
+  .chat-bubble.system {
+    background: #1a1a2e;
+    border: 1px solid #2a2a4a;
+    color: #aac4ff;
+    align-self: center;
+    font-size: 11px;
+    text-align: center;
+    border-radius: 20px;
+  }
+
+  .typing-indicator {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 10px 14px;
+    background: #1e2a1e;
+    border: 1px solid #2a3d2a;
+    border-radius: 14px;
+    border-bottom-left-radius: 4px;
+    align-self: flex-start;
+    width: fit-content;
+  }
+
+  .typing-indicator span {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: #4caf50;
+    animation: typingDot 1.2s infinite;
+  }
+
+  .typing-indicator span:nth-child(2) { animation-delay: 0.2s; }
+  .typing-indicator span:nth-child(3) { animation-delay: 0.4s; }
+
+  .chat-input-bar {
+    background: #1a1a1a;
+    padding: 10px 16px;
+    border-top: 1px solid #222;
+  }
+
+  .chat-input-fake {
+    font-size: 12px;
+    color: #444;
+  }
+
+  /* EMAIL WINDOW */
+  .email-window {
+    background: #111;
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid #2a2a2a;
+    max-width: 420px;
+  }
+
+  .email-header-bar {
+    background: #1a1a1a;
+    padding: 14px 18px;
+    border-bottom: 1px solid #222;
+  }
+
+  .email-from {
+    font-size: 11px;
+    color: var(--text-muted);
+    margin-bottom: 4px;
+  }
+
+  .email-subject {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--white);
+  }
+
+  .email-body {
+    padding: 20px 18px;
+    min-height: 280px;
+    font-size: 13px;
+    color: #ccc;
+    line-height: 1.6;
+  }
+
+  .email-line {
+    opacity: 0;
+    animation: fadeUp 0.4s ease forwards;
+    margin-bottom: 8px;
+  }
+
+  .email-line.heading {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--white);
+    margin-top: 16px;
+    margin-bottom: 4px;
+    border-bottom: 1px solid #2a2a2a;
+    padding-bottom: 6px;
+  }
+
+  .email-line.stat {
+    display: flex;
+    justify-content: space-between;
+    padding: 4px 0;
+    border-bottom: 1px solid #1a1a1a;
+  }
+
+  .email-line.stat .val {
+    color: var(--accent);
+    font-weight: 500;
+  }
+
+  .email-line.prompt {
+    background: #1a1a2e;
+    border: 1px solid #2a2a4a;
+    border-radius: 8px;
+    padding: 10px 12px;
+    font-size: 12px;
+    color: #aac4ff;
+    margin-top: 8px;
+  }
+
+  .replay-btn {
+    margin-top: 12px;
+    background: transparent;
+    border: 1px solid #333;
+    color: var(--text-muted);
+    font-size: 12px;
+    padding: 6px 16px;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .replay-btn:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+
+  @keyframes bubbleIn {
+    from { opacity: 0; transform: translateY(8px) scale(0.96); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
+  }
+
+  @keyframes typingDot {
+    0%, 60%, 100% { transform: translateY(0); opacity: 0.4; }
+    30% { transform: translateY(-4px); opacity: 1; }
+  }
+
   /* MOBILE */
   @media (max-width: 640px) {
     .flow-step:not(:last-child)::after { display: none; }
@@ -750,46 +983,229 @@
   </div>
 </section>
 
-<!-- FLUJO ANIMADO GENERAL -->
-<div class="flow-section">
+<!-- DEMO INTERACTIVO -->
+<div class="flow-section" style="padding: 80px 24px;">
   <div class="flow-inner">
-    <p class="section-label">Flujo del nuevo sistema</p>
+    <p class="section-label">Demo en vivo</p>
     <h2 class="section-title fade-in">Así va a funcionar.</h2>
     <div class="divider"></div>
-    <div class="flow-steps" id="mainFlow">
-      <div class="flow-step" data-delay="0">
-        <div class="step-circle">👤</div>
-        <div class="step-label">Cliente escribe</div>
-        <div class="step-sub">WhatsApp Business</div>
+    <p style="color:var(--text-muted); font-size:14px; margin-bottom:24px;">Presiona reproducir y mira el sistema en acción: cliente compra, bot gestiona, proveedor recibe notificación.</p>
+
+    <!-- CONTROLES -->
+    <div style="display:flex; gap:10px; flex-wrap:wrap; margin-bottom:16px;">
+      <button id="demoPlayBtn" onclick="startBeSweaterDemo()" style="background:var(--accent);color:#0a0a0a;border:none;padding:10px 20px;border-radius:6px;font-weight:700;font-size:13px;cursor:pointer;letter-spacing:1px;">▶ REPRODUCIR</button>
+      <button onclick="resetBeSweaterDemo()" style="background:#2a2a2a;color:#fff;border:1px solid #444;padding:10px 20px;border-radius:6px;font-size:13px;cursor:pointer;">↻ Reiniciar</button>
+      <button onclick="toggleDemoSpeed()" id="demoSpeedBtn" style="background:#2a2a2a;color:#fff;border:1px solid #444;padding:10px 20px;border-radius:6px;font-size:13px;cursor:pointer;">⚡ 1x</button>
+    </div>
+    <div style="background:rgba(255,255,255,0.08);height:3px;border-radius:2px;margin-bottom:24px;">
+      <div id="demoProgress" style="height:100%;background:linear-gradient(90deg,var(--accent),#10b981);width:0%;transition:width 0.5s;border-radius:2px;"></div>
+    </div>
+
+    <!-- 3 PANTALLAS -->
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:20px;">
+
+      <!-- DIANA - ADMIN -->
+      <div style="background:#141414;border:1px solid #2a2a2a;border-radius:12px;overflow:hidden;height:58vh;min-height:420px;display:flex;flex-direction:column;">
+        <div style="background:#17212b;padding:10px 14px;display:flex;align-items:center;gap:10px;flex-shrink:0;border-bottom:1px solid #2a2a2a;">
+          <div style="width:34px;height:34px;border-radius:50%;background:var(--accent);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#0a0a0a;flex-shrink:0;">D</div>
+          <div>
+            <div style="font-size:12px;font-weight:500;">be.sweaters · Admin</div>
+            <div style="font-size:10px;color:#c8a96e;">Diana · Panel de control</div>
+          </div>
+        </div>
+        <div id="demoAdmin" style="flex:1;overflow-y:auto;padding:10px;display:flex;flex-direction:column;gap:6px;background:#0e1621;"></div>
       </div>
-      <div class="flow-step" data-delay="1">
-        <div class="step-circle">🤖</div>
-        <div class="step-label">Bot responde</div>
-        <div class="step-sub">Inmediato, 24/7</div>
+
+      <!-- CLIENTE WA -->
+      <div style="background:#141414;border:1px solid #2a2a2a;border-radius:12px;overflow:hidden;height:58vh;min-height:420px;display:flex;flex-direction:column;">
+        <div style="background:#075e54;padding:10px 14px;display:flex;align-items:center;gap:10px;flex-shrink:0;border-bottom:1px solid #0a3d34;">
+          <div style="width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,#25d366,#128c7e);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#fff;flex-shrink:0;">S</div>
+          <div>
+            <div style="font-size:12px;font-weight:500;">be.sweaters</div>
+            <div style="font-size:10px;color:#a8d5a2;">Sara · Cliente nueva</div>
+          </div>
+        </div>
+        <div id="demoCliente" style="flex:1;overflow-y:auto;padding:10px;display:flex;flex-direction:column;gap:6px;background:#0b141a;"></div>
       </div>
-      <div class="flow-step" data-delay="2">
-        <div class="step-circle">🛍️</div>
-        <div class="step-label">Escoge producto</div>
-        <div class="step-sub">Catálogo interactivo</div>
+
+      <!-- PROVEEDOR -->
+      <div style="background:#141414;border:1px solid #2a2a2a;border-radius:12px;overflow:hidden;height:58vh;min-height:420px;display:flex;flex-direction:column;">
+        <div style="background:#1a1a2e;padding:10px 14px;display:flex;align-items:center;gap:10px;flex-shrink:0;border-bottom:1px solid #2a2a3e;">
+          <div style="width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,#6366f1,#4338ca);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#fff;flex-shrink:0;">P</div>
+          <div>
+            <div style="font-size:12px;font-weight:500;">Proveedor</div>
+            <div style="font-size:10px;color:#a5b4fc;">Notificaciones automáticas</div>
+          </div>
+        </div>
+        <div id="demoProveedor" style="flex:1;overflow-y:auto;padding:10px;display:flex;flex-direction:column;gap:6px;background:#0a0a1a;"></div>
       </div>
-      <div class="flow-step" data-delay="3">
-        <div class="step-circle">💳</div>
-        <div class="step-label">Confirma pago</div>
-        <div class="step-sub">Transferencia</div>
+
+    </div>
+
+    <!-- STATS -->
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;">
+      <div style="background:#1e1e1e;border:1px solid #2a2a2a;border-left:3px solid var(--accent);border-radius:6px;padding:14px;">
+        <div id="ds_pedidos" style="font-family:'Playfair Display',serif;font-size:22px;color:var(--accent);">0</div>
+        <div style="font-size:9px;color:#666;letter-spacing:1px;text-transform:uppercase;">Pedidos hoy</div>
       </div>
-      <div class="flow-step" data-delay="4">
-        <div class="step-circle">📦</div>
-        <div class="step-label">Notifica proveedor</div>
-        <div class="step-sub">Automático</div>
+      <div style="background:#1e1e1e;border:1px solid #2a2a2a;border-left:3px solid #10b981;border-radius:6px;padding:14px;">
+        <div id="ds_ventas" style="font-family:'Playfair Display',serif;font-size:22px;color:#10b981;">$0</div>
+        <div style="font-size:9px;color:#666;letter-spacing:1px;text-transform:uppercase;">En ventas</div>
       </div>
-      <div class="flow-step" data-delay="5">
-        <div class="step-circle">✅</div>
-        <div class="step-label">Seguimiento 5 días</div>
-        <div class="step-sub">Recordatorio auto</div>
+      <div style="background:#1e1e1e;border:1px solid #2a2a2a;border-left:3px solid #3b82f6;border-radius:6px;padding:14px;">
+        <div id="ds_tiempo" style="font-family:'Playfair Display',serif;font-size:22px;color:#3b82f6;">0s</div>
+        <div style="font-size:9px;color:#666;letter-spacing:1px;text-transform:uppercase;">Tiempo de respuesta</div>
+      </div>
+      <div style="background:#1e1e1e;border:1px solid #2a2a2a;border-left:3px solid #a855f7;border-radius:6px;padding:14px;">
+        <div id="ds_humanos" style="font-family:'Playfair Display',serif;font-size:22px;color:#a855f7;">0</div>
+        <div style="font-size:9px;color:#666;letter-spacing:1px;text-transform:uppercase;">Humanos involucrados</div>
       </div>
     </div>
+
   </div>
 </div>
+
+<style>
+@media(max-width:768px){
+  #demoGrid { grid-template-columns: 1fr !important; }
+}
+</style>
+
+<script>
+let demoPlaying = false;
+let demoStep = 0;
+let demoSpeed = 1;
+
+const demoScript = [
+  // CLIENTE ESCRIBE
+  { to:'cliente', type:'user', text:'Hola! Vi sus suéteres en redes. ¿Me pueden ayudar?', delay:1800, typing:true },
+  { to:'cliente', type:'bot', text:'¡Hola Sara! Bienvenida a *be. sweaters* 🧶\n\nSoy el asistente virtual. Estoy aquí para ayudarte.\n\n¿Qué estás buscando?\n1️⃣ Ver catálogo\n2️⃣ Consultar precio\n3️⃣ Hacer un pedido', delay:1200 },
+  { stat:'tiempo', val:'2s', delay:0 },
+
+  { to:'cliente', type:'user', text:'1', delay:2000, typing:true },
+  { to:'cliente', type:'bot', text:'Aquí tienes nuestra colección 2026 👇\n\n🐆 *SELVA* (Ref. M02) — $139.000\nSuéter leopardo, cuello tortuga, hombro descubierto. Negro/Rosa o Negro/Camel\n\n⬛ *ALMA* (Ref. M06) — $160.000\nOversize bicolor, cuello tortuga. Negro rayas marfil o Arena rayas negras\n\n💎 *PULSO* (Ref. M07) — $160.000\nPunto grueso con trenzas. Cereza o Negro\n\n🌿 *MERIDIAN* (Ref. M04) — $128.000\nDiseño holgado. Rosa o Marfil\n\n¿Cuál te llama la atención?', delay:1600 },
+
+  { to:'cliente', type:'user', text:'El SELVA me encantó. El negro con rosa. ¿Cómo lo pido?', delay:2200, typing:true },
+  { to:'cliente', type:'bot', text:'Excelente elección! 🐆\n\n*SELVA* — Negro/Rosa\nRef. M02 · Talla única · $139.000\n\n¿Confirmas el pedido?\n✅ Sí, lo quiero\n❌ Ver más opciones', delay:1400 },
+
+  { to:'cliente', type:'user', text:'Sí, lo quiero!', delay:2000, typing:true },
+  { to:'cliente', type:'bot', text:'Perfecto! Para completar tu pedido:\n\n📦 *SELVA* Negro/Rosa — $139.000\n\nPor favor realiza la transferencia a:\n🏦 Bancolombia · Ahorro\n👤 Diana Hernandez\n🔢 Nro: 123-456789-00\n\nLuego envíame el comprobante y confirmo tu pedido ✨', delay:1500 },
+
+  // CLIENTE ENVÍA COMPROBANTE
+  { to:'cliente', type:'user', text:'[📎 comprobante_transferencia.jpg]', delay:2800, typing:false },
+  { to:'cliente', type:'bot', text:'✅ *Pago recibido y verificado*\n\nTu pedido está confirmado!\n📦 SELVA Negro/Rosa en camino\n🚚 Entrega en máximo 5 días hábiles\n\nTe avisamos cuando el proveedor lo envíe. ¡Gracias por comprar en be.sweaters! 🧶', delay:1400 },
+  { stat:'pedidos', val:'1', delay:0 },
+  { stat:'ventas', val:'$139.000', delay:0 },
+
+  // NOTIFICACIÓN A DIANA
+  { to:'admin', type:'bot', title:'🛒 NUEVO PEDIDO CONFIRMADO', text:'Cliente: Sara\nProducto: SELVA Negro/Rosa\nRef. M02 · Talla única\nMonto: $139.000\nPago: Transferencia ✅\n\nNotificación enviada al proveedor.', delay:600, success:true },
+  { stat:'humanos', val:'0', delay:0 },
+
+  // NOTIFICACIÓN AL PROVEEDOR
+  { to:'proveedor', type:'bot', title:'📦 PEDIDO PARA DESPACHO', text:'Tienda: be.sweaters\n\nProducto: SELVA\nRef: M02\nColor: Negro - Rosa\nTalla: Única\nCantidad: 1\n\nDirección de envío:\nSara Gómez\nBogotá · Chapinero\nCl 62 #7-45, Apto 301\n\n⏰ Despacho requerido: máx 2 días', delay:1000 },
+
+  // SEGUNDA VENTA
+  { to:'cliente', type:'user', text:'Oye, ¿tienen el chaleco TICTAC en verde?', delay:3000, typing:true },
+  { to:'cliente', type:'bot', text:'¡Sí! Tenemos el *TICTAC* en varios colores:\n\n✅ Verde — disponible\n✅ Negro con rayas blancas\n✅ Rojo con rayas blancas\n✅ Camel con rayas negras\n✅ Marfil\n\nRef. MC12 · Talla única · $98.000\n\n¿Lo agrego a tu pedido?', delay:1500 },
+
+  { to:'cliente', type:'user', text:'Sí! El verde por favor', delay:2000, typing:true },
+  { to:'cliente', type:'bot', text:'✨ Agregado!\n\nSuma pendiente:\n🐆 SELVA Negro/Rosa — $139.000\n🟢 TICTAC Verde — $98.000\n\n*Total: $237.000*\n\n¿Confirmas o necesitas algo más?', delay:1400 },
+
+  { to:'cliente', type:'user', text:'Confirmo! Te mando el comprobante en un momento', delay:2000, typing:true },
+  { to:'cliente', type:'bot', text:'Perfecto, quedo pendiente del comprobante. Recuerda que el total es $237.000 🧶', delay:1200 },
+
+  // RESUMEN DÍA EN ADMIN
+  { to:'admin', type:'bot', title:'📊 RESUMEN DEL DÍA', text:'⏰ Generado automáticamente\n\n📦 Pedidos: 2\n💰 Ventas: $237.000\n⚡ Tiempo promedio respuesta: 2s\n👤 Humanos en el proceso: 0\n\n✅ Proveedor notificado\n✅ Clientes confirmados\n📧 Reporte enviado al email', delay:2000, success:false },
+  { stat:'pedidos', val:'2', delay:0 },
+  { stat:'ventas', val:'$237.000', delay:0 },
+];
+
+function demoSleep(ms){ return new Promise(r => setTimeout(r, ms / demoSpeed)); }
+
+function addDemoMsg(panelId, msg){
+  const panel = document.getElementById(panelId);
+  if(!panel) return;
+  const div = document.createElement('div');
+  const isUser = msg.type === 'user';
+  const isWA = panelId === 'demoCliente';
+  let bg, align;
+  if(isUser){ bg = isWA ? '#005c4b' : '#2b5278'; align = 'flex-end'; }
+  else { bg = isWA ? '#202c33' : '#182533'; align = 'flex-start'; }
+  div.style.cssText = `max-width:92%;padding:8px 11px;border-radius:10px;font-size:12px;line-height:1.4;align-self:${align};background:${bg};color:#fff;animation:demoSlide 0.3s ease;word-wrap:break-word;white-space:pre-line;`;
+  let html = '';
+  if(msg.title) html += `<div style="font-weight:700;color:${msg.success?'#10b981':'var(--accent)'};font-size:11px;margin-bottom:4px;">${msg.title}</div>`;
+  html += msg.text.replace(/\*([^*]+)\*/g,'<strong>$1</strong>');
+  div.innerHTML = html;
+  panel.appendChild(div);
+  panel.scrollTop = panel.scrollHeight;
+}
+
+function showDemoTyping(panelId){
+  const panel = document.getElementById(panelId);
+  if(!panel) return;
+  const div = document.createElement('div');
+  div.id = 'dtyping_'+panelId;
+  div.style.cssText = 'display:flex;gap:4px;padding:10px;background:#182533;border-radius:10px;align-self:flex-start;width:fit-content;animation:demoSlide 0.2s ease;';
+  div.innerHTML = '<span style="width:6px;height:6px;border-radius:50%;background:#8a99a8;animation:demoTyping 1.2s infinite;display:block;"></span><span style="width:6px;height:6px;border-radius:50%;background:#8a99a8;animation:demoTyping 1.2s 0.2s infinite;display:block;"></span><span style="width:6px;height:6px;border-radius:50%;background:#8a99a8;animation:demoTyping 1.2s 0.4s infinite;display:block;"></span>';
+  panel.appendChild(div);
+  panel.scrollTop = panel.scrollHeight;
+}
+
+function removeDemoTyping(panelId){
+  const t = document.getElementById('dtyping_'+panelId);
+  if(t) t.remove();
+}
+
+function updateDemoStat(id, val){
+  const el = document.getElementById('ds_'+id);
+  if(el) el.textContent = val;
+}
+
+const panelMap = { admin:'demoAdmin', cliente:'demoCliente', proveedor:'demoProveedor' };
+
+async function startBeSweaterDemo(){
+  if(demoPlaying) return;
+  demoPlaying = true;
+  document.getElementById('demoPlayBtn').disabled = true;
+  for(let i = demoStep; i < demoScript.length; i++){
+    if(!demoPlaying) break;
+    const step = demoScript[i];
+    document.getElementById('demoProgress').style.width = ((i+1)/demoScript.length*100)+'%';
+    if(step.delay) await demoSleep(step.delay);
+    if(step.stat){ updateDemoStat(step.stat, step.val); demoStep=i+1; continue; }
+    const panelId = panelMap[step.to];
+    if(step.typing){ showDemoTyping(panelId); await demoSleep(700); removeDemoTyping(panelId); }
+    addDemoMsg(panelId, step);
+    demoStep = i+1;
+  }
+  demoPlaying = false;
+  document.getElementById('demoPlayBtn').disabled = false;
+  document.getElementById('demoPlayBtn').textContent = '✓ Demo completado';
+}
+
+function resetBeSweaterDemo(){
+  demoPlaying = false;
+  demoStep = 0;
+  ['demoAdmin','demoCliente','demoProveedor'].forEach(id => { const el=document.getElementById(id); if(el) el.innerHTML=''; });
+  ['pedidos','ventas','tiempo','humanos'].forEach(id => updateDemoStat(id, id==='tiempo'?'0s':id==='ventas'?'$0':'0'));
+  document.getElementById('demoProgress').style.width = '0%';
+  document.getElementById('demoPlayBtn').disabled = false;
+  document.getElementById('demoPlayBtn').textContent = '▶ REPRODUCIR';
+}
+
+function toggleDemoSpeed(){
+  demoSpeed = demoSpeed===1?2:demoSpeed===2?4:1;
+  document.getElementById('demoSpeedBtn').textContent = `⚡ ${demoSpeed}x`;
+}
+</script>
+
+<style>
+@keyframes demoSlide { from{opacity:0;transform:translateY(6px)} to{opacity:1;transform:translateY(0)} }
+@keyframes demoTyping { 0%,60%,100%{transform:translateY(0);opacity:0.3} 30%{transform:translateY(-4px);opacity:1} }
+@media(max-width:768px){
+  #demoAdmin,#demoCliente,#demoProveedor { min-height:300px !important; }
+}
+</style>
 
 <!-- MÓDULOS -->
 <section class="fade-in">
@@ -834,6 +1250,25 @@
           <div class="arrow-sep">→</div>
           <div class="mini-step"><div class="dot"></div>Seguimiento 5 días</div>
         </div>
+        <!-- CHAT DEMO M1 -->
+        <div class="chat-demo" id="chatDemo1">
+          <div class="chat-demo-label">Vista previa — así funciona el bot</div>
+          <div class="chat-window">
+            <div class="chat-header-bar">
+              <div class="chat-avatar">be</div>
+              <div>
+                <div class="chat-name">be.sweaters Bot</div>
+                <div class="chat-status">● en línea</div>
+              </div>
+            </div>
+            <div class="chat-messages" id="chatMessages1"></div>
+            <div class="chat-input-bar">
+              <span class="chat-input-fake">Escribe un mensaje...</span>
+            </div>
+          </div>
+          <button class="replay-btn" onclick="startChat('chatMessages1', chat1Script)">↺ Repetir</button>
+        </div>
+
         <div class="modulo-price-bottom">
           <div class="amount">$2.000.000</div>
           <div class="label">PAGO ÚNICO</div>
@@ -872,6 +1307,25 @@
           <div class="arrow-sep">→</div>
           <div class="mini-step"><div class="dot"></div>Bot toma el pedido</div>
         </div>
+        <!-- CHAT DEMO M2 - proveedor -->
+        <div class="chat-demo" id="chatDemo2">
+          <div class="chat-demo-label">Vista previa — notificación automática al proveedor</div>
+          <div class="chat-window">
+            <div class="chat-header-bar">
+              <div class="chat-avatar" style="background:#2a6e3f;">PR</div>
+              <div>
+                <div class="chat-name">Proveedor be.sweaters</div>
+                <div class="chat-status">● en línea</div>
+              </div>
+            </div>
+            <div class="chat-messages" id="chatMessages2"></div>
+            <div class="chat-input-bar">
+              <span class="chat-input-fake">Mensaje automático enviado...</span>
+            </div>
+          </div>
+          <button class="replay-btn" onclick="startChat('chatMessages2', chat2Script)">↺ Repetir</button>
+        </div>
+
         <div class="modulo-price-bottom">
           <div class="amount">$2.000.000</div>
           <div class="label">PAGO ÚNICO</div>
@@ -908,6 +1362,19 @@
           <div class="arrow-sep">→</div>
           <div class="mini-step"><div class="dot"></div>Prompts de marketing listos</div>
         </div>
+        <!-- REPORTE EMAIL M3 -->
+        <div class="chat-demo" id="chatDemo3">
+          <div class="chat-demo-label">Vista previa — reporte semanal por email</div>
+          <div class="email-window" id="emailReport">
+            <div class="email-header-bar">
+              <div class="email-from">De: sistema@besweaters.com</div>
+              <div class="email-subject">📊 Reporte semanal — be.sweaters</div>
+            </div>
+            <div class="email-body" id="emailBody"></div>
+          </div>
+          <button class="replay-btn" onclick="startEmail()">↺ Repetir</button>
+        </div>
+
         <div class="modulo-price-bottom">
           <div class="amount">$500.000</div>
           <div class="label">PAGO ÚNICO</div>
@@ -1031,7 +1498,113 @@
     }
   }
 
-  // Scroll animations
+  // CHAT SCRIPTS
+  const chat1Script = [
+    { type: 'bot', text: '¡Hola! Bienvenida a be.sweaters 🤍\n¿Qué deseas hoy?\n\n1️⃣ Ver catálogo\n2️⃣ Hacer un pedido\n3️⃣ Estado de mi pedido', delay: 600 },
+    { type: 'user', text: '2', delay: 1800 },
+    { type: 'bot', text: 'Perfecto. ¿Qué producto te interesa?\n\nTenemos: Suéteres, Chalecos, Vestidos y Capas.\n\nEscribe el nombre o referencia 👇', delay: 2800 },
+    { type: 'user', text: 'SELVA Rosa', delay: 4200 },
+    { type: 'bot', text: '✨ SELVA — Ref. M02\nColor: Negro - Rosa\nTalla única | $139.000\n\n¿Confirmas este pedido?', delay: 5400 },
+    { type: 'user', text: 'Sí, lo quiero', delay: 6800 },
+    { type: 'bot', text: '¡Genial! Para completar tu pedido envía el comprobante de pago a:\n\n🏦 Nequi: 3228217636\nMonto: $139.000', delay: 7800 },
+    { type: 'user', text: '[Comprobante enviado 📎]', delay: 9500 },
+    { type: 'bot', text: '✅ ¡Pago recibido! Tu pedido está confirmado.\n\nTe avisamos cuando esté en camino. Máximo 5 días hábiles.', delay: 10600 },
+    { type: 'system', text: '📦 Notificación enviada al proveedor automáticamente', delay: 11800 },
+  ];
+
+  const chat2Script = [
+    { type: 'system', text: 'Pedido confirmado — sistema envía notificación', delay: 500 },
+    { type: 'bot', text: '📦 NUEVO PEDIDO\n─────────────\nProducto: SELVA M02\nColor: Negro - Rosa\nTalla: Única\nCliente: Laura M.\nPago: ✅ Confirmado\nFecha: ' + new Date().toLocaleDateString('es-CO'), delay: 1200 },
+    { type: 'bot', text: 'Por favor confirmar despacho y compartir número de guía cuando esté listo.', delay: 3000 },
+    { type: 'user', text: 'Recibido ✅ Lo alistamos hoy', delay: 4500 },
+    { type: 'bot', text: 'Gracias. El sistema notificará al cliente cuando recibamos la guía.', delay: 5800 },
+    { type: 'system', text: '⏰ Recordatorio automático programado: 5 días', delay: 7000 },
+  ];
+
+  function addBubble(containerId, type, text, callback) {
+    const container = document.getElementById(containerId);
+    if (!container) return;
+
+    // typing indicator
+    const typing = document.createElement('div');
+    typing.className = 'typing-indicator';
+    typing.innerHTML = '<span></span><span></span><span></span>';
+    if (type !== 'user') container.appendChild(typing);
+    container.scrollTop = container.scrollHeight;
+
+    setTimeout(() => {
+      if (type !== 'user' && typing.parentNode) typing.remove();
+      const bubble = document.createElement('div');
+      bubble.className = `chat-bubble ${type}`;
+      bubble.style.whiteSpace = 'pre-wrap';
+      bubble.textContent = text;
+      container.appendChild(bubble);
+      container.scrollTop = container.scrollHeight;
+      if (callback) callback();
+    }, type !== 'user' ? 900 : 0);
+  }
+
+  function startChat(containerId, script) {
+    const container = document.getElementById(containerId);
+    if (!container) return;
+    container.innerHTML = '';
+    script.forEach((msg, i) => {
+      setTimeout(() => {
+        addBubble(containerId, msg.type, msg.text);
+      }, msg.delay);
+    });
+  }
+
+  // EMAIL ANIMATION
+  const emailLines = [
+    { cls: 'heading', html: '📊 Resumen Semana — be.sweaters' },
+    { cls: 'stat', html: '<span>Total pedidos</span><span class="val">24</span>' },
+    { cls: 'stat', html: '<span>Ingresos estimados</span><span class="val">$3.336.000</span>' },
+    { cls: 'stat', html: '<span>Producto más vendido</span><span class="val">SELVA Rosa</span>' },
+    { cls: 'stat', html: '<span>Segundo más pedido</span><span class="val">PULSO Cereza</span>' },
+    { cls: 'heading', html: '🔥 Recomendación de la semana' },
+    { cls: '', html: 'SELVA Rosa tuvo 9 pedidos. Te recomendamos promocionarlo esta semana.' },
+    { cls: 'heading', html: '🤖 Prompt listo para ChatGPT' },
+    { cls: 'prompt', html: '"Crea un texto para Instagram Stories de un suéter leopardo rosa con hombro descubierto llamado SELVA. Tono sofisticado, precio $139.000. Máximo 3 líneas con CTA para escribir al WhatsApp."' },
+  ];
+
+  function startEmail() {
+    const body = document.getElementById('emailBody');
+    if (!body) return;
+    body.innerHTML = '';
+    emailLines.forEach((line, i) => {
+      setTimeout(() => {
+        const div = document.createElement('div');
+        div.className = `email-line ${line.cls}`;
+        div.style.animationDelay = '0ms';
+        div.innerHTML = line.html;
+        body.appendChild(div);
+        body.scrollTop = body.scrollHeight;
+      }, i * 420);
+    });
+  }
+
+  // Auto-start when módulos open
+  const origToggle = window.toggleModulo;
+  window.toggleModulo = function(header) {
+    const body = header.nextElementSibling;
+    const wasOpen = body.classList.contains('open');
+    body.classList.toggle('open');
+    const hint = header.querySelector('.expand-hint');
+    if (hint) {
+      hint.textContent = body.classList.contains('open') ? 'Cerrar ↑' : 'Ver beneficios ↓';
+    }
+    if (!wasOpen) {
+      const card = header.closest('.modulo-card');
+      const num = card.querySelector('.modulo-num').textContent.trim();
+      setTimeout(() => {
+        if (num === '01') startChat('chatMessages1', chat1Script);
+        if (num === '02') startChat('chatMessages2', chat2Script);
+        if (num === '03') startEmail();
+      }, 400);
+    }
+  };
+
   const observer = new IntersectionObserver((entries) => {
     entries.forEach(el => {
       if (el.isIntersecting) {
