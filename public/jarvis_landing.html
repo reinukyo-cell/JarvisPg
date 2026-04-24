@@ -740,19 +740,38 @@ body::after {
     radial-gradient(ellipse 60% 40% at 20% 80%, rgba(0,136,255,0.05) 0%, transparent 60%);
   pointer-events: none;
 }
-.demo-wrap {
+.demo-section .container {
   position: relative;
   z-index: 1;
-  display: grid;
-  grid-template-columns: 1fr 1.25fr;
-  gap: 40px;
-  align-items: center;
-  margin-top: 40px;
 }
-.demo-info {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
+.demo-block {
+  max-width: 980px;
+  margin: 0 auto;
+}
+.demo-block + .demo-block {
+  margin-top: 0;
+}
+.demo-block-header {
+  text-align: center;
+  max-width: 640px;
+  margin: 0 auto 32px;
+}
+.demo-block-header h3 {
+  font-family: var(--display);
+  font-size: clamp(26px, 3vw, 38px);
+  font-weight: 800;
+  line-height: 1.15;
+  letter-spacing: -0.8px;
+  margin: 16px 0 12px;
+}
+.demo-block-header h3 .accent {
+  color: var(--accent);
+  font-style: italic;
+}
+.demo-block-header p {
+  font-size: 15px;
+  color: var(--text-muted);
+  line-height: 1.6;
 }
 .demo-badge {
   display: inline-flex;
@@ -768,7 +787,6 @@ body::after {
   letter-spacing: 2px;
   text-transform: uppercase;
   color: var(--accent);
-  width: fit-content;
 }
 .demo-badge-dot {
   width: 6px;
@@ -782,50 +800,32 @@ body::after {
   0%, 100% { opacity: 1; transform: scale(1); }
   50% { opacity: 0.5; transform: scale(0.8); }
 }
-.demo-info h3 {
-  font-family: var(--display);
-  font-size: clamp(28px, 3.5vw, 44px);
-  font-weight: 800;
-  line-height: 1.1;
-  letter-spacing: -1px;
-}
-.demo-info h3 .accent {
-  color: var(--accent);
-  font-style: italic;
-}
-.demo-info p {
-  font-size: 16px;
-  color: var(--text-muted);
-  line-height: 1.65;
-  max-width: 480px;
-}
-.demo-features {
-  list-style: none;
-  padding: 0;
-  margin: 8px 0;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-.demo-features li {
+.demo-divider {
   display: flex;
   align-items: center;
-  gap: 12px;
-  font-size: 14px;
-  color: var(--text);
-  font-family: var(--body);
+  justify-content: center;
+  gap: 20px;
+  margin: 60px auto;
+  max-width: 600px;
 }
-.demo-features li::before {
-  content: '→';
+.demo-divider-line {
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--border-strong), transparent);
+}
+.demo-divider-arrow {
+  font-size: 24px;
   color: var(--accent);
-  font-weight: 700;
-  flex-shrink: 0;
+  animation: demoArrow 2s ease-in-out infinite;
+}
+@keyframes demoArrow {
+  0%, 100% { transform: translateY(0); opacity: 1; }
+  50% { transform: translateY(6px); opacity: 0.5; }
 }
 .demo-actions {
   display: flex;
   gap: 12px;
   flex-wrap: wrap;
-  margin-top: 12px;
 }
 .demo-btn {
   padding: 14px 24px;
@@ -915,10 +915,10 @@ body::after {
 }
 .demo-iframe {
   width: 100%;
-  height: 560px;
+  height: 620px;
   border: none;
   display: block;
-  background: #fff;
+  background: var(--bg);
 }
 .demo-overlay-btn {
   position: absolute;
@@ -947,13 +947,14 @@ body::after {
   color: #000;
 }
 @media (max-width: 900px) {
-  .demo-wrap { grid-template-columns: 1fr; gap: 32px; }
-  .demo-iframe { height: 460px; }
-  .demo-info p { max-width: 100%; }
+  .demo-iframe { height: 500px; }
+  .demo-divider { margin: 40px auto; }
 }
 @media (max-width: 600px) {
-  .demo-iframe { height: 380px; }
+  .demo-iframe { height: 420px; }
   .demo-frame-url { font-size: 10px; }
+  .demo-actions { justify-content: center; }
+  .demo-btn { width: 100%; justify-content: center; }
 }
 
 /* === BENEFICIOS === */
@@ -1937,31 +1938,60 @@ body::after {
 <!-- DEMO HELENA -->
 <section class="section demo-section" id="demo-helena">
   <div class="container">
-    <div class="demo-wrap">
-      <div class="demo-info reveal">
+    <div class="reveal" style="text-align:center; max-width:720px; margin:0 auto 50px;">
+      <div class="section-eyebrow" style="justify-content:center; display:inline-flex;">Caso en vivo</div>
+      <h2 class="section-title">Helena Store.<br><span class="accent">Bot + web, operando.</span></h2>
+      <p class="section-lead" style="margin-left:auto; margin-right:auto;">Mira primero cómo opera el agente en Telegram. Luego entra a la tienda real que construimos. Todo esto ya está funcionando.</p>
+    </div>
+
+    <!-- BLOQUE 1: ANIMACIÓN DEL BOT -->
+    <div class="demo-block reveal">
+      <div class="demo-block-header">
         <div class="demo-badge">
           <span class="demo-badge-dot"></span>
-          Caso en vivo · Helena Store
+          01 · El agente en acción
         </div>
-        <h3>De idea a web con agente de ventas. <span class="accent">En días.</span></h3>
-        <p>Helena Store es un retail de tecnología real operando con Jarvis. Catálogo digital, agente de ventas por WhatsApp y control de inventario desde el mismo chat.</p>
-        <ul class="demo-features">
-          <li>E-commerce responsive con catálogo completo</li>
-          <li>Agente de ventas integrado a WhatsApp</li>
-          <li>Inventario sincronizado en tiempo real</li>
-          <li>Cero paneles: todo se maneja desde Telegram</li>
-        </ul>
-        <div class="demo-actions">
-          <a href="https://helena-store-web.vercel.app/" target="_blank" rel="noopener" class="demo-btn demo-btn-primary">
-            Ver la web en vivo <span class="arrow">→</span>
-          </a>
-          <a href="#precio" class="demo-btn demo-btn-ghost">
-            Quiero uno así <span class="arrow">→</span>
-          </a>
-        </div>
+        <h3>Así opera Helena desde <span class="accent">Telegram.</span></h3>
+        <p>Ventas, inventario, pagos. Todo sin abrir un panel. Solo conversación.</p>
       </div>
 
-      <div class="demo-frame reveal">
+      <div class="demo-frame">
+        <div class="demo-frame-bar">
+          <span class="demo-frame-dot r"></span>
+          <span class="demo-frame-dot y"></span>
+          <span class="demo-frame-dot g"></span>
+          <span class="demo-frame-url">demo · Helena Bot (simulación)</span>
+        </div>
+        <iframe
+          class="demo-iframe"
+          src="https://reinukyo-cell.github.io/JarvisPg/demo-helena-store.html"
+          title="Helena Bot — Animación en vivo"
+          loading="lazy"></iframe>
+        <a href="https://reinukyo-cell.github.io/JarvisPg/demo-helena-store.html" target="_blank" rel="noopener" class="demo-overlay-btn">
+          ⛶ Ver en grande
+        </a>
+      </div>
+    </div>
+
+    <!-- SEPARADOR -->
+    <div class="demo-divider reveal">
+      <span class="demo-divider-line"></span>
+      <span class="demo-divider-arrow">↓</span>
+      <span class="demo-divider-line"></span>
+    </div>
+
+    <!-- BLOQUE 2: WEB REAL -->
+    <div class="demo-block reveal">
+      <div class="demo-block-header">
+        <div class="demo-badge">
+          <span class="demo-badge-dot"></span>
+          02 · La tienda en vivo
+        </div>
+        <h3>Y esta es la web que <span class="accent">opera con el bot.</span></h3>
+        <p>E-commerce responsive con catálogo completo, conectado al agente de ventas por WhatsApp.</p>
+      </div>
+
+      <div class="demo-frame">
         <div class="demo-frame-bar">
           <span class="demo-frame-dot r"></span>
           <span class="demo-frame-dot y"></span>
@@ -1971,11 +2001,20 @@ body::after {
         <iframe
           class="demo-iframe"
           src="https://helena-store-web.vercel.app/"
-          title="Helena Store — Demo en vivo"
+          title="Helena Store — Web en vivo"
           loading="lazy"
           sandbox="allow-scripts allow-same-origin allow-popups allow-forms"></iframe>
         <a href="https://helena-store-web.vercel.app/" target="_blank" rel="noopener" class="demo-overlay-btn">
-          ⛶ Pantalla completa
+          ⛶ Abrir web real
+        </a>
+      </div>
+
+      <div class="demo-actions" style="justify-content:center; margin-top:32px;">
+        <a href="https://helena-store-web.vercel.app/" target="_blank" rel="noopener" class="demo-btn demo-btn-primary">
+          Entrar a la tienda <span class="arrow">→</span>
+        </a>
+        <a href="#precio" class="demo-btn demo-btn-ghost">
+          Quiero uno así <span class="arrow">→</span>
         </a>
       </div>
     </div>
