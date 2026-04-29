@@ -85,6 +85,7 @@ h2 em{font-style:normal;color:var(--amber);font-weight:500}
 .sede-card .specs li{padding:4px 0;display:flex;justify-content:space-between;border-bottom:1px dashed var(--line)}
 .sede-card .specs li:last-child{border-bottom:none}
 .sede-card .specs li span:last-child{color:var(--text)}
+.sede-card.cn-card{grid-column:span 3}
 
 .flow{background:rgba(13,18,24,0.6);border:1px solid var(--line);padding:32px;margin-top:32px;font-family:'JetBrains Mono',monospace;font-size:13px;overflow-x:auto}
 .flow-line{padding:6px 0;color:var(--muted)}
@@ -218,6 +219,7 @@ footer{background:var(--bg);padding:48px 32px 24px;font-family:'JetBrains Mono',
   .diag{grid-template-columns:1fr}
   .sede-feature{padding:28px 24px}
   .sede-grid{grid-template-columns:1fr;gap:12px}
+  .sede-card.cn-card{grid-column:auto}
   .reports-grid{grid-template-columns:1fr}
   .eje{grid-template-columns:1fr;gap:16px;padding:32px 0}
   .eje-num{font-size:48px}
@@ -253,7 +255,7 @@ footer{background:var(--bg);padding:48px 32px 24px;font-family:'JetBrains Mono',
   <header class="hero">
     <div class="corner tl"></div>
     <div class="corner tr"></div>
-    <div class="hero-tag reveal">PROPUESTA · CONFIDENCIAL · PARA JUAN</div>
+    <div class="hero-tag reveal">PARA JUAN · MERCICO SAS</div>
     <h1 class="hero-title reveal">
       Operación
       <b>Auto-Pilot</b>
@@ -394,7 +396,7 @@ footer{background:var(--bg);padding:48px 32px 24px;font-family:'JetBrains Mono',
             <li><span>Catálogo</span><span>Pallets + Pooling</span></li>
           </ul>
         </div>
-        <div class="sede-card" style="grid-column:span 3">
+        <div class="sede-card cn-card">
           <div class="flag">CN_SHA</div>
           <h4>China · Shanghái</h4>
           <ul class="specs">
@@ -527,9 +529,9 @@ footer{background:var(--bg);padding:48px 32px 24px;font-family:'JetBrains Mono',
     <div class="sec-head">
       <div class="sec-num">05 / ENTREGABLES</div>
       <div class="sec-line"></div>
-      <div class="sec-status">FASE 1 · 60 DÍAS</div>
+      <div class="sec-status">FASE 1 · 20 DÍAS HÁBILES</div>
     </div>
-    <h2>Sesenta días. <em>Cuatro entregas</em> que ponen <b>la máquina a producir.</b></h2>
+    <h2>Veinte días hábiles. <em>Cuatro entregas</em> que ponen <b>la máquina a producir.</b></h2>
 
     <div class="deliv-grid">
       <div class="deliv reveal">
@@ -556,24 +558,24 @@ footer{background:var(--bg);padding:48px 32px 24px;font-family:'JetBrains Mono',
 
     <div class="timeline reveal">
       <div class="tl-item">
-        <div class="week">SEM_01–02</div>
+        <div class="week">DÍAS 01–04</div>
         <h4>Diagnóstico técnico</h4>
         <p>Mapeo procesos, integraciones, definición catálogo por sede, revisión de plantillas actuales.</p>
       </div>
       <div class="tl-item">
-        <div class="week">SEM_03–05</div>
+        <div class="week">DÍAS 05–12</div>
         <h4>Construcción</h4>
         <p>Bot WhatsApp + Contador + reportes. Pruebas con vendedores piloto.</p>
       </div>
       <div class="tl-item">
-        <div class="week">SEM_06–07</div>
+        <div class="week">DÍAS 13–17</div>
         <h4>Despliegue multi-sede</h4>
         <p>Activación en las 6 sedes. Configuración de envío de reportes al correo principal.</p>
       </div>
       <div class="tl-item">
-        <div class="week">SEM_08+</div>
-        <h4>Operación · iteración</h4>
-        <p>Ajustes con data real. Soporte continuo bajo licencia mensual.</p>
+        <div class="week">DÍAS 18–20</div>
+        <h4>Entrega · capacitación</h4>
+        <p>Capacitación al equipo comercial. Operación en marcha bajo licencia mensual.</p>
       </div>
     </div>
   </section>
@@ -591,7 +593,7 @@ footer{background:var(--bg);padding:48px 32px 24px;font-family:'JetBrains Mono',
 
       <div class="precio-card reveal">
         <div class="label">Implementación</div>
-        <div class="sub">// PAGO_INICIAL · FASE_1_COMPLETA · 60_DÍAS</div>
+        <div class="sub">// PAGO_INICIAL · FASE_1_COMPLETA · 20_DÍAS_HÁBILES</div>
         <div class="precio-amount">
           <span class="cur">COP</span>
           <span>$3.500.000</span>
@@ -616,7 +618,7 @@ footer{background:var(--bg);padding:48px 32px 24px;font-family:'JetBrains Mono',
 
       <div class="precio-card featured reveal">
         <div class="label">Licencia mensual</div>
-        <div class="sub">// DESDE_MES_03 · MES_01_Y_MES_02_GRATIS</div>
+        <div class="sub">// DESDE_MES_03 · 2_MESES_INCLUIDOS_TRAS_ENTREGA</div>
         <div class="precio-amount">
           <span class="cur">COP</span>
           <span>$150.000</span>
@@ -677,7 +679,7 @@ footer{background:var(--bg);padding:48px 32px 24px;font-family:'JetBrains Mono',
   <div class="foot-grid">
     <div>JARVIS_AGENCY_AI<br>BOTS · AUTOMATIZACIÓN · LATAM</div>
     <div class="foot-logo">jarvis<span>//</span></div>
-    <div style="text-align:right">CONFIDENTIAL<br>VIGENCIA_30_DÍAS</div>
+    <div style="text-align:right">PROPUESTA<br>VIGENCIA_30_DÍAS</div>
   </div>
   <div class="legal">
     LICENCIA MENSUAL · EL CÓDIGO Y LA OPERACIÓN PERMANECEN BAJO LICENCIA DE JARVIS AGENCY AI MIENTRAS SE MANTENGA EL PAGO DE LA MENSUALIDAD VIGENTE. INICIO DE PROYECTO REQUIERE PAGO DEL 50% DEL VALOR DE IMPLEMENTACIÓN.
