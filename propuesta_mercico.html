@@ -496,6 +496,84 @@ h2 em{font-style:normal;color:var(--amber);font-weight:500}
 .precio-includes li::before{content:"✓";color:var(--cyan);font-weight:700;font-family:'JetBrains Mono',monospace}
 .precio-card.featured .precio-includes li::before{color:var(--amber)}
 
+/* ANCHOR PRICING */
+.anchor-banner{
+  margin-bottom:32px;
+  background:linear-gradient(135deg, rgba(255,61,138,0.08) 0%, rgba(255,182,39,0.05) 100%);
+  border:1px solid var(--magenta);
+  padding:28px 32px;
+  position:relative;overflow:hidden;
+}
+.anchor-banner::before{
+  content:"OFERTA LIMITADA";
+  position:absolute;top:-1px;left:24px;
+  background:var(--magenta);color:var(--bg);
+  font-family:'JetBrains Mono',monospace;
+  font-size:10px;letter-spacing:0.25em;font-weight:700;
+  padding:4px 12px;
+}
+.anchor-grid{
+  display:grid;grid-template-columns:1fr auto 1fr;gap:32px;
+  align-items:center;margin-top:12px;
+}
+.anchor-side{text-align:center}
+.anchor-side .lbl{
+  font-family:'JetBrains Mono',monospace;
+  font-size:10px;letter-spacing:0.25em;text-transform:uppercase;
+  color:var(--muted);margin-bottom:8px;
+}
+.anchor-side.original .price{
+  font-family:'Space Grotesk',sans-serif;
+  font-size:36px;font-weight:300;letter-spacing:-0.03em;
+  color:var(--muted);position:relative;display:inline-block;
+}
+.anchor-side.original .price::after{
+  content:"";position:absolute;top:50%;left:-8px;right:-8px;
+  height:2px;background:var(--red);
+  transform:rotate(-8deg);
+}
+.anchor-side.original .price-cur{font-size:14px;color:var(--dim);font-family:'JetBrains Mono',monospace;margin-right:6px}
+.anchor-arrow{
+  font-family:'JetBrains Mono',monospace;
+  font-size:24px;color:var(--magenta);font-weight:700;
+}
+.anchor-side.now .price{
+  font-family:'Space Grotesk',sans-serif;
+  font-size:48px;font-weight:700;letter-spacing:-0.04em;
+  background:linear-gradient(135deg, var(--cyan) 0%, var(--amber) 100%);
+  -webkit-background-clip:text;background-clip:text;
+  -webkit-text-fill-color:transparent;
+  line-height:1;
+}
+.anchor-side.now .price-cur{font-size:14px;color:var(--cyan);font-family:'JetBrains Mono',monospace;margin-right:6px;letter-spacing:0.1em}
+.anchor-side.now .lbl{color:var(--magenta)}
+.anchor-foot{
+  margin-top:20px;padding-top:20px;
+  border-top:1px dashed rgba(255,61,138,0.3);
+  display:flex;justify-content:space-between;align-items:center;
+  font-family:'JetBrains Mono',monospace;font-size:12px;
+  color:var(--text);letter-spacing:0.05em;flex-wrap:wrap;gap:12px;
+}
+.anchor-foot .slots{
+  display:flex;align-items:center;gap:10px;
+  color:var(--magenta);font-weight:600;
+}
+.anchor-foot .slots .dots{display:flex;gap:6px}
+.anchor-foot .slots .dot{
+  width:10px;height:10px;border:1.5px solid var(--magenta);
+  border-radius:50%;background:var(--magenta);
+  box-shadow:0 0 8px rgba(255,61,138,0.6);
+}
+.anchor-foot .save{color:var(--green)}
+.anchor-foot .save b{color:var(--amber);font-size:14px}
+
+@media(max-width:880px){
+  .anchor-grid{grid-template-columns:1fr;gap:16px}
+  .anchor-arrow{transform:rotate(90deg)}
+  .anchor-side.now .price{font-size:40px}
+  .anchor-foot{flex-direction:column;align-items:flex-start}
+}
+
 /* PAYMENT TERMS */
 .pay-terms{
   margin-top:32px;padding:20px;
@@ -1027,10 +1105,36 @@ footer{background:var(--bg);padding:48px 32px 24px;font-family:'JetBrains Mono',
     </div>
     <h2>Una inversión. <em>Operación perpetua.</em></h2>
 
+    <div class="anchor-banner reveal">
+      <div class="anchor-grid">
+        <div class="anchor-side original">
+          <div class="lbl">Valor real del sistema</div>
+          <div class="price"><span class="price-cur">COP</span>$15.000.000</div>
+        </div>
+        <div class="anchor-arrow">→</div>
+        <div class="anchor-side now">
+          <div class="lbl">Precio cliente piloto</div>
+          <div class="price"><span class="price-cur">COP</span>$5.000.000</div>
+        </div>
+      </div>
+      <div class="anchor-foot">
+        <div class="slots">
+          <span>// CUPOS PILOTO</span>
+          <div class="dots">
+            <span class="dot"></span>
+            <span class="dot"></span>
+            <span class="dot"></span>
+          </div>
+          <span>3 DISPONIBLES</span>
+        </div>
+        <div class="save">DESCUENTO PILOTO · <b>AHORRO $10.000.000</b></div>
+      </div>
+    </div>
+
     <div class="precio-grid">
 
       <div class="precio-card reveal">
-        <div class="label">Implementación</div>
+        <div class="label">Implementación · Cupo Piloto</div>
         <div class="sub">// PAGO_INICIAL · FASE_1_COMPLETA · 20_DÍAS_HÁBILES</div>
         <div class="precio-amount">
           <span class="cur">COP</span>
@@ -1097,7 +1201,8 @@ footer{background:var(--bg);padding:48px 32px 24px;font-family:'JetBrains Mono',
     </div>
 
     <div class="precio-note">
-      <b>// MES_01 Y MES_02 SIN COSTO</b> · INCLUIDOS EN LA IMPLEMENTACIÓN · LICENCIA_MENSUAL · NO_TRANSFERIBLE
+      <b>// 2_MESES_OPERACIÓN_INCLUIDOS</b> · LICENCIA_MENSUAL · NO_TRANSFERIBLE<br>
+      <span style="color:var(--magenta)">// CUMPLIDOS_LOS_3_CUPOS_PILOTO · PRECIO_RETORNA_A_$15.000.000</span>
     </div>
   </section>
 
