@@ -1,0 +1,696 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JARVIS // Propuesta Mercico SAS</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#05070a;--bg-2:#0a0e14;--panel:#0d1218;
+  --line:#1a2330;--line-2:#243042;
+  --text:#e6edf3;--muted:#7d8a9c;--dim:#4a5668;
+  --cyan:#00d4ff;--cyan-soft:#3ae0ff;
+  --amber:#ffb627;--magenta:#ff3d8a;--green:#22d39a;--red:#ff4757;
+  --whatsapp:#25d366;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:'Space Grotesk',sans-serif;background:var(--bg);color:var(--text);line-height:1.5;overflow-x:hidden;position:relative}
+body::before{content:"";position:fixed;inset:0;background-image:linear-gradient(rgba(0,212,255,0.04) 1px, transparent 1px),linear-gradient(90deg, rgba(0,212,255,0.04) 1px, transparent 1px);background-size:64px 64px;pointer-events:none;z-index:0;mask-image:radial-gradient(ellipse at center, black 30%, transparent 80%)}
+body::after{content:"";position:fixed;inset:0;background:linear-gradient(180deg, transparent 0%, rgba(0,212,255,0.015) 50%, transparent 100%);background-size:100% 4px;pointer-events:none;z-index:1;animation:scan 8s linear infinite}
+@keyframes scan{0%{transform:translateY(0)}100%{transform:translateY(20px)}}
+.wrap{max-width:1280px;margin:0 auto;padding:0 32px;position:relative;z-index:2}
+
+.hud-top{position:sticky;top:0;z-index:50;background:rgba(5,7,10,0.85);backdrop-filter:blur(12px);border-bottom:1px solid var(--line);font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.1em;padding:10px 32px;display:flex;justify-content:space-between;align-items:center;text-transform:uppercase}
+.hud-top .left{display:flex;gap:24px;align-items:center}
+.hud-top .logo{font-weight:700;letter-spacing:0.3em;color:var(--cyan);text-shadow:0 0 12px rgba(0,212,255,0.4)}
+.hud-top .pulse{display:inline-block;width:6px;height:6px;background:var(--green);border-radius:50%;margin-right:6px;box-shadow:0 0 8px var(--green);animation:pulse 1.5s infinite}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:0.5;transform:scale(1.3)}}
+.hud-top .center,.hud-top .right{color:var(--muted)}
+
+.hero{padding:80px 0 100px;position:relative;border-bottom:1px solid var(--line)}
+.hero-tag{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.25em;text-transform:uppercase;color:var(--cyan);margin-bottom:32px;display:inline-flex;align-items:center;gap:12px;padding:8px 16px;border:1px solid var(--cyan);background:rgba(0,212,255,0.05);box-shadow:0 0 24px rgba(0,212,255,0.15) inset}
+.hero-tag::before{content:"";width:6px;height:6px;background:var(--cyan);border-radius:50%;box-shadow:0 0 8px var(--cyan)}
+h1.hero-title{font-family:'Space Grotesk',sans-serif;font-size:clamp(48px,8vw,112px);font-weight:300;line-height:0.95;letter-spacing:-0.04em;margin-bottom:32px;text-transform:uppercase}
+h1.hero-title b{font-weight:700;background:linear-gradient(135deg, var(--cyan) 0%, var(--cyan-soft) 50%, var(--amber) 100%);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;display:block}
+h1.hero-title .small{display:block;font-size:0.4em;font-weight:300;color:var(--muted);letter-spacing:0.1em;margin-top:16px;font-family:'JetBrains Mono',monospace}
+.hero-meta{display:grid;grid-template-columns:repeat(4,1fr);gap:0;margin-top:64px;border-top:1px solid var(--line);border-left:1px solid var(--line)}
+.hero-meta-item{border-right:1px solid var(--line);border-bottom:1px solid var(--line);padding:20px 24px;background:rgba(13,18,24,0.5)}
+.hero-meta-item .k{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:var(--dim);margin-bottom:6px}
+.hero-meta-item .v{font-size:14px;color:var(--text);font-weight:500}
+.corner{position:absolute;width:24px;height:24px;border:2px solid var(--cyan);opacity:0.6}
+.corner.tl{top:60px;left:32px;border-right:none;border-bottom:none}
+.corner.tr{top:60px;right:32px;border-left:none;border-bottom:none}
+
+section{padding:100px 0;border-bottom:1px solid var(--line);position:relative}
+.sec-head{display:flex;align-items:center;gap:16px;margin-bottom:48px}
+.sec-num{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--cyan);letter-spacing:0.2em;padding:6px 12px;border:1px solid var(--cyan);background:rgba(0,212,255,0.05)}
+.sec-line{flex:1;height:1px;background:linear-gradient(90deg, var(--cyan), transparent)}
+.sec-status{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);letter-spacing:0.15em;text-transform:uppercase}
+h2{font-family:'Space Grotesk',sans-serif;font-size:clamp(36px,5vw,64px);font-weight:400;line-height:1.05;letter-spacing:-0.03em;margin-bottom:48px;max-width:900px;text-transform:uppercase}
+h2 b{font-weight:700;color:var(--cyan)}
+h2 em{font-style:normal;color:var(--amber);font-weight:500}
+
+.wa-banner{display:flex;align-items:center;gap:16px;background:linear-gradient(135deg, rgba(37,211,102,0.1) 0%, rgba(37,211,102,0.02) 100%);border:1px solid rgba(37,211,102,0.3);padding:20px 24px;margin-bottom:48px;font-family:'JetBrains Mono',monospace;font-size:13px;letter-spacing:0.05em}
+.wa-banner .icon{width:36px;height:36px;flex-shrink:0;background:var(--whatsapp);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;color:#fff;font-weight:700;box-shadow:0 0 24px rgba(37,211,102,0.4)}
+.wa-banner .txt{color:var(--text)}
+.wa-banner .txt b{color:var(--whatsapp);text-transform:uppercase;letter-spacing:0.15em;font-size:11px;display:block;margin-bottom:4px}
+
+.diag{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:var(--line);border:1px solid var(--line)}
+.diag-card{background:var(--panel);padding:32px;position:relative;transition:background 0.4s}
+.diag-card:hover{background:#111722}
+.diag-card .id{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--red);letter-spacing:0.2em;margin-bottom:16px;display:flex;gap:8px;align-items:center}
+.diag-card .id::before{content:"!";width:18px;height:18px;display:inline-flex;align-items:center;justify-content:center;border:1px solid var(--red);border-radius:50%;font-weight:700;font-size:10px}
+.diag-card h3{font-family:'Space Grotesk',sans-serif;font-size:22px;font-weight:600;line-height:1.2;margin-bottom:12px;letter-spacing:-0.01em}
+.diag-card p{font-size:14px;color:var(--muted);line-height:1.6}
+
+.sede-section{background:linear-gradient(180deg, var(--bg) 0%, #060a10 100%);position:relative;overflow:hidden}
+.sede-section::before{content:"";position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:800px;height:800px;background:radial-gradient(circle, rgba(0,212,255,0.08) 0%, transparent 60%);pointer-events:none}
+.sede-feature{background:var(--panel);border:1px solid var(--line-2);padding:48px;position:relative;margin-bottom:32px}
+.sede-feature::before{content:"";position:absolute;top:-1px;left:-1px;right:-1px;height:2px;background:linear-gradient(90deg, var(--cyan) 0%, var(--magenta) 50%, var(--amber) 100%)}
+.sede-feature .badge{display:inline-flex;align-items:center;gap:8px;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.2em;text-transform:uppercase;color:var(--magenta);margin-bottom:16px}
+.sede-feature .badge::before{content:"◆";color:var(--magenta)}
+.sede-feature h3{font-family:'Space Grotesk',sans-serif;font-size:32px;font-weight:600;letter-spacing:-0.02em;margin-bottom:16px;line-height:1.15}
+.sede-feature h3 span{color:var(--cyan)}
+.sede-feature p{color:var(--muted);font-size:15px;max-width:760px;line-height:1.7}
+.sede-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:32px}
+.sede-card{background:rgba(13,18,24,0.6);border:1px solid var(--line);padding:20px;transition:all 0.3s}
+.sede-card:hover{border-color:var(--cyan);background:rgba(0,212,255,0.03);transform:translateY(-2px)}
+.sede-card .flag{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--cyan);letter-spacing:0.15em;margin-bottom:8px}
+.sede-card h4{font-size:18px;font-weight:600;margin-bottom:12px;letter-spacing:-0.01em}
+.sede-card .specs{list-style:none;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted)}
+.sede-card .specs li{padding:4px 0;display:flex;justify-content:space-between;border-bottom:1px dashed var(--line)}
+.sede-card .specs li:last-child{border-bottom:none}
+.sede-card .specs li span:last-child{color:var(--text)}
+
+.flow{background:rgba(13,18,24,0.6);border:1px solid var(--line);padding:32px;margin-top:32px;font-family:'JetBrains Mono',monospace;font-size:13px;overflow-x:auto}
+.flow-line{padding:6px 0;color:var(--muted)}
+.flow-line .key{color:var(--cyan)}
+.flow-line .val{color:var(--amber)}
+.flow-line .arrow{color:var(--magenta);margin:0 8px}
+.flow-line.head{color:var(--green);margin-bottom:8px;padding-bottom:8px;border-bottom:1px dashed var(--line)}
+
+.reports-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:32px}
+.report-card{background:var(--panel);border:1px solid var(--line);padding:28px;transition:all 0.3s;position:relative;overflow:hidden}
+.report-card::before{content:"";position:absolute;top:0;left:0;width:4px;height:100%;background:var(--cyan)}
+.report-card:hover{border-color:var(--cyan);transform:translateY(-2px)}
+.report-card .freq{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.25em;text-transform:uppercase;color:var(--cyan);margin-bottom:12px}
+.report-card h4{font-size:20px;font-weight:600;margin-bottom:12px;letter-spacing:-0.01em}
+.report-card ul{list-style:none}
+.report-card li{font-size:13px;color:var(--muted);padding:6px 0;border-bottom:1px dashed var(--line);display:flex;gap:8px}
+.report-card li:last-child{border-bottom:none}
+.report-card li::before{content:"▸";color:var(--cyan);flex-shrink:0}
+
+.eje{display:grid;grid-template-columns:100px 1fr 1.4fr;gap:32px;padding:48px 0;border-bottom:1px solid var(--line);align-items:start;transition:padding-left 0.4s, background 0.4s}
+.eje:hover{padding-left:24px;background:linear-gradient(90deg, rgba(0,212,255,0.04) 0%, transparent 70%)}
+.eje:first-child{border-top:1px solid var(--line)}
+.eje-num{font-family:'JetBrains Mono',monospace;font-size:64px;font-weight:300;line-height:1;color:var(--cyan);text-shadow:0 0 24px rgba(0,212,255,0.3)}
+.eje-title h3{font-family:'Space Grotesk',sans-serif;font-size:28px;font-weight:600;line-height:1.15;letter-spacing:-0.02em;margin-bottom:12px}
+.eje-title .desc{color:var(--muted);font-size:14px;margin-bottom:16px;line-height:1.5}
+.eje-title .tag{display:inline-flex;align-items:center;gap:6px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:var(--amber);border:1px solid var(--amber);padding:4px 10px;background:rgba(255,182,39,0.05)}
+.eje-body ul{list-style:none}
+.eje-body li{padding:12px 0;border-bottom:1px dashed var(--line);font-size:14px;display:flex;gap:12px;align-items:baseline;color:var(--text)}
+.eje-body li:last-child{border-bottom:none}
+.eje-body li::before{content:"▸";color:var(--cyan);flex-shrink:0;font-size:14px}
+
+.deliv-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);border:1px solid var(--line)}
+.deliv{background:var(--panel);padding:32px 24px;min-height:200px;display:flex;flex-direction:column;justify-content:space-between;position:relative;transition:background 0.3s}
+.deliv:hover{background:#111722}
+.deliv .num{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--amber);letter-spacing:0.2em}
+.deliv h4{font-family:'Space Grotesk',sans-serif;font-size:18px;font-weight:600;line-height:1.25;margin-top:24px;letter-spacing:-0.01em}
+.deliv .check{margin-top:16px;font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--green);letter-spacing:0.15em}
+
+.timeline{display:grid;grid-template-columns:repeat(4,1fr);gap:0;margin-top:48px;border-top:2px solid var(--cyan);position:relative}
+.timeline::before{content:"";position:absolute;top:-6px;left:0;width:10px;height:10px;background:var(--cyan);border-radius:50%;box-shadow:0 0 12px var(--cyan)}
+.timeline::after{content:"";position:absolute;top:-6px;right:0;width:10px;height:10px;background:var(--amber);border-radius:50%;box-shadow:0 0 12px var(--amber)}
+.tl-item{padding:32px 24px 0;border-right:1px dashed var(--line)}
+.tl-item:last-child{border-right:none}
+.tl-item .week{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--cyan);letter-spacing:0.15em;margin-bottom:12px}
+.tl-item h4{font-size:18px;font-weight:600;margin-bottom:8px;letter-spacing:-0.01em}
+.tl-item p{font-size:13px;color:var(--muted);line-height:1.5}
+
+.precio{padding:120px 0;position:relative;overflow:hidden}
+.precio-grid{display:grid;grid-template-columns:1fr 1fr;gap:32px;position:relative;z-index:1}
+.precio-card{background:var(--panel);border:1px solid var(--line-2);padding:48px 40px;position:relative;transition:transform 0.4s, border-color 0.4s}
+.precio-card:hover{transform:translateY(-4px);border-color:var(--cyan)}
+.precio-card.featured{background:linear-gradient(180deg, #0d1218 0%, #0a1419 100%);border-color:var(--cyan);box-shadow:0 0 64px rgba(0,212,255,0.15), inset 0 0 64px rgba(0,212,255,0.03)}
+.precio-card.featured::before{content:"";position:absolute;top:-1px;left:-1px;right:-1px;height:2px;background:linear-gradient(90deg, var(--cyan), var(--amber))}
+.precio-card .label{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.25em;text-transform:uppercase;color:var(--cyan);margin-bottom:8px}
+.precio-card.featured .label{color:var(--amber)}
+.precio-card .sub{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--muted);margin-bottom:32px}
+.precio-amount{font-family:'Space Grotesk',sans-serif;font-size:clamp(56px,7vw,88px);font-weight:300;line-height:1;letter-spacing:-0.04em;display:flex;align-items:baseline;gap:8px;flex-wrap:wrap}
+.precio-amount .cur{font-size:18px;font-weight:500;color:var(--muted);font-family:'JetBrains Mono',monospace;letter-spacing:0.1em}
+.precio-amount .per{font-size:14px;color:var(--muted);font-family:'JetBrains Mono',monospace;font-style:normal;margin-left:8px;letter-spacing:0.1em}
+.precio-includes{margin-top:32px;padding-top:24px;border-top:1px solid var(--line);list-style:none}
+.precio-includes li{padding:8px 0;font-size:14px;display:flex;gap:12px;color:var(--text)}
+.precio-includes li::before{content:"✓";color:var(--cyan);font-weight:700;font-family:'JetBrains Mono',monospace}
+.precio-card.featured .precio-includes li::before{color:var(--amber)}
+
+/* PAYMENT TERMS */
+.pay-terms{
+  margin-top:32px;padding:20px;
+  background:rgba(34,211,154,0.05);border:1px solid var(--green);
+  display:flex;gap:16px;align-items:center;
+}
+.pay-terms .ic{
+  width:36px;height:36px;flex-shrink:0;
+  background:var(--green);border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  color:var(--bg);font-weight:900;font-size:14px;font-family:'JetBrains Mono',monospace;
+  box-shadow:0 0 16px rgba(34,211,154,0.4);
+}
+.pay-terms .body{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--text);letter-spacing:0.05em;line-height:1.5}
+.pay-terms .body b{color:var(--green);text-transform:uppercase;letter-spacing:0.15em;font-size:11px;display:block;margin-bottom:4px}
+
+/* ADDON */
+.addon{margin-top:48px;background:var(--panel);border:1px dashed var(--magenta);padding:40px;position:relative}
+.addon::before{content:"OPCIONAL";position:absolute;top:-10px;left:24px;background:var(--bg);padding:0 12px;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.25em;color:var(--magenta)}
+.addon-grid{display:grid;grid-template-columns:1.4fr 1fr;gap:48px;align-items:center}
+.addon h3{font-family:'Space Grotesk',sans-serif;font-size:26px;font-weight:600;letter-spacing:-0.02em;margin-bottom:12px;line-height:1.2}
+.addon h3 span{color:var(--magenta)}
+.addon p{font-size:14px;color:var(--muted);line-height:1.6;margin-bottom:16px}
+.addon ul{list-style:none}
+.addon ul li{padding:6px 0;font-size:13px;color:var(--muted);display:flex;gap:10px}
+.addon ul li::before{content:"+";color:var(--magenta);font-weight:700}
+.addon-price{background:rgba(255,61,138,0.05);border:1px solid var(--magenta);padding:24px;text-align:center}
+.addon-price .label{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--magenta);letter-spacing:0.2em;text-transform:uppercase;margin-bottom:8px}
+.addon-price .amt{font-family:'Space Grotesk',sans-serif;font-size:36px;font-weight:300;letter-spacing:-0.02em;margin-bottom:4px}
+.addon-price .amt .cur{font-size:14px;color:var(--muted);font-family:'JetBrains Mono',monospace}
+.addon-price .div{height:1px;background:rgba(255,61,138,0.3);margin:16px 0}
+.addon-price .mes{font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--text)}
+.addon-price .mes b{color:var(--magenta);font-size:18px;display:block;margin-top:4px;font-family:'Space Grotesk',sans-serif;font-weight:600}
+
+.precio-note{margin-top:48px;text-align:center;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted);letter-spacing:0.2em;text-transform:uppercase;position:relative;z-index:1;padding:16px;border:1px dashed var(--line-2);background:rgba(13,18,24,0.4)}
+.precio-note b{color:var(--green)}
+
+.cta{background:linear-gradient(135deg, #050810 0%, #0a1018 50%, #0a0810 100%);padding:120px 32px;margin:0 -32px;text-align:center;position:relative;overflow:hidden;border-bottom:1px solid var(--line)}
+.cta::before{content:"JARVIS";position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-family:'Space Grotesk',sans-serif;font-size:clamp(180px,28vw,400px);font-weight:800;background:linear-gradient(180deg, rgba(0,212,255,0.06) 0%, transparent 100%);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;letter-spacing:-0.04em;z-index:0;white-space:nowrap;pointer-events:none}
+.cta h2{margin:0 auto 40px;text-align:center;position:relative;z-index:1}
+.cta h2 b{color:var(--cyan)}
+.cta-btn{display:inline-flex;align-items:center;gap:12px;background:var(--whatsapp);color:#fff;padding:24px 48px;font-family:'JetBrains Mono',monospace;font-size:14px;letter-spacing:0.2em;text-transform:uppercase;font-weight:700;text-decoration:none;border:none;position:relative;z-index:1;transition:all 0.3s;box-shadow:0 0 40px rgba(37,211,102,0.4)}
+.cta-btn:hover{transform:translateY(-2px);box-shadow:0 0 56px rgba(37,211,102,0.6)}
+.cta-btn .wa-ic{width:24px;height:24px;background:#fff;color:var(--whatsapp);border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:14px;font-weight:900}
+.cta-num{margin-top:24px;font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--muted);letter-spacing:0.2em;position:relative;z-index:1}
+.cta-num b{color:var(--whatsapp);font-size:18px;letter-spacing:0.1em;display:block;margin-top:4px}
+
+footer{background:var(--bg);padding:48px 32px 24px;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.15em;color:var(--muted)}
+.foot-grid{max-width:1280px;margin:0 auto;display:grid;grid-template-columns:1fr auto 1fr;gap:24px;align-items:center;padding-bottom:32px;border-bottom:1px solid var(--line)}
+.foot-logo{font-family:'Space Grotesk',sans-serif;font-size:36px;font-weight:700;letter-spacing:-0.02em;text-align:center;color:var(--cyan);text-shadow:0 0 24px rgba(0,212,255,0.3)}
+.foot-logo span{color:var(--amber)}
+.foot-bottom{max-width:1280px;margin:24px auto 0;text-align:center;opacity:0.4;text-transform:uppercase}
+.legal{margin-top:16px;font-size:10px;color:var(--dim);text-align:center;line-height:1.6;letter-spacing:0.05em;max-width:800px;margin-left:auto;margin-right:auto}
+
+.reveal{opacity:0;transform:translateY(24px);transition:opacity 0.8s ease, transform 0.8s ease}
+.reveal.in{opacity:1;transform:translateY(0)}
+
+@media(max-width:880px){
+  .hud-top{font-size:9px;padding:8px 16px;flex-wrap:wrap;gap:8px}
+  .hud-top .center{display:none}
+  .wrap{padding:0 20px}
+  .corner{display:none}
+  .hero{padding:48px 0 60px}
+  .hero-meta{grid-template-columns:1fr 1fr}
+  section{padding:64px 0}
+  h2{margin-bottom:32px}
+  .diag{grid-template-columns:1fr}
+  .sede-feature{padding:28px 24px}
+  .sede-grid{grid-template-columns:1fr;gap:12px}
+  .reports-grid{grid-template-columns:1fr}
+  .eje{grid-template-columns:1fr;gap:16px;padding:32px 0}
+  .eje-num{font-size:48px}
+  .deliv-grid{grid-template-columns:1fr 1fr}
+  .timeline{grid-template-columns:1fr;border-top:none}
+  .tl-item{border-right:none;border-bottom:1px dashed var(--line);padding:24px 0;border-top:2px solid var(--cyan);position:relative}
+  .tl-item::before{content:"";position:absolute;top:-6px;left:0;width:8px;height:8px;background:var(--cyan);border-radius:50%}
+  .precio-grid{grid-template-columns:1fr;gap:20px}
+  .precio-card{padding:32px 24px}
+  .addon{padding:28px 24px}
+  .addon-grid{grid-template-columns:1fr;gap:24px}
+  .cta{padding:64px 20px;margin:0 -20px}
+  .cta::before{font-size:120px}
+  .cta-btn{padding:18px 28px;font-size:12px}
+  .foot-grid{grid-template-columns:1fr;text-align:center}
+  .flow{font-size:11px;padding:20px}
+}
+</style>
+</head>
+<body>
+
+<div class="hud-top">
+  <div class="left">
+    <span class="logo">JARVIS//</span>
+    <span><span class="pulse"></span>SYSTEM ONLINE</span>
+  </div>
+  <div class="center">CLIENTE: MERCICO_SAS · REF.MX-001 · 2026.04.29</div>
+  <div class="right">v4.7 // SECURE</div>
+</div>
+
+<div class="wrap">
+
+  <header class="hero">
+    <div class="corner tl"></div>
+    <div class="corner tr"></div>
+    <div class="hero-tag reveal">PROPUESTA · CONFIDENCIAL · PARA JUAN</div>
+    <h1 class="hero-title reveal">
+      Operación
+      <b>Auto-Pilot</b>
+      <span class="small">// MERCICO SAS · 6 PAÍSES · UN SOLO CEREBRO</span>
+    </h1>
+    <div class="hero-meta reveal">
+      <div class="hero-meta-item"><div class="k">Cliente</div><div class="v">Mercico SAS</div></div>
+      <div class="hero-meta-item"><div class="k">Sector</div><div class="v">Plásticos · B2B</div></div>
+      <div class="hero-meta-item"><div class="k">Cobertura</div><div class="v">CO · MX · GT · EC · PE · CL · CN</div></div>
+      <div class="hero-meta-item"><div class="k">Canal principal</div><div class="v">WhatsApp Business</div></div>
+    </div>
+  </header>
+
+  <!-- DIAGNOSTICO -->
+  <section>
+    <div class="sec-head">
+      <div class="sec-num">01 / DIAGNÓSTICO</div>
+      <div class="sec-line"></div>
+      <div class="sec-status">SYS_SCAN COMPLETE</div>
+    </div>
+    <h2>36 años operando. <em>Procesos manuales</em> que ya <b>no escalan.</b></h2>
+
+    <div class="diag">
+      <div class="diag-card reveal">
+        <div class="id">FRICCIÓN_001</div>
+        <h3>Cotización dependiente del humano</h3>
+        <p>El CTA "Solicitar cotización" obliga a esperar vendedor. Cliente B2B impaciente abandona.</p>
+      </div>
+      <div class="diag-card reveal">
+        <div class="id">DISPERSIÓN_002</div>
+        <h3>Seis sedes, seis criterios</h3>
+        <p>México, Guatemala, Ecuador, Perú, Chile, China. Sin estandarización ni trazabilidad central.</p>
+      </div>
+      <div class="diag-card reveal">
+        <div class="id">CANAL_003</div>
+        <h3>WhatsApp sin inteligencia</h3>
+        <p>Canal directo pero pasivo. No califica leads, no segmenta, no rastrea ciclo de venta.</p>
+      </div>
+      <div class="diag-card reveal">
+        <div class="id">CICLO_004</div>
+        <h3>B2B sin nurturing sistemático</h3>
+        <p>Decisores múltiples, ciclos 30 a 90 días. Sin seguimiento se pierde el 60% del pipeline.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- WHATSAPP + SEDES -->
+  <section class="sede-section">
+    <div class="sec-head">
+      <div class="sec-num">02 / DIFERENCIAL</div>
+      <div class="sec-line"></div>
+      <div class="sec-status">MULTI-NODE ROUTING</div>
+    </div>
+    <h2>Todo desde <b>WhatsApp.</b> <em>Personalización automática</em> por sede.</h2>
+
+    <div class="wa-banner reveal">
+      <div class="icon">W</div>
+      <div class="txt">
+        <b>// CANAL PRINCIPAL</b>
+        El bot opera 100% sobre WhatsApp Business. Cero apps adicionales, cero paneles, cero curva de aprendizaje para tus clientes ni tu equipo.
+      </div>
+    </div>
+
+    <div class="sede-feature reveal">
+      <div class="badge">GEO-AWARE INTELLIGENCE</div>
+      <h3>El bot detecta <span>desde dónde escriben</span> y se transforma.</h3>
+      <p>
+        Idioma, moneda, vendedor regional, horario local, catálogo aplicable, certificaciones del país, normativas de empaque y flete.
+        El cliente B2B de Shanghái recibe respuesta en mandarín con precios en USD y vendedor de China; el de Lima recibe español con precios en soles y el comercial de Perú. Mismo bot. Cero confusión.
+      </p>
+
+      <div class="flow">
+        <div class="flow-line head">// FLUJO DE DETECCIÓN AUTOMÁTICA</div>
+        <div class="flow-line"><span class="key">cliente.escribe_whatsapp</span><span class="arrow">→</span><span class="val">bot.detecta(país, idioma, código_telefónico)</span></div>
+        <div class="flow-line"><span class="key">bot.cargar_perfil</span><span class="arrow">→</span><span class="val">{ idioma, moneda, vendedor, catálogo, normativa }</span></div>
+        <div class="flow-line"><span class="key">bot.responder</span><span class="arrow">→</span><span class="val">cotización_localizada + ruteo_automático</span></div>
+        <div class="flow-line"><span class="key">bot.notificar</span><span class="arrow">→</span><span class="val">vendedor_de_la_sede + dashboard_central</span></div>
+      </div>
+
+      <div class="sede-grid">
+        <div class="sede-card">
+          <div class="flag">CO_BOG</div>
+          <h4>Colombia</h4>
+          <ul class="specs">
+            <li><span>Idioma</span><span>Español</span></li>
+            <li><span>Moneda</span><span>COP</span></li>
+            <li><span>Comercial</span><span>HQ Tenjo</span></li>
+            <li><span>Catálogo</span><span>Completo</span></li>
+          </ul>
+        </div>
+        <div class="sede-card">
+          <div class="flag">MX_CDMX</div>
+          <h4>México</h4>
+          <ul class="specs">
+            <li><span>Idioma</span><span>Español MX</span></li>
+            <li><span>Moneda</span><span>MXN</span></li>
+            <li><span>Comercial</span><span>Nicolás Herrera</span></li>
+            <li><span>Catálogo</span><span>Promo + Pallets</span></li>
+          </ul>
+        </div>
+        <div class="sede-card">
+          <div class="flag">GT_GUA</div>
+          <h4>Guatemala</h4>
+          <ul class="specs">
+            <li><span>Idioma</span><span>Español GT</span></li>
+            <li><span>Moneda</span><span>GTQ</span></li>
+            <li><span>Comercial</span><span>Laura Duarte</span></li>
+            <li><span>Catálogo</span><span>Promo + Packing</span></li>
+          </ul>
+        </div>
+        <div class="sede-card">
+          <div class="flag">EC_UIO</div>
+          <h4>Ecuador</h4>
+          <ul class="specs">
+            <li><span>Idioma</span><span>Español EC</span></li>
+            <li><span>Moneda</span><span>USD</span></li>
+            <li><span>Comercial</span><span>Andrés Pinzón</span></li>
+            <li><span>Catálogo</span><span>Logística</span></li>
+          </ul>
+        </div>
+        <div class="sede-card">
+          <div class="flag">PE_LIM</div>
+          <h4>Perú</h4>
+          <ul class="specs">
+            <li><span>Idioma</span><span>Español PE</span></li>
+            <li><span>Moneda</span><span>PEN</span></li>
+            <li><span>Comercial</span><span>Andrés Pinzón</span></li>
+            <li><span>Catálogo</span><span>Logística + Pallets</span></li>
+          </ul>
+        </div>
+        <div class="sede-card">
+          <div class="flag">CL_SCL</div>
+          <h4>Chile</h4>
+          <ul class="specs">
+            <li><span>Idioma</span><span>Español CL</span></li>
+            <li><span>Moneda</span><span>CLP</span></li>
+            <li><span>Comercial</span><span>Andrés Pinzón</span></li>
+            <li><span>Catálogo</span><span>Pallets + Pooling</span></li>
+          </ul>
+        </div>
+        <div class="sede-card" style="grid-column:span 3">
+          <div class="flag">CN_SHA</div>
+          <h4>China · Shanghái</h4>
+          <ul class="specs">
+            <li><span>Idioma</span><span>Mandarín 中文 / Inglés</span></li>
+            <li><span>Moneda</span><span>USD / CNY</span></li>
+            <li><span>Comercial</span><span>Luis Gelves</span></li>
+            <li><span>Horario</span><span>UTC+8 (auto-detect)</span></li>
+            <li><span>Catálogo</span><span>Sourcing + Promocionales licenciados</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- REPORTES -->
+  <section>
+    <div class="sec-head">
+      <div class="sec-num">03 / REPORTES</div>
+      <div class="sec-line"></div>
+      <div class="sec-status">AUTO_DELIVERY · EMAIL</div>
+    </div>
+    <h2>Datos de <b>cada sede</b> en <em>tu correo principal.</em> Sin pedirlos.</h2>
+
+    <p style="color:var(--muted);font-size:15px;max-width:760px;line-height:1.7;margin-bottom:24px">
+      El sistema genera reportes automáticos por sede y los entrega al correo principal en tres frecuencias. Cero acción manual. Cada sede tiene su propio archivo dentro del email; el corporativo ve todo consolidado.
+    </p>
+
+    <div class="reports-grid">
+      <div class="report-card reveal">
+        <div class="freq">DIARIO · 7:00 AM</div>
+        <h4>Pulso operativo</h4>
+        <ul>
+          <li>Conversaciones nuevas por sede</li>
+          <li>Cotizaciones generadas</li>
+          <li>Leads calificados (BANT)</li>
+          <li>Alertas de cartera vencida</li>
+          <li>Vendedor + tiempo de respuesta</li>
+        </ul>
+      </div>
+      <div class="report-card reveal">
+        <div class="freq">SEMANAL · LUNES</div>
+        <h4>Performance comercial</h4>
+        <ul>
+          <li>Pipeline por sede y línea</li>
+          <li>Tasa de cierre por vendedor</li>
+          <li>Top productos cotizados</li>
+          <li>Leads sin seguimiento (alerta)</li>
+          <li>Comparativo semana anterior</li>
+        </ul>
+      </div>
+      <div class="report-card reveal">
+        <div class="freq">MENSUAL · DÍA 1</div>
+        <h4>Inteligencia de negocio</h4>
+        <ul>
+          <li>Revenue proyectado vs cerrado</li>
+          <li>Ranking de sedes por desempeño</li>
+          <li>Análisis de embudo completo</li>
+          <li>Insights y oportunidades</li>
+          <li>Recomendaciones del agente IA</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- EJES SOLUCION -->
+  <section>
+    <div class="sec-head">
+      <div class="sec-num">04 / SOLUCIÓN</div>
+      <div class="sec-line"></div>
+      <div class="sec-status">DEPLOY READY</div>
+    </div>
+    <h2>Tres ejes. <em>Un solo cerebro.</em> <b>Todo desde WhatsApp.</b></h2>
+
+    <div class="eje reveal">
+      <div class="eje-num">01</div>
+      <div class="eje-title">
+        <h3>Bot Contador</h3>
+        <p class="desc">Operación financiera multi-país en automático.</p>
+        <span class="tag">Contabilidad</span>
+      </div>
+      <div class="eje-body">
+        <ul>
+          <li>Conciliación de facturación entre las 6 sedes con conversión de moneda local</li>
+          <li>Reportes diarios de cartera, flujo y cuentas por cobrar</li>
+          <li>Alertas automáticas de vencimientos por cliente B2B</li>
+          <li>Integración con software contable actual</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="eje reveal">
+      <div class="eje-num">02</div>
+      <div class="eje-title">
+        <h3>Bot Comercial B2B Geo-Aware</h3>
+        <p class="desc">WhatsApp 24/7 que detecta sede, califica, rutea y persigue leads.</p>
+        <span class="tag">Marketing · Ventas</span>
+      </div>
+      <div class="eje-body">
+        <ul>
+          <li>Detección automática de sede por código país e idioma</li>
+          <li>Calificador BANT (presupuesto, autoridad, necesidad, tiempo)</li>
+          <li>Cotizador localizado: moneda, catálogo y normativa según país</li>
+          <li>Ruteo automático al vendedor regional correspondiente</li>
+          <li>Seguimiento post-cotización días 3, 7, 15 y 30</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="eje reveal">
+      <div class="eje-num">03</div>
+      <div class="eje-title">
+        <h3>Generador de contenido + propuestas</h3>
+        <p class="desc">Prospectos en lista, propuestas al aceptar, prompts listos para redes.</p>
+        <span class="tag">Contenido · Conversión</span>
+      </div>
+      <div class="eje-body">
+        <ul>
+          <li>Genera lista de prospectos B2B priorizada (al equipo comercial)</li>
+          <li>Si el prospecto se acepta: envía propuesta personalizada automáticamente</li>
+          <li>Plantillas de propuesta revisadas y optimizadas (de las que ya usa Mercico)</li>
+          <li>Genera prompts y borradores listos para publicar en LinkedIn, X y otras redes</li>
+          <li>Tu equipo aprueba y publica desde su canal habitual</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ENTREGABLES + TIMELINE -->
+  <section>
+    <div class="sec-head">
+      <div class="sec-num">05 / ENTREGABLES</div>
+      <div class="sec-line"></div>
+      <div class="sec-status">FASE 1 · 60 DÍAS</div>
+    </div>
+    <h2>Sesenta días. <em>Cuatro entregas</em> que ponen <b>la máquina a producir.</b></h2>
+
+    <div class="deliv-grid">
+      <div class="deliv reveal">
+        <div class="num">DEL_01</div>
+        <h4>Bot WhatsApp con detección automática de sede</h4>
+        <div class="check">✓ READY TO DEPLOY</div>
+      </div>
+      <div class="deliv reveal">
+        <div class="num">DEL_02</div>
+        <h4>Bot Contador conectado al sistema actual</h4>
+        <div class="check">✓ READY TO DEPLOY</div>
+      </div>
+      <div class="deliv reveal">
+        <div class="num">DEL_03</div>
+        <h4>Reportes automáticos diario / semanal / mensual</h4>
+        <div class="check">✓ READY TO DEPLOY</div>
+      </div>
+      <div class="deliv reveal">
+        <div class="num">DEL_04</div>
+        <h4>Generador de prospectos + propuestas + prompts redes</h4>
+        <div class="check">✓ READY TO DEPLOY</div>
+      </div>
+    </div>
+
+    <div class="timeline reveal">
+      <div class="tl-item">
+        <div class="week">SEM_01–02</div>
+        <h4>Diagnóstico técnico</h4>
+        <p>Mapeo procesos, integraciones, definición catálogo por sede, revisión de plantillas actuales.</p>
+      </div>
+      <div class="tl-item">
+        <div class="week">SEM_03–05</div>
+        <h4>Construcción</h4>
+        <p>Bot WhatsApp + Contador + reportes. Pruebas con vendedores piloto.</p>
+      </div>
+      <div class="tl-item">
+        <div class="week">SEM_06–07</div>
+        <h4>Despliegue multi-sede</h4>
+        <p>Activación en las 6 sedes. Configuración de envío de reportes al correo principal.</p>
+      </div>
+      <div class="tl-item">
+        <div class="week">SEM_08+</div>
+        <h4>Operación · iteración</h4>
+        <p>Ajustes con data real. Soporte continuo bajo licencia mensual.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- PRECIO -->
+  <section class="precio">
+    <div class="sec-head">
+      <div class="sec-num">06 / INVERSIÓN</div>
+      <div class="sec-line"></div>
+      <div class="sec-status">PRICING_LOCKED</div>
+    </div>
+    <h2>Una inversión. <em>Operación perpetua.</em></h2>
+
+    <div class="precio-grid">
+
+      <div class="precio-card reveal">
+        <div class="label">Implementación</div>
+        <div class="sub">// PAGO_INICIAL · FASE_1_COMPLETA · 60_DÍAS</div>
+        <div class="precio-amount">
+          <span class="cur">COP</span>
+          <span>$3.500.000</span>
+        </div>
+        <ul class="precio-includes">
+          <li>Bot WhatsApp con detección automática de sede</li>
+          <li>Bot Contador integrado</li>
+          <li>Reportes automáticos diario / semanal / mensual</li>
+          <li>Generador de prospectos + propuestas + prompts redes</li>
+          <li>Personalización completa por país (6 sedes)</li>
+          <li>Capacitación al equipo comercial</li>
+        </ul>
+
+        <div class="pay-terms">
+          <div class="ic">50%</div>
+          <div class="body">
+            <b>// FORMA DE PAGO</b>
+            Se inicia con 50% al firmar ($1.750.000) · 50% restante al entregar Fase 1.
+          </div>
+        </div>
+      </div>
+
+      <div class="precio-card featured reveal">
+        <div class="label">Licencia mensual</div>
+        <div class="sub">// DESDE_MES_03 · MES_01_Y_MES_02_GRATIS</div>
+        <div class="precio-amount">
+          <span class="cur">COP</span>
+          <span>$150.000</span>
+          <span class="per">/ mes</span>
+        </div>
+        <ul class="precio-includes">
+          <li>Mantenimiento todos los días del mes</li>
+          <li>Servidor, hosting, APIs y WhatsApp Business</li>
+          <li>Monitoreo 24/7 de operación</li>
+          <li>Soporte técnico prioritario</li>
+          <li>Actualizaciones menores incluidas</li>
+          <li>Reporte mensual de performance</li>
+        </ul>
+      </div>
+
+    </div>
+
+    <!-- ADDON LINKEDIN/PROSPECTOS -->
+    <div class="addon reveal">
+      <div class="addon-grid">
+        <div>
+          <h3>Plan <span>Lead Hunter</span> · Búsqueda activa de prospectos</h3>
+          <p>Módulo opcional que busca, califica y entrega prospectos B2B desde LinkedIn y otras fuentes. Ideal cuando Mercico quiera salir a cazar cuentas en lugar de esperar a que lleguen.</p>
+          <ul>
+            <li>Scraping y prospección dirigida (supply chain, compras industriales)</li>
+            <li>Calificación automática + enriquecimiento de datos</li>
+            <li>Lista entregada al equipo comercial cada semana</li>
+            <li>Integración directa con Bot Comercial B2B</li>
+          </ul>
+        </div>
+        <div class="addon-price">
+          <div class="label">Setup</div>
+          <div class="amt"><span class="cur">COP </span>$600.000</div>
+          <div class="div"></div>
+          <div class="mes">Mensualidad<b>$50.000 / mes</b></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="precio-note">
+      <b>// MES_01 Y MES_02 SIN COSTO</b> · INCLUIDOS EN LA IMPLEMENTACIÓN · LICENCIA_MENSUAL · NO_TRANSFERIBLE
+    </div>
+  </section>
+
+</div>
+
+<!-- CTA -->
+<div class="cta">
+  <h2>Lista para producir <b>desde el día uno.</b></h2>
+  <a href="https://wa.me/573015055913?text=Hola%20Daniela%2C%20acepto%20la%20propuesta%20JARVIS%20para%20Mercico" class="cta-btn">
+    <span class="wa-ic">W</span>
+    Aceptar propuesta por WhatsApp
+  </a>
+  <div class="cta-num">CONTACTO DIRECTO<b>+57 301 505 5913</b></div>
+</div>
+
+<footer>
+  <div class="foot-grid">
+    <div>JARVIS_AGENCY_AI<br>BOTS · AUTOMATIZACIÓN · LATAM</div>
+    <div class="foot-logo">jarvis<span>//</span></div>
+    <div style="text-align:right">CONFIDENTIAL<br>VIGENCIA_30_DÍAS</div>
+  </div>
+  <div class="legal">
+    LICENCIA MENSUAL · EL CÓDIGO Y LA OPERACIÓN PERMANECEN BAJO LICENCIA DE JARVIS AGENCY AI MIENTRAS SE MANTENGA EL PAGO DE LA MENSUALIDAD VIGENTE. INICIO DE PROYECTO REQUIERE PAGO DEL 50% DEL VALOR DE IMPLEMENTACIÓN.
+  </div>
+  <div class="foot-bottom">© 2026 · TODO_CORRE_DESDE_WHATSAPP · CERO_PANELES</div>
+</footer>
+
+<script>
+const io = new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target);} });
+},{threshold:0.1});
+document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+</script>
+
+</body>
+</html>
