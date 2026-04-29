@@ -76,16 +76,95 @@ h2 em{font-style:normal;color:var(--amber);font-weight:500}
 .sede-feature h3{font-family:'Space Grotesk',sans-serif;font-size:32px;font-weight:600;letter-spacing:-0.02em;margin-bottom:16px;line-height:1.15}
 .sede-feature h3 span{color:var(--cyan)}
 .sede-feature p{color:var(--muted);font-size:15px;max-width:760px;line-height:1.7}
-.sede-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:32px}
-.sede-card{background:rgba(13,18,24,0.6);border:1px solid var(--line);padding:20px;transition:all 0.3s}
-.sede-card:hover{border-color:var(--cyan);background:rgba(0,212,255,0.03);transform:translateY(-2px)}
-.sede-card .flag{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--cyan);letter-spacing:0.15em;margin-bottom:8px}
-.sede-card h4{font-size:18px;font-weight:600;margin-bottom:12px;letter-spacing:-0.01em}
-.sede-card .specs{list-style:none;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted)}
-.sede-card .specs li{padding:4px 0;display:flex;justify-content:space-between;border-bottom:1px dashed var(--line)}
+.sede-grid{display:grid;grid-template-columns:1fr;gap:8px;margin-top:32px}
+.sede-card{background:rgba(13,18,24,0.6);border:1px solid var(--line);transition:all 0.3s;overflow:hidden}
+.sede-card:hover{border-color:var(--cyan);background:rgba(0,212,255,0.03)}
+.sede-card details{cursor:pointer}
+.sede-card summary{
+  padding:16px 20px;display:flex;align-items:center;justify-content:space-between;
+  list-style:none;gap:16px;
+}
+.sede-card summary::-webkit-details-marker{display:none}
+.sede-card summary .left-block{display:flex;align-items:center;gap:16px;flex:1;min-width:0}
+.sede-card .flag{
+  font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--cyan);
+  letter-spacing:0.15em;flex-shrink:0;min-width:60px;
+}
+.sede-card h4{font-size:16px;font-weight:600;letter-spacing:-0.01em;margin:0}
+.sede-card .preview{
+  font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);
+  letter-spacing:0.1em;text-align:right;flex-shrink:0;
+}
+.sede-card .chevron{
+  width:20px;height:20px;flex-shrink:0;color:var(--cyan);
+  transition:transform 0.3s;display:flex;align-items:center;justify-content:center;
+  font-family:'JetBrains Mono',monospace;font-size:14px;
+}
+.sede-card details[open] .chevron{transform:rotate(180deg)}
+.sede-card .specs{
+  list-style:none;font-family:'JetBrains Mono',monospace;font-size:11px;
+  color:var(--muted);padding:0 20px 20px;border-top:1px dashed var(--line);
+  margin-top:0;animation:slidedown 0.3s ease;
+}
+@keyframes slidedown{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:translateY(0)}}
+.sede-card .specs li{padding:8px 0;display:flex;justify-content:space-between;border-bottom:1px dashed var(--line)}
+.sede-card .specs li:first-child{padding-top:14px}
 .sede-card .specs li:last-child{border-bottom:none}
 .sede-card .specs li span:last-child{color:var(--text)}
-.sede-card.cn-card{grid-column:span 3}
+.sede-card .demo-msg{
+  margin-top:14px;padding:12px;background:rgba(37,211,102,0.05);
+  border-left:2px solid var(--whatsapp);font-family:'JetBrains Mono',monospace;
+  font-size:11px;color:var(--text);line-height:1.6;
+}
+.sede-card .demo-msg b{color:var(--whatsapp);display:block;margin-bottom:4px;font-size:9px;letter-spacing:0.2em}
+
+/* SEDE ACCORDION */
+.sede-accordion{margin-top:32px;border:1px solid var(--line);background:rgba(13,18,24,0.4)}
+.sede-item{border-bottom:1px solid var(--line);transition:background 0.3s}
+.sede-item:last-child{border-bottom:none}
+.sede-item[open]{background:rgba(0,212,255,0.03)}
+.sede-item summary{
+  list-style:none;cursor:pointer;
+  padding:18px 24px;
+  display:grid;grid-template-columns:90px 1fr auto 24px;gap:16px;align-items:center;
+  transition:background 0.2s;
+}
+.sede-item summary::-webkit-details-marker{display:none}
+.sede-item summary:hover{background:rgba(0,212,255,0.05)}
+.sede-item summary .flag{
+  font-family:'JetBrains Mono',monospace;
+  font-size:11px;color:var(--cyan);letter-spacing:0.15em;
+  padding:4px 8px;border:1px solid var(--cyan);
+  background:rgba(0,212,255,0.05);text-align:center;
+}
+.sede-item summary .country{
+  font-family:'Space Grotesk',sans-serif;
+  font-size:17px;font-weight:600;color:var(--text);
+  letter-spacing:-0.01em;
+}
+.sede-item summary .hint{
+  font-family:'JetBrains Mono',monospace;
+  font-size:11px;color:var(--muted);letter-spacing:0.1em;
+}
+.sede-item summary .chev{
+  font-family:'JetBrains Mono',monospace;
+  font-size:20px;color:var(--cyan);font-weight:300;
+  width:24px;height:24px;display:flex;align-items:center;justify-content:center;
+  border:1px solid var(--line);transition:transform 0.3s, border-color 0.3s;
+}
+.sede-item[open] summary .chev{transform:rotate(45deg);border-color:var(--cyan)}
+.sede-item .specs{
+  list-style:none;
+  padding:0 24px 24px 130px;
+  font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--muted);
+}
+.sede-item .specs li{
+  padding:8px 0;display:grid;grid-template-columns:130px 1fr;gap:16px;
+  border-bottom:1px dashed var(--line);align-items:start;
+}
+.sede-item .specs li:last-child{border-bottom:none}
+.sede-item .specs li span:first-child{color:var(--dim);text-transform:uppercase;letter-spacing:0.15em;font-size:10px;padding-top:2px}
+.sede-item .specs li span:last-child{color:var(--text);font-family:'Space Grotesk',sans-serif;font-size:13px;line-height:1.4}
 
 .flow{background:rgba(13,18,24,0.6);border:1px solid var(--line);padding:32px;margin-top:32px;font-family:'JetBrains Mono',monospace;font-size:13px;overflow-x:auto}
 .flow-line{padding:6px 0;color:var(--muted)}
@@ -134,6 +213,273 @@ h2 em{font-style:normal;color:var(--amber);font-weight:500}
 .tl-item p{font-size:13px;color:var(--muted);line-height:1.5}
 
 .precio{padding:120px 0;position:relative;overflow:hidden}
+
+/* LEAD HUNTER TEASER */
+.lead-teaser{
+  background:linear-gradient(135deg, var(--panel) 0%, #0f1119 100%);
+  border:1px solid var(--line-2);
+  padding:48px;position:relative;overflow:hidden;
+}
+.lead-teaser::before{
+  content:"";position:absolute;top:-1px;left:-1px;right:-1px;height:2px;
+  background:linear-gradient(90deg, var(--magenta), var(--amber));
+}
+.lead-teaser::after{
+  content:"";position:absolute;top:0;right:0;width:300px;height:300px;
+  background:radial-gradient(circle, rgba(255,61,138,0.08) 0%, transparent 60%);
+  pointer-events:none;
+}
+.lt-badge{
+  font-family:'JetBrains Mono',monospace;
+  font-size:11px;letter-spacing:0.25em;text-transform:uppercase;
+  color:var(--magenta);margin-bottom:16px;
+}
+.lead-teaser h3{
+  font-family:'Space Grotesk',sans-serif;
+  font-size:clamp(24px,3vw,34px);font-weight:600;
+  letter-spacing:-0.02em;margin-bottom:16px;line-height:1.2;
+}
+.lead-teaser h3 span{color:var(--magenta)}
+.lead-teaser p{
+  color:var(--muted);font-size:15px;line-height:1.7;margin-bottom:32px;
+  max-width:780px;
+}
+.lt-compare{
+  display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:24px;
+}
+.lt-col{
+  background:rgba(13,18,24,0.6);border:1px solid var(--line);
+  padding:24px;
+}
+.lt-col.active{
+  border-color:var(--magenta);
+  background:rgba(255,61,138,0.04);
+  box-shadow:0 0 32px rgba(255,61,138,0.1);
+}
+.lt-head{
+  font-family:'JetBrains Mono',monospace;
+  font-size:10px;letter-spacing:0.25em;color:var(--muted);
+  margin-bottom:16px;padding-bottom:12px;
+  border-bottom:1px solid var(--line);
+}
+.lt-col.active .lt-head{color:var(--magenta);border-color:rgba(255,61,138,0.3)}
+.lt-col ul{list-style:none}
+.lt-col li{
+  padding:8px 0;font-size:14px;color:var(--muted);
+  display:flex;gap:10px;line-height:1.4;
+}
+.lt-col:not(.active) li::before{
+  content:"−";color:var(--dim);font-weight:700;flex-shrink:0;
+}
+.lt-col.active li{color:var(--text)}
+.lt-col.active li::before{content:"✓";color:var(--magenta);font-weight:700}
+
+/* ============ MARKETING SAMPLES ============ */
+.samples-intro{
+  color:var(--muted);font-size:15px;max-width:760px;
+  line-height:1.7;margin-bottom:48px;
+}
+.samples-intro b{color:var(--text);font-weight:600}
+
+.sample-grid{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:32px;
+}
+
+.sample{
+  background:var(--panel);border:1px solid var(--line);
+  display:flex;flex-direction:column;overflow:hidden;
+  transition:transform 0.4s, border-color 0.4s;
+}
+.sample:hover{transform:translateY(-4px);border-color:var(--cyan)}
+
+/* Visual mockup area */
+.sample-visual{
+  position:relative;aspect-ratio:4/5;
+  background:#000;overflow:hidden;
+  display:flex;align-items:center;justify-content:center;
+  border-bottom:1px solid var(--line);
+}
+
+/* SAMPLE 1: LinkedIn — pallet hero */
+.s1-bg{
+  position:absolute;inset:0;
+  background:
+    radial-gradient(ellipse at 30% 50%, rgba(0,212,255,0.25) 0%, transparent 50%),
+    radial-gradient(ellipse at 70% 80%, rgba(214,40,40,0.15) 0%, transparent 60%),
+    #000;
+}
+.s1-pallet{
+  position:absolute;left:50%;top:55%;transform:translate(-50%,-50%);
+  width:60%;aspect-ratio:1.6;
+  background:linear-gradient(135deg, #3FAEDB 0%, #2089b3 100%);
+  border-top:8px solid #F77F00;border-bottom:8px solid #c25b00;
+  box-shadow:0 0 80px rgba(63,174,219,0.4),
+             0 20px 40px rgba(0,0,0,0.6),
+             inset 0 -20px 40px rgba(0,0,0,0.3);
+  border-radius:4px;
+}
+.s1-pallet::before,.s1-pallet::after{
+  content:"";position:absolute;left:8%;width:8%;height:60%;
+  background:linear-gradient(180deg, rgba(0,0,0,0.4), transparent);
+  top:20%;
+}
+.s1-pallet::after{left:auto;right:8%}
+.s1-pallet-ribs{
+  position:absolute;inset:20% 24%;
+  background:repeating-linear-gradient(90deg,
+    rgba(0,0,0,0.3) 0px,rgba(0,0,0,0.3) 2px,
+    transparent 2px,transparent 12px);
+}
+.s1-text{
+  position:absolute;bottom:20px;left:20px;right:20px;
+  z-index:2;
+}
+.s1-headline{
+  font-family:'Space Grotesk',sans-serif;
+  font-size:18px;font-weight:800;line-height:1;
+  color:#fff;letter-spacing:-0.02em;
+  text-transform:uppercase;
+}
+.s1-headline span{color:var(--red)}
+.s1-logo{
+  position:absolute;top:16px;right:16px;z-index:2;
+  font-family:'Space Grotesk',sans-serif;
+  font-size:11px;font-weight:700;color:#fff;
+  background:var(--red);padding:4px 10px;border-radius:2px;
+  letter-spacing:0.05em;
+}
+
+/* SAMPLE 2: Reel — confrontación */
+.s2-bg{
+  position:absolute;inset:0;
+  background:
+    linear-gradient(180deg, #000 0%, #1a0505 50%, #000 100%);
+}
+.s2-glitch{
+  position:absolute;inset:0;
+  background:repeating-linear-gradient(0deg,
+    transparent 0px,transparent 2px,
+    rgba(255,255,255,0.02) 2px,rgba(255,255,255,0.02) 3px);
+}
+.s2-content{position:relative;z-index:2;text-align:center;padding:24px}
+.s2-amount{
+  font-family:'Space Grotesk',sans-serif;
+  font-size:clamp(28px,5vw,48px);
+  font-weight:900;line-height:0.9;
+  background:linear-gradient(180deg, #ff4757 0%, #c41818 100%);
+  -webkit-background-clip:text;background-clip:text;
+  -webkit-text-fill-color:transparent;
+  letter-spacing:-0.04em;text-transform:uppercase;
+  margin-bottom:8px;
+  filter:drop-shadow(0 0 20px rgba(255,71,87,0.4));
+}
+.s2-sub{
+  font-family:'Space Grotesk',sans-serif;
+  font-size:13px;font-weight:700;color:#fff;
+  text-transform:uppercase;letter-spacing:0.1em;line-height:1.3;
+}
+.s2-tag{
+  position:absolute;bottom:16px;left:50%;transform:translateX(-50%);
+  font-family:'JetBrains Mono',monospace;
+  font-size:9px;color:var(--muted);letter-spacing:0.2em;
+  text-transform:uppercase;
+}
+.s2-corner{
+  position:absolute;top:12px;left:12px;
+  width:20px;height:20px;border:2px solid #fff;
+  border-right:none;border-bottom:none;
+  opacity:0.4;
+}
+
+/* SAMPLE 3: Carousel educativo */
+.s3-bg{position:absolute;inset:0;background:#000}
+.s3-grid{
+  position:absolute;inset:0;
+  background-image:
+    linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+  background-size:32px 32px;
+}
+.s3-bar{
+  position:absolute;top:24px;left:24px;
+  width:32px;height:4px;background:var(--red);
+}
+.s3-num{
+  position:absolute;top:48px;left:24px;
+  font-family:'JetBrains Mono',monospace;
+  font-size:11px;color:var(--red);
+  letter-spacing:0.2em;text-transform:uppercase;
+  font-weight:700;
+}
+.s3-title{
+  position:absolute;top:80px;left:24px;right:24px;
+  font-family:'Space Grotesk',sans-serif;
+  font-size:clamp(18px,3.5vw,26px);
+  font-weight:800;line-height:1;
+  color:#fff;letter-spacing:-0.03em;
+  text-transform:uppercase;
+}
+.s3-title span{
+  background:var(--red);padding:0 6px;
+  display:inline-block;
+}
+.s3-bottom{
+  position:absolute;bottom:24px;left:24px;right:24px;
+  font-family:'JetBrains Mono',monospace;
+  font-size:10px;color:var(--muted);letter-spacing:0.1em;
+  display:flex;justify-content:space-between;align-items:center;
+}
+.s3-bottom .swipe{color:var(--red);font-weight:700}
+
+/* Sample body */
+.sample-body{padding:24px;flex:1;display:flex;flex-direction:column}
+.sample-meta{
+  display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap;
+}
+.sample-tag{
+  font-family:'JetBrains Mono',monospace;
+  font-size:9px;letter-spacing:0.15em;text-transform:uppercase;
+  padding:4px 8px;border:1px solid var(--line);
+  color:var(--muted);
+}
+.sample-tag.format{color:var(--cyan);border-color:var(--cyan)}
+.sample-tag.platform{color:var(--amber);border-color:var(--amber)}
+.sample h4{
+  font-family:'Space Grotesk',sans-serif;
+  font-size:18px;font-weight:600;line-height:1.2;
+  letter-spacing:-0.02em;margin-bottom:12px;
+}
+.sample-copy{
+  background:rgba(0,212,255,0.03);border-left:2px solid var(--cyan);
+  padding:14px 16px;margin-top:12px;
+  font-size:13px;line-height:1.6;color:var(--text);
+  font-family:'JetBrains Mono',monospace;
+  white-space:pre-line;
+}
+.sample-copy::before{
+  content:"// COPY";display:block;
+  font-size:9px;color:var(--cyan);letter-spacing:0.2em;
+  margin-bottom:8px;font-weight:700;
+}
+.sample-prompt{
+  background:rgba(255,61,138,0.03);border-left:2px solid var(--magenta);
+  padding:14px 16px;margin-top:12px;
+  font-size:11px;line-height:1.5;color:var(--muted);
+  font-family:'JetBrains Mono',monospace;
+}
+.sample-prompt::before{
+  content:"// PROMPT VISUAL";display:block;
+  font-size:9px;color:var(--magenta);letter-spacing:0.2em;
+  margin-bottom:8px;font-weight:700;
+}
+.lt-col.active li::before{
+  content:"▸";color:var(--magenta);font-weight:700;flex-shrink:0;
+}
+.lt-note{
+  font-family:'JetBrains Mono',monospace !important;
+  font-size:12px !important;color:var(--amber) !important;
+  letter-spacing:0.1em;margin:0 !important;
+}
 .precio-grid{display:grid;grid-template-columns:1fr 1fr;gap:32px;position:relative;z-index:1}
 .precio-card{background:var(--panel);border:1px solid var(--line-2);padding:48px 40px;position:relative;transition:transform 0.4s, border-color 0.4s}
 .precio-card:hover{transform:translateY(-4px);border-color:var(--cyan)}
@@ -218,8 +564,12 @@ footer{background:var(--bg);padding:48px 32px 24px;font-family:'JetBrains Mono',
   h2{margin-bottom:32px}
   .diag{grid-template-columns:1fr}
   .sede-feature{padding:28px 24px}
-  .sede-grid{grid-template-columns:1fr;gap:12px}
-  .sede-card.cn-card{grid-column:auto}
+  .sede-card summary{padding:14px 16px}
+  .sede-card .preview{display:none}
+  .sede-item summary{grid-template-columns:auto 1fr 20px;gap:12px;padding:14px 16px}
+  .sede-item summary .hint{display:none}
+  .sede-item .specs{padding:0 16px 16px}
+  .sede-item .specs li{grid-template-columns:1fr;gap:4px}
   .reports-grid{grid-template-columns:1fr}
   .eje{grid-template-columns:1fr;gap:16px;padding:32px 0}
   .eje-num{font-size:48px}
@@ -229,6 +579,10 @@ footer{background:var(--bg);padding:48px 32px 24px;font-family:'JetBrains Mono',
   .tl-item::before{content:"";position:absolute;top:-6px;left:0;width:8px;height:8px;background:var(--cyan);border-radius:50%}
   .precio-grid{grid-template-columns:1fr;gap:20px}
   .precio-card{padding:32px 24px}
+  .lead-teaser{padding:28px 20px}
+  .lt-compare{grid-template-columns:1fr}
+  .sample-grid{grid-template-columns:1fr;gap:16px}
+  .sample-visual{aspect-ratio:1/1}
   .addon{padding:28px 24px}
   .addon-grid{grid-template-columns:1fr;gap:24px}
   .cta{padding:64px 20px;margin:0 -20px}
@@ -335,78 +689,119 @@ footer{background:var(--bg);padding:48px 32px 24px;font-family:'JetBrains Mono',
         <div class="flow-line"><span class="key">bot.notificar</span><span class="arrow">→</span><span class="val">vendedor_de_la_sede + dashboard_central</span></div>
       </div>
 
-      <div class="sede-grid">
-        <div class="sede-card">
-          <div class="flag">CO_BOG</div>
-          <h4>Colombia</h4>
+      <div class="sede-accordion">
+        <details class="sede-item">
+          <summary>
+            <span class="flag">CO_BOG</span>
+            <span class="country">Colombia</span>
+            <span class="hint">COP · Español</span>
+            <span class="chev">+</span>
+          </summary>
           <ul class="specs">
             <li><span>Idioma</span><span>Español</span></li>
             <li><span>Moneda</span><span>COP</span></li>
             <li><span>Comercial</span><span>HQ Tenjo</span></li>
             <li><span>Catálogo</span><span>Completo</span></li>
+            <li><span>Respuesta del bot</span><span>"Hola, soy el asistente de Mercico Colombia. ¿En qué puedo ayudarte?"</span></li>
           </ul>
-        </div>
-        <div class="sede-card">
-          <div class="flag">MX_CDMX</div>
-          <h4>México</h4>
+        </details>
+
+        <details class="sede-item">
+          <summary>
+            <span class="flag">MX_CDMX</span>
+            <span class="country">México</span>
+            <span class="hint">MXN · Español MX</span>
+            <span class="chev">+</span>
+          </summary>
           <ul class="specs">
             <li><span>Idioma</span><span>Español MX</span></li>
             <li><span>Moneda</span><span>MXN</span></li>
             <li><span>Comercial</span><span>Nicolás Herrera</span></li>
-            <li><span>Catálogo</span><span>Promo + Pallets</span></li>
+            <li><span>Catálogo</span><span>Promocionales + Pallets</span></li>
+            <li><span>Respuesta del bot</span><span>"¡Hola! Soy el asistente de Mercico México. ¿Qué te ofrezco hoy?"</span></li>
           </ul>
-        </div>
-        <div class="sede-card">
-          <div class="flag">GT_GUA</div>
-          <h4>Guatemala</h4>
+        </details>
+
+        <details class="sede-item">
+          <summary>
+            <span class="flag">GT_GUA</span>
+            <span class="country">Guatemala</span>
+            <span class="hint">GTQ · Español GT</span>
+            <span class="chev">+</span>
+          </summary>
           <ul class="specs">
             <li><span>Idioma</span><span>Español GT</span></li>
             <li><span>Moneda</span><span>GTQ</span></li>
             <li><span>Comercial</span><span>Laura Duarte</span></li>
-            <li><span>Catálogo</span><span>Promo + Packing</span></li>
+            <li><span>Catálogo</span><span>Promocionales + Packing</span></li>
+            <li><span>Respuesta del bot</span><span>"Buen día, soy el asistente de Mercico Guatemala. ¿Cómo te apoyo?"</span></li>
           </ul>
-        </div>
-        <div class="sede-card">
-          <div class="flag">EC_UIO</div>
-          <h4>Ecuador</h4>
+        </details>
+
+        <details class="sede-item">
+          <summary>
+            <span class="flag">EC_UIO</span>
+            <span class="country">Ecuador</span>
+            <span class="hint">USD · Español EC</span>
+            <span class="chev">+</span>
+          </summary>
           <ul class="specs">
             <li><span>Idioma</span><span>Español EC</span></li>
             <li><span>Moneda</span><span>USD</span></li>
             <li><span>Comercial</span><span>Andrés Pinzón</span></li>
             <li><span>Catálogo</span><span>Logística</span></li>
+            <li><span>Respuesta del bot</span><span>"Hola, soy el asistente de Mercico Ecuador. ¿En qué te puedo servir?"</span></li>
           </ul>
-        </div>
-        <div class="sede-card">
-          <div class="flag">PE_LIM</div>
-          <h4>Perú</h4>
+        </details>
+
+        <details class="sede-item">
+          <summary>
+            <span class="flag">PE_LIM</span>
+            <span class="country">Perú</span>
+            <span class="hint">PEN · Español PE</span>
+            <span class="chev">+</span>
+          </summary>
           <ul class="specs">
             <li><span>Idioma</span><span>Español PE</span></li>
             <li><span>Moneda</span><span>PEN</span></li>
             <li><span>Comercial</span><span>Andrés Pinzón</span></li>
             <li><span>Catálogo</span><span>Logística + Pallets</span></li>
+            <li><span>Respuesta del bot</span><span>"Hola, soy el asistente de Mercico Perú. ¿Qué necesitas cotizar hoy?"</span></li>
           </ul>
-        </div>
-        <div class="sede-card">
-          <div class="flag">CL_SCL</div>
-          <h4>Chile</h4>
+        </details>
+
+        <details class="sede-item">
+          <summary>
+            <span class="flag">CL_SCL</span>
+            <span class="country">Chile</span>
+            <span class="hint">CLP · Español CL</span>
+            <span class="chev">+</span>
+          </summary>
           <ul class="specs">
             <li><span>Idioma</span><span>Español CL</span></li>
             <li><span>Moneda</span><span>CLP</span></li>
             <li><span>Comercial</span><span>Andrés Pinzón</span></li>
             <li><span>Catálogo</span><span>Pallets + Pooling</span></li>
+            <li><span>Respuesta del bot</span><span>"Hola, soy el asistente de Mercico Chile. ¿En qué te ayudo?"</span></li>
           </ul>
-        </div>
-        <div class="sede-card cn-card">
-          <div class="flag">CN_SHA</div>
-          <h4>China · Shanghái</h4>
+        </details>
+
+        <details class="sede-item">
+          <summary>
+            <span class="flag">CN_SHA</span>
+            <span class="country">China · Shanghái</span>
+            <span class="hint">USD/CNY · 中文 / English</span>
+            <span class="chev">+</span>
+          </summary>
           <ul class="specs">
             <li><span>Idioma</span><span>Mandarín 中文 / Inglés</span></li>
             <li><span>Moneda</span><span>USD / CNY</span></li>
             <li><span>Comercial</span><span>Luis Gelves</span></li>
             <li><span>Horario</span><span>UTC+8 (auto-detect)</span></li>
             <li><span>Catálogo</span><span>Sourcing + Promocionales licenciados</span></li>
+            <li><span>Respuesta del bot</span><span>"您好，我是Mercico中国的助手。Hello, I'm Mercico China's assistant."</span></li>
           </ul>
-        </div>
+        </details>
       </div>
     </div>
   </section>
@@ -580,10 +975,171 @@ footer{background:var(--bg);padding:48px 32px 24px;font-family:'JetBrains Mono',
     </div>
   </section>
 
+  <!-- MARKETING SAMPLES -->
+  <section>
+    <div class="sec-head">
+      <div class="sec-num">06 / MARKETING</div>
+      <div class="sec-line"></div>
+      <div class="sec-status">PREVIEW · CONTENT_OS</div>
+    </div>
+    <h2>Esto es lo que <em>el bot generaría</em> <b>cada semana.</b></h2>
+
+    <p class="samples-intro reveal">
+      Tres ejemplos reales de lo que el agente entrega listo para que el equipo apruebe y publique. <b>Cada pieza incluye copy, prompt visual y formato.</b> Diseñado en línea con la marca Mercico: rojo carmesí, naranja, negro absoluto, tipografía bold industrial.
+    </p>
+
+    <div class="sample-grid">
+
+      <!-- SAMPLE 1: LinkedIn -->
+      <div class="sample reveal">
+        <div class="sample-visual">
+          <div class="s1-bg"></div>
+          <div class="s1-pallet">
+            <div class="s1-pallet-ribs"></div>
+          </div>
+          <div class="s1-logo">mercico</div>
+          <div class="s1-text">
+            <div class="s1-headline">EL DETALLE QUE <span>TE CUESTA</span> MILLONES</div>
+          </div>
+        </div>
+        <div class="sample-body">
+          <div class="sample-meta">
+            <span class="sample-tag platform">LinkedIn</span>
+            <span class="sample-tag format">Post 4:5</span>
+            <span class="sample-tag">Autoridad B2B</span>
+          </div>
+          <h4>Pallets: el costo invisible</h4>
+          <div class="sample-copy">El 73% del costo logístico oculto está en lo que NO se ve.
+
+Pallets que se rompen al tercer viaje.
+Canastillas que ocupan 40% más volumen.
+Empaques que el cliente tira en 3 segundos.
+
+36 años diseñando lo que la mayoría considera "un detalle".
+Spoiler: ese detalle separa una operación rentable de una que sangra.
+
+¿Cuánto te está costando NO haberlo pensado antes?
+
+#SupplyChain #LogísticaIndustrial #Packaging</div>
+          <div class="sample-prompt">Industrial editorial photography, hero shot of cyan-blue heavy-duty plastic pallet on matte black backdrop, dramatic key light upper left, volumetric haze, orange accent strap, red brand glow rim light, magazine cover composition with negative space right side. 4:5.</div>
+        </div>
+      </div>
+
+      <!-- SAMPLE 2: Reel -->
+      <div class="sample reveal">
+        <div class="sample-visual">
+          <div class="s2-bg"></div>
+          <div class="s2-glitch"></div>
+          <div class="s2-corner"></div>
+          <div class="s2-content">
+            <div class="s2-amount">$40M<br>AL AÑO</div>
+            <div class="s2-sub">Y NI SIQUIERA<br>LO SABES.</div>
+          </div>
+          <div class="s2-tag">REEL · 0:00 / 0:15</div>
+        </div>
+        <div class="sample-body">
+          <div class="sample-meta">
+            <span class="sample-tag platform">Instagram · TikTok</span>
+            <span class="sample-tag format">Reel 9:16</span>
+            <span class="sample-tag">Confrontación</span>
+          </div>
+          <h4>Pérdida invisible: 15 segundos que duelen</h4>
+          <div class="sample-copy">Calcula esto rápido:
+Cada pallet roto = $80.000
+Cada caja averiada = $35.000
+Cada m³ mal aprovechado = $250.000/mes
+
+Suma un año.
+Llora.
+Después escríbenos. 👇
+
+#LogísticaB2B #Empaque #Industria</div>
+          <div class="sample-prompt">Cinematic slow-motion, plastic logistics crate cyan/orange, geometric stack on glossy black, single dramatic backlight, smoke, camera orbit, light particles, warehouse bokeh, anamorphic, Tarkovsky-meets-Apple-keynote. 9:16 vertical.</div>
+        </div>
+      </div>
+
+      <!-- SAMPLE 3: Carousel -->
+      <div class="sample reveal">
+        <div class="sample-visual">
+          <div class="s3-bg"></div>
+          <div class="s3-grid"></div>
+          <div class="s3-bar"></div>
+          <div class="s3-num">SLIDE 01 / 10</div>
+          <div class="s3-title">5 ERRORES DE EMPAQUE QUE TUS <span>CLIENTES B2B</span> NO TE VAN A DECIR</div>
+          <div class="s3-bottom">
+            <span>MERCICO · 2026</span>
+            <span class="swipe">DESLIZA →</span>
+          </div>
+        </div>
+        <div class="sample-body">
+          <div class="sample-meta">
+            <span class="sample-tag platform">LinkedIn · IG</span>
+            <span class="sample-tag format">Carrusel 10 slides</span>
+            <span class="sample-tag">Lead magnet</span>
+          </div>
+          <h4>Carrusel educativo · alta retención</h4>
+          <div class="sample-copy">Slide 1: Hook (5 errores que cuestan)
+Slide 2-6: Cada error con cifra concreta
+Slide 7: "¿Reconociste alguno? Cuesta 4-11% del margen"
+Slide 8: Autoridad (36 años · 6 países)
+Slide 9: Diagnóstico gratis 30 min
+Slide 10: CTA WhatsApp
+
+→ Diseñado para guardar y compartir.</div>
+          <div class="sample-prompt">Editorial industrial layout, pure black background, bold white sans-serif headline, crimson red accent bar corner, subtle grid lines 5% opacity, isometric pallet illustration faded background, generous negative space, Bauhaus-meets-tech. 4:5.</div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- LEAD HUNTER TEASER -->
+  <section>
+    <div class="sec-head">
+      <div class="sec-num">07 / EXPANSIÓN</div>
+      <div class="sec-line"></div>
+      <div class="sec-status">PROACTIVE_MODE</div>
+    </div>
+    <h2>¿Y si Mercico <em>deja de esperar</em> y <b>sale a cazar?</b></h2>
+
+    <div class="lead-teaser reveal">
+      <div class="lt-grid">
+        <div class="lt-content">
+          <div class="lt-badge">// MÓDULO LEAD HUNTER</div>
+          <h3>El bot reactivo es un buen comienzo. <span>El bot proactivo cambia el negocio.</span></h3>
+          <p>
+            Mientras el Bot Comercial responde a quien escribe, Lead Hunter sale a buscar cuentas B2B activamente: identifica compradores industriales, supply chain managers y áreas de compras en LinkedIn y otras fuentes; los califica; y los entrega listos al equipo comercial cada semana.
+          </p>
+
+          <div class="lt-compare">
+            <div class="lt-col">
+              <div class="lt-head">SIN LEAD HUNTER</div>
+              <ul>
+                <li>Esperas a que el cliente te encuentre</li>
+                <li>Pipeline depende del SEO y referidos</li>
+                <li>Crecimiento orgánico, lento</li>
+              </ul>
+            </div>
+            <div class="lt-col active">
+              <div class="lt-head">CON LEAD HUNTER</div>
+              <ul>
+                <li>Lista semanal de cuentas calificadas</li>
+                <li>Pipeline predecible y escalable</li>
+                <li>Crecimiento dirigido por sede</li>
+              </ul>
+            </div>
+          </div>
+
+          <p class="lt-note">→ Detalle de inversión en la siguiente sección.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <!-- PRECIO -->
   <section class="precio">
     <div class="sec-head">
-      <div class="sec-num">06 / INVERSIÓN</div>
+      <div class="sec-num">08 / INVERSIÓN</div>
       <div class="sec-line"></div>
       <div class="sec-status">PRICING_LOCKED</div>
     </div>
