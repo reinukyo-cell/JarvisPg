@@ -1079,14 +1079,16 @@ body::after {
 }
 .price-original {
   font-family: var(--display);
-  font-size: clamp(48px, 8vw, 88px);
+  font-size: clamp(40px, 7vw, 80px);
   font-weight: 900;
   color: #5a7a90;
   text-decoration: line-through;
   text-decoration-thickness: 4px;
   text-decoration-color: rgba(255,100,100,0.8);
-  line-height: 1;
+  line-height: 1.05;
   letter-spacing: -2px;
+  word-break: break-word;
+  overflow-wrap: break-word;
 }
 .price-original .approx {
   font-size: 0.4em;
@@ -1129,12 +1131,14 @@ body::after {
 }
 .price-beta-value {
   font-family: var(--display);
-  font-size: clamp(72px, 12vw, 140px);
+  font-size: clamp(48px, 9vw, 110px);
   font-weight: 900;
   color: var(--text);
-  line-height: 1;
-  letter-spacing: -4px;
+  line-height: 1.05;
+  letter-spacing: -3px;
   text-shadow: 0 0 40px rgba(0,195,255,0.4);
+  word-break: break-word;
+  overflow-wrap: break-word;
 }
 .price-savings {
   font-size: 17px;
@@ -1282,11 +1286,13 @@ body::after {
 }
 .plan-big-price {
   font-family: var(--display);
-  font-size: 56px;
+  font-size: clamp(36px, 5vw, 52px);
   font-weight: 900;
-  line-height: 1;
-  letter-spacing: -3px;
+  line-height: 1.05;
+  letter-spacing: -2px;
   margin-bottom: 10px;
+  word-break: break-word;
+  overflow-wrap: break-word;
 }
 .plan-big-price .currency {
   font-size: 22px;
@@ -1379,8 +1385,9 @@ body::after {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: 16px;
+  gap: 12px;
   margin-bottom: 10px;
+  flex-wrap: wrap;
 }
 .plan-mid-name {
   font-size: 12px;
@@ -1392,9 +1399,12 @@ body::after {
 }
 .plan-mid-price {
   font-family: var(--display);
-  font-size: 26px;
+  font-size: clamp(20px, 3vw, 26px);
   font-weight: 800;
   letter-spacing: -1px;
+  word-break: break-word;
+  overflow-wrap: break-word;
+  line-height: 1.1;
 }
 .plan-mid-price .per {
   font-size: 13px;
@@ -1564,9 +1574,9 @@ body::after {
 
   .plan-big { padding: 28px 22px; border-radius: 14px; }
   .plan-big-name { font-size: 26px; }
-  .plan-big-price { font-size: 42px; letter-spacing: -2px; }
-  .plan-big-price .currency { font-size: 18px; }
-  .plan-big-price .per { font-size: 15px; }
+  .plan-big-price { letter-spacing: -1.5px; }
+  .plan-big-price .currency { font-size: 16px; }
+  .plan-big-price .per { font-size: 14px; }
   .plan-big-note, .plan-big-equiv { font-size: 13px; margin-bottom: 20px; }
   .plan-big-list li { font-size: 13.5px; padding: 8px 0; }
   .plan-big-tag { font-size: 10px; letter-spacing: 1.5px; padding: 5px 12px; margin-bottom: 16px; }
@@ -1574,7 +1584,6 @@ body::after {
   .plans-middle-label { font-size: 11px; letter-spacing: 2px; margin-bottom: 16px; }
   .plans-middle-label::before, .plans-middle-label::after { width: 15%; }
   .plan-mid { padding: 18px 20px; }
-  .plan-mid-price { font-size: 22px; }
   .plan-mid-discount { font-size: 26px; }
   .plan-mid-note { font-size: 12px; }
 
@@ -1608,7 +1617,6 @@ body::after {
   .price-beta-value { letter-spacing: -3px; }
 
   .plan-big { padding: 24px 18px; }
-  .plan-big-price { font-size: 36px; }
   .benefit-item { padding: 20px 18px; flex-direction: column; gap: 8px; }
   .benefit-num { font-size: 30px; }
 }
