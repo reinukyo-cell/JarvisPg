@@ -375,7 +375,22 @@ const obs=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)e.targ
 document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
 const resp={ventas:{es:{t:'→ Necesitas el módulo Ventas + Seguimiento',r:'Jarvis registra cada venta desde Telegram, hace seguimiento automático, envía recordatorios de cobranza y genera reporte diario. Sin planillas, sin olvidos.'},en:{t:'→ You need the Sales + Tracking module',r:'Jarvis logs every sale from Telegram, auto follows up with each client, sends collection reminders and generates daily income report. No spreadsheets, no forgetting.'}},ops:{es:{t:'→ Necesitas el sistema operativo completo',r:'Inventario inteligente, alertas de stock muerto, deudas a proveedores, caja diaria. Todo automatizado. Jarvis opera mientras tú creces.'},en:{t:'→ You need the full operating system',r:'Smart inventory, dead stock alerts, supplier debts, daily cash. All automated. Jarvis runs while you grow.'}},ctrl:{es:{t:'→ Necesitas el Dashboard Ejecutivo',r:'Cada mañana: ventas del día, deudas pendientes, alertas críticas, oportunidades. Tu negocio en 30 segundos, directo a Telegram.'},en:{t:'→ You need the Executive Dashboard',r:"Every morning: day's sales, pending debts, critical alerts, opportunities. Your business in 30 seconds, straight to Telegram."}},help:{es:{t:'→ Hacemos la auditoría gratuita juntos',r:'Sin costo. Analizamos tu negocio, identificamos los 3 puntos donde más pierdes tiempo o dinero, y diseñamos una propuesta exacta.'},en:{t:'→ Free audit together',r:'No cost. We analyze your business, identify the 3 biggest time/money leaks, and design an exact proposal.'}}};
 function sn(t,el){document.querySelectorAll('.need-btn').forEach(b=>b.classList.remove('sel'));el.classList.add('sel');const r=resp[t][lang];document.getElementById('nt').textContent=r.t;document.getElementById('nrr').textContent=r.r;const d=document.getElementById('nr');d.classList.add('show');d.scrollIntoView({behavior:'smooth',block:'nearest'});}
-async function sf(e){e.preventDefault();const n=document.getElementById('fn').value,em=document.getElementById('fe').value,w=document.getElementById('fw').value,b=document.getElementById('fb').value,m=document.getElementById('fm').value;const TOKEN='8574653382:AAGVm8dbxZef9pvMCu_C2hEZhfcyNctGBLk',CHAT='980257381';const txt=`🔥 Nuevo lead Jarvis Agency\n\nNombre: ${n}\nEmail: ${em}\nWhatsApp: ${w}\nNegocio: ${b}\nMensaje: ${m}`;try{await fetch(`https://api.telegram.org/bot${TOKEN}/sendMessage`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({chat_id:CHAT,text:txt})});}catch(err){}document.getElementById('fok').style.display='block';e.target.reset();setTimeout(()=>document.getElementById('fok').style.display='none',5000);}
+async function sf(e){
+  e.preventDefault();
+  const data={
+    n:document.getElementById('fn').value,
+    em:document.getElementById('fe').value,
+    w:document.getElementById('fw').value,
+    b:document.getElementById('fb').value,
+    m:document.getElementById('fm').value
+  };
+  try{
+    await fetch('/api/lead',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(data)});
+  }catch(err){}
+  document.getElementById('fok').style.display='block';
+  e.target.reset();
+  setTimeout(()=>document.getElementById('fok').style.display='none',5000);
+}
 </script>
 </body>
 </html>
