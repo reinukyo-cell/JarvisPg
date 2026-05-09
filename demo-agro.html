@@ -1,0 +1,1161 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AGRO BOT — Demo Interactivo</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,800&family=JetBrains+Mono:wght@400;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --earth:#3d2817;
+  --earth-light:#5c3a20;
+  --soil:#8b6f47;
+  --wheat:#d4a574;
+  --cream:#f4ead5;
+  --moss:#4a6b3a;
+  --moss-dark:#2d4220;
+  --rust:#b04a2e;
+  --gold:#c89b3c;
+  --ink:#1a1410;
+  --paper:#faf6ed;
+  --whatsapp:#075e54;
+  --whatsapp-light:#dcf8c6;
+  --whatsapp-bg:#ece5dd;
+}
+
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  font-family:'Inter',sans-serif;
+  background:var(--paper);
+  color:var(--ink);
+  overflow-x:hidden;
+}
+
+/* TEXTURE */
+body::before{
+  content:'';
+  position:fixed;
+  inset:0;
+  background-image:
+    radial-gradient(circle at 20% 30%, rgba(139,111,71,0.08) 0%, transparent 50%),
+    radial-gradient(circle at 80% 70%, rgba(74,107,58,0.06) 0%, transparent 50%);
+  pointer-events:none;
+  z-index:0;
+}
+
+/* HEADER */
+.header{
+  position:sticky;
+  top:0;
+  z-index:100;
+  background:var(--ink);
+  color:var(--cream);
+  padding:1rem 2rem;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  border-bottom:3px solid var(--gold);
+}
+.logo{
+  font-family:'Fraunces',serif;
+  font-weight:800;
+  font-size:1.4rem;
+  letter-spacing:-0.02em;
+}
+.logo span{color:var(--gold)}
+.nav{display:flex;gap:1.5rem;font-size:0.85rem;font-family:'JetBrains Mono',monospace}
+.nav a{color:var(--cream);text-decoration:none;opacity:0.7;transition:opacity 0.2s}
+.nav a:hover{opacity:1;color:var(--gold)}
+
+/* HERO */
+.hero{
+  position:relative;
+  padding:5rem 2rem 4rem;
+  max-width:1400px;
+  margin:0 auto;
+  z-index:1;
+}
+.hero-tag{
+  font-family:'JetBrains Mono',monospace;
+  font-size:0.75rem;
+  text-transform:uppercase;
+  letter-spacing:0.2em;
+  color:var(--rust);
+  margin-bottom:1.5rem;
+}
+.hero h1{
+  font-family:'Fraunces',serif;
+  font-size:clamp(3rem,7vw,6rem);
+  font-weight:800;
+  line-height:0.95;
+  letter-spacing:-0.03em;
+  color:var(--earth);
+  max-width:1100px;
+  margin-bottom:2rem;
+}
+.hero h1 em{
+  font-style:italic;
+  color:var(--moss);
+  font-weight:400;
+}
+.hero h1 .gold{color:var(--gold)}
+.hero-sub{
+  font-size:1.15rem;
+  max-width:600px;
+  color:var(--earth-light);
+  line-height:1.6;
+  margin-bottom:2rem;
+}
+.hero-meta{
+  display:flex;
+  gap:2rem;
+  font-family:'JetBrains Mono',monospace;
+  font-size:0.8rem;
+  color:var(--earth);
+  border-top:1px solid var(--soil);
+  padding-top:1.5rem;
+  flex-wrap:wrap;
+}
+.hero-meta div span{display:block;color:var(--rust);font-weight:600;margin-bottom:0.2rem}
+
+/* PHASE NAVIGATOR */
+.phase-nav{
+  background:var(--ink);
+  padding:1rem 2rem;
+  position:sticky;
+  top:64px;
+  z-index:90;
+  overflow-x:auto;
+  white-space:nowrap;
+}
+.phase-nav-inner{
+  max-width:1400px;
+  margin:0 auto;
+  display:flex;
+  gap:0.5rem;
+}
+.phase-btn{
+  background:transparent;
+  border:1px solid rgba(244,234,213,0.2);
+  color:var(--cream);
+  padding:0.6rem 1rem;
+  font-family:'JetBrains Mono',monospace;
+  font-size:0.75rem;
+  cursor:pointer;
+  transition:all 0.2s;
+  letter-spacing:0.05em;
+}
+.phase-btn:hover{background:rgba(200,155,60,0.1);border-color:var(--gold)}
+.phase-btn.active{background:var(--gold);color:var(--ink);border-color:var(--gold);font-weight:600}
+
+/* PHASE SECTION */
+.phase{
+  max-width:1400px;
+  margin:0 auto;
+  padding:5rem 2rem;
+  position:relative;
+  z-index:1;
+  display:none;
+  animation:fadeUp 0.5s ease;
+}
+.phase.active{display:block}
+@keyframes fadeUp{
+  from{opacity:0;transform:translateY(20px)}
+  to{opacity:1;transform:translateY(0)}
+}
+
+.phase-header{
+  display:flex;
+  align-items:flex-end;
+  gap:2rem;
+  margin-bottom:3rem;
+  flex-wrap:wrap;
+  border-bottom:2px solid var(--earth);
+  padding-bottom:2rem;
+}
+.phase-number{
+  font-family:'Fraunces',serif;
+  font-size:8rem;
+  font-weight:800;
+  line-height:0.8;
+  color:var(--gold);
+  letter-spacing:-0.05em;
+}
+.phase-title-block{flex:1;min-width:300px}
+.phase-label{
+  font-family:'JetBrains Mono',monospace;
+  font-size:0.75rem;
+  letter-spacing:0.2em;
+  color:var(--rust);
+  margin-bottom:0.5rem;
+}
+.phase-title{
+  font-family:'Fraunces',serif;
+  font-size:clamp(2rem,4vw,3.5rem);
+  font-weight:600;
+  line-height:1;
+  color:var(--earth);
+  margin-bottom:1rem;
+}
+.phase-desc{
+  color:var(--earth-light);
+  font-size:1rem;
+  line-height:1.6;
+  max-width:700px;
+}
+
+.phase-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:3rem;
+  align-items:start;
+}
+@media(max-width:900px){.phase-grid{grid-template-columns:1fr}}
+
+/* WHATSAPP MOCK */
+.whatsapp{
+  background:var(--whatsapp-bg);
+  border-radius:12px;
+  overflow:hidden;
+  box-shadow:0 20px 60px rgba(0,0,0,0.15);
+  max-width:420px;
+  margin:0 auto;
+  width:100%;
+}
+.wa-header{
+  background:var(--whatsapp);
+  color:white;
+  padding:0.9rem 1rem;
+  display:flex;
+  align-items:center;
+  gap:0.75rem;
+}
+.wa-avatar{
+  width:40px;
+  height:40px;
+  border-radius:50%;
+  background:var(--gold);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-family:'Fraunces',serif;
+  font-weight:800;
+  color:var(--ink);
+  font-size:1.1rem;
+}
+.wa-name{font-weight:600;font-size:0.95rem}
+.wa-status{font-size:0.7rem;opacity:0.8}
+.wa-body{
+  padding:1rem;
+  min-height:400px;
+  max-height:500px;
+  overflow-y:auto;
+  background-image:
+    repeating-linear-gradient(45deg,transparent,transparent 35px,rgba(0,0,0,0.01) 35px,rgba(0,0,0,0.01) 70px);
+}
+.msg{
+  max-width:80%;
+  padding:0.6rem 0.8rem;
+  border-radius:8px;
+  margin-bottom:0.5rem;
+  font-size:0.88rem;
+  line-height:1.4;
+  position:relative;
+  word-wrap:break-word;
+  opacity:0;
+  animation:msgIn 0.4s ease forwards;
+}
+@keyframes msgIn{
+  from{opacity:0;transform:translateY(10px)}
+  to{opacity:1;transform:translateY(0)}
+}
+.msg.received{
+  background:white;
+  align-self:flex-start;
+  border-top-left-radius:0;
+}
+.msg.sent{
+  background:var(--whatsapp-light);
+  margin-left:auto;
+  border-top-right-radius:0;
+}
+.msg-time{
+  font-size:0.65rem;
+  color:rgba(0,0,0,0.4);
+  text-align:right;
+  margin-top:0.2rem;
+}
+.msg-audio{
+  display:flex;
+  align-items:center;
+  gap:0.5rem;
+  min-width:200px;
+}
+.audio-play{
+  width:32px;
+  height:32px;
+  border-radius:50%;
+  background:var(--whatsapp);
+  color:white;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  flex-shrink:0;
+  cursor:pointer;
+}
+.audio-wave{
+  flex:1;
+  display:flex;
+  gap:2px;
+  align-items:center;
+  height:24px;
+}
+.audio-wave span{
+  flex:1;
+  background:var(--whatsapp);
+  border-radius:2px;
+  opacity:0.5;
+}
+
+.wa-controls{
+  display:flex;
+  gap:0.5rem;
+  padding:1rem;
+  flex-wrap:wrap;
+  background:white;
+  border-top:1px solid rgba(0,0,0,0.05);
+}
+.wa-btn{
+  padding:0.5rem 0.9rem;
+  background:var(--moss);
+  color:white;
+  border:none;
+  border-radius:20px;
+  font-size:0.75rem;
+  cursor:pointer;
+  font-family:'Inter',sans-serif;
+  transition:transform 0.15s;
+}
+.wa-btn:hover{transform:scale(1.05);background:var(--moss-dark)}
+.wa-btn.alt{background:var(--rust)}
+.wa-btn.alt:hover{background:#8b3920}
+
+/* INFO PANEL */
+.info{padding:1rem 0}
+.info-section{margin-bottom:2rem}
+.info-label{
+  font-family:'JetBrains Mono',monospace;
+  font-size:0.7rem;
+  letter-spacing:0.2em;
+  text-transform:uppercase;
+  color:var(--rust);
+  margin-bottom:0.75rem;
+}
+.info-title{
+  font-family:'Fraunces',serif;
+  font-size:1.4rem;
+  font-weight:600;
+  color:var(--earth);
+  margin-bottom:0.75rem;
+  line-height:1.2;
+}
+.info-text{
+  color:var(--earth-light);
+  line-height:1.7;
+  font-size:0.95rem;
+  margin-bottom:1rem;
+}
+.info-list{list-style:none}
+.info-list li{
+  padding:0.6rem 0;
+  border-bottom:1px dashed var(--soil);
+  display:flex;
+  gap:0.75rem;
+  font-size:0.9rem;
+  color:var(--earth);
+}
+.info-list li::before{
+  content:'→';
+  color:var(--gold);
+  font-weight:600;
+  flex-shrink:0;
+}
+
+/* DASHBOARD */
+.dashboard{
+  background:var(--ink);
+  color:var(--cream);
+  padding:1.5rem;
+  border-radius:8px;
+  font-family:'JetBrains Mono',monospace;
+}
+.dash-header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:1.5rem;
+  padding-bottom:1rem;
+  border-bottom:1px solid rgba(244,234,213,0.15);
+}
+.dash-title{font-size:0.85rem;color:var(--gold);letter-spacing:0.1em}
+.dash-time{font-size:0.7rem;opacity:0.6}
+.dash-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:0.75rem;
+  margin-bottom:1.5rem;
+}
+.dash-card{
+  background:rgba(244,234,213,0.05);
+  padding:1rem;
+  border-left:2px solid var(--gold);
+}
+.dash-card-label{
+  font-size:0.65rem;
+  opacity:0.6;
+  text-transform:uppercase;
+  letter-spacing:0.1em;
+  margin-bottom:0.4rem;
+}
+.dash-card-value{
+  font-family:'Fraunces',serif;
+  font-size:1.6rem;
+  font-weight:600;
+  color:var(--cream);
+}
+.dash-card-trend{
+  font-size:0.7rem;
+  margin-top:0.2rem;
+}
+.up{color:#7cb87c}
+.down{color:var(--rust)}
+
+.alert{
+  background:rgba(176,74,46,0.15);
+  border-left:3px solid var(--rust);
+  padding:0.8rem;
+  margin-bottom:0.5rem;
+  font-size:0.78rem;
+  display:flex;
+  gap:0.5rem;
+}
+.alert.warn{
+  background:rgba(200,155,60,0.15);
+  border-left-color:var(--gold);
+}
+.alert.ok{
+  background:rgba(74,107,58,0.2);
+  border-left-color:#7cb87c;
+}
+.alert-icon{flex-shrink:0;font-weight:600}
+
+/* QUOTE CARD */
+.quote{
+  background:var(--paper);
+  border:2px solid var(--earth);
+  padding:1.5rem;
+  font-family:'Inter',sans-serif;
+}
+.quote-header{
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-start;
+  margin-bottom:1rem;
+  padding-bottom:1rem;
+  border-bottom:1px solid var(--soil);
+}
+.quote-num{
+  font-family:'JetBrains Mono',monospace;
+  font-size:0.7rem;
+  color:var(--rust);
+}
+.quote-title{
+  font-family:'Fraunces',serif;
+  font-size:1.2rem;
+  font-weight:600;
+  color:var(--earth);
+}
+.quote-table{width:100%;font-size:0.85rem;border-collapse:collapse}
+.quote-table th{
+  text-align:left;
+  font-family:'JetBrains Mono',monospace;
+  font-size:0.65rem;
+  text-transform:uppercase;
+  color:var(--rust);
+  padding:0.5rem 0;
+  border-bottom:1px solid var(--earth);
+}
+.quote-table td{
+  padding:0.6rem 0;
+  border-bottom:1px dashed var(--soil);
+  color:var(--earth);
+}
+.quote-total{
+  display:flex;
+  justify-content:space-between;
+  margin-top:1rem;
+  padding-top:1rem;
+  border-top:2px solid var(--earth);
+  font-family:'Fraunces',serif;
+  font-weight:600;
+  font-size:1.1rem;
+}
+
+/* FOOTER */
+.footer{
+  background:var(--ink);
+  color:var(--cream);
+  padding:3rem 2rem;
+  text-align:center;
+  margin-top:4rem;
+}
+.footer-text{
+  font-family:'Fraunces',serif;
+  font-style:italic;
+  font-size:1.5rem;
+  max-width:600px;
+  margin:0 auto 1rem;
+  line-height:1.4;
+}
+.footer-meta{
+  font-family:'JetBrains Mono',monospace;
+  font-size:0.7rem;
+  opacity:0.5;
+  letter-spacing:0.2em;
+}
+
+/* TYPING */
+.typing{
+  display:inline-flex;
+  gap:3px;
+  padding:0.6rem 0.8rem;
+  background:white;
+  border-radius:8px;
+  border-top-left-radius:0;
+  margin-bottom:0.5rem;
+}
+.typing span{
+  width:6px;
+  height:6px;
+  border-radius:50%;
+  background:var(--soil);
+  animation:typing 1.4s infinite;
+}
+.typing span:nth-child(2){animation-delay:0.2s}
+.typing span:nth-child(3){animation-delay:0.4s}
+@keyframes typing{
+  0%,60%,100%{opacity:0.3;transform:translateY(0)}
+  30%{opacity:1;transform:translateY(-4px)}
+}
+
+.reset-btn{
+  background:transparent;
+  border:1px solid var(--soil);
+  color:var(--earth);
+  padding:0.5rem 1rem;
+  font-family:'JetBrains Mono',monospace;
+  font-size:0.7rem;
+  cursor:pointer;
+  margin-bottom:1rem;
+  transition:all 0.2s;
+}
+.reset-btn:hover{background:var(--earth);color:var(--cream)}
+</style>
+</head>
+<body>
+
+<header class="header">
+  <div class="logo">AGRO<span>·</span>BOT</div>
+  <nav class="nav">
+    <a href="#fase1">F1</a>
+    <a href="#fase2">F2</a>
+    <a href="#fase3">F3</a>
+    <a href="#fase4">F4</a>
+    <a href="#fase5">F5</a>
+    <a href="#fase6">F6</a>
+  </nav>
+</header>
+
+<section class="hero">
+  <div class="hero-tag">Demo interactivo · Propuesta para distribuidor</div>
+  <h1>Un sistema que <em>habla campo</em>, <br>vende solo y <span class="gold">no olvida</span> a tus clientes.</h1>
+  <p class="hero-sub">Un bot que entiende audios, escribe a los clientes antes de que se les acabe el producto, controla inventario y vigila a los vendedores. Todo desde WhatsApp.</p>
+  <div class="hero-meta">
+    <div><span>OPERA EN</span>WhatsApp · Voz · Texto</div>
+    <div><span>PARA</span>Insumos · Floricultura · Ganadería</div>
+    <div><span>DISEÑO</span>Lenguaje rural · Sin paneles complicados</div>
+  </div>
+</section>
+
+<nav class="phase-nav">
+  <div class="phase-nav-inner">
+    <button class="phase-btn active" data-phase="1">FASE 01 · NÚCLEO</button>
+    <button class="phase-btn" data-phase="2">FASE 02 · INVENTARIO</button>
+    <button class="phase-btn" data-phase="3">FASE 03 · REPOSICIÓN</button>
+    <button class="phase-btn" data-phase="4">FASE 04 · VENDEDORES</button>
+    <button class="phase-btn" data-phase="5">FASE 05 · DASHBOARD</button>
+    <button class="phase-btn" data-phase="6">FASE 06 · INTEGRACIÓN</button>
+  </div>
+</nav>
+
+<!-- FASE 1 -->
+<section class="phase active" id="fase1">
+  <div class="phase-header">
+    <div class="phase-number">01</div>
+    <div class="phase-title-block">
+      <div class="phase-label">Núcleo conversacional</div>
+      <h2 class="phase-title">El bot empieza a escuchar.</h2>
+      <p class="phase-desc">Conecta WhatsApp, entiende audios y texto, identifica clientes y genera cotizaciones automáticas. La base sobre la que se construye todo.</p>
+    </div>
+  </div>
+
+  <div class="phase-grid">
+    <div>
+      <button class="reset-btn" onclick="resetChat(1)">↻ Reiniciar conversación</button>
+      <div class="whatsapp">
+        <div class="wa-header">
+          <div class="wa-avatar">A</div>
+          <div>
+            <div class="wa-name">Agro Bot</div>
+            <div class="wa-status">en línea</div>
+          </div>
+        </div>
+        <div class="wa-body" id="chat1"></div>
+        <div class="wa-controls">
+          <button class="wa-btn" onclick="playScene(1,'a')">▶ Cliente envía audio</button>
+          <button class="wa-btn" onclick="playScene(1,'b')">▶ Cotización rápida</button>
+          <button class="wa-btn" onclick="playScene(1,'c')">▶ Cliente nuevo</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="info">
+      <div class="info-section">
+        <div class="info-label">Qué incluye esta fase</div>
+        <ul class="info-list">
+          <li>Conexión WhatsApp Business API</li>
+          <li>Reconocimiento de audio (transcripción a texto)</li>
+          <li>Base de datos de clientes y productos</li>
+          <li>Cotizaciones automáticas vía chat</li>
+          <li>Respuestas en lenguaje rural y cercano</li>
+          <li>Historial de conversaciones por cliente</li>
+        </ul>
+      </div>
+      <div class="info-section">
+        <div class="info-label">Resultado esperado</div>
+        <div class="info-text">El dueño deja de responder cotizaciones manualmente. Cualquier vendedor o cliente puede pedir precios por WhatsApp y obtener respuesta inmediata, incluso enviando un audio.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FASE 2 -->
+<section class="phase" id="fase2">
+  <div class="phase-header">
+    <div class="phase-number">02</div>
+    <div class="phase-title-block">
+      <div class="phase-label">Inventario inteligente</div>
+      <h2 class="phase-title">El bot empieza a contar.</h2>
+      <p class="phase-desc">Cada venta descuenta stock. Cada producto que se mueve poco genera alerta. El sistema te avisa qué reponer antes de que se agote.</p>
+    </div>
+  </div>
+
+  <div class="phase-grid">
+    <div>
+      <button class="reset-btn" onclick="resetChat(2)">↻ Reiniciar</button>
+      <div class="whatsapp">
+        <div class="wa-header">
+          <div class="wa-avatar">A</div>
+          <div>
+            <div class="wa-name">Agro Bot · Alertas</div>
+            <div class="wa-status">notificaciones internas</div>
+          </div>
+        </div>
+        <div class="wa-body" id="chat2"></div>
+        <div class="wa-controls">
+          <button class="wa-btn alt" onclick="playScene(2,'a')">▶ Stock bajo</button>
+          <button class="wa-btn alt" onclick="playScene(2,'b')">▶ Producto estancado</button>
+          <button class="wa-btn" onclick="playScene(2,'c')">▶ Consultar stock</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="info">
+      <div class="info-section">
+        <div class="info-label">Qué incluye</div>
+        <ul class="info-list">
+          <li>Control de stock en tiempo real</li>
+          <li>Alertas automáticas de inventario bajo</li>
+          <li>Detección de productos sin movimiento</li>
+          <li>Sugerencias de reposición por temporada</li>
+          <li>Avisos de productos que se venden rápido</li>
+          <li>Histórico de rotación por producto</li>
+        </ul>
+      </div>
+      <div class="info-section">
+        <div class="info-label">Caso de uso</div>
+        <div class="info-text">Lunes a las 7am, antes de abrir, el dueño recibe en su WhatsApp: "Quedan 8 unidades de glifosato 1L, vendiste 22 la semana pasada. Te dura 3 días."</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FASE 3 -->
+<section class="phase" id="fase3">
+  <div class="phase-header">
+    <div class="phase-number">03</div>
+    <div class="phase-title-block">
+      <div class="phase-label">Reposición anticipada</div>
+      <h2 class="phase-title">El bot le escribe al cliente <em>antes</em>.</h2>
+      <p class="phase-desc">Aprende cuánto compra cada cliente y cada cuánto. Le escribe semanas antes para que no le falte producto y para que tú no pierdas la venta.</p>
+    </div>
+  </div>
+
+  <div class="phase-grid">
+    <div>
+      <button class="reset-btn" onclick="resetChat(3)">↻ Reiniciar</button>
+      <div class="whatsapp">
+        <div class="wa-header">
+          <div class="wa-avatar">A</div>
+          <div>
+            <div class="wa-name">Don Carlos · Finca La Esperanza</div>
+            <div class="wa-status">automatización activa</div>
+          </div>
+        </div>
+        <div class="wa-body" id="chat3"></div>
+        <div class="wa-controls">
+          <button class="wa-btn" onclick="playScene(3,'a')">▶ Recordatorio anticipado</button>
+          <button class="wa-btn" onclick="playScene(3,'b')">▶ Seguimiento cotización</button>
+          <button class="wa-btn alt" onclick="playScene(3,'c')">▶ Alerta interna</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="info">
+      <div class="info-section">
+        <div class="info-label">Inteligencia de cliente</div>
+        <ul class="info-list">
+          <li>Aprende ciclo de consumo de cada cliente</li>
+          <li>Avisa internamente con 15+ días de anticipación</li>
+          <li>Envía mensaje personalizado al cliente</li>
+          <li>Detecta cotizaciones sin cierre y hace seguimiento</li>
+          <li>Identifica clientes que dejaron de comprar</li>
+          <li>Programa despachos con tiempo</li>
+        </ul>
+      </div>
+      <div class="info-section">
+        <div class="info-label">Lo que cambia</div>
+        <div class="info-text">Pasas de reaccionar cuando el cliente avisa, a anticiparte. El cliente siente que lo cuidan. Tú no pierdes ventas por olvido.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FASE 4 -->
+<section class="phase" id="fase4">
+  <div class="phase-header">
+    <div class="phase-number">04</div>
+    <div class="phase-title-block">
+      <div class="phase-label">Control de vendedores</div>
+      <h2 class="phase-title">El bot vigila la operación.</h2>
+      <p class="phase-desc">Registra cada venta por vendedor. Compara desempeño. Detecta inconsistencias. Si alguien pide producto y no reporta venta, el dueño se entera al día siguiente.</p>
+    </div>
+  </div>
+
+  <div class="phase-grid">
+    <div>
+      <button class="reset-btn" onclick="resetChat(4)">↻ Reiniciar</button>
+      <div class="whatsapp">
+        <div class="wa-header">
+          <div class="wa-avatar">A</div>
+          <div>
+            <div class="wa-name">Reporte Vendedores · Dueño</div>
+            <div class="wa-status">monitoreo diario</div>
+          </div>
+        </div>
+        <div class="wa-body" id="chat4"></div>
+        <div class="wa-controls">
+          <button class="wa-btn" onclick="playScene(4,'a')">▶ Reporte diario</button>
+          <button class="wa-btn alt" onclick="playScene(4,'b')">▶ Alerta inconsistencia</button>
+          <button class="wa-btn" onclick="playScene(4,'c')">▶ Vendedor reporta</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="info">
+      <div class="info-section">
+        <div class="info-label">Vigilancia operativa</div>
+        <ul class="info-list">
+          <li>Ventas registradas por vendedor en tiempo real</li>
+          <li>Comparativos diarios y semanales</li>
+          <li>Alertas de comportamiento extraño</li>
+          <li>Producto entregado vs ventas reportadas</li>
+          <li>Detección de posibles fugas o robos</li>
+          <li>Ranking automático del equipo</li>
+        </ul>
+      </div>
+      <div class="info-section">
+        <div class="info-label">Tranquilidad</div>
+        <div class="info-text">Dejas de depender de la honestidad y memoria de cada vendedor. El sistema no se distrae, no olvida, no se hace el de la vista gorda.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FASE 5 -->
+<section class="phase" id="fase5">
+  <div class="phase-header">
+    <div class="phase-number">05</div>
+    <div class="phase-title-block">
+      <div class="phase-label">Panel de control</div>
+      <h2 class="phase-title">Todo el negocio en una pantalla.</h2>
+      <p class="phase-desc">Un dashboard simple donde el dueño ve ventas, alertas, vendedores, inventario y recomendaciones. Sin tecnicismos. Diseñado para abrir 2 minutos al día.</p>
+    </div>
+  </div>
+
+  <div class="phase-grid">
+    <div>
+      <div class="dashboard">
+        <div class="dash-header">
+          <div class="dash-title">PANEL · OPERACIÓN HOY</div>
+          <div class="dash-time" id="liveTime">--:--</div>
+        </div>
+        <div class="dash-grid">
+          <div class="dash-card">
+            <div class="dash-card-label">Ventas hoy</div>
+            <div class="dash-card-value">42</div>
+            <div class="dash-card-trend up">↑ 18% vs ayer</div>
+          </div>
+          <div class="dash-card">
+            <div class="dash-card-label">Cotizaciones</div>
+            <div class="dash-card-value">17</div>
+            <div class="dash-card-trend up">↑ 9 cerradas</div>
+          </div>
+          <div class="dash-card">
+            <div class="dash-card-label">Stock bajo</div>
+            <div class="dash-card-value">6</div>
+            <div class="dash-card-trend down">productos críticos</div>
+          </div>
+          <div class="dash-card">
+            <div class="dash-card-label">Sin seguimiento</div>
+            <div class="dash-card-value">3</div>
+            <div class="dash-card-trend down">cotizaciones perdidas</div>
+          </div>
+        </div>
+        <div>
+          <div class="alert">
+            <div class="alert-icon">!</div>
+            <div>Don Carlos no compra hace 47 días. Antes compraba cada 30. Sugerencia: llamar.</div>
+          </div>
+          <div class="alert warn">
+            <div class="alert-icon">⚠</div>
+            <div>Vendedor Pedro pidió 30 unidades de fertilizante. Reportó 18 ventas. Faltan 12.</div>
+          </div>
+          <div class="alert warn">
+            <div class="alert-icon">⚠</div>
+            <div>Stock crítico: glifosato 1L (8 unid), antibiótico bovino (4 unid).</div>
+          </div>
+          <div class="alert ok">
+            <div class="alert-icon">✓</div>
+            <div>14 clientes con reposición programada esta semana. Despachos al día.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="info">
+      <div class="info-section">
+        <div class="info-label">Lo que ves al abrir</div>
+        <ul class="info-list">
+          <li>Ventas del día en tiempo real</li>
+          <li>Alertas críticas priorizadas</li>
+          <li>Inventario bajo y productos estancados</li>
+          <li>Cotizaciones enviadas y perdidas</li>
+          <li>Clientes próximos a reposición</li>
+          <li>Ranking de vendedores</li>
+          <li>Recomendaciones del sistema</li>
+        </ul>
+      </div>
+
+      <div class="quote" style="margin-top:2rem">
+        <div class="quote-header">
+          <div>
+            <div class="quote-num">COT-2026-0847</div>
+            <div class="quote-title">Don Carlos · Finca La Esperanza</div>
+          </div>
+          <div class="quote-num">09 MAY</div>
+        </div>
+        <table class="quote-table">
+          <tr><th>Producto</th><th>Cant</th></tr>
+          <tr><td>Fertilizante NPK 50kg</td><td>8</td></tr>
+          <tr><td>Insecticida sistémico 1L</td><td>4</td></tr>
+          <tr><td>Semilla certificada</td><td>2</td></tr>
+        </table>
+        <div class="quote-total">
+          <span>Generada por</span>
+          <span style="color:var(--rust)">AGRO·BOT</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FASE 6 -->
+<section class="phase" id="fase6">
+  <div class="phase-header">
+    <div class="phase-number">06</div>
+    <div class="phase-title-block">
+      <div class="phase-label">Integraciones avanzadas</div>
+      <h2 class="phase-title">Todo conversa entre sí.</h2>
+      <p class="phase-desc">Facturación electrónica, contabilidad, rutas de despacho, IA predictiva de demanda. El sistema deja de ser un bot y se vuelve el cerebro del negocio.</p>
+    </div>
+  </div>
+
+  <div class="phase-grid">
+    <div>
+      <button class="reset-btn" onclick="resetChat(6)">↻ Reiniciar</button>
+      <div class="whatsapp">
+        <div class="wa-header">
+          <div class="wa-avatar">A</div>
+          <div>
+            <div class="wa-name">Sistema Integrado</div>
+            <div class="wa-status">operación completa</div>
+          </div>
+        </div>
+        <div class="wa-body" id="chat6"></div>
+        <div class="wa-controls">
+          <button class="wa-btn" onclick="playScene(6,'a')">▶ Factura automática</button>
+          <button class="wa-btn" onclick="playScene(6,'b')">▶ Ruta optimizada</button>
+          <button class="wa-btn alt" onclick="playScene(6,'c')">▶ Predicción demanda</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="info">
+      <div class="info-section">
+        <div class="info-label">Integraciones disponibles</div>
+        <ul class="info-list">
+          <li>Facturación electrónica (DIAN / SUNAT / SAT)</li>
+          <li>Contabilidad (Siigo, Alegra, Contifico)</li>
+          <li>Google Sheets para reportes</li>
+          <li>CRM con histórico de cliente</li>
+          <li>Rutas optimizadas para despachos</li>
+          <li>IA predictiva: qué se va a vender la próxima semana</li>
+          <li>Dashboard web extendido</li>
+        </ul>
+      </div>
+      <div class="info-section">
+        <div class="info-label">Escalabilidad</div>
+        <div class="info-text">Cuando el negocio crezca, el sistema crece contigo. Más vendedores, más zonas, más productos. Sin cambiar de plataforma. Todo sigue ocurriendo desde WhatsApp.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="footer-text">"El campo no necesita una app más. Necesita algo que entienda cómo se trabaja."</div>
+  <div class="footer-meta">DEMO · AGRO BOT · PROPUESTA INTERACTIVA</div>
+</footer>
+
+<script>
+// ESCENAS POR FASE
+const scenes = {
+  '1a': [
+    {type:'received', audio:true, text:'Audio · 0:14'},
+    {type:'received', text:'(transcripción) "Buenas, necesito 5 bultos de fertilizante NPK y 2 cuñetes de fungicida pa\' mi finca, ¿cuánto sale?"'},
+    {type:'typing'},
+    {type:'sent', text:'Don Carlos buenas tardes. Le entendí perfecto.'},
+    {type:'sent', text:'Le armo la cotización ya mismo:\n\n• 5 bultos NPK 50kg\n• 2 cuñetes fungicida 20L\n\n¿Es para entrega en La Esperanza?'},
+    {type:'received', text:'Sí señor, allá mismo'},
+    {type:'sent', text:'Listo. Le envío la cotización formal en 1 minuto. ¿Necesita el despacho urgente o le sirve esta semana?'}
+  ],
+  '1b': [
+    {type:'received', text:'Buenas, necesito precio de semilla maíz híbrido'},
+    {type:'typing'},
+    {type:'sent', text:'Hola. Tenemos 3 referencias disponibles:\n\n1. Maíz amarillo H-108 — $XXX/kg\n2. Maíz blanco DK-7088 — $XXX/kg\n3. Maíz forrajero — $XXX/kg\n\n¿Cuántos kilos necesita y para qué zona?'},
+    {type:'received', text:'40 kilos del primero'},
+    {type:'sent', text:'Anotado. Cotización COT-0847 generada. Validez: 8 días.\n\n¿La envío como PDF o así por chat?'}
+  ],
+  '1c': [
+    {type:'received', text:'Hola, me dieron su número en la veterinaria'},
+    {type:'typing'},
+    {type:'sent', text:'Buenas, bienvenido. ¿Con quién tengo el gusto?'},
+    {type:'received', text:'Soy Jorge, de la finca El Roble. Manejo unas 60 reses'},
+    {type:'sent', text:'Mucho gusto don Jorge. Lo guardo en sistema.\n\n¿Qué necesita? Manejamos antibióticos, vitaminas, vacunas, sales mineralizadas, garrapaticidas...'},
+    {type:'received', text:'Necesito sal mineralizada y un antiparasitario'},
+    {type:'sent', text:'Perfecto. ¿Tiene preferencia de marca o le recomiendo según el ganado?'}
+  ],
+  '2a': [
+    {type:'received', text:'⚠ ALERTA STOCK · 7:00 AM'},
+    {type:'received', text:'Don, buenos días.\n\nProductos críticos hoy:\n\n• Glifosato 1L · quedan 8 unid (vendiste 22 la semana pasada — te dura 3 días)\n• Antibiótico bovino · 4 unid (rotación alta)\n• Semilla pasto braquiaria · 12 kg'},
+    {type:'received', text:'Sugerencia: llamar al proveedor hoy. Despacho normal tarda 4-5 días.'},
+    {type:'typing'},
+    {type:'sent', text:'Listo, ya llamo'},
+    {type:'received', text:'Perfecto. Te recuerdo en 2 horas si no me confirmas el pedido.'}
+  ],
+  '2b': [
+    {type:'received', text:'📊 PRODUCTOS QUIETOS'},
+    {type:'received', text:'Estos productos llevan más de 90 días sin venderse:\n\n• Fungicida cobre 5L · 14 unid · 127 días\n• Radio rural modelo X · 6 unid · 154 días\n• Semilla algodón · 8 kg · 98 días\n\nPlata estancada estimada: alta.'},
+    {type:'received', text:'Recomendación: \n→ Promoción a clientes recurrentes\n→ Combo con producto rotativo\n→ Revisar precio'}
+  ],
+  '2c': [
+    {type:'sent', text:'¿Cuánto fertilizante NPK me queda?'},
+    {type:'typing'},
+    {type:'received', text:'Stock actual NPK:\n\n• 50kg presentación bulto: 47 unidades\n• 25kg presentación: 18 unidades\n• 10kg presentación: 32 unidades\n\nÚltima entrada: hace 12 días\nVelocidad de salida: ~6 bultos/día\nDuración estimada: 8 días'},
+    {type:'sent', text:'Hagamos pedido al proveedor'},
+    {type:'received', text:'Listo. ¿Pido la cantidad usual (80 bultos) o ajusto?'}
+  ],
+  '3a': [
+    {type:'sent', text:'🤖 [Mensaje automático del sistema]'},
+    {type:'sent', text:'Hola don Carlos, buenas tardes.\n\nNoté que su última compra de fertilizante fue hace 25 días. Por su consumo habitual, calculo que se le acaba en unos 12-15 días.'},
+    {type:'sent', text:'¿Quiere que le programe el despacho ahora para que no le coja la tarea? Así llega antes de que se acabe.'},
+    {type:'received', text:'Sí porfa, mande lo de siempre'},
+    {type:'typing'},
+    {type:'sent', text:'Perfecto don Carlos. \n\nLe armé el pedido habitual:\n• 8 bultos NPK 50kg\n• 4 cuñetes fungicida\n\nDespacho programado para el viernes. ¿Confirma?'},
+    {type:'received', text:'Confirmado, gracias'}
+  ],
+  '3b': [
+    {type:'sent', text:'🤖 [Seguimiento automático]'},
+    {type:'sent', text:'Don Jorge, hace 6 días le envié la cotización COT-0823 por sal mineralizada y antiparasitario.\n\n¿Quedó claro el precio? ¿Necesita ajustar algo?'},
+    {type:'received', text:'Perdón se me pasó, sí me sirve'},
+    {type:'sent', text:'Tranquilo don Jorge, por eso le recordé.\n\n¿Despacho esta semana o prefiere la próxima?'},
+    {type:'received', text:'Esta semana mejor'},
+    {type:'sent', text:'Listo. Programo para el jueves. Le confirmo dirección por aquí.'}
+  ],
+  '3c': [
+    {type:'received', text:'⚠ ALERTA INTERNA'},
+    {type:'received', text:'Cliente VIP sin compra reciente:\n\nDoña Marta · Finca El Vergel\n→ Compraba cada 30 días en promedio\n→ Última compra: hace 58 días\n→ Consumo histórico: alto\n\n¿Le escribo yo o prefieres llamarla tú?'},
+    {type:'typing'},
+    {type:'sent', text:'Llámala tú, ya con tono cercano'},
+    {type:'received', text:'Listo. Le envío mensaje suave preguntando cómo está la finca y si necesita algo. Sin presión.'}
+  ],
+  '4a': [
+    {type:'received', text:'📋 REPORTE DIARIO · VENDEDORES'},
+    {type:'received', text:'Hoy 09 MAY:\n\n🥇 Pedro · 14 ventas · cierre 78%\n🥈 Andrés · 9 ventas · cierre 64%\n🥉 Luis · 6 ventas · cierre 52%\n· Carlos · 2 ventas · cierre 22%\n\nMejor zona: norte (Pedro)\nZona débil: sur (Carlos lleva 3 días flojo)'},
+    {type:'received', text:'Recomendación: revisar qué pasa con Carlos. Puede ser ruta, motivación o problema personal.'}
+  ],
+  '4b': [
+    {type:'received', text:'⚠ ALERTA · INCONSISTENCIA'},
+    {type:'received', text:'Vendedor Pedro:\n\n→ Producto entregado en moto (lunes): 30 unid fertilizante\n→ Ventas reportadas: 18\n→ Faltante en sistema: 12 unidades\n\nPosibles causas:\n1. Ventas sin reportar\n2. Producto en bodega del vendedor\n3. Pérdida o robo'},
+    {type:'received', text:'¿Quieres que le pregunte yo o lo manejas tú?'},
+    {type:'typing'},
+    {type:'sent', text:'Pregúntale tú primero'},
+    {type:'received', text:'Listo. Le escribo discreto pidiendo cuadre del día.'}
+  ],
+  '4c': [
+    {type:'received', text:'Don, soy Pedro. Acabo de cerrar venta'},
+    {type:'received', text:'Cliente: Finca Las Mercedes\nProducto: 12 bultos NPK + 3 cuñetes herbicida\nForma de pago: contado\nDespacho: mañana 9am'},
+    {type:'typing'},
+    {type:'sent', text:'Recibido Pedro. Venta registrada COD-1247.\n\nStock actualizado:\n• NPK: -12 unidades\n• Herbicida: -3 unidades\n\nDespacho programado. Buen trabajo.'}
+  ],
+  '6a': [
+    {type:'received', text:'Don Carlos confirmó pedido COT-0847'},
+    {type:'received', text:'✓ Factura electrónica generada (DIAN)\n✓ Inventario descontado\n✓ Registro contable creado\n✓ Comisión vendedor calculada\n✓ Ruta de despacho asignada'},
+    {type:'received', text:'Todo en 8 segundos. Sin tocar nada.'}
+  ],
+  '6b': [
+    {type:'received', text:'🚚 RUTA OPTIMIZADA · VIERNES'},
+    {type:'received', text:'7 despachos programados:\n\n1. Don Carlos (La Esperanza) — 6:30am\n2. Doña Marta (El Vergel) — 7:45am\n3. Finca Roble — 9:10am\n4. Coop. San José — 10:30am\n5. Don Jorge — 11:50am\n6. Distribuidora Norte — 1:15pm\n7. Hacienda La Luna — 2:40pm\n\nRuta optimizada: ahorra 2h 40min vs orden manual'}
+  ],
+  '6c': [
+    {type:'received', text:'🔮 PREDICCIÓN PRÓXIMA SEMANA'},
+    {type:'received', text:'Basado en históricos, temporada y clima:\n\n📈 Subirán:\n• Fungicidas (lluvia esperada)\n• Sales mineralizadas (preñez ganado)\n• Semilla pasto\n\n📉 Bajarán:\n• Insecticidas (fin temporada)\n• Herbicidas selectivos'},
+    {type:'received', text:'Sugerencia: aumentar stock de fungicidas en 40%. Reducir compra de insecticidas esta quincena.'}
+  ]
+};
+
+const chatStates = {1:[], 2:[], 3:[], 4:[], 6:[]};
+
+function renderChat(phaseNum){
+  const chat = document.getElementById('chat'+phaseNum);
+  if(!chat) return;
+  chat.innerHTML = '';
+  chatStates[phaseNum].forEach((msg, i)=>{
+    const div = document.createElement('div');
+    if(msg.type==='typing'){
+      div.className='typing';
+      div.innerHTML='<span></span><span></span><span></span>';
+    } else {
+      div.className='msg '+(msg.type==='received'?'received':'sent');
+      if(msg.audio){
+        div.innerHTML=`
+          <div class="msg-audio">
+            <div class="audio-play">▶</div>
+            <div class="audio-wave">
+              ${Array.from({length:20},(_,i)=>`<span style="height:${30+Math.sin(i)*40}%"></span>`).join('')}
+            </div>
+          </div>
+          <div class="msg-time">${getTime()}</div>`;
+      } else {
+        div.innerHTML = msg.text.replace(/\n/g,'<br>') + `<div class="msg-time">${getTime()}</div>`;
+      }
+    }
+    div.style.animationDelay = (i*0.05)+'s';
+    chat.appendChild(div);
+  });
+  chat.scrollTop = chat.scrollHeight;
+}
+
+function getTime(){
+  const d = new Date();
+  return d.getHours().toString().padStart(2,'0')+':'+d.getMinutes().toString().padStart(2,'0');
+}
+
+async function playScene(phaseNum, sceneId){
+  const sceneKey = phaseNum+''+sceneId;
+  const scene = scenes[sceneKey];
+  if(!scene) return;
+  
+  chatStates[phaseNum] = [];
+  renderChat(phaseNum);
+  
+  for(let i=0; i<scene.length; i++){
+    const msg = scene[i];
+    if(msg.type==='typing'){
+      chatStates[phaseNum].push(msg);
+      renderChat(phaseNum);
+      await sleep(1200);
+      chatStates[phaseNum].pop();
+    } else {
+      chatStates[phaseNum].push(msg);
+      renderChat(phaseNum);
+      await sleep(msg.type==='received'?900:700);
+    }
+  }
+}
+
+function resetChat(phaseNum){
+  chatStates[phaseNum] = [];
+  renderChat(phaseNum);
+}
+
+function sleep(ms){return new Promise(r=>setTimeout(r,ms))}
+
+// PHASE NAV
+document.querySelectorAll('.phase-btn').forEach(btn=>{
+  btn.addEventListener('click', ()=>{
+    const num = btn.dataset.phase;
+    document.querySelectorAll('.phase-btn').forEach(b=>b.classList.remove('active'));
+    document.querySelectorAll('.phase').forEach(p=>p.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('fase'+num).classList.add('active');
+    window.scrollTo({top: document.querySelector('.phase-nav').offsetTop + 60, behavior:'smooth'});
+  });
+});
+
+// LIVE CLOCK
+function updateClock(){
+  const d = new Date();
+  const t = d.toLocaleTimeString('es-CO',{hour:'2-digit',minute:'2-digit',second:'2-digit'});
+  const el = document.getElementById('liveTime');
+  if(el) el.textContent = t;
+}
+setInterval(updateClock,1000);
+updateClock();
+
+// AUTOPLAY F1 ON LOAD
+setTimeout(()=>playScene(1,'a'), 800);
+</script>
+</body>
+</html>
