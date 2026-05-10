@@ -1,0 +1,945 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Asistente de Negocios · Bot de Ventas Multinivel | Jarvis Agency AI</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Syne:wght@500;600;700;800&family=Manrope:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #05070d;
+    --bg-2: #0a0e1a;
+    --ink: #e8ecf5;
+    --ink-dim: #8a93a8;
+    --accent: #00d4ff;
+    --accent-2: #0066ff;
+    --whatsapp: #25d366;
+    --telegram: #0088cc;
+    --line: rgba(0, 212, 255, 0.12);
+    --card: rgba(10, 14, 26, 0.6);
+    --success: #00ff9d;
+    --warn: #ffb84d;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'Manrope', sans-serif;
+    font-weight: 300;
+    line-height: 1.6;
+    overflow-x: hidden;
+    min-height: 100vh;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(0, 212, 255, 0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0, 212, 255, 0.04) 1px, transparent 1px);
+    background-size: 60px 60px;
+    pointer-events: none;
+    z-index: 0;
+    mask-image: radial-gradient(ellipse at center, black 30%, transparent 80%);
+  }
+
+  .orb {
+    position: fixed;
+    border-radius: 50%;
+    filter: blur(120px);
+    opacity: 0.25;
+    pointer-events: none;
+    z-index: 0;
+  }
+  .orb-1 { width: 500px; height: 500px; background: var(--accent); top: -100px; left: -100px; }
+  .orb-2 { width: 600px; height: 600px; background: var(--accent-2); bottom: -200px; right: -150px; }
+
+  main { position: relative; z-index: 1; }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 80px 6vw 40px;
+    position: relative;
+  }
+
+  .nav {
+    position: absolute;
+    top: 32px;
+    left: 6vw;
+    right: 6vw;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+  }
+  .nav-logo { color: var(--accent); font-weight: 700; }
+  .nav-meta { color: var(--ink-dim); }
+
+  .hero-tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.3em;
+    color: var(--accent);
+    text-transform: uppercase;
+    margin-bottom: 32px;
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .hero-tag::before {
+    content: '';
+    width: 8px;
+    height: 8px;
+    background: var(--accent);
+    border-radius: 50%;
+    box-shadow: 0 0 20px var(--accent);
+    animation: pulse 2s infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
+  }
+
+  .hero h1 {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: clamp(48px, 9vw, 140px);
+    line-height: 0.95;
+    letter-spacing: -0.04em;
+    max-width: 1200px;
+    margin-bottom: 32px;
+  }
+  .hero h1 .accent {
+    background: linear-gradient(135deg, var(--accent) 0%, var(--accent-2) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-style: italic;
+  }
+  .hero h1 .strike {
+    text-decoration: line-through;
+    text-decoration-color: rgba(232, 236, 245, 0.3);
+    color: var(--ink-dim);
+    font-weight: 500;
+  }
+
+  .hero-sub {
+    max-width: 680px;
+    font-size: clamp(16px, 1.4vw, 20px);
+    color: var(--ink-dim);
+    margin-bottom: 48px;
+    font-weight: 300;
+  }
+  .hero-sub strong { color: var(--ink); font-weight: 500; }
+
+  .channel-badges {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 48px;
+    flex-wrap: wrap;
+  }
+  .channel-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 20px;
+    border: 1px solid var(--line);
+    border-radius: 100px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+  }
+  .channel-badge.wa { color: var(--whatsapp); border-color: rgba(37, 211, 102, 0.3); }
+  .channel-badge.tg { color: var(--telegram); border-color: rgba(0, 136, 204, 0.4); }
+  .channel-badge .dot {
+    width: 8px; height: 8px; border-radius: 50%;
+  }
+  .channel-badge.wa .dot { background: var(--whatsapp); box-shadow: 0 0 12px var(--whatsapp); }
+  .channel-badge.tg .dot { background: var(--telegram); box-shadow: 0 0 12px var(--telegram); }
+
+  .hero-stats {
+    display: flex;
+    gap: 64px;
+    flex-wrap: wrap;
+    padding-top: 32px;
+    border-top: 1px solid var(--line);
+  }
+  .stat-num {
+    font-family: 'Syne', sans-serif;
+    font-size: 48px;
+    font-weight: 700;
+    color: var(--accent);
+    line-height: 1;
+  }
+  .stat-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--ink-dim);
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    margin-top: 8px;
+  }
+
+  .section {
+    padding: 120px 6vw;
+    position: relative;
+  }
+  .section-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--accent);
+    letter-spacing: 0.3em;
+    margin-bottom: 16px;
+  }
+  .section-title {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: clamp(36px, 5vw, 72px);
+    line-height: 1;
+    letter-spacing: -0.03em;
+    margin-bottom: 24px;
+    max-width: 900px;
+  }
+  .section-title em {
+    font-style: italic;
+    background: linear-gradient(135deg, var(--accent) 0%, var(--accent-2) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .section-desc {
+    color: var(--ink-dim);
+    max-width: 640px;
+    font-size: 17px;
+    margin-bottom: 80px;
+  }
+
+  /* FLOW */
+  .flow {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 24px;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  .flow-step {
+    display: grid;
+    grid-template-columns: 100px 1fr;
+    gap: 32px;
+    padding: 32px;
+    border: 1px solid var(--line);
+    background: var(--card);
+    backdrop-filter: blur(10px);
+    transition: all 0.3s;
+  }
+  .flow-step:hover {
+    border-color: var(--accent);
+    transform: translateX(8px);
+  }
+  .flow-num {
+    font-family: 'Syne', sans-serif;
+    font-size: 56px;
+    font-weight: 800;
+    color: var(--accent);
+    line-height: 1;
+  }
+  .flow-content h3 {
+    font-family: 'Syne', sans-serif;
+    font-size: 24px;
+    font-weight: 600;
+    margin-bottom: 8px;
+  }
+  .flow-content p { color: var(--ink-dim); font-size: 15px; }
+
+  /* DEMOS */
+  .demos-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+    gap: 32px;
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+
+  .demo-card {
+    background: var(--bg-2);
+    border: 1px solid var(--line);
+    border-radius: 24px;
+    overflow: hidden;
+    transition: all 0.4s;
+    position: relative;
+  }
+  .demo-card:hover {
+    border-color: var(--accent);
+    transform: translateY(-8px);
+    box-shadow: 0 30px 60px -20px rgba(0, 212, 255, 0.3);
+  }
+
+  .demo-header {
+    padding: 24px 28px;
+    border-bottom: 1px solid var(--line);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .demo-tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--accent);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+  }
+  .demo-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 22px;
+    font-weight: 600;
+    margin-top: 4px;
+  }
+  .demo-icon {
+    width: 40px;
+    height: 40px;
+    border: 1px solid var(--accent);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--accent);
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 700;
+  }
+
+  .chat {
+    padding: 24px;
+    background: linear-gradient(180deg, #0a0e1a 0%, #050811 100%);
+    min-height: 480px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    font-size: 14px;
+  }
+  .msg {
+    max-width: 85%;
+    padding: 12px 16px;
+    border-radius: 18px;
+    line-height: 1.45;
+    animation: msgIn 0.5s ease-out backwards;
+  }
+  @keyframes msgIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .msg-bot {
+    background: rgba(0, 212, 255, 0.08);
+    border: 1px solid rgba(0, 212, 255, 0.2);
+    border-bottom-left-radius: 4px;
+    align-self: flex-start;
+    color: var(--ink);
+  }
+  .msg-user {
+    background: linear-gradient(135deg, var(--accent) 0%, var(--accent-2) 100%);
+    color: #001020;
+    align-self: flex-end;
+    border-bottom-right-radius: 4px;
+    font-weight: 500;
+  }
+  .msg-system {
+    align-self: center;
+    background: rgba(255, 184, 77, 0.1);
+    border: 1px solid rgba(255, 184, 77, 0.3);
+    color: var(--warn);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    text-align: center;
+    border-radius: 8px;
+    padding: 8px 14px;
+    letter-spacing: 0.05em;
+  }
+  .msg b { color: var(--accent); font-weight: 600; }
+  .msg-user b { color: #001020; }
+
+  /* FEATURES */
+  .features {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1px;
+    background: var(--line);
+    border: 1px solid var(--line);
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+  .feature {
+    background: var(--bg);
+    padding: 40px 32px;
+    transition: background 0.3s;
+  }
+  .feature:hover { background: var(--bg-2); }
+  .feature-icon {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--accent);
+    letter-spacing: 0.2em;
+    margin-bottom: 16px;
+  }
+  .feature h4 {
+    font-family: 'Syne', sans-serif;
+    font-size: 22px;
+    font-weight: 600;
+    margin-bottom: 12px;
+  }
+  .feature p {
+    color: var(--ink-dim);
+    font-size: 14px;
+  }
+
+  /* PRICING DUAL */
+  .pricing-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+  .pricing-card {
+    border: 1px solid var(--line);
+    background: var(--card);
+    backdrop-filter: blur(10px);
+    padding: 48px 40px;
+    border-radius: 24px;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.4s;
+  }
+  .pricing-card:hover {
+    transform: translateY(-8px);
+  }
+  .pricing-card.telegram {
+    border-color: rgba(0, 136, 204, 0.4);
+  }
+  .pricing-card.telegram:hover {
+    border-color: var(--telegram);
+    box-shadow: 0 30px 60px -20px rgba(0, 136, 204, 0.3);
+  }
+  .pricing-card.whatsapp {
+    border-color: rgba(37, 211, 102, 0.4);
+  }
+  .pricing-card.whatsapp:hover {
+    border-color: var(--whatsapp);
+    box-shadow: 0 30px 60px -20px rgba(37, 211, 102, 0.3);
+  }
+
+  .pricing-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 32px;
+    padding-bottom: 24px;
+    border-bottom: 1px solid var(--line);
+  }
+  .pricing-channel {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+  }
+  .pricing-card.telegram .pricing-channel { color: var(--telegram); }
+  .pricing-card.whatsapp .pricing-channel { color: var(--whatsapp); }
+  .pricing-name {
+    font-family: 'Syne', sans-serif;
+    font-size: 28px;
+    font-weight: 700;
+    margin-top: 8px;
+  }
+  .pricing-tag {
+    padding: 6px 12px;
+    border-radius: 100px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+  }
+  .pricing-card.telegram .pricing-tag {
+    background: rgba(0, 136, 204, 0.15);
+    color: var(--telegram);
+  }
+  .pricing-card.whatsapp .pricing-tag {
+    background: rgba(37, 211, 102, 0.15);
+    color: var(--whatsapp);
+  }
+
+  .price-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 16px 0;
+    border-bottom: 1px solid var(--line);
+  }
+  .price-row:last-child { border-bottom: none; }
+  .price-row-label {
+    font-size: 14px;
+    color: var(--ink-dim);
+  }
+  .price-row-value {
+    font-family: 'Syne', sans-serif;
+    font-size: 24px;
+    font-weight: 700;
+  }
+  .pricing-card.telegram .price-row-value { color: var(--telegram); }
+  .pricing-card.whatsapp .price-row-value { color: var(--whatsapp); }
+  .price-row-value span {
+    font-size: 12px;
+    color: var(--ink-dim);
+    font-weight: 400;
+  }
+
+  .pricing-includes {
+    margin-top: 24px;
+    padding-top: 24px;
+    border-top: 1px solid var(--line);
+  }
+  .pricing-includes-title {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--ink-dim);
+    margin-bottom: 16px;
+  }
+  .pricing-includes ul {
+    list-style: none;
+  }
+  .pricing-includes li {
+    padding: 8px 0;
+    font-size: 14px;
+    color: var(--ink);
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+  }
+  .pricing-includes li::before {
+    content: '+';
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 700;
+  }
+  .pricing-card.telegram li::before { color: var(--telegram); }
+  .pricing-card.whatsapp li::before { color: var(--whatsapp); }
+
+  .pricing-note {
+    max-width: 1100px;
+    margin: 32px auto 0;
+    padding: 20px 24px;
+    border-left: 2px solid var(--accent);
+    background: rgba(0, 212, 255, 0.04);
+    font-size: 13px;
+    color: var(--ink-dim);
+    line-height: 1.6;
+  }
+  .pricing-note strong { color: var(--ink); }
+
+  /* CTA */
+  .cta {
+    text-align: center;
+    padding: 160px 6vw;
+    background: radial-gradient(ellipse at center, rgba(0, 212, 255, 0.08) 0%, transparent 70%);
+  }
+  .cta h2 {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(40px, 6vw, 96px);
+    font-weight: 700;
+    line-height: 0.95;
+    letter-spacing: -0.03em;
+    margin-bottom: 32px;
+  }
+  .cta h2 em {
+    font-style: italic;
+    color: var(--accent);
+  }
+  .cta-btn {
+    display: inline-block;
+    padding: 20px 48px;
+    background: var(--accent);
+    color: #001020;
+    text-decoration: none;
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 700;
+    font-size: 13px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    transition: all 0.3s;
+    border-radius: 4px;
+  }
+  .cta-btn:hover {
+    background: #fff;
+    transform: scale(1.05);
+    box-shadow: 0 0 60px var(--accent);
+  }
+
+  footer {
+    padding: 40px 6vw;
+    border-top: 1px solid var(--line);
+    text-align: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--ink-dim);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+  }
+  footer span { color: var(--accent); }
+
+  @media (max-width: 768px) {
+    .flow-step { grid-template-columns: 1fr; gap: 12px; padding: 24px; }
+    .flow-num { font-size: 40px; }
+    .pricing-grid { grid-template-columns: 1fr; }
+    .pricing-card { padding: 32px 24px; }
+    .hero-stats { gap: 32px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="orb orb-1"></div>
+<div class="orb orb-2"></div>
+
+<main>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="nav">
+      <div class="nav-logo">JARVIS / AGENCY</div>
+      <div class="nav-meta">PROPUESTA · 001 · MULTINIVEL</div>
+    </div>
+
+    <div class="hero-tag">Sistema operativo de ventas</div>
+    <h1>
+      <span class="strike">Excel.</span> <span class="strike">Apps.</span> <span class="strike">Paneles.</span><br>
+      Solo <span class="accent">chat.</span>
+    </h1>
+    <p class="hero-sub">
+      Un <strong>asistente de negocios</strong> que convierte a tu red de ventas en una máquina ordenada.
+      Inventario, prospectos, comisiones, recordatorios y reportes — todo desde el chat que tu equipo ya usa.
+      Cada vendedor que entra queda vinculado en segundos.
+    </p>
+
+    <div class="channel-badges">
+      <div class="channel-badge wa"><span class="dot"></span>Disponible en WhatsApp</div>
+      <div class="channel-badge tg"><span class="dot"></span>Disponible en Telegram</div>
+    </div>
+
+    <div class="hero-stats">
+      <div>
+        <div class="stat-num">0</div>
+        <div class="stat-label">Apps que descargar</div>
+      </div>
+      <div>
+        <div class="stat-num">∞</div>
+        <div class="stat-label">Vendedores conectables</div>
+      </div>
+      <div>
+        <div class="stat-num">24/7</div>
+        <div class="stat-label">Recordatorios activos</div>
+      </div>
+      <div>
+        <div class="stat-num">1</div>
+        <div class="stat-label">Pago, gerente</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- HOW IT WORKS -->
+  <section class="section">
+    <div class="section-num">01 / FLUJO</div>
+    <h2 class="section-title">Cómo se <em>conecta</em> tu equipo</h2>
+    <p class="section-desc">El gerente paga una sola vez. Cada vendedor se vincula solo, en menos de 30 segundos, sin instalar nada.</p>
+
+    <div class="flow">
+      <div class="flow-step">
+        <div class="flow-num">01</div>
+        <div class="flow-content">
+          <h3>Gerente genera código</h3>
+          <p>Desde el bot principal, comando <code style="color:var(--accent)">/nuevo_vendedor</code>. El asistente entrega un link único intransferible.</p>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-num">02</div>
+        <div class="flow-content">
+          <h3>Vendedor abre el link</h3>
+          <p>WhatsApp o Telegram se abre, escribe su nombre, queda vinculado a la red del gerente. Ya tiene su asistente personal de ventas.</p>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-num">03</div>
+        <div class="flow-content">
+          <h3>El asistente toma el control</h3>
+          <p>Recordatorios automáticos, seguimiento de prospectos, alertas de inventario, scripts y comisiones — todo personalizado por vendedor.</p>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-num">04</div>
+        <div class="flow-content">
+          <h3>Gerente ve todo</h3>
+          <p>Reporte semanal: ranking del equipo, ventas, prospectos activos, vendedores fríos. Decisiones con datos, no con intuición.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- DEMO CHATS -->
+  <section class="section" style="background: linear-gradient(180deg, transparent, rgba(0,212,255,0.02), transparent);">
+    <div class="section-num">02 / DEMOS EN VIVO</div>
+    <h2 class="section-title">Así <em>conversa</em> el asistente con tu equipo</h2>
+    <p class="section-desc">Seis escenarios reales del día a día. Tal cual los va a vivir cada vendedor en su chat.</p>
+
+    <div class="demos-grid">
+
+      <!-- DEMO 1 -->
+      <div class="demo-card">
+        <div class="demo-header">
+          <div>
+            <div class="demo-tag">Escenario · 01</div>
+            <div class="demo-title">Vinculación de vendedor</div>
+          </div>
+          <div class="demo-icon">01</div>
+        </div>
+        <div class="chat">
+          <div class="msg msg-bot" style="animation-delay: 0.1s">
+            Hola. Soy <b>tu asistente de negocios</b>.<br><br>
+            Para activar tu cuenta, pega tu código de invitación:
+          </div>
+          <div class="msg msg-user" style="animation-delay: 0.4s">JV-7842-CARLOS</div>
+          <div class="msg msg-bot" style="animation-delay: 0.7s">
+            Listo, <b>Carlos</b>. Quedaste vinculado a la red de <b>Andrés Ramírez</b>.<br><br>
+            Ya empecé a configurar:<br>
+            · Tu inventario<br>
+            · Recordatorios diarios<br>
+            · Tu lista de prospectos<br><br>
+            Escribe <b>/menu</b> cuando quieras.
+          </div>
+          <div class="msg-system">VENDEDOR ACTIVO · 30 SEG</div>
+        </div>
+      </div>
+
+      <!-- DEMO 2 -->
+      <div class="demo-card">
+        <div class="demo-header">
+          <div>
+            <div class="demo-tag">Escenario · 02</div>
+            <div class="demo-title">Inventario + vencimientos</div>
+          </div>
+          <div class="demo-icon">02</div>
+        </div>
+        <div class="chat">
+          <div class="msg-system" style="animation-delay: 0.1s">⚠ ALERTA AUTOMÁTICA · 8:00 AM</div>
+          <div class="msg msg-bot" style="animation-delay: 0.3s">
+            Buenos días Carlos.<br><br>
+            <b>Productos por vencer:</b><br>
+            · Suplemento X — 5 unid · vence en <b>12 días</b><br>
+            · Crema Y — 3 unid · vence en <b>18 días</b><br><br>
+            Sugerencia: ofrécelos con 15% off antes del fin de semana.
+          </div>
+          <div class="msg msg-user" style="animation-delay: 0.7s">Vendí 2 suplementos X</div>
+          <div class="msg msg-bot" style="animation-delay: 1s">
+            Anotado. Inventario actualizado:<br>
+            · Suplemento X: <b>3 unid restantes</b><br>
+            · Comisión generada: <b>$48.000 COP</b><br><br>
+            ¿Cliente nuevo o existente?
+          </div>
+        </div>
+      </div>
+
+      <!-- DEMO 3 -->
+      <div class="demo-card">
+        <div class="demo-header">
+          <div>
+            <div class="demo-tag">Escenario · 03</div>
+            <div class="demo-title">Follow-up automático</div>
+          </div>
+          <div class="demo-icon">03</div>
+        </div>
+        <div class="chat">
+          <div class="msg-system" style="animation-delay: 0.1s">RECORDATORIO · DÍA 3</div>
+          <div class="msg msg-bot" style="animation-delay: 0.3s">
+            Hace 3 días le pasaste info del kit de inicio a <b>María González</b>.<br><br>
+            Es momento del primer follow-up. Te dejo el script:<br><br>
+            <i>"Hola María, ¿pudiste revisar lo que te envié? Cuéntame qué fue lo que más te gustó..."</i><br><br>
+            ¿La contactaste ya?
+          </div>
+          <div class="msg msg-user" style="animation-delay: 0.7s">Sí, dijo que lo está pensando</div>
+          <div class="msg msg-bot" style="animation-delay: 1s">
+            Perfecto. La paso a <b>"prospecto tibio"</b>.<br><br>
+            Te recuerdo el día 7 con un cierre suave. Mientras tanto, te mando contenido para que le compartas.
+          </div>
+        </div>
+      </div>
+
+      <!-- DEMO 4 -->
+      <div class="demo-card">
+        <div class="demo-header">
+          <div>
+            <div class="demo-tag">Escenario · 04</div>
+            <div class="demo-title">Calculadora de comisiones</div>
+          </div>
+          <div class="demo-icon">04</div>
+        </div>
+        <div class="chat">
+          <div class="msg msg-user" style="animation-delay: 0.1s">/comision</div>
+          <div class="msg msg-bot" style="animation-delay: 0.3s">
+            ¿Cuánto piensas vender este mes?<br>
+            (en pesos o en puntos)
+          </div>
+          <div class="msg msg-user" style="animation-delay: 0.6s">3.500.000</div>
+          <div class="msg msg-bot" style="animation-delay: 0.9s">
+            <b>Proyección noviembre · Carlos</b><br><br>
+            Ventas: <b>$3.500.000</b><br>
+            Comisión personal (22%): <b>$770.000</b><br>
+            Bono por equipo: <b>$180.000</b><br>
+            Bono rango (si llegas a Plata): <b>+$250.000</b><br><br>
+            <b>TOTAL ESTIMADO: $1.200.000</b><br><br>
+            Te faltan <b>$420.000</b> en ventas para Plata. ¿Armamos plan?
+          </div>
+        </div>
+      </div>
+
+      <!-- DEMO 5 -->
+      <div class="demo-card">
+        <div class="demo-header">
+          <div>
+            <div class="demo-tag">Escenario · 05</div>
+            <div class="demo-title">Tip diario + cumpleaños</div>
+          </div>
+          <div class="demo-icon">05</div>
+        </div>
+        <div class="chat">
+          <div class="msg-system" style="animation-delay: 0.1s">TIP DEL DÍA · 7:30 AM</div>
+          <div class="msg msg-bot" style="animation-delay: 0.3s">
+            <b>Cierre por escasez:</b><br><br>
+            Cuando el cliente dude, di:<br>
+            <i>"Solo quedan 4 unidades de este lote, el siguiente llega en 3 semanas."</i><br><br>
+            Funciona porque activa el miedo a perderse algo, no la presión.
+          </div>
+          <div class="msg-system" style="animation-delay: 0.7s">RECORDATORIO · CUMPLEAÑOS</div>
+          <div class="msg msg-bot" style="animation-delay: 0.9s">
+            Hoy cumple años <b>Laura Patiño</b> (cliente desde abril).<br><br>
+            Ya te tengo listo el mensaje + cupón del 10%. ¿Lo envío en tu nombre?
+          </div>
+          <div class="msg msg-user" style="animation-delay: 1.3s">Sí, mándalo</div>
+        </div>
+      </div>
+
+      <!-- DEMO 6 -->
+      <div class="demo-card">
+        <div class="demo-header">
+          <div>
+            <div class="demo-tag">Escenario · 06</div>
+            <div class="demo-title">Reporte semanal · gerente</div>
+          </div>
+          <div class="demo-icon">06</div>
+        </div>
+        <div class="chat">
+          <div class="msg-system" style="animation-delay: 0.1s">REPORTE LUNES · 7:00 AM</div>
+          <div class="msg msg-bot" style="animation-delay: 0.3s">
+            Buenos días <b>Andrés</b>. Resumen de la red (sem. 45):<br><br>
+            <b>Ventas equipo:</b> $24.800.000 (+18%)<br>
+            <b>Vendedores activos:</b> 14 / 17<br>
+            <b>Prospectos generados:</b> 89<br>
+            <b>Conversión:</b> 27%
+          </div>
+          <div class="msg msg-bot" style="animation-delay: 0.8s">
+            <b>Top 3:</b><br>
+            1. Carlos R. — $4.2M<br>
+            2. Diana M. — $3.8M<br>
+            3. Pablo S. — $3.1M<br><br>
+            <b>Atención:</b><br>
+            · Sandra L. — sin actividad hace 9 días<br>
+            · Jorge V. — 0 prospectos esta semana<br><br>
+            ¿Te programo llamada de feedback con ellos?
+          </div>
+          <div class="msg msg-user" style="animation-delay: 1.4s">Sí, agéndalas</div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- FEATURES -->
+  <section class="section">
+    <div class="section-num">03 / TODO LO QUE INCLUYE</div>
+    <h2 class="section-title">Funcionalidades <em>core</em></h2>
+
+    <div class="features">
+      <div class="feature">
+        <div class="feature-icon">/ 01</div>
+        <h4>Inventario inteligente</h4>
+        <p>Stock en tiempo real, alertas de vencimiento, sugerencias automáticas de promoción.</p>
+      </div>
+      <div class="feature">
+        <div class="feature-icon">/ 02</div>
+        <h4>Pipeline de prospectos</h4>
+        <p>Frío → tibio → caliente → cliente. Follow-ups automáticos día 3, 7, 15.</p>
+      </div>
+      <div class="feature">
+        <div class="feature-icon">/ 03</div>
+        <h4>Calculadora de comisiones</h4>
+        <p>Proyección mensual, bonos por rango, plan para llegar al siguiente nivel.</p>
+      </div>
+      <div class="feature">
+        <div class="feature-icon">/ 04</div>
+        <h4>Scripts de objeciones</h4>
+        <p>Biblioteca por producto. "Está caro", "lo voy a pensar", "no me sirve" — respuestas listas.</p>
+      </div>
+      <div class="feature">
+        <div class="feature-icon">/ 05</div>
+        <h4>Recordatorios humanos</h4>
+        <p>Cumpleaños, aniversarios, fechas especiales. Mensajes personalizados pre-armados.</p>
+      </div>
+      <div class="feature">
+        <div class="feature-icon">/ 06</div>
+        <h4>Tips diarios</h4>
+        <p>Una técnica de venta cada mañana. Práctica, aplicable, no teoría hueca.</p>
+      </div>
+      <div class="feature">
+        <div class="feature-icon">/ 07</div>
+        <h4>Metas + tracking</h4>
+        <p>Objetivo mensual con progreso visible. Empuje cuando el vendedor se atrasa.</p>
+      </div>
+      <div class="feature">
+        <div class="feature-icon">/ 08</div>
+        <h4>Módulo reclutamiento</h4>
+        <p>Seguimiento a invitados, recordatorios para no perder candidatos a la red.</p>
+      </div>
+      <div class="feature">
+        <div class="feature-icon">/ 09</div>
+        <h4>Reportes al gerente</h4>
+        <p>Ranking semanal, vendedores fríos, oportunidades. Dashboard sin paneles.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta">
+    <h2>Tu red merece un<br><em>sistema operativo.</em></h2>
+    <p style="color: var(--ink-dim); max-width: 540px; margin: 0 auto 48px; font-size: 17px;">
+      No más Excels perdidos, no más vendedores fríos sin que te enteres, no más comisiones calculadas a mano.
+    </p>
+    <a href="#" class="cta-btn">Agendar demo en vivo →</a>
+  </section>
+
+  <footer>
+    JARVIS AGENCY AI · <span>WhatsApp + Telegram</span> · BUILT IN COLOMBIA
+  </footer>
+
+</main>
+
+</body>
+</html>
