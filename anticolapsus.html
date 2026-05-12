@@ -3,1051 +3,1063 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Demo Bot Auditorías — Anticolapsus × Jarvis</title>
+<title>Propuesta Jarvis Agency × Anticolapsus</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Syne:wght@500;700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
-:root {
-  --bg: #0a0a0f; --bg-2: #12121a; --bg-3: #1a1a26; --line: #2a2a3a;
-  --text: #e8e8f0; --text-dim: #8a8aa0;
-  --accent: #00ffae; --accent-2: #ff3d6f; --accent-3: #ffd166;
-}
-* { box-sizing: border-box; margin: 0; padding: 0; -webkit-font-smoothing: antialiased; }
-body {
-  font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text);
-  min-height: 100vh;
-  background-image: linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
-  background-size: 40px 40px;
-}
-header {
-  border-bottom: 1px solid var(--line); padding: 14px 24px;
-  background: rgba(10,10,15,0.92); backdrop-filter: blur(20px);
-  position: sticky; top: 0; z-index: 100;
-}
-.nav { display: flex; justify-content: space-between; align-items: center; max-width: 1700px; margin: 0 auto; flex-wrap: wrap; gap: 12px; }
-.logo { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 20px; display: flex; align-items: center; gap: 10px; }
-.logo-dot { width: 10px; height: 10px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 12px var(--accent); animation: pulse 2s infinite; }
-@keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.4; } }
-.nav-meta { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.1em; }
-.intro { text-align: center; padding: 24px 24px 10px; max-width: 900px; margin: 0 auto; }
-.intro .tag { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--accent); text-transform: uppercase; letter-spacing: 0.2em; margin-bottom: 8px; display: inline-flex; align-items: center; gap: 12px; }
-.intro .tag::before, .intro .tag::after { content: ''; width: 30px; height: 1px; background: var(--accent); }
-.intro h1 { font-family: 'Syne', sans-serif; font-size: clamp(22px, 3.2vw, 32px); font-weight: 800; line-height: 1.05; letter-spacing: -0.03em; margin-bottom: 6px; }
-.intro h1 em { color: var(--accent); font-style: italic; font-weight: 500; }
-.intro p { color: var(--text-dim); font-size: 13px; max-width: 720px; margin: 0 auto; }
-.controls { max-width: 1700px; margin: 0 auto 10px; padding: 0 24px; display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; align-items: center; }
-.ctrl-btn {
-  background: var(--bg-2); border: 1px solid var(--line); color: var(--text);
-  padding: 9px 16px; font-family: 'JetBrains Mono', monospace; font-size: 10px;
-  text-transform: uppercase; letter-spacing: 0.1em; cursor: pointer; transition: all 0.2s;
-  border-radius: 6px;
-}
-.ctrl-btn:hover { border-color: var(--accent); color: var(--accent); }
-.ctrl-btn.primary { background: var(--accent); color: var(--bg); border-color: var(--accent); font-weight: 700; }
-.ctrl-btn.primary:hover { background: transparent; color: var(--accent); }
-.ctrl-btn.danger:hover { border-color: var(--accent-2); color: var(--accent-2); }
-.speed-select {
-  background: var(--bg-2); color: var(--text); border: 1px solid var(--line);
-  padding: 8px 11px; font-family: 'JetBrains Mono', monospace; font-size: 10px;
-  cursor: pointer; border-radius: 6px;
-}
-.phase-bar { max-width: 1700px; margin: 0 auto 12px; padding: 0 24px; }
-.phase-track {
-  display: grid; grid-template-columns: repeat(5, 1fr); gap: 3px;
-  background: var(--bg-2); border: 1px solid var(--line);
-  border-radius: 6px; padding: 3px;
-}
-.phase-item {
-  padding: 8px 6px; text-align: center; border-radius: 4px;
-  font-family: 'JetBrains Mono', monospace; font-size: 9px;
-  color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.08em;
-  transition: all 0.3s;
-}
-.phase-item.active { background: var(--accent); color: var(--bg); font-weight: 700; }
-.phase-item.done { background: rgba(0,255,174,0.15); color: var(--accent); }
-.phase-num { display: block; font-size: 12px; font-weight: 700; margin-bottom: 2px; }
-.progress {
-  max-width: 1700px; margin: 0 auto 10px; padding: 0 24px;
-  font-family: 'JetBrains Mono', monospace; font-size: 10px;
-  color: var(--text-dim); text-align: center; letter-spacing: 0.1em; text-transform: uppercase;
-}
-.progress span { color: var(--accent); font-weight: 700; }
-.demo-grid {
-  display: grid; grid-template-columns: 1fr 1fr; gap: 16px;
-  max-width: 1700px; margin: 0 auto; padding: 0 24px 30px;
-}
-.chat-window {
-  border-radius: 16px; overflow: hidden;
-  display: flex; flex-direction: column; height: 720px;
-  box-shadow: 0 10px 40px rgba(0,0,0,0.5);
-  background: #0b141a;
-}
-.chat-label-ext {
-  position: absolute;
-  top: -28px; left: 50%; transform: translateX(-50%);
-  font-family: 'JetBrains Mono', monospace; font-size: 9px;
-  letter-spacing: 0.15em; text-transform: uppercase;
-  padding: 4px 12px; border-radius: 10px;
-  white-space: nowrap;
-}
-.chat-window-wrapper { position: relative; padding-top: 0; }
-.chat-window.client-wa .chat-label-ext { color: var(--accent); border: 1px solid rgba(0,255,174,0.4); background: rgba(0,255,174,0.1); }
-.chat-window.admin-wa .chat-label-ext { color: var(--accent-2); border: 1px solid rgba(255,61,111,0.4); background: rgba(255,61,111,0.1); }
+  :root {
+    --bg: #0a0a0f;
+    --bg-2: #12121a;
+    --bg-3: #1a1a26;
+    --line: #2a2a3a;
+    --text: #e8e8f0;
+    --text-dim: #8a8aa0;
+    --accent: #00ffae;
+    --accent-2: #ff3d6f;
+    --accent-3: #ffd166;
+    --grid: rgba(255,255,255,0.03);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+    overflow-x: hidden;
+    background-image:
+      linear-gradient(var(--grid) 1px, transparent 1px),
+      linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+    background-size: 40px 40px;
+  }
+  .noise {
+    position: fixed; inset: 0; pointer-events: none; opacity: 0.04; z-index: 1;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+  .container { max-width: 1200px; margin: 0 auto; padding: 0 32px; position: relative; z-index: 2; }
+  header {
+    border-bottom: 1px solid var(--line);
+    padding: 20px 0;
+    position: sticky; top: 0;
+    background: rgba(10,10,15,0.85);
+    backdrop-filter: blur(20px);
+    z-index: 100;
+  }
+  .nav { display: flex; justify-content: space-between; align-items: center; }
+  .logo {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 22px;
+    letter-spacing: -0.02em;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .logo-dot {
+    width: 10px; height: 10px; border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 12px var(--accent);
+    animation: pulse 2s infinite;
+  }
+  @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.4; } }
+  .nav-meta {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+  .hero { padding: 100px 0 80px; position: relative; }
+  .hero-tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--accent);
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    margin-bottom: 24px;
+    display: inline-flex; align-items: center; gap: 12px;
+  }
+  .hero-tag::before {
+    content: ''; width: 30px; height: 1px; background: var(--accent);
+  }
+  .hero h1 {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(48px, 8vw, 96px);
+    font-weight: 800;
+    line-height: 0.95;
+    letter-spacing: -0.04em;
+    margin-bottom: 32px;
+  }
+  .hero h1 .highlight {
+    color: var(--accent);
+    font-style: italic;
+    font-weight: 500;
+  }
+  .hero p.lead {
+    font-size: 20px;
+    color: var(--text-dim);
+    max-width: 700px;
+    line-height: 1.5;
+  }
+  .hero-meta {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 24px;
+    margin-top: 60px;
+    padding-top: 40px;
+    border-top: 1px solid var(--line);
+  }
+  .meta-item .label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    margin-bottom: 8px;
+  }
+  .meta-item .value {
+    font-family: 'Syne', sans-serif;
+    font-size: 18px;
+    font-weight: 600;
+  }
+  section { padding: 80px 0; border-top: 1px solid var(--line); }
+  .section-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--accent);
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    margin-bottom: 16px;
+  }
+  .section-title {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(32px, 5vw, 56px);
+    font-weight: 700;
+    line-height: 1;
+    letter-spacing: -0.03em;
+    margin-bottom: 48px;
+    max-width: 900px;
+  }
+  .diag-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1px;
+    background: var(--line);
+    border: 1px solid var(--line);
+  }
+  .diag-card {
+    background: var(--bg-2);
+    padding: 32px;
+    position: relative;
+    transition: background 0.3s;
+  }
+  .diag-card:hover { background: var(--bg-3); }
+  .diag-card .num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--accent-2);
+    margin-bottom: 16px;
+    letter-spacing: 0.15em;
+  }
+  .diag-card h3 {
+    font-family: 'Syne', sans-serif;
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 12px;
+  }
+  .diag-card p {
+    color: var(--text-dim);
+    font-size: 14px;
+    line-height: 1.6;
+  }
+  .fase {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    gap: 48px;
+    padding: 48px 0;
+    border-bottom: 1px solid var(--line);
+    align-items: start;
+  }
+  .fase:last-child { border-bottom: none; }
+  .fase-tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+  }
+  .fase-tag .num {
+    display: block;
+    font-family: 'Syne', sans-serif;
+    font-size: 64px;
+    color: var(--accent);
+    font-weight: 800;
+    line-height: 1;
+    margin-bottom: 8px;
+  }
+  .fase-content h3 {
+    font-family: 'Syne', sans-serif;
+    font-size: 32px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    margin-bottom: 16px;
+  }
+  .fase-content .resumen {
+    font-size: 17px;
+    color: var(--text);
+    margin-bottom: 24px;
+    line-height: 1.5;
+  }
+  .fase-features {
+    list-style: none;
+    display: grid;
+    gap: 12px;
+    margin-bottom: 24px;
+  }
+  .fase-features li {
+    padding-left: 24px;
+    position: relative;
+    color: var(--text-dim);
+    font-size: 15px;
+  }
+  .fase-features li::before {
+    content: '→';
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-weight: bold;
+  }
+  .fase-deliverable {
+    background: var(--bg-2);
+    border-left: 2px solid var(--accent);
+    padding: 16px 20px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    color: var(--text-dim);
+  }
+  .fase-deliverable strong { color: var(--accent); font-weight: 500; }
+  .dif-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 24px;
+  }
+  .dif-card {
+    border: 1px solid var(--line);
+    padding: 32px;
+    background: var(--bg-2);
+    position: relative;
+    overflow: hidden;
+  }
+  .dif-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 40px; height: 2px;
+    background: var(--accent);
+  }
+  .dif-card .icon {
+    font-family: 'Syne', sans-serif;
+    font-size: 40px;
+    font-weight: 800;
+    color: var(--accent);
+    margin-bottom: 16px;
+    line-height: 1;
+  }
+  .dif-card h4 {
+    font-family: 'Syne', sans-serif;
+    font-size: 18px;
+    margin-bottom: 8px;
+  }
+  .dif-card p { color: var(--text-dim); font-size: 14px; }
+  .timeline {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0;
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+  }
+  .timeline-step {
+    padding: 32px 24px;
+    border-right: 1px solid var(--line);
+    position: relative;
+  }
+  .timeline-step:last-child { border-right: none; }
+  .timeline-step .week {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--accent);
+    letter-spacing: 0.15em;
+    margin-bottom: 12px;
+  }
+  .timeline-step h5 {
+    font-family: 'Syne', sans-serif;
+    font-size: 16px;
+    margin-bottom: 8px;
+  }
+  .timeline-step p {
+    font-size: 13px;
+    color: var(--text-dim);
+  }
+  /* DEMO SECTION */
+  .demo-section {
+    background: linear-gradient(180deg, var(--bg) 0%, var(--bg-2) 100%);
+  }
+  .demo-intro {
+    max-width: 800px;
+    margin-bottom: 32px;
+  }
+  .demo-intro p {
+    color: var(--text-dim);
+    font-size: 16px;
+    line-height: 1.6;
+  }
+  .demo-frame-wrapper {
+    position: relative;
+    background: var(--bg-2);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    overflow: hidden;
+    margin-top: 24px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+  }
+  .demo-frame-bar {
+    background: var(--bg-3);
+    padding: 12px 18px;
+    border-bottom: 1px solid var(--line);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .demo-frame-dot {
+    width: 11px;
+    height: 11px;
+    border-radius: 50%;
+    background: var(--line);
+  }
+  .demo-frame-dot.red { background: #ff5f57; }
+  .demo-frame-dot.yellow { background: #febc2e; }
+  .demo-frame-dot.green { background: #28c840; }
+  .demo-frame-label {
+    margin-left: 16px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--text-dim);
+    letter-spacing: 0.05em;
+  }
+  .demo-iframe {
+    width: 100%;
+    height: 1100px;
+    border: none;
+    display: block;
+    background: var(--bg);
+  }
+  @media (max-width: 768px) {
+    .demo-iframe { height: 800px; }
+  }
+  .demo-hint {
+    margin-top: 16px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--text-dim);
+    text-align: center;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+  .demo-hint span { color: var(--accent); }
 
-/* WHATSAPP HEADER */
-.wa-status-bar {
-  background: #1f2c33;
-  color: #fff;
-  padding: 10px 16px 4px;
-  display: flex;
-  justify-content: space-between;
-  font-size: 12px;
-  font-weight: 600;
-}
-.wa-status-right { display: flex; gap: 5px; font-size: 11px; }
-.wa-header {
-  background: #1f2c33;
-  padding: 8px 12px;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  color: #fff;
-  border-bottom: 1px solid #2a3942;
-}
-.wa-back { color: #00a884; font-size: 20px; padding: 4px 4px; }
-.wa-avatar {
-  width: 36px; height: 36px; border-radius: 50%;
-  display: flex; align-items: center; justify-content: center;
-  font-weight: 700; color: #fff; font-size: 15px;
-  flex-shrink: 0;
-}
-.client-wa .wa-avatar { background: linear-gradient(135deg, #00a884, #008069); }
-.admin-wa .wa-avatar { background: linear-gradient(135deg, #ff3d6f, #b8254a); }
-.wa-contact { flex: 1; min-width: 0; }
-.wa-name { font-size: 14px; font-weight: 500; color: #e9edef; }
-.wa-status { font-size: 11px; color: #8696a0; margin-top: 1px; }
-.wa-icons { display: flex; gap: 16px; color: #aebac1; font-size: 17px; }
-
-/* CHAT BACKGROUND */
-.wa-chat {
-  flex: 1;
-  overflow-y: auto;
-  padding: 12px 8px;
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  background-color: #0b141a;
-  background-image:
-    radial-gradient(circle at 20% 30%, rgba(0,168,132,0.04) 0%, transparent 50%),
-    radial-gradient(circle at 80% 70%, rgba(0,168,132,0.03) 0%, transparent 50%);
-  background-size: 200px 200px, 300px 300px;
-}
-.wa-chat::-webkit-scrollbar { width: 4px; }
-.wa-chat::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 2px; }
-
-/* MESSAGES */
-.msg {
-  max-width: 80%;
-  padding: 6px 9px 5px 10px;
-  border-radius: 8px;
-  font-size: 13.5px;
-  line-height: 1.4;
-  position: relative;
-  opacity: 0;
-  transform: translateY(8px);
-  animation: msgIn 0.3s forwards;
-  word-wrap: break-word;
-  white-space: pre-wrap;
-  color: #e9edef;
-  box-shadow: 0 1px 0.5px rgba(0,0,0,0.13);
-}
-@keyframes msgIn { to { opacity: 1; transform: translateY(0); } }
-
-.msg.bot {
-  align-self: flex-start;
-  background: #1f2c33;
-  border-top-left-radius: 0;
-  margin-left: 6px;
-}
-.msg.bot::before {
-  content: '';
-  position: absolute;
-  top: 0; left: -8px;
-  width: 0; height: 0;
-  border-style: solid;
-  border-width: 0 8px 8px 0;
-  border-color: transparent #1f2c33 transparent transparent;
-}
-.msg.user {
-  align-self: flex-end;
-  background: #005c4b;
-  border-top-right-radius: 0;
-  margin-right: 6px;
-}
-.msg.user::before {
-  content: '';
-  position: absolute;
-  top: 0; right: -8px;
-  width: 0; height: 0;
-  border-style: solid;
-  border-width: 0 0 8px 8px;
-  border-color: transparent transparent transparent #005c4b;
-}
-.msg-time {
-  display: inline-block;
-  font-size: 10px;
-  color: rgba(255,255,255,0.5);
-  margin-left: 6px;
-  float: right;
-  margin-top: 3px;
-}
-.msg.user .msg-time::after {
-  content: ' ✓✓';
-  color: #53bdeb;
-}
-
-.msg-system {
-  align-self: center;
-  background: rgba(31,44,51,0.85);
-  color: #8696a0;
-  font-size: 11.5px;
-  padding: 5px 12px;
-  border-radius: 7px;
-  margin: 6px 0;
-  text-align: center;
-  white-space: normal;
-}
-
-/* NOTIFICACIONES ADMIN (estilo bot business pero más distintivas) */
-.msg.notif {
-  align-self: stretch;
-  background: linear-gradient(135deg, #2a1e2a 0%, #1f2c33 100%);
-  border-left: 3px solid #ff3d6f;
-  border-radius: 8px;
-  max-width: 95%;
-  margin-left: 6px;
-  padding: 10px 12px;
-  font-size: 12.5px;
-  white-space: normal;
-}
-.msg.notif::before { display: none; }
-.notif-header {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 10px;
-  color: #ff5c84;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  margin-bottom: 6px;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
-.notif-header::before { content: '🔔'; }
-
-.msg.alert {
-  align-self: stretch;
-  background: linear-gradient(135deg, #3a2e1a 0%, #1f2c33 100%);
-  border-left: 3px solid #ffd166;
-  border-radius: 8px;
-  max-width: 95%;
-  margin-left: 6px;
-  padding: 10px 12px;
-  font-size: 12.5px;
-  white-space: normal;
-}
-.msg.alert::before { display: none; }
-.alert-header {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 10px;
-  color: #ffd166;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  margin-bottom: 6px;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
-.alert-header::before { content: '⚠️'; }
-
-/* CARDS DENTRO DE MENSAJES */
-.wa-card {
-  background: rgba(0,0,0,0.25);
-  border-radius: 6px;
-  padding: 8px 10px;
-  margin: 6px 0 4px;
-  border-left: 3px solid #00a884;
-}
-.wa-card-title {
-  font-size: 10.5px;
-  color: #00d9aa;
-  font-weight: 700;
-  margin-bottom: 5px;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-}
-.wa-card-row {
-  display: flex;
-  justify-content: space-between;
-  padding: 2px 0;
-  font-size: 12px;
-  gap: 8px;
-}
-.wa-card-row span { color: rgba(255,255,255,0.65); }
-.wa-card-row strong { color: #e9edef; font-weight: 500; text-align: right; }
-.tag-pill {
-  display: inline-block;
-  background: rgba(0,217,170,0.2);
-  color: #00d9aa;
-  padding: 2px 7px;
-  border-radius: 9px;
-  font-size: 10px;
-  font-family: 'JetBrains Mono', monospace;
-  margin-right: 4px;
-  margin-bottom: 4px;
-}
-.tag-pill.warn { background: rgba(255,92,132,0.2); color: #ff8aa6; }
-.tag-pill.yellow { background: rgba(255,209,102,0.2); color: #ffd166; }
-
-/* PAGO WHATSAPP */
-.wa-pay {
-  background: linear-gradient(135deg, #00a884 0%, #008069 100%);
-  border-radius: 8px;
-  padding: 10px;
-  margin: 6px 0 4px;
-  color: #fff;
-  text-align: center;
-}
-.wa-pay-label {
-  font-size: 10px;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  opacity: 0.85;
-  margin-bottom: 3px;
-}
-.wa-pay-amount {
-  font-size: 20px;
-  font-weight: 700;
-  margin: 3px 0;
-}
-.wa-pay-sub {
-  font-size: 10px;
-  opacity: 0.8;
-  margin-bottom: 7px;
-}
-.wa-pay-btn {
-  background: #fff;
-  color: #008069;
-  padding: 6px 14px;
-  border-radius: 14px;
-  font-size: 11px;
-  font-weight: 700;
-  display: inline-block;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-}
-
-/* ARCHIVO */
-.wa-file {
-  display: flex;
-  gap: 9px;
-  align-items: center;
-  background: rgba(0,0,0,0.25);
-  padding: 8px 10px;
-  border-radius: 6px;
-  margin: 4px 0;
-}
-.wa-file-icon {
-  width: 32px; height: 38px;
-  background: #d32f2f;
-  border-radius: 4px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #fff;
-  font-size: 9px;
-  font-weight: 700;
-  flex-shrink: 0;
-}
-.wa-file-info { flex: 1; min-width: 0; }
-.wa-file-name { font-size: 12.5px; color: #e9edef; font-weight: 500; }
-.wa-file-meta { font-size: 10px; color: #8696a0; margin-top: 2px; }
-
-/* TYPING */
-.typing {
-  align-self: flex-start;
-  background: #1f2c33;
-  padding: 10px 14px;
-  border-radius: 8px;
-  border-top-left-radius: 0;
-  margin-left: 6px;
-  display: flex;
-  gap: 4px;
-  position: relative;
-}
-.typing::before {
-  content: '';
-  position: absolute;
-  top: 0; left: -8px;
-  width: 0; height: 0;
-  border-style: solid;
-  border-width: 0 8px 8px 0;
-  border-color: transparent #1f2c33 transparent transparent;
-}
-.typing span {
-  width: 6px; height: 6px;
-  background: #8696a0;
-  border-radius: 50%;
-  animation: typing 1.4s infinite;
-}
-.typing span:nth-child(2) { animation-delay: 0.2s; }
-.typing span:nth-child(3) { animation-delay: 0.4s; }
-@keyframes typing {
-  0%, 60%, 100% { opacity: 0.3; transform: translateY(0); }
-  30% { opacity: 1; transform: translateY(-3px); }
-}
-
-/* INPUT WHATSAPP */
-.wa-input {
-  background: #1f2c33;
-  padding: 8px;
-  display: flex;
-  gap: 8px;
-  align-items: center;
-}
-.wa-input-field {
-  flex: 1;
-  background: #2a3942;
-  border-radius: 20px;
-  padding: 9px 14px;
-  color: #8696a0;
-  font-size: 13px;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  min-width: 0;
-}
-.wa-input-icon { font-size: 16px; flex-shrink: 0; }
-.wa-input-text {
-  flex: 1;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-.wa-mic {
-  width: 36px; height: 36px;
-  background: #00a884;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #fff;
-  font-size: 15px;
-  flex-shrink: 0;
-}
-.admin-wa .wa-mic { background: #ff3d6f; }
-
-footer { border-top: 1px solid var(--line); padding: 20px 24px; font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--text-dim); text-align: center; }
-
-/* MOBILE SIDE-BY-SIDE */
-@media (max-width: 768px) {
-  body { font-size: 14px; }
-  header { padding: 8px 10px; }
-  .logo { font-size: 13px; }
-  .logo-dot { width: 7px; height: 7px; }
-  .nav-meta { font-size: 7px; }
-  .intro { padding: 10px 8px 4px; }
-  .intro .tag { font-size: 8px; margin-bottom: 4px; }
-  .intro .tag::before, .intro .tag::after { width: 12px; }
-  .intro h1 { font-size: 15px; margin-bottom: 3px; }
-  .intro p { font-size: 10px; line-height: 1.35; }
-  .controls { padding: 0 8px; gap: 4px; margin-bottom: 5px; }
-  .ctrl-btn { padding: 6px 8px; font-size: 8.5px; }
-  .speed-select { padding: 6px 7px; font-size: 8.5px; }
-  .phase-bar { padding: 0 8px; margin-bottom: 5px; }
-  .phase-track { gap: 2px; padding: 2px; }
-  .phase-item { padding: 4px 1px; font-size: 6.5px; letter-spacing: 0.02em; }
-  .phase-num { font-size: 8.5px; margin-bottom: 1px; }
-  .progress { font-size: 8.5px; padding: 0 8px; margin-bottom: 4px; }
-  .demo-grid {
+  /* COTIZACIÓN */
+  .quote-wrapper {
+    display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 5px;
-    padding: 0 5px 12px;
+    gap: 32px;
+    margin-top: 32px;
   }
-  .chat-window {
-    height: 70vh;
-    min-height: 480px;
-    border-radius: 10px;
+  @media (max-width: 900px) { .quote-wrapper { grid-template-columns: 1fr; } }
+  .quote-main {
+    background: linear-gradient(135deg, var(--bg-2) 0%, var(--bg-3) 100%);
+    border: 1px solid var(--line);
+    border-left: 4px solid var(--accent);
+    padding: 40px;
+    position: relative;
+    overflow: hidden;
   }
-  .wa-status-bar { padding: 6px 10px 3px; font-size: 9px; }
-  .wa-status-right { font-size: 8px; gap: 3px; }
-  .wa-header { padding: 5px 7px; gap: 6px; }
-  .wa-back { font-size: 14px; padding: 2px 2px; }
-  .wa-avatar { width: 24px; height: 24px; font-size: 10px; }
-  .wa-name { font-size: 10.5px; }
-  .wa-status { font-size: 8.5px; }
-  .wa-icons { gap: 8px; font-size: 12px; }
-  .wa-chat { padding: 7px 5px; gap: 3px; }
-  .msg {
-    font-size: 10.5px;
-    padding: 5px 7px 4px 8px;
-    max-width: 88%;
-    line-height: 1.3;
-    border-radius: 6px;
+  .quote-main::before {
+    content: '';
+    position: absolute;
+    top: 0; right: 0;
+    width: 200px; height: 200px;
+    background: radial-gradient(circle, rgba(0,255,174,0.08) 0%, transparent 70%);
   }
-  .msg.bot, .msg.user { margin-left: 5px; margin-right: 5px; }
-  .msg-time { font-size: 8px; margin-left: 4px; margin-top: 2px; }
-  .msg-system { font-size: 8.5px; padding: 3px 8px; margin: 4px 0; }
-  .msg.notif, .msg.alert { padding: 7px 9px; font-size: 10px; max-width: 96%; }
-  .notif-header, .alert-header { font-size: 8px; margin-bottom: 4px; gap: 4px; }
-  .wa-card { padding: 5px 7px; margin: 4px 0 3px; border-radius: 4px; }
-  .wa-card-title { font-size: 8px; margin-bottom: 3px; }
-  .wa-card-row { padding: 1px 0; font-size: 9.5px; gap: 4px; }
-  .tag-pill { font-size: 7.5px; padding: 1px 5px; margin-right: 2px; margin-bottom: 2px; border-radius: 6px; }
-  .wa-pay { padding: 7px; margin: 4px 0 3px; }
-  .wa-pay-label { font-size: 8px; margin-bottom: 2px; }
-  .wa-pay-amount { font-size: 14px; margin: 2px 0; }
-  .wa-pay-sub { font-size: 8px; margin-bottom: 4px; }
-  .wa-pay-btn { font-size: 8.5px; padding: 4px 8px; border-radius: 10px; }
-  .wa-file { padding: 5px 7px; gap: 6px; margin: 3px 0; }
-  .wa-file-icon { width: 22px; height: 28px; font-size: 7px; border-radius: 3px; }
-  .wa-file-name { font-size: 9.5px; }
-  .wa-file-meta { font-size: 8px; margin-top: 1px; }
-  .typing { padding: 7px 10px; margin-left: 5px; }
-  .typing span { width: 4px; height: 4px; }
-  .wa-input { padding: 5px; gap: 5px; }
-  .wa-input-field { padding: 5px 9px; font-size: 9px; gap: 5px; border-radius: 14px; }
-  .wa-input-icon { font-size: 11px; }
-  .wa-mic { width: 24px; height: 24px; font-size: 10px; }
-  footer { padding: 10px; font-size: 8px; }
-}
+  .quote-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--accent);
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    margin-bottom: 16px;
+  }
+  .quote-price {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(48px, 8vw, 80px);
+    font-weight: 800;
+    color: var(--text);
+    line-height: 1;
+    letter-spacing: -0.04em;
+    margin-bottom: 8px;
+  }
+  .quote-price .currency {
+    font-size: 0.4em;
+    color: var(--accent);
+    font-weight: 500;
+    vertical-align: top;
+    margin-right: 8px;
+  }
+  .quote-price .cop {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.25em;
+    color: var(--text-dim);
+    font-weight: 400;
+    letter-spacing: 0.1em;
+  }
+  .quote-sub {
+    font-size: 15px;
+    color: var(--text-dim);
+    margin-bottom: 28px;
+  }
+  .payment-split {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-top: 24px;
+    position: relative;
+  }
+  .pay-item {
+    background: rgba(0,0,0,0.25);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: 16px;
+  }
+  .pay-item .pay-pct {
+    font-family: 'Syne', sans-serif;
+    font-size: 36px;
+    font-weight: 800;
+    color: var(--accent);
+    line-height: 1;
+  }
+  .pay-item .pay-amount {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    color: var(--text);
+    margin: 8px 0 4px;
+    font-weight: 500;
+  }
+  .pay-item .pay-when {
+    font-size: 12px;
+    color: var(--text-dim);
+  }
+  .monthly-block {
+    margin-top: 32px;
+    padding-top: 28px;
+    border-top: 1px dashed var(--line);
+    position: relative;
+  }
+  .monthly-tag {
+    display: inline-block;
+    background: rgba(255,209,102,0.15);
+    color: var(--accent-3);
+    border: 1px solid rgba(255,209,102,0.4);
+    padding: 5px 12px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    border-radius: 12px;
+    margin-bottom: 14px;
+  }
+  .monthly-price {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(32px, 5vw, 44px);
+    font-weight: 800;
+    color: var(--text);
+    line-height: 1;
+    letter-spacing: -0.03em;
+    margin-bottom: 18px;
+  }
+  .monthly-price .currency {
+    font-size: 0.45em;
+    color: var(--accent-3);
+    font-weight: 500;
+    vertical-align: top;
+    margin-right: 6px;
+  }
+  .monthly-price .cop {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.3em;
+    color: var(--text-dim);
+    font-weight: 400;
+    letter-spacing: 0.1em;
+  }
+  .monthly-includes {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .monthly-item {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    color: var(--text-dim);
+    font-size: 13.5px;
+    line-height: 1.5;
+  }
+  .monthly-item strong {
+    color: var(--text);
+    font-weight: 500;
+  }
+  .monthly-item .check {
+    color: var(--accent);
+    font-weight: 700;
+    flex-shrink: 0;
+    font-size: 14px;
+  }
+  .quote-side {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  .quote-card {
+    background: var(--bg-2);
+    border: 1px solid var(--line);
+    padding: 28px;
+    position: relative;
+  }
+  .quote-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 30px; height: 2px;
+    background: var(--accent);
+  }
+  .quote-card h4 {
+    font-family: 'Syne', sans-serif;
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 12px;
+    color: var(--text);
+  }
+  .quote-card p {
+    color: var(--text-dim);
+    font-size: 14px;
+    line-height: 1.6;
+  }
+  .quote-card .step-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--accent);
+    margin-bottom: 8px;
+    letter-spacing: 0.15em;
+  }
+  .includes-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 16px;
+    margin-top: 28px;
+  }
+  .include-item {
+    background: var(--bg-2);
+    border: 1px solid var(--line);
+    padding: 20px;
+    position: relative;
+    transition: all 0.2s;
+  }
+  .include-item:hover {
+    border-color: var(--accent);
+    transform: translateY(-2px);
+  }
+  .include-item .num-tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--accent);
+    letter-spacing: 0.15em;
+    margin-bottom: 8px;
+  }
+  .include-item h5 {
+    font-family: 'Syne', sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 6px;
+  }
+  .include-item p {
+    color: var(--text-dim);
+    font-size: 13px;
+    line-height: 1.5;
+  }
+  .bonus-section {
+    margin-top: 40px;
+    background: linear-gradient(135deg, rgba(0,255,174,0.05) 0%, transparent 100%);
+    border: 1px dashed var(--accent);
+    padding: 32px;
+    border-radius: 4px;
+  }
+  .bonus-tag {
+    display: inline-block;
+    background: var(--accent);
+    color: var(--bg);
+    padding: 4px 12px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    margin-bottom: 16px;
+  }
+  .bonus-section h3 {
+    font-family: 'Syne', sans-serif;
+    font-size: 22px;
+    font-weight: 700;
+    margin-bottom: 12px;
+  }
+  .bonus-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 12px;
+    margin-top: 16px;
+  }
+  .bonus-list li {
+    list-style: none;
+    padding: 12px 16px;
+    background: rgba(0,0,0,0.2);
+    border-left: 2px solid var(--accent);
+    font-size: 14px;
+    color: var(--text);
+  }
+  .bonus-list li strong { color: var(--accent); font-weight: 500; }
 
-@media (max-width: 380px) {
-  .msg { font-size: 9.5px; padding: 4px 6px 3px 7px; }
-  .msg-time { font-size: 7px; }
-  .wa-card-row { font-size: 8.5px; }
-  .wa-card-title { font-size: 7px; }
-  .wa-name { font-size: 9.5px; }
-  .wa-status { font-size: 7.5px; }
-  .wa-avatar { width: 20px; height: 20px; font-size: 9px; }
-  .wa-pay-amount { font-size: 12px; }
-  .chat-window { height: 72vh; min-height: 460px; }
-}
+  .cta {
+    text-align: center;
+    padding: 100px 0;
+    border-top: 1px solid var(--line);
+  }
+  .cta h2 {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(36px, 5vw, 64px);
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    line-height: 1;
+    margin-bottom: 24px;
+  }
+  .cta h2 em { color: var(--accent); font-style: italic; font-weight: 500; }
+  .cta p {
+    font-size: 18px;
+    color: var(--text-dim);
+    margin-bottom: 40px;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .cta-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    background: var(--accent);
+    color: var(--bg);
+    padding: 18px 36px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    text-decoration: none;
+    border: none;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .cta-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 32px rgba(0,255,174,0.3);
+  }
+  footer {
+    border-top: 1px solid var(--line);
+    padding: 40px 0;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--text-dim);
+  }
+  .footer-row { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 16px; }
+  @media (max-width: 768px) {
+    .fase { grid-template-columns: 1fr; gap: 16px; }
+    .fase-tag .num { font-size: 48px; }
+    .timeline { grid-template-columns: 1fr; }
+    .timeline-step { border-right: none; border-bottom: 1px solid var(--line); }
+    .timeline-step:last-child { border-bottom: none; }
+  }
+  .fade-in { opacity: 0; transform: translateY(20px); animation: fadeIn 0.8s forwards; }
+  .fade-in:nth-child(2) { animation-delay: 0.1s; }
+  .fade-in:nth-child(3) { animation-delay: 0.2s; }
+  @keyframes fadeIn { to { opacity: 1; transform: translateY(0); } }
 </style>
 </head>
 <body>
+<div class="noise"></div>
 
 <header>
-  <div class="nav">
-    <div class="logo"><span class="logo-dot"></span>JARVIS_AGENCY</div>
-    <div class="nav-meta">DEMO BOT AUDITORÍAS · ANTICOLAPSUS · WHATSAPP</div>
+  <div class="container">
+    <div class="nav">
+      <div class="logo"><span class="logo-dot"></span>JARVIS_AGENCY</div>
+      <div class="nav-meta">PROPUESTA / V.01 / 2026</div>
+    </div>
   </div>
 </header>
 
-<div class="intro">
-  <div class="tag">SIMULACIÓN COMPLETA</div>
-  <h1>Así se ve el bot en <em>WhatsApp real</em>.</h1>
-  <p>Izquierda: el chat del cliente · Derecha: el panel del admin (también en WhatsApp). Mira el ciclo completo: calificación, agenda, pago, reporte, seguimiento, vencimientos.</p>
-</div>
+<section class="hero">
+  <div class="container">
+    <div class="hero-tag fade-in">PROPUESTA CONFIDENCIAL — ANTICOLAPSUS</div>
+    <h1 class="fade-in">Automatiza tu operación.<br><span class="highlight">Multiplica tus ventas</span><br>sin contratar más gente.</h1>
+    <p class="lead fade-in">Diseñé un sistema en 3 fases para convertir Anticolapsus en una máquina comercial autónoma. Todo opera desde Telegram y WhatsApp. Sin paneles. Sin curva de aprendizaje.</p>
 
-<div class="controls">
-  <button class="ctrl-btn primary" id="playBtn" onclick="togglePlay()">⏸ PAUSAR</button>
-  <button class="ctrl-btn" id="nextBtn" onclick="nextStep()">→ SIGUIENTE</button>
-  <button class="ctrl-btn danger" onclick="resetDemo()">↺ REINICIAR</button>
-  <select class="speed-select" id="speedSelect" onchange="changeSpeed()">
-    <option value="1.5">Pausada</option>
-    <option value="1" selected>Normal</option>
-    <option value="0.5">Rápida</option>
-    <option value="0.2">Muy rápida</option>
-  </select>
-</div>
-
-<div class="phase-bar">
-  <div class="phase-track">
-    <div class="phase-item active" data-phase="1"><span class="phase-num">01</span>Calificación</div>
-    <div class="phase-item" data-phase="2"><span class="phase-num">02</span>Agendamiento</div>
-    <div class="phase-item" data-phase="3"><span class="phase-num">03</span>Pago</div>
-    <div class="phase-item" data-phase="4"><span class="phase-num">04</span>Reporte</div>
-    <div class="phase-item" data-phase="5"><span class="phase-num">05</span>Seguimiento</div>
-  </div>
-</div>
-
-<div class="progress" id="progress">Paso <span id="stepNum">0</span> de <span id="stepTotal">0</span></div>
-
-<div class="demo-grid">
-  <!-- CHAT CLIENTE (estilo WhatsApp normal) -->
-  <div class="chat-window client-wa">
-    <div class="wa-status-bar">
-      <span>9:32</span>
-      <div class="wa-status-right"><span>📶</span><span>🔋</span></div>
-    </div>
-    <div class="wa-header">
-      <div class="wa-back">‹</div>
-      <div class="wa-avatar">A</div>
-      <div class="wa-contact">
-        <div class="wa-name">Anticolapsus</div>
-        <div class="wa-status" id="clientStatus">en línea</div>
+    <div class="hero-meta">
+      <div class="meta-item">
+        <div class="label">Cliente</div>
+        <div class="value">Anticolapsus</div>
       </div>
-      <div class="wa-icons"><span>📞</span><span>⋮</span></div>
-    </div>
-    <div class="wa-chat" id="clientChat"></div>
-    <div class="wa-input">
-      <div class="wa-input-field">
-        <span class="wa-input-icon">😊</span>
-        <span class="wa-input-text">Mensaje</span>
-        <span class="wa-input-icon">📎</span>
+      <div class="meta-item">
+        <div class="label">Sector</div>
+        <div class="value">SST / HSEQ / ISO</div>
       </div>
-      <div class="wa-mic">🎤</div>
+      <div class="meta-item">
+        <div class="label">Fases</div>
+        <div class="value">3 módulos</div>
+      </div>
+      <div class="meta-item">
+        <div class="label">Tiempo entrega</div>
+        <div class="value">30 días por fase</div>
+      </div>
     </div>
   </div>
+</section>
 
-  <!-- CHAT ADMIN (estilo WhatsApp con bot interno) -->
-  <div class="chat-window admin-wa">
-    <div class="wa-status-bar">
-      <span>9:32</span>
-      <div class="wa-status-right"><span>📶</span><span>🔋</span></div>
-    </div>
-    <div class="wa-header">
-      <div class="wa-back">‹</div>
-      <div class="wa-avatar">J</div>
-      <div class="wa-contact">
-        <div class="wa-name">Jarvis Admin · Anticolapsus</div>
-        <div class="wa-status" id="adminStatus">en línea</div>
+<section>
+  <div class="container">
+    <div class="section-label">/ DIAGNÓSTICO</div>
+    <h2 class="section-title">Lo que encontré revisando tu operación.</h2>
+
+    <div class="diag-grid">
+      <div class="diag-card">
+        <div class="num">VACÍO 01</div>
+        <h3>Captación 100% manual</h3>
+        <p>Formulario web extenso + WhatsApp manual. Un lead que no responde en menos de 5 minutos pierde hasta 80% de probabilidad de cerrar.</p>
       </div>
-      <div class="wa-icons"><span>📞</span><span>⋮</span></div>
-    </div>
-    <div class="wa-chat" id="adminChat"></div>
-    <div class="wa-input">
-      <div class="wa-input-field">
-        <span class="wa-input-icon">😊</span>
-        <span class="wa-input-text">Pregunta o instrucción</span>
-        <span class="wa-input-icon">📎</span>
+      <div class="diag-card">
+        <div class="num">VACÍO 02</div>
+        <h3>Segmentación desperdiciada</h3>
+        <p>El formulario pide elegir entre 12 intereses (SST, ISO, auditoría, etc.) pero esa data no se usa para personalizar la conversación ni priorizar leads calientes.</p>
       </div>
-      <div class="wa-mic">🎤</div>
+      <div class="diag-card">
+        <div class="num">VACÍO 03</div>
+        <h3>Cero nurturing post-contacto</h3>
+        <p>Si el prospecto no cierra en la primera llamada, se enfría. No hay secuencias automáticas que lo mantengan caliente hasta que esté listo.</p>
+      </div>
+      <div class="diag-card">
+        <div class="num">VACÍO 04</div>
+        <h3>Clientes activos sin canal</h3>
+        <p>No hay seguimiento automatizado de proyectos en curso. Tu equipo gasta tiempo respondiendo lo mismo todos los días.</p>
+      </div>
+      <div class="diag-card">
+        <div class="num">VACÍO 05</div>
+        <h3>Renovaciones a ciegas</h3>
+        <p>Las certificaciones SST, ISO y PESV vencen. Sin alertas automáticas, pierdes ventanas de renovación que son ventas recurrentes garantizadas.</p>
+      </div>
+      <div class="diag-card">
+        <div class="num">VACÍO 06</div>
+        <h3>Sin medición real</h3>
+        <p>No hay dashboard que te diga cuántos leads entraron, cuántos se cerraron, ni el costo de adquisición. Imposible escalar lo que no se mide.</p>
+      </div>
     </div>
   </div>
-</div>
+</section>
 
-<footer>JARVIS_AGENCY · DEMO ANTICOLAPSUS · WHATSAPP STYLE · 2026</footer>
+<section class="demo-section">
+  <div class="container">
+    <div class="section-label">/ DEMO EN VIVO</div>
+    <h2 class="section-title">Así se vería tu <em>nuevo bot</em> funcionando.</h2>
 
-<script>
-let speed = 1;
-let playing = false;
-let currentStep = 0;
-let timeouts = [];
+    <div class="demo-intro">
+      <p>Antes de mostrarte cómo lo construyo y cuánto cuesta, mira el bot en acción. A la izquierda lo que ve tu cliente en WhatsApp, a la derecha tu panel de administración (también en WhatsApp). Lead entra, se califica, agenda, paga, auditor reporta, seguimiento automático.</p>
+    </div>
 
-const script = [
-  { phase: 1 },
-  { target: 'client', type: 'system', data: 'HOY' },
-  { target: 'client', type: 'user', data: 'Buenos días, vi su página y necesito información sobre auditoría SST. El Ministerio del Trabajo nos anunció visita y queremos prepararnos.', delay: 800 },
-  { target: 'client', type: 'typing' },
-  { target: 'client', type: 'bot', data: '¡Hola! Soy el asistente de Anticolapsus 👋 Bienvenida. Te ayudo a agendar tu auditoría SST con nuestro equipo.\n\nPara conectarte con el auditor correcto, déjame hacerte unas preguntas rápidas.', delay: 1300 },
-  { target: 'client', type: 'typing' },
-  { target: 'client', type: 'bot', data: 'Para empezar, ¿cuál es tu nombre y el de la empresa?', delay: 1000 },
-  { target: 'client', type: 'user', data: 'Soy Camila Restrepo, gerente operativa de Logística Andina S.A.S.', delay: 1700 },
-  { target: 'client', type: 'typing' },
-  { target: 'client', type: 'bot', data: 'Mucho gusto, Camila 🙌\n\n¿Cuántos colaboradores tiene Logística Andina actualmente?', delay: 1200 },
-  { target: 'client', type: 'user', data: '47 personas entre planta y administrativos', delay: 1500 },
-  { target: 'client', type: 'typing' },
-  { target: 'client', type: 'bot', data: 'Perfecto. ¿En qué ciudad está la sede principal?', delay: 1000 },
-  { target: 'client', type: 'user', data: 'Bogotá, en el sector de Fontibón', delay: 1300 },
-  { target: 'client', type: 'typing' },
-  { target: 'client', type: 'bot', data: 'Última pregunta: ¿qué tan urgente es? ¿Ya tienen fecha de visita del Ministerio?', delay: 1100 },
-  { target: 'client', type: 'user', data: 'Sí, nos avisaron que vienen en 2 meses. Necesitamos estar al día para evitar sanciones.', delay: 1700 },
+    <div class="demo-frame-wrapper">
+      <div class="demo-frame-bar">
+        <div class="demo-frame-dot red"></div>
+        <div class="demo-frame-dot yellow"></div>
+        <div class="demo-frame-dot green"></div>
+        <div class="demo-frame-label">demo · anticolapsus.bot</div>
+      </div>
+      <iframe class="demo-iframe" src="data:text/html;charset=utf-8;base64,PCFET0NUWVBFIGh0bWw+CjxodG1sIGxhbmc9ImVzIj4KPGhlYWQ+CjxtZXRhIGNoYXJzZXQ9IlVURi04Ij4KPG1ldGEgbmFtZT0idmlld3BvcnQiIGNvbnRlbnQ9IndpZHRoPWRldmljZS13aWR0aCwgaW5pdGlhbC1zY2FsZT0xLjAiPgo8dGl0bGU+RGVtbyBCb3QgQXVkaXRvcsOtYXMg4oCUIEFudGljb2xhcHN1cyDDlyBKYXJ2aXM8L3RpdGxlPgo8bGluayBocmVmPSJodHRwczovL2ZvbnRzLmdvb2dsZWFwaXMuY29tL2NzczI/ZmFtaWx5PUpldEJyYWlucytNb25vOndnaHRANDAwOzUwMDs3MDAmZmFtaWx5PVN5bmU6d2dodEA1MDA7NzAwOzgwMCZmYW1pbHk9SW50ZXI6d2dodEAzMDA7NDAwOzUwMDs2MDAmZGlzcGxheT1zd2FwIiByZWw9InN0eWxlc2hlZXQiPgo8c3R5bGU+Cjpyb290IHsKICAtLWJnOiAjMGEwYTBmOyAtLWJnLTI6ICMxMjEyMWE7IC0tYmctMzogIzFhMWEyNjsgLS1saW5lOiAjMmEyYTNhOwogIC0tdGV4dDogI2U4ZThmMDsgLS10ZXh0LWRpbTogIzhhOGFhMDsKICAtLWFjY2VudDogIzAwZmZhZTsgLS1hY2NlbnQtMjogI2ZmM2Q2ZjsgLS1hY2NlbnQtMzogI2ZmZDE2NjsKfQoqIHsgYm94LXNpemluZzogYm9yZGVyLWJveDsgbWFyZ2luOiAwOyBwYWRkaW5nOiAwOyAtd2Via2l0LWZvbnQtc21vb3RoaW5nOiBhbnRpYWxpYXNlZDsgfQpib2R5IHsKICBmb250LWZhbWlseTogJ0ludGVyJywgc2Fucy1zZXJpZjsgYmFja2dyb3VuZDogdmFyKC0tYmcpOyBjb2xvcjogdmFyKC0tdGV4dCk7CiAgbWluLWhlaWdodDogMTAwdmg7CiAgYmFja2dyb3VuZC1pbWFnZTogbGluZWFyLWdyYWRpZW50KHJnYmEoMjU1LDI1NSwyNTUsMC4wMjUpIDFweCwgdHJhbnNwYXJlbnQgMXB4KSwgbGluZWFyLWdyYWRpZW50KDkwZGVnLCByZ2JhKDI1NSwyNTUsMjU1LDAuMDI1KSAxcHgsIHRyYW5zcGFyZW50IDFweCk7CiAgYmFja2dyb3VuZC1zaXplOiA0MHB4IDQwcHg7Cn0KaGVhZGVyIHsKICBib3JkZXItYm90dG9tOiAxcHggc29saWQgdmFyKC0tbGluZSk7IHBhZGRpbmc6IDE0cHggMjRweDsKICBiYWNrZ3JvdW5kOiByZ2JhKDEwLDEwLDE1LDAuOTIpOyBiYWNrZHJvcC1maWx0ZXI6IGJsdXIoMjBweCk7CiAgcG9zaXRpb246IHN0aWNreTsgdG9wOiAwOyB6LWluZGV4OiAxMDA7Cn0KLm5hdiB7IGRpc3BsYXk6IGZsZXg7IGp1c3RpZnktY29udGVudDogc3BhY2UtYmV0d2VlbjsgYWxpZ24taXRlbXM6IGNlbnRlcjsgbWF4LXdpZHRoOiAxNzAwcHg7IG1hcmdpbjogMCBhdXRvOyBmbGV4LXdyYXA6IHdyYXA7IGdhcDogMTJweDsgfQoubG9nbyB7IGZvbnQtZmFtaWx5OiAnU3luZScsIHNhbnMtc2VyaWY7IGZvbnQtd2VpZ2h0OiA4MDA7IGZvbnQtc2l6ZTogMjBweDsgZGlzcGxheTogZmxleDsgYWxpZ24taXRlbXM6IGNlbnRlcjsgZ2FwOiAxMHB4OyB9Ci5sb2dvLWRvdCB7IHdpZHRoOiAxMHB4OyBoZWlnaHQ6IDEwcHg7IGJvcmRlci1yYWRpdXM6IDUwJTsgYmFja2dyb3VuZDogdmFyKC0tYWNjZW50KTsgYm94LXNoYWRvdzogMCAwIDEycHggdmFyKC0tYWNjZW50KTsgYW5pbWF0aW9uOiBwdWxzZSAycyBpbmZpbml0ZTsgfQpAa2V5ZnJhbWVzIHB1bHNlIHsgMCUsMTAwJSB7IG9wYWNpdHk6IDE7IH0gNTAlIHsgb3BhY2l0eTogMC40OyB9IH0KLm5hdi1tZXRhIHsgZm9udC1mYW1pbHk6ICdKZXRCcmFpbnMgTW9ubycsIG1vbm9zcGFjZTsgZm9udC1zaXplOiAxMHB4OyBjb2xvcjogdmFyKC0tdGV4dC1kaW0pOyB0ZXh0LXRyYW5zZm9ybTogdXBwZXJjYXNlOyBsZXR0ZXItc3BhY2luZzogMC4xZW07IH0KLmludHJvIHsgdGV4dC1hbGlnbjogY2VudGVyOyBwYWRkaW5nOiAyNHB4IDI0cHggMTBweDsgbWF4LXdpZHRoOiA5MDBweDsgbWFyZ2luOiAwIGF1dG87IH0KLmludHJvIC50YWcgeyBmb250LWZhbWlseTogJ0pldEJyYWlucyBNb25vJywgbW9ub3NwYWNlOyBmb250LXNpemU6IDExcHg7IGNvbG9yOiB2YXIoLS1hY2NlbnQpOyB0ZXh0LXRyYW5zZm9ybTogdXBwZXJjYXNlOyBsZXR0ZXItc3BhY2luZzogMC4yZW07IG1hcmdpbi1ib3R0b206IDhweDsgZGlzcGxheTogaW5saW5lLWZsZXg7IGFsaWduLWl0ZW1zOiBjZW50ZXI7IGdhcDogMTJweDsgfQouaW50cm8gLnRhZzo6YmVmb3JlLCAuaW50cm8gLnRhZzo6YWZ0ZXIgeyBjb250ZW50OiAnJzsgd2lkdGg6IDMwcHg7IGhlaWdodDogMXB4OyBiYWNrZ3JvdW5kOiB2YXIoLS1hY2NlbnQpOyB9Ci5pbnRybyBoMSB7IGZvbnQtZmFtaWx5OiAnU3luZScsIHNhbnMtc2VyaWY7IGZvbnQtc2l6ZTogY2xhbXAoMjJweCwgMy4ydncsIDMycHgpOyBmb250LXdlaWdodDogODAwOyBsaW5lLWhlaWdodDogMS4wNTsgbGV0dGVyLXNwYWNpbmc6IC0wLjAzZW07IG1hcmdpbi1ib3R0b206IDZweDsgfQouaW50cm8gaDEgZW0geyBjb2xvcjogdmFyKC0tYWNjZW50KTsgZm9udC1zdHlsZTogaXRhbGljOyBmb250LXdlaWdodDogNTAwOyB9Ci5pbnRybyBwIHsgY29sb3I6IHZhcigtLXRleHQtZGltKTsgZm9udC1zaXplOiAxM3B4OyBtYXgtd2lkdGg6IDcyMHB4OyBtYXJnaW46IDAgYXV0bzsgfQouY29udHJvbHMgeyBtYXgtd2lkdGg6IDE3MDBweDsgbWFyZ2luOiAwIGF1dG8gMTBweDsgcGFkZGluZzogMCAyNHB4OyBkaXNwbGF5OiBmbGV4OyBqdXN0aWZ5LWNvbnRlbnQ6IGNlbnRlcjsgZ2FwOiAxMHB4OyBmbGV4LXdyYXA6IHdyYXA7IGFsaWduLWl0ZW1zOiBjZW50ZXI7IH0KLmN0cmwtYnRuIHsKICBiYWNrZ3JvdW5kOiB2YXIoLS1iZy0yKTsgYm9yZGVyOiAxcHggc29saWQgdmFyKC0tbGluZSk7IGNvbG9yOiB2YXIoLS10ZXh0KTsKICBwYWRkaW5nOiA5cHggMTZweDsgZm9udC1mYW1pbHk6ICdKZXRCcmFpbnMgTW9ubycsIG1vbm9zcGFjZTsgZm9udC1zaXplOiAxMHB4OwogIHRleHQtdHJhbnNmb3JtOiB1cHBlcmNhc2U7IGxldHRlci1zcGFjaW5nOiAwLjFlbTsgY3Vyc29yOiBwb2ludGVyOyB0cmFuc2l0aW9uOiBhbGwgMC4yczsKICBib3JkZXItcmFkaXVzOiA2cHg7Cn0KLmN0cmwtYnRuOmhvdmVyIHsgYm9yZGVyLWNvbG9yOiB2YXIoLS1hY2NlbnQpOyBjb2xvcjogdmFyKC0tYWNjZW50KTsgfQouY3RybC1idG4ucHJpbWFyeSB7IGJhY2tncm91bmQ6IHZhcigtLWFjY2VudCk7IGNvbG9yOiB2YXIoLS1iZyk7IGJvcmRlci1jb2xvcjogdmFyKC0tYWNjZW50KTsgZm9udC13ZWlnaHQ6IDcwMDsgfQouY3RybC1idG4ucHJpbWFyeTpob3ZlciB7IGJhY2tncm91bmQ6IHRyYW5zcGFyZW50OyBjb2xvcjogdmFyKC0tYWNjZW50KTsgfQouY3RybC1idG4uZGFuZ2VyOmhvdmVyIHsgYm9yZGVyLWNvbG9yOiB2YXIoLS1hY2NlbnQtMik7IGNvbG9yOiB2YXIoLS1hY2NlbnQtMik7IH0KLnNwZWVkLXNlbGVjdCB7CiAgYmFja2dyb3VuZDogdmFyKC0tYmctMik7IGNvbG9yOiB2YXIoLS10ZXh0KTsgYm9yZGVyOiAxcHggc29saWQgdmFyKC0tbGluZSk7CiAgcGFkZGluZzogOHB4IDExcHg7IGZvbnQtZmFtaWx5OiAnSmV0QnJhaW5zIE1vbm8nLCBtb25vc3BhY2U7IGZvbnQtc2l6ZTogMTBweDsKICBjdXJzb3I6IHBvaW50ZXI7IGJvcmRlci1yYWRpdXM6IDZweDsKfQoucGhhc2UtYmFyIHsgbWF4LXdpZHRoOiAxNzAwcHg7IG1hcmdpbjogMCBhdXRvIDEycHg7IHBhZGRpbmc6IDAgMjRweDsgfQoucGhhc2UtdHJhY2sgewogIGRpc3BsYXk6IGdyaWQ7IGdyaWQtdGVtcGxhdGUtY29sdW1uczogcmVwZWF0KDUsIDFmcik7IGdhcDogM3B4OwogIGJhY2tncm91bmQ6IHZhcigtLWJnLTIpOyBib3JkZXI6IDFweCBzb2xpZCB2YXIoLS1saW5lKTsKICBib3JkZXItcmFkaXVzOiA2cHg7IHBhZGRpbmc6IDNweDsKfQoucGhhc2UtaXRlbSB7CiAgcGFkZGluZzogOHB4IDZweDsgdGV4dC1hbGlnbjogY2VudGVyOyBib3JkZXItcmFkaXVzOiA0cHg7CiAgZm9udC1mYW1pbHk6ICdKZXRCcmFpbnMgTW9ubycsIG1vbm9zcGFjZTsgZm9udC1zaXplOiA5cHg7CiAgY29sb3I6IHZhcigtLXRleHQtZGltKTsgdGV4dC10cmFuc2Zvcm06IHVwcGVyY2FzZTsgbGV0dGVyLXNwYWNpbmc6IDAuMDhlbTsKICB0cmFuc2l0aW9uOiBhbGwgMC4zczsKfQoucGhhc2UtaXRlbS5hY3RpdmUgeyBiYWNrZ3JvdW5kOiB2YXIoLS1hY2NlbnQpOyBjb2xvcjogdmFyKC0tYmcpOyBmb250LXdlaWdodDogNzAwOyB9Ci5waGFzZS1pdGVtLmRvbmUgeyBiYWNrZ3JvdW5kOiByZ2JhKDAsMjU1LDE3NCwwLjE1KTsgY29sb3I6IHZhcigtLWFjY2VudCk7IH0KLnBoYXNlLW51bSB7IGRpc3BsYXk6IGJsb2NrOyBmb250LXNpemU6IDEycHg7IGZvbnQtd2VpZ2h0OiA3MDA7IG1hcmdpbi1ib3R0b206IDJweDsgfQoucHJvZ3Jlc3MgewogIG1heC13aWR0aDogMTcwMHB4OyBtYXJnaW46IDAgYXV0byAxMHB4OyBwYWRkaW5nOiAwIDI0cHg7CiAgZm9udC1mYW1pbHk6ICdKZXRCcmFpbnMgTW9ubycsIG1vbm9zcGFjZTsgZm9udC1zaXplOiAxMHB4OwogIGNvbG9yOiB2YXIoLS10ZXh0LWRpbSk7IHRleHQtYWxpZ246IGNlbnRlcjsgbGV0dGVyLXNwYWNpbmc6IDAuMWVtOyB0ZXh0LXRyYW5zZm9ybTogdXBwZXJjYXNlOwp9Ci5wcm9ncmVzcyBzcGFuIHsgY29sb3I6IHZhcigtLWFjY2VudCk7IGZvbnQtd2VpZ2h0OiA3MDA7IH0KLmRlbW8tZ3JpZCB7CiAgZGlzcGxheTogZ3JpZDsgZ3JpZC10ZW1wbGF0ZS1jb2x1bW5zOiAxZnIgMWZyOyBnYXA6IDE2cHg7CiAgbWF4LXdpZHRoOiAxNzAwcHg7IG1hcmdpbjogMCBhdXRvOyBwYWRkaW5nOiAwIDI0cHggMzBweDsKfQouY2hhdC13aW5kb3cgewogIGJvcmRlci1yYWRpdXM6IDE2cHg7IG92ZXJmbG93OiBoaWRkZW47CiAgZGlzcGxheTogZmxleDsgZmxleC1kaXJlY3Rpb246IGNvbHVtbjsgaGVpZ2h0OiA3MjBweDsKICBib3gtc2hhZG93OiAwIDEwcHggNDBweCByZ2JhKDAsMCwwLDAuNSk7CiAgYmFja2dyb3VuZDogIzBiMTQxYTsKfQouY2hhdC1sYWJlbC1leHQgewogIHBvc2l0aW9uOiBhYnNvbHV0ZTsKICB0b3A6IC0yOHB4OyBsZWZ0OiA1MCU7IHRyYW5zZm9ybTogdHJhbnNsYXRlWCgtNTAlKTsKICBmb250LWZhbWlseTogJ0pldEJyYWlucyBNb25vJywgbW9ub3NwYWNlOyBmb250LXNpemU6IDlweDsKICBsZXR0ZXItc3BhY2luZzogMC4xNWVtOyB0ZXh0LXRyYW5zZm9ybTogdXBwZXJjYXNlOwogIHBhZGRpbmc6IDRweCAxMnB4OyBib3JkZXItcmFkaXVzOiAxMHB4OwogIHdoaXRlLXNwYWNlOiBub3dyYXA7Cn0KLmNoYXQtd2luZG93LXdyYXBwZXIgeyBwb3NpdGlvbjogcmVsYXRpdmU7IHBhZGRpbmctdG9wOiAwOyB9Ci5jaGF0LXdpbmRvdy5jbGllbnQtd2EgLmNoYXQtbGFiZWwtZXh0IHsgY29sb3I6IHZhcigtLWFjY2VudCk7IGJvcmRlcjogMXB4IHNvbGlkIHJnYmEoMCwyNTUsMTc0LDAuNCk7IGJhY2tncm91bmQ6IHJnYmEoMCwyNTUsMTc0LDAuMSk7IH0KLmNoYXQtd2luZG93LmFkbWluLXdhIC5jaGF0LWxhYmVsLWV4dCB7IGNvbG9yOiB2YXIoLS1hY2NlbnQtMik7IGJvcmRlcjogMXB4IHNvbGlkIHJnYmEoMjU1LDYxLDExMSwwLjQpOyBiYWNrZ3JvdW5kOiByZ2JhKDI1NSw2MSwxMTEsMC4xKTsgfQoKLyogV0hBVFNBUFAgSEVBREVSICovCi53YS1zdGF0dXMtYmFyIHsKICBiYWNrZ3JvdW5kOiAjMWYyYzMzOwogIGNvbG9yOiAjZmZmOwogIHBhZGRpbmc6IDEwcHggMTZweCA0cHg7CiAgZGlzcGxheTogZmxleDsKICBqdXN0aWZ5LWNvbnRlbnQ6IHNwYWNlLWJldHdlZW47CiAgZm9udC1zaXplOiAxMnB4OwogIGZvbnQtd2VpZ2h0OiA2MDA7Cn0KLndhLXN0YXR1cy1yaWdodCB7IGRpc3BsYXk6IGZsZXg7IGdhcDogNXB4OyBmb250LXNpemU6IDExcHg7IH0KLndhLWhlYWRlciB7CiAgYmFja2dyb3VuZDogIzFmMmMzMzsKICBwYWRkaW5nOiA4cHggMTJweDsKICBkaXNwbGF5OiBmbGV4OwogIGFsaWduLWl0ZW1zOiBjZW50ZXI7CiAgZ2FwOiAxMHB4OwogIGNvbG9yOiAjZmZmOwogIGJvcmRlci1ib3R0b206IDFweCBzb2xpZCAjMmEzOTQyOwp9Ci53YS1iYWNrIHsgY29sb3I6ICMwMGE4ODQ7IGZvbnQtc2l6ZTogMjBweDsgcGFkZGluZzogNHB4IDRweDsgfQoud2EtYXZhdGFyIHsKICB3aWR0aDogMzZweDsgaGVpZ2h0OiAzNnB4OyBib3JkZXItcmFkaXVzOiA1MCU7CiAgZGlzcGxheTogZmxleDsgYWxpZ24taXRlbXM6IGNlbnRlcjsganVzdGlmeS1jb250ZW50OiBjZW50ZXI7CiAgZm9udC13ZWlnaHQ6IDcwMDsgY29sb3I6ICNmZmY7IGZvbnQtc2l6ZTogMTVweDsKICBmbGV4LXNocmluazogMDsKfQouY2xpZW50LXdhIC53YS1hdmF0YXIgeyBiYWNrZ3JvdW5kOiBsaW5lYXItZ3JhZGllbnQoMTM1ZGVnLCAjMDBhODg0LCAjMDA4MDY5KTsgfQouYWRtaW4td2EgLndhLWF2YXRhciB7IGJhY2tncm91bmQ6IGxpbmVhci1ncmFkaWVudCgxMzVkZWcsICNmZjNkNmYsICNiODI1NGEpOyB9Ci53YS1jb250YWN0IHsgZmxleDogMTsgbWluLXdpZHRoOiAwOyB9Ci53YS1uYW1lIHsgZm9udC1zaXplOiAxNHB4OyBmb250LXdlaWdodDogNTAwOyBjb2xvcjogI2U5ZWRlZjsgfQoud2Etc3RhdHVzIHsgZm9udC1zaXplOiAxMXB4OyBjb2xvcjogIzg2OTZhMDsgbWFyZ2luLXRvcDogMXB4OyB9Ci53YS1pY29ucyB7IGRpc3BsYXk6IGZsZXg7IGdhcDogMTZweDsgY29sb3I6ICNhZWJhYzE7IGZvbnQtc2l6ZTogMTdweDsgfQoKLyogQ0hBVCBCQUNLR1JPVU5EICovCi53YS1jaGF0IHsKICBmbGV4OiAxOwogIG92ZXJmbG93LXk6IGF1dG87CiAgcGFkZGluZzogMTJweCA4cHg7CiAgZGlzcGxheTogZmxleDsKICBmbGV4LWRpcmVjdGlvbjogY29sdW1uOwogIGdhcDogNHB4OwogIGJhY2tncm91bmQtY29sb3I6ICMwYjE0MWE7CiAgYmFja2dyb3VuZC1pbWFnZToKICAgIHJhZGlhbC1ncmFkaWVudChjaXJjbGUgYXQgMjAlIDMwJSwgcmdiYSgwLDE2OCwxMzIsMC4wNCkgMCUsIHRyYW5zcGFyZW50IDUwJSksCiAgICByYWRpYWwtZ3JhZGllbnQoY2lyY2xlIGF0IDgwJSA3MCUsIHJnYmEoMCwxNjgsMTMyLDAuMDMpIDAlLCB0cmFuc3BhcmVudCA1MCUpOwogIGJhY2tncm91bmQtc2l6ZTogMjAwcHggMjAwcHgsIDMwMHB4IDMwMHB4Owp9Ci53YS1jaGF0Ojotd2Via2l0LXNjcm9sbGJhciB7IHdpZHRoOiA0cHg7IH0KLndhLWNoYXQ6Oi13ZWJraXQtc2Nyb2xsYmFyLXRodW1iIHsgYmFja2dyb3VuZDogcmdiYSgyNTUsMjU1LDI1NSwwLjEpOyBib3JkZXItcmFkaXVzOiAycHg7IH0KCi8qIE1FU1NBR0VTICovCi5tc2cgewogIG1heC13aWR0aDogODAlOwogIHBhZGRpbmc6IDZweCA5cHggNXB4IDEwcHg7CiAgYm9yZGVyLXJhZGl1czogOHB4OwogIGZvbnQtc2l6ZTogMTMuNXB4OwogIGxpbmUtaGVpZ2h0OiAxLjQ7CiAgcG9zaXRpb246IHJlbGF0aXZlOwogIG9wYWNpdHk6IDA7CiAgdHJhbnNmb3JtOiB0cmFuc2xhdGVZKDhweCk7CiAgYW5pbWF0aW9uOiBtc2dJbiAwLjNzIGZvcndhcmRzOwogIHdvcmQtd3JhcDogYnJlYWstd29yZDsKICB3aGl0ZS1zcGFjZTogcHJlLXdyYXA7CiAgY29sb3I6ICNlOWVkZWY7CiAgYm94LXNoYWRvdzogMCAxcHggMC41cHggcmdiYSgwLDAsMCwwLjEzKTsKfQpAa2V5ZnJhbWVzIG1zZ0luIHsgdG8geyBvcGFjaXR5OiAxOyB0cmFuc2Zvcm06IHRyYW5zbGF0ZVkoMCk7IH0gfQoKLm1zZy5ib3QgewogIGFsaWduLXNlbGY6IGZsZXgtc3RhcnQ7CiAgYmFja2dyb3VuZDogIzFmMmMzMzsKICBib3JkZXItdG9wLWxlZnQtcmFkaXVzOiAwOwogIG1hcmdpbi1sZWZ0OiA2cHg7Cn0KLm1zZy5ib3Q6OmJlZm9yZSB7CiAgY29udGVudDogJyc7CiAgcG9zaXRpb246IGFic29sdXRlOwogIHRvcDogMDsgbGVmdDogLThweDsKICB3aWR0aDogMDsgaGVpZ2h0OiAwOwogIGJvcmRlci1zdHlsZTogc29saWQ7CiAgYm9yZGVyLXdpZHRoOiAwIDhweCA4cHggMDsKICBib3JkZXItY29sb3I6IHRyYW5zcGFyZW50ICMxZjJjMzMgdHJhbnNwYXJlbnQgdHJhbnNwYXJlbnQ7Cn0KLm1zZy51c2VyIHsKICBhbGlnbi1zZWxmOiBmbGV4LWVuZDsKICBiYWNrZ3JvdW5kOiAjMDA1YzRiOwogIGJvcmRlci10b3AtcmlnaHQtcmFkaXVzOiAwOwogIG1hcmdpbi1yaWdodDogNnB4Owp9Ci5tc2cudXNlcjo6YmVmb3JlIHsKICBjb250ZW50OiAnJzsKICBwb3NpdGlvbjogYWJzb2x1dGU7CiAgdG9wOiAwOyByaWdodDogLThweDsKICB3aWR0aDogMDsgaGVpZ2h0OiAwOwogIGJvcmRlci1zdHlsZTogc29saWQ7CiAgYm9yZGVyLXdpZHRoOiAwIDAgOHB4IDhweDsKICBib3JkZXItY29sb3I6IHRyYW5zcGFyZW50IHRyYW5zcGFyZW50IHRyYW5zcGFyZW50ICMwMDVjNGI7Cn0KLm1zZy10aW1lIHsKICBkaXNwbGF5OiBpbmxpbmUtYmxvY2s7CiAgZm9udC1zaXplOiAxMHB4OwogIGNvbG9yOiByZ2JhKDI1NSwyNTUsMjU1LDAuNSk7CiAgbWFyZ2luLWxlZnQ6IDZweDsKICBmbG9hdDogcmlnaHQ7CiAgbWFyZ2luLXRvcDogM3B4Owp9Ci5tc2cudXNlciAubXNnLXRpbWU6OmFmdGVyIHsKICBjb250ZW50OiAnIOKck+Kckyc7CiAgY29sb3I6ICM1M2JkZWI7Cn0KCi5tc2ctc3lzdGVtIHsKICBhbGlnbi1zZWxmOiBjZW50ZXI7CiAgYmFja2dyb3VuZDogcmdiYSgzMSw0NCw1MSwwLjg1KTsKICBjb2xvcjogIzg2OTZhMDsKICBmb250LXNpemU6IDExLjVweDsKICBwYWRkaW5nOiA1cHggMTJweDsKICBib3JkZXItcmFkaXVzOiA3cHg7CiAgbWFyZ2luOiA2cHggMDsKICB0ZXh0LWFsaWduOiBjZW50ZXI7CiAgd2hpdGUtc3BhY2U6IG5vcm1hbDsKfQoKLyogTk9USUZJQ0FDSU9ORVMgQURNSU4gKGVzdGlsbyBib3QgYnVzaW5lc3MgcGVybyBtw6FzIGRpc3RpbnRpdmFzKSAqLwoubXNnLm5vdGlmIHsKICBhbGlnbi1zZWxmOiBzdHJldGNoOwogIGJhY2tncm91bmQ6IGxpbmVhci1ncmFkaWVudCgxMzVkZWcsICMyYTFlMmEgMCUsICMxZjJjMzMgMTAwJSk7CiAgYm9yZGVyLWxlZnQ6IDNweCBzb2xpZCAjZmYzZDZmOwogIGJvcmRlci1yYWRpdXM6IDhweDsKICBtYXgtd2lkdGg6IDk1JTsKICBtYXJnaW4tbGVmdDogNnB4OwogIHBhZGRpbmc6IDEwcHggMTJweDsKICBmb250LXNpemU6IDEyLjVweDsKICB3aGl0ZS1zcGFjZTogbm9ybWFsOwp9Ci5tc2cubm90aWY6OmJlZm9yZSB7IGRpc3BsYXk6IG5vbmU7IH0KLm5vdGlmLWhlYWRlciB7CiAgZm9udC1mYW1pbHk6ICdKZXRCcmFpbnMgTW9ubycsIG1vbm9zcGFjZTsKICBmb250LXNpemU6IDEwcHg7CiAgY29sb3I6ICNmZjVjODQ7CiAgdGV4dC10cmFuc2Zvcm06IHVwcGVyY2FzZTsKICBsZXR0ZXItc3BhY2luZzogMC4xZW07CiAgbWFyZ2luLWJvdHRvbTogNnB4OwogIGRpc3BsYXk6IGZsZXg7CiAgYWxpZ24taXRlbXM6IGNlbnRlcjsKICBnYXA6IDZweDsKfQoubm90aWYtaGVhZGVyOjpiZWZvcmUgeyBjb250ZW50OiAn8J+UlCc7IH0KCi5tc2cuYWxlcnQgewogIGFsaWduLXNlbGY6IHN0cmV0Y2g7CiAgYmFja2dyb3VuZDogbGluZWFyLWdyYWRpZW50KDEzNWRlZywgIzNhMmUxYSAwJSwgIzFmMmMzMyAxMDAlKTsKICBib3JkZXItbGVmdDogM3B4IHNvbGlkICNmZmQxNjY7CiAgYm9yZGVyLXJhZGl1czogOHB4OwogIG1heC13aWR0aDogOTUlOwogIG1hcmdpbi1sZWZ0OiA2cHg7CiAgcGFkZGluZzogMTBweCAxMnB4OwogIGZvbnQtc2l6ZTogMTIuNXB4OwogIHdoaXRlLXNwYWNlOiBub3JtYWw7Cn0KLm1zZy5hbGVydDo6YmVmb3JlIHsgZGlzcGxheTogbm9uZTsgfQouYWxlcnQtaGVhZGVyIHsKICBmb250LWZhbWlseTogJ0pldEJyYWlucyBNb25vJywgbW9ub3NwYWNlOwogIGZvbnQtc2l6ZTogMTBweDsKICBjb2xvcjogI2ZmZDE2NjsKICB0ZXh0LXRyYW5zZm9ybTogdXBwZXJjYXNlOwogIGxldHRlci1zcGFjaW5nOiAwLjFlbTsKICBtYXJnaW4tYm90dG9tOiA2cHg7CiAgZGlzcGxheTogZmxleDsKICBhbGlnbi1pdGVtczogY2VudGVyOwogIGdhcDogNnB4Owp9Ci5hbGVydC1oZWFkZXI6OmJlZm9yZSB7IGNvbnRlbnQ6ICfimqDvuI8nOyB9CgovKiBDQVJEUyBERU5UUk8gREUgTUVOU0FKRVMgKi8KLndhLWNhcmQgewogIGJhY2tncm91bmQ6IHJnYmEoMCwwLDAsMC4yNSk7CiAgYm9yZGVyLXJhZGl1czogNnB4OwogIHBhZGRpbmc6IDhweCAxMHB4OwogIG1hcmdpbjogNnB4IDAgNHB4OwogIGJvcmRlci1sZWZ0OiAzcHggc29saWQgIzAwYTg4NDsKfQoud2EtY2FyZC10aXRsZSB7CiAgZm9udC1zaXplOiAxMC41cHg7CiAgY29sb3I6ICMwMGQ5YWE7CiAgZm9udC13ZWlnaHQ6IDcwMDsKICBtYXJnaW4tYm90dG9tOiA1cHg7CiAgdGV4dC10cmFuc2Zvcm06IHVwcGVyY2FzZTsKICBsZXR0ZXItc3BhY2luZzogMC4wNWVtOwp9Ci53YS1jYXJkLXJvdyB7CiAgZGlzcGxheTogZmxleDsKICBqdXN0aWZ5LWNvbnRlbnQ6IHNwYWNlLWJldHdlZW47CiAgcGFkZGluZzogMnB4IDA7CiAgZm9udC1zaXplOiAxMnB4OwogIGdhcDogOHB4Owp9Ci53YS1jYXJkLXJvdyBzcGFuIHsgY29sb3I6IHJnYmEoMjU1LDI1NSwyNTUsMC42NSk7IH0KLndhLWNhcmQtcm93IHN0cm9uZyB7IGNvbG9yOiAjZTllZGVmOyBmb250LXdlaWdodDogNTAwOyB0ZXh0LWFsaWduOiByaWdodDsgfQoudGFnLXBpbGwgewogIGRpc3BsYXk6IGlubGluZS1ibG9jazsKICBiYWNrZ3JvdW5kOiByZ2JhKDAsMjE3LDE3MCwwLjIpOwogIGNvbG9yOiAjMDBkOWFhOwogIHBhZGRpbmc6IDJweCA3cHg7CiAgYm9yZGVyLXJhZGl1czogOXB4OwogIGZvbnQtc2l6ZTogMTBweDsKICBmb250LWZhbWlseTogJ0pldEJyYWlucyBNb25vJywgbW9ub3NwYWNlOwogIG1hcmdpbi1yaWdodDogNHB4OwogIG1hcmdpbi1ib3R0b206IDRweDsKfQoudGFnLXBpbGwud2FybiB7IGJhY2tncm91bmQ6IHJnYmEoMjU1LDkyLDEzMiwwLjIpOyBjb2xvcjogI2ZmOGFhNjsgfQoudGFnLXBpbGwueWVsbG93IHsgYmFja2dyb3VuZDogcmdiYSgyNTUsMjA5LDEwMiwwLjIpOyBjb2xvcjogI2ZmZDE2NjsgfQoKLyogUEFHTyBXSEFUU0FQUCAqLwoud2EtcGF5IHsKICBiYWNrZ3JvdW5kOiBsaW5lYXItZ3JhZGllbnQoMTM1ZGVnLCAjMDBhODg0IDAlLCAjMDA4MDY5IDEwMCUpOwogIGJvcmRlci1yYWRpdXM6IDhweDsKICBwYWRkaW5nOiAxMHB4OwogIG1hcmdpbjogNnB4IDAgNHB4OwogIGNvbG9yOiAjZmZmOwogIHRleHQtYWxpZ246IGNlbnRlcjsKfQoud2EtcGF5LWxhYmVsIHsKICBmb250LXNpemU6IDEwcHg7CiAgdGV4dC10cmFuc2Zvcm06IHVwcGVyY2FzZTsKICBsZXR0ZXItc3BhY2luZzogMC4xZW07CiAgb3BhY2l0eTogMC44NTsKICBtYXJnaW4tYm90dG9tOiAzcHg7Cn0KLndhLXBheS1hbW91bnQgewogIGZvbnQtc2l6ZTogMjBweDsKICBmb250LXdlaWdodDogNzAwOwogIG1hcmdpbjogM3B4IDA7Cn0KLndhLXBheS1zdWIgewogIGZvbnQtc2l6ZTogMTBweDsKICBvcGFjaXR5OiAwLjg7CiAgbWFyZ2luLWJvdHRvbTogN3B4Owp9Ci53YS1wYXktYnRuIHsKICBiYWNrZ3JvdW5kOiAjZmZmOwogIGNvbG9yOiAjMDA4MDY5OwogIHBhZGRpbmc6IDZweCAxNHB4OwogIGJvcmRlci1yYWRpdXM6IDE0cHg7CiAgZm9udC1zaXplOiAxMXB4OwogIGZvbnQtd2VpZ2h0OiA3MDA7CiAgZGlzcGxheTogaW5saW5lLWJsb2NrOwogIHRleHQtdHJhbnNmb3JtOiB1cHBlcmNhc2U7CiAgbGV0dGVyLXNwYWNpbmc6IDAuMDVlbTsKfQoKLyogQVJDSElWTyAqLwoud2EtZmlsZSB7CiAgZGlzcGxheTogZmxleDsKICBnYXA6IDlweDsKICBhbGlnbi1pdGVtczogY2VudGVyOwogIGJhY2tncm91bmQ6IHJnYmEoMCwwLDAsMC4yNSk7CiAgcGFkZGluZzogOHB4IDEwcHg7CiAgYm9yZGVyLXJhZGl1czogNnB4OwogIG1hcmdpbjogNHB4IDA7Cn0KLndhLWZpbGUtaWNvbiB7CiAgd2lkdGg6IDMycHg7IGhlaWdodDogMzhweDsKICBiYWNrZ3JvdW5kOiAjZDMyZjJmOwogIGJvcmRlci1yYWRpdXM6IDRweDsKICBkaXNwbGF5OiBmbGV4OwogIGFsaWduLWl0ZW1zOiBjZW50ZXI7CiAganVzdGlmeS1jb250ZW50OiBjZW50ZXI7CiAgY29sb3I6ICNmZmY7CiAgZm9udC1zaXplOiA5cHg7CiAgZm9udC13ZWlnaHQ6IDcwMDsKICBmbGV4LXNocmluazogMDsKfQoud2EtZmlsZS1pbmZvIHsgZmxleDogMTsgbWluLXdpZHRoOiAwOyB9Ci53YS1maWxlLW5hbWUgeyBmb250LXNpemU6IDEyLjVweDsgY29sb3I6ICNlOWVkZWY7IGZvbnQtd2VpZ2h0OiA1MDA7IH0KLndhLWZpbGUtbWV0YSB7IGZvbnQtc2l6ZTogMTBweDsgY29sb3I6ICM4Njk2YTA7IG1hcmdpbi10b3A6IDJweDsgfQoKLyogVFlQSU5HICovCi50eXBpbmcgewogIGFsaWduLXNlbGY6IGZsZXgtc3RhcnQ7CiAgYmFja2dyb3VuZDogIzFmMmMzMzsKICBwYWRkaW5nOiAxMHB4IDE0cHg7CiAgYm9yZGVyLXJhZGl1czogOHB4OwogIGJvcmRlci10b3AtbGVmdC1yYWRpdXM6IDA7CiAgbWFyZ2luLWxlZnQ6IDZweDsKICBkaXNwbGF5OiBmbGV4OwogIGdhcDogNHB4OwogIHBvc2l0aW9uOiByZWxhdGl2ZTsKfQoudHlwaW5nOjpiZWZvcmUgewogIGNvbnRlbnQ6ICcnOwogIHBvc2l0aW9uOiBhYnNvbHV0ZTsKICB0b3A6IDA7IGxlZnQ6IC04cHg7CiAgd2lkdGg6IDA7IGhlaWdodDogMDsKICBib3JkZXItc3R5bGU6IHNvbGlkOwogIGJvcmRlci13aWR0aDogMCA4cHggOHB4IDA7CiAgYm9yZGVyLWNvbG9yOiB0cmFuc3BhcmVudCAjMWYyYzMzIHRyYW5zcGFyZW50IHRyYW5zcGFyZW50Owp9Ci50eXBpbmcgc3BhbiB7CiAgd2lkdGg6IDZweDsgaGVpZ2h0OiA2cHg7CiAgYmFja2dyb3VuZDogIzg2OTZhMDsKICBib3JkZXItcmFkaXVzOiA1MCU7CiAgYW5pbWF0aW9uOiB0eXBpbmcgMS40cyBpbmZpbml0ZTsKfQoudHlwaW5nIHNwYW46bnRoLWNoaWxkKDIpIHsgYW5pbWF0aW9uLWRlbGF5OiAwLjJzOyB9Ci50eXBpbmcgc3BhbjpudGgtY2hpbGQoMykgeyBhbmltYXRpb24tZGVsYXk6IDAuNHM7IH0KQGtleWZyYW1lcyB0eXBpbmcgewogIDAlLCA2MCUsIDEwMCUgeyBvcGFjaXR5OiAwLjM7IHRyYW5zZm9ybTogdHJhbnNsYXRlWSgwKTsgfQogIDMwJSB7IG9wYWNpdHk6IDE7IHRyYW5zZm9ybTogdHJhbnNsYXRlWSgtM3B4KTsgfQp9CgovKiBJTlBVVCBXSEFUU0FQUCAqLwoud2EtaW5wdXQgewogIGJhY2tncm91bmQ6ICMxZjJjMzM7CiAgcGFkZGluZzogOHB4OwogIGRpc3BsYXk6IGZsZXg7CiAgZ2FwOiA4cHg7CiAgYWxpZ24taXRlbXM6IGNlbnRlcjsKfQoud2EtaW5wdXQtZmllbGQgewogIGZsZXg6IDE7CiAgYmFja2dyb3VuZDogIzJhMzk0MjsKICBib3JkZXItcmFkaXVzOiAyMHB4OwogIHBhZGRpbmc6IDlweCAxNHB4OwogIGNvbG9yOiAjODY5NmEwOwogIGZvbnQtc2l6ZTogMTNweDsKICBkaXNwbGF5OiBmbGV4OwogIGFsaWduLWl0ZW1zOiBjZW50ZXI7CiAgZ2FwOiA4cHg7CiAgbWluLXdpZHRoOiAwOwp9Ci53YS1pbnB1dC1pY29uIHsgZm9udC1zaXplOiAxNnB4OyBmbGV4LXNocmluazogMDsgfQoud2EtaW5wdXQtdGV4dCB7CiAgZmxleDogMTsKICB3aGl0ZS1zcGFjZTogbm93cmFwOwogIG92ZXJmbG93OiBoaWRkZW47CiAgdGV4dC1vdmVyZmxvdzogZWxsaXBzaXM7Cn0KLndhLW1pYyB7CiAgd2lkdGg6IDM2cHg7IGhlaWdodDogMzZweDsKICBiYWNrZ3JvdW5kOiAjMDBhODg0OwogIGJvcmRlci1yYWRpdXM6IDUwJTsKICBkaXNwbGF5OiBmbGV4OwogIGFsaWduLWl0ZW1zOiBjZW50ZXI7CiAganVzdGlmeS1jb250ZW50OiBjZW50ZXI7CiAgY29sb3I6ICNmZmY7CiAgZm9udC1zaXplOiAxNXB4OwogIGZsZXgtc2hyaW5rOiAwOwp9Ci5hZG1pbi13YSAud2EtbWljIHsgYmFja2dyb3VuZDogI2ZmM2Q2ZjsgfQoKZm9vdGVyIHsgYm9yZGVyLXRvcDogMXB4IHNvbGlkIHZhcigtLWxpbmUpOyBwYWRkaW5nOiAyMHB4IDI0cHg7IGZvbnQtZmFtaWx5OiAnSmV0QnJhaW5zIE1vbm8nLCBtb25vc3BhY2U7IGZvbnQtc2l6ZTogMTFweDsgY29sb3I6IHZhcigtLXRleHQtZGltKTsgdGV4dC1hbGlnbjogY2VudGVyOyB9CgovKiBNT0JJTEUgU0lERS1CWS1TSURFICovCkBtZWRpYSAobWF4LXdpZHRoOiA3NjhweCkgewogIGJvZHkgeyBmb250LXNpemU6IDE0cHg7IH0KICBoZWFkZXIgeyBwYWRkaW5nOiA4cHggMTBweDsgfQogIC5sb2dvIHsgZm9udC1zaXplOiAxM3B4OyB9CiAgLmxvZ28tZG90IHsgd2lkdGg6IDdweDsgaGVpZ2h0OiA3cHg7IH0KICAubmF2LW1ldGEgeyBmb250LXNpemU6IDdweDsgfQogIC5pbnRybyB7IHBhZGRpbmc6IDEwcHggOHB4IDRweDsgfQogIC5pbnRybyAudGFnIHsgZm9udC1zaXplOiA4cHg7IG1hcmdpbi1ib3R0b206IDRweDsgfQogIC5pbnRybyAudGFnOjpiZWZvcmUsIC5pbnRybyAudGFnOjphZnRlciB7IHdpZHRoOiAxMnB4OyB9CiAgLmludHJvIGgxIHsgZm9udC1zaXplOiAxNXB4OyBtYXJnaW4tYm90dG9tOiAzcHg7IH0KICAuaW50cm8gcCB7IGZvbnQtc2l6ZTogMTBweDsgbGluZS1oZWlnaHQ6IDEuMzU7IH0KICAuY29udHJvbHMgeyBwYWRkaW5nOiAwIDhweDsgZ2FwOiA0cHg7IG1hcmdpbi1ib3R0b206IDVweDsgfQogIC5jdHJsLWJ0biB7IHBhZGRpbmc6IDZweCA4cHg7IGZvbnQtc2l6ZTogOC41cHg7IH0KICAuc3BlZWQtc2VsZWN0IHsgcGFkZGluZzogNnB4IDdweDsgZm9udC1zaXplOiA4LjVweDsgfQogIC5waGFzZS1iYXIgeyBwYWRkaW5nOiAwIDhweDsgbWFyZ2luLWJvdHRvbTogNXB4OyB9CiAgLnBoYXNlLXRyYWNrIHsgZ2FwOiAycHg7IHBhZGRpbmc6IDJweDsgfQogIC5waGFzZS1pdGVtIHsgcGFkZGluZzogNHB4IDFweDsgZm9udC1zaXplOiA2LjVweDsgbGV0dGVyLXNwYWNpbmc6IDAuMDJlbTsgfQogIC5waGFzZS1udW0geyBmb250LXNpemU6IDguNXB4OyBtYXJnaW4tYm90dG9tOiAxcHg7IH0KICAucHJvZ3Jlc3MgeyBmb250LXNpemU6IDguNXB4OyBwYWRkaW5nOiAwIDhweDsgbWFyZ2luLWJvdHRvbTogNHB4OyB9CiAgLmRlbW8tZ3JpZCB7CiAgICBncmlkLXRlbXBsYXRlLWNvbHVtbnM6IDFmciAxZnI7CiAgICBnYXA6IDVweDsKICAgIHBhZGRpbmc6IDAgNXB4IDEycHg7CiAgfQogIC5jaGF0LXdpbmRvdyB7CiAgICBoZWlnaHQ6IDcwdmg7CiAgICBtaW4taGVpZ2h0OiA0ODBweDsKICAgIGJvcmRlci1yYWRpdXM6IDEwcHg7CiAgfQogIC53YS1zdGF0dXMtYmFyIHsgcGFkZGluZzogNnB4IDEwcHggM3B4OyBmb250LXNpemU6IDlweDsgfQogIC53YS1zdGF0dXMtcmlnaHQgeyBmb250LXNpemU6IDhweDsgZ2FwOiAzcHg7IH0KICAud2EtaGVhZGVyIHsgcGFkZGluZzogNXB4IDdweDsgZ2FwOiA2cHg7IH0KICAud2EtYmFjayB7IGZvbnQtc2l6ZTogMTRweDsgcGFkZGluZzogMnB4IDJweDsgfQogIC53YS1hdmF0YXIgeyB3aWR0aDogMjRweDsgaGVpZ2h0OiAyNHB4OyBmb250LXNpemU6IDEwcHg7IH0KICAud2EtbmFtZSB7IGZvbnQtc2l6ZTogMTAuNXB4OyB9CiAgLndhLXN0YXR1cyB7IGZvbnQtc2l6ZTogOC41cHg7IH0KICAud2EtaWNvbnMgeyBnYXA6IDhweDsgZm9udC1zaXplOiAxMnB4OyB9CiAgLndhLWNoYXQgeyBwYWRkaW5nOiA3cHggNXB4OyBnYXA6IDNweDsgfQogIC5tc2cgewogICAgZm9udC1zaXplOiAxMC41cHg7CiAgICBwYWRkaW5nOiA1cHggN3B4IDRweCA4cHg7CiAgICBtYXgtd2lkdGg6IDg4JTsKICAgIGxpbmUtaGVpZ2h0OiAxLjM7CiAgICBib3JkZXItcmFkaXVzOiA2cHg7CiAgfQogIC5tc2cuYm90LCAubXNnLnVzZXIgeyBtYXJnaW4tbGVmdDogNXB4OyBtYXJnaW4tcmlnaHQ6IDVweDsgfQogIC5tc2ctdGltZSB7IGZvbnQtc2l6ZTogOHB4OyBtYXJnaW4tbGVmdDogNHB4OyBtYXJnaW4tdG9wOiAycHg7IH0KICAubXNnLXN5c3RlbSB7IGZvbnQtc2l6ZTogOC41cHg7IHBhZGRpbmc6IDNweCA4cHg7IG1hcmdpbjogNHB4IDA7IH0KICAubXNnLm5vdGlmLCAubXNnLmFsZXJ0IHsgcGFkZGluZzogN3B4IDlweDsgZm9udC1zaXplOiAxMHB4OyBtYXgtd2lkdGg6IDk2JTsgfQogIC5ub3RpZi1oZWFkZXIsIC5hbGVydC1oZWFkZXIgeyBmb250LXNpemU6IDhweDsgbWFyZ2luLWJvdHRvbTogNHB4OyBnYXA6IDRweDsgfQogIC53YS1jYXJkIHsgcGFkZGluZzogNXB4IDdweDsgbWFyZ2luOiA0cHggMCAzcHg7IGJvcmRlci1yYWRpdXM6IDRweDsgfQogIC53YS1jYXJkLXRpdGxlIHsgZm9udC1zaXplOiA4cHg7IG1hcmdpbi1ib3R0b206IDNweDsgfQogIC53YS1jYXJkLXJvdyB7IHBhZGRpbmc6IDFweCAwOyBmb250LXNpemU6IDkuNXB4OyBnYXA6IDRweDsgfQogIC50YWctcGlsbCB7IGZvbnQtc2l6ZTogNy41cHg7IHBhZGRpbmc6IDFweCA1cHg7IG1hcmdpbi1yaWdodDogMnB4OyBtYXJnaW4tYm90dG9tOiAycHg7IGJvcmRlci1yYWRpdXM6IDZweDsgfQogIC53YS1wYXkgeyBwYWRkaW5nOiA3cHg7IG1hcmdpbjogNHB4IDAgM3B4OyB9CiAgLndhLXBheS1sYWJlbCB7IGZvbnQtc2l6ZTogOHB4OyBtYXJnaW4tYm90dG9tOiAycHg7IH0KICAud2EtcGF5LWFtb3VudCB7IGZvbnQtc2l6ZTogMTRweDsgbWFyZ2luOiAycHggMDsgfQogIC53YS1wYXktc3ViIHsgZm9udC1zaXplOiA4cHg7IG1hcmdpbi1ib3R0b206IDRweDsgfQogIC53YS1wYXktYnRuIHsgZm9udC1zaXplOiA4LjVweDsgcGFkZGluZzogNHB4IDhweDsgYm9yZGVyLXJhZGl1czogMTBweDsgfQogIC53YS1maWxlIHsgcGFkZGluZzogNXB4IDdweDsgZ2FwOiA2cHg7IG1hcmdpbjogM3B4IDA7IH0KICAud2EtZmlsZS1pY29uIHsgd2lkdGg6IDIycHg7IGhlaWdodDogMjhweDsgZm9udC1zaXplOiA3cHg7IGJvcmRlci1yYWRpdXM6IDNweDsgfQogIC53YS1maWxlLW5hbWUgeyBmb250LXNpemU6IDkuNXB4OyB9CiAgLndhLWZpbGUtbWV0YSB7IGZvbnQtc2l6ZTogOHB4OyBtYXJnaW4tdG9wOiAxcHg7IH0KICAudHlwaW5nIHsgcGFkZGluZzogN3B4IDEwcHg7IG1hcmdpbi1sZWZ0OiA1cHg7IH0KICAudHlwaW5nIHNwYW4geyB3aWR0aDogNHB4OyBoZWlnaHQ6IDRweDsgfQogIC53YS1pbnB1dCB7IHBhZGRpbmc6IDVweDsgZ2FwOiA1cHg7IH0KICAud2EtaW5wdXQtZmllbGQgeyBwYWRkaW5nOiA1cHggOXB4OyBmb250LXNpemU6IDlweDsgZ2FwOiA1cHg7IGJvcmRlci1yYWRpdXM6IDE0cHg7IH0KICAud2EtaW5wdXQtaWNvbiB7IGZvbnQtc2l6ZTogMTFweDsgfQogIC53YS1taWMgeyB3aWR0aDogMjRweDsgaGVpZ2h0OiAyNHB4OyBmb250LXNpemU6IDEwcHg7IH0KICBmb290ZXIgeyBwYWRkaW5nOiAxMHB4OyBmb250LXNpemU6IDhweDsgfQp9CgpAbWVkaWEgKG1heC13aWR0aDogMzgwcHgpIHsKICAubXNnIHsgZm9udC1zaXplOiA5LjVweDsgcGFkZGluZzogNHB4IDZweCAzcHggN3B4OyB9CiAgLm1zZy10aW1lIHsgZm9udC1zaXplOiA3cHg7IH0KICAud2EtY2FyZC1yb3cgeyBmb250LXNpemU6IDguNXB4OyB9CiAgLndhLWNhcmQtdGl0bGUgeyBmb250LXNpemU6IDdweDsgfQogIC53YS1uYW1lIHsgZm9udC1zaXplOiA5LjVweDsgfQogIC53YS1zdGF0dXMgeyBmb250LXNpemU6IDcuNXB4OyB9CiAgLndhLWF2YXRhciB7IHdpZHRoOiAyMHB4OyBoZWlnaHQ6IDIwcHg7IGZvbnQtc2l6ZTogOXB4OyB9CiAgLndhLXBheS1hbW91bnQgeyBmb250LXNpemU6IDEycHg7IH0KICAuY2hhdC13aW5kb3cgeyBoZWlnaHQ6IDcydmg7IG1pbi1oZWlnaHQ6IDQ2MHB4OyB9Cn0KPC9zdHlsZT4KPC9oZWFkPgo8Ym9keT4KCjxoZWFkZXI+CiAgPGRpdiBjbGFzcz0ibmF2Ij4KICAgIDxkaXYgY2xhc3M9ImxvZ28iPjxzcGFuIGNsYXNzPSJsb2dvLWRvdCI+PC9zcGFuPkpBUlZJU19BR0VOQ1k8L2Rpdj4KICAgIDxkaXYgY2xhc3M9Im5hdi1tZXRhIj5ERU1PIEJPVCBBVURJVE9Sw41BUyDCtyBBTlRJQ09MQVBTVVMgwrcgV0hBVFNBUFA8L2Rpdj4KICA8L2Rpdj4KPC9oZWFkZXI+Cgo8ZGl2IGNsYXNzPSJpbnRybyI+CiAgPGRpdiBjbGFzcz0idGFnIj5TSU1VTEFDScOTTiBDT01QTEVUQTwvZGl2PgogIDxoMT5Bc8OtIHNlIHZlIGVsIGJvdCBlbiA8ZW0+V2hhdHNBcHAgcmVhbDwvZW0+LjwvaDE+CiAgPHA+SXpxdWllcmRhOiBlbCBjaGF0IGRlbCBjbGllbnRlIMK3IERlcmVjaGE6IGVsIHBhbmVsIGRlbCBhZG1pbiAodGFtYmnDqW4gZW4gV2hhdHNBcHApLiBNaXJhIGVsIGNpY2xvIGNvbXBsZXRvOiBjYWxpZmljYWNpw7NuLCBhZ2VuZGEsIHBhZ28sIHJlcG9ydGUsIHNlZ3VpbWllbnRvLCB2ZW5jaW1pZW50b3MuPC9wPgo8L2Rpdj4KCjxkaXYgY2xhc3M9ImNvbnRyb2xzIj4KICA8YnV0dG9uIGNsYXNzPSJjdHJsLWJ0biBwcmltYXJ5IiBpZD0icGxheUJ0biIgb25jbGljaz0idG9nZ2xlUGxheSgpIj7ij7ggUEFVU0FSPC9idXR0b24+CiAgPGJ1dHRvbiBjbGFzcz0iY3RybC1idG4iIGlkPSJuZXh0QnRuIiBvbmNsaWNrPSJuZXh0U3RlcCgpIj7ihpIgU0lHVUlFTlRFPC9idXR0b24+CiAgPGJ1dHRvbiBjbGFzcz0iY3RybC1idG4gZGFuZ2VyIiBvbmNsaWNrPSJyZXNldERlbW8oKSI+4oa6IFJFSU5JQ0lBUjwvYnV0dG9uPgogIDxzZWxlY3QgY2xhc3M9InNwZWVkLXNlbGVjdCIgaWQ9InNwZWVkU2VsZWN0IiBvbmNoYW5nZT0iY2hhbmdlU3BlZWQoKSI+CiAgICA8b3B0aW9uIHZhbHVlPSIxLjUiPlBhdXNhZGE8L29wdGlvbj4KICAgIDxvcHRpb24gdmFsdWU9IjEiIHNlbGVjdGVkPk5vcm1hbDwvb3B0aW9uPgogICAgPG9wdGlvbiB2YWx1ZT0iMC41Ij5Sw6FwaWRhPC9vcHRpb24+CiAgICA8b3B0aW9uIHZhbHVlPSIwLjIiPk11eSByw6FwaWRhPC9vcHRpb24+CiAgPC9zZWxlY3Q+CjwvZGl2PgoKPGRpdiBjbGFzcz0icGhhc2UtYmFyIj4KICA8ZGl2IGNsYXNzPSJwaGFzZS10cmFjayI+CiAgICA8ZGl2IGNsYXNzPSJwaGFzZS1pdGVtIGFjdGl2ZSIgZGF0YS1waGFzZT0iMSI+PHNwYW4gY2xhc3M9InBoYXNlLW51bSI+MDE8L3NwYW4+Q2FsaWZpY2FjacOzbjwvZGl2PgogICAgPGRpdiBjbGFzcz0icGhhc2UtaXRlbSIgZGF0YS1waGFzZT0iMiI+PHNwYW4gY2xhc3M9InBoYXNlLW51bSI+MDI8L3NwYW4+QWdlbmRhbWllbnRvPC9kaXY+CiAgICA8ZGl2IGNsYXNzPSJwaGFzZS1pdGVtIiBkYXRhLXBoYXNlPSIzIj48c3BhbiBjbGFzcz0icGhhc2UtbnVtIj4wMzwvc3Bhbj5QYWdvPC9kaXY+CiAgICA8ZGl2IGNsYXNzPSJwaGFzZS1pdGVtIiBkYXRhLXBoYXNlPSI0Ij48c3BhbiBjbGFzcz0icGhhc2UtbnVtIj4wNDwvc3Bhbj5SZXBvcnRlPC9kaXY+CiAgICA8ZGl2IGNsYXNzPSJwaGFzZS1pdGVtIiBkYXRhLXBoYXNlPSI1Ij48c3BhbiBjbGFzcz0icGhhc2UtbnVtIj4wNTwvc3Bhbj5TZWd1aW1pZW50bzwvZGl2PgogIDwvZGl2Pgo8L2Rpdj4KCjxkaXYgY2xhc3M9InByb2dyZXNzIiBpZD0icHJvZ3Jlc3MiPlBhc28gPHNwYW4gaWQ9InN0ZXBOdW0iPjA8L3NwYW4+IGRlIDxzcGFuIGlkPSJzdGVwVG90YWwiPjA8L3NwYW4+PC9kaXY+Cgo8ZGl2IGNsYXNzPSJkZW1vLWdyaWQiPgogIDwhLS0gQ0hBVCBDTElFTlRFIChlc3RpbG8gV2hhdHNBcHAgbm9ybWFsKSAtLT4KICA8ZGl2IGNsYXNzPSJjaGF0LXdpbmRvdyBjbGllbnQtd2EiPgogICAgPGRpdiBjbGFzcz0id2Etc3RhdHVzLWJhciI+CiAgICAgIDxzcGFuPjk6MzI8L3NwYW4+CiAgICAgIDxkaXYgY2xhc3M9IndhLXN0YXR1cy1yaWdodCI+PHNwYW4+8J+Ttjwvc3Bhbj48c3Bhbj7wn5SLPC9zcGFuPjwvZGl2PgogICAgPC9kaXY+CiAgICA8ZGl2IGNsYXNzPSJ3YS1oZWFkZXIiPgogICAgICA8ZGl2IGNsYXNzPSJ3YS1iYWNrIj7igLk8L2Rpdj4KICAgICAgPGRpdiBjbGFzcz0id2EtYXZhdGFyIj5BPC9kaXY+CiAgICAgIDxkaXYgY2xhc3M9IndhLWNvbnRhY3QiPgogICAgICAgIDxkaXYgY2xhc3M9IndhLW5hbWUiPkFudGljb2xhcHN1czwvZGl2PgogICAgICAgIDxkaXYgY2xhc3M9IndhLXN0YXR1cyIgaWQ9ImNsaWVudFN0YXR1cyI+ZW4gbMOtbmVhPC9kaXY+CiAgICAgIDwvZGl2PgogICAgICA8ZGl2IGNsYXNzPSJ3YS1pY29ucyI+PHNwYW4+8J+Tnjwvc3Bhbj48c3Bhbj7ii648L3NwYW4+PC9kaXY+CiAgICA8L2Rpdj4KICAgIDxkaXYgY2xhc3M9IndhLWNoYXQiIGlkPSJjbGllbnRDaGF0Ij48L2Rpdj4KICAgIDxkaXYgY2xhc3M9IndhLWlucHV0Ij4KICAgICAgPGRpdiBjbGFzcz0id2EtaW5wdXQtZmllbGQiPgogICAgICAgIDxzcGFuIGNsYXNzPSJ3YS1pbnB1dC1pY29uIj7wn5iKPC9zcGFuPgogICAgICAgIDxzcGFuIGNsYXNzPSJ3YS1pbnB1dC10ZXh0Ij5NZW5zYWplPC9zcGFuPgogICAgICAgIDxzcGFuIGNsYXNzPSJ3YS1pbnB1dC1pY29uIj7wn5OOPC9zcGFuPgogICAgICA8L2Rpdj4KICAgICAgPGRpdiBjbGFzcz0id2EtbWljIj7wn46kPC9kaXY+CiAgICA8L2Rpdj4KICA8L2Rpdj4KCiAgPCEtLSBDSEFUIEFETUlOIChlc3RpbG8gV2hhdHNBcHAgY29uIGJvdCBpbnRlcm5vKSAtLT4KICA8ZGl2IGNsYXNzPSJjaGF0LXdpbmRvdyBhZG1pbi13YSI+CiAgICA8ZGl2IGNsYXNzPSJ3YS1zdGF0dXMtYmFyIj4KICAgICAgPHNwYW4+OTozMjwvc3Bhbj4KICAgICAgPGRpdiBjbGFzcz0id2Etc3RhdHVzLXJpZ2h0Ij48c3Bhbj7wn5O2PC9zcGFuPjxzcGFuPvCflIs8L3NwYW4+PC9kaXY+CiAgICA8L2Rpdj4KICAgIDxkaXYgY2xhc3M9IndhLWhlYWRlciI+CiAgICAgIDxkaXYgY2xhc3M9IndhLWJhY2siPuKAuTwvZGl2PgogICAgICA8ZGl2IGNsYXNzPSJ3YS1hdmF0YXIiPko8L2Rpdj4KICAgICAgPGRpdiBjbGFzcz0id2EtY29udGFjdCI+CiAgICAgICAgPGRpdiBjbGFzcz0id2EtbmFtZSI+SmFydmlzIEFkbWluIMK3IEFudGljb2xhcHN1czwvZGl2PgogICAgICAgIDxkaXYgY2xhc3M9IndhLXN0YXR1cyIgaWQ9ImFkbWluU3RhdHVzIj5lbiBsw61uZWE8L2Rpdj4KICAgICAgPC9kaXY+CiAgICAgIDxkaXYgY2xhc3M9IndhLWljb25zIj48c3Bhbj7wn5OePC9zcGFuPjxzcGFuPuKLrjwvc3Bhbj48L2Rpdj4KICAgIDwvZGl2PgogICAgPGRpdiBjbGFzcz0id2EtY2hhdCIgaWQ9ImFkbWluQ2hhdCI+PC9kaXY+CiAgICA8ZGl2IGNsYXNzPSJ3YS1pbnB1dCI+CiAgICAgIDxkaXYgY2xhc3M9IndhLWlucHV0LWZpZWxkIj4KICAgICAgICA8c3BhbiBjbGFzcz0id2EtaW5wdXQtaWNvbiI+8J+Yijwvc3Bhbj4KICAgICAgICA8c3BhbiBjbGFzcz0id2EtaW5wdXQtdGV4dCI+UHJlZ3VudGEgbyBpbnN0cnVjY2nDs248L3NwYW4+CiAgICAgICAgPHNwYW4gY2xhc3M9IndhLWlucHV0LWljb24iPvCfk448L3NwYW4+CiAgICAgIDwvZGl2PgogICAgICA8ZGl2IGNsYXNzPSJ3YS1taWMiPvCfjqQ8L2Rpdj4KICAgIDwvZGl2PgogIDwvZGl2Pgo8L2Rpdj4KCjxmb290ZXI+SkFSVklTX0FHRU5DWSDCtyBERU1PIEFOVElDT0xBUFNVUyDCtyBXSEFUU0FQUCBTVFlMRSDCtyAyMDI2PC9mb290ZXI+Cgo8c2NyaXB0PgpsZXQgc3BlZWQgPSAxOwpsZXQgcGxheWluZyA9IGZhbHNlOwpsZXQgY3VycmVudFN0ZXAgPSAwOwpsZXQgdGltZW91dHMgPSBbXTsKCmNvbnN0IHNjcmlwdCA9IFsKICB7IHBoYXNlOiAxIH0sCiAgeyB0YXJnZXQ6ICdjbGllbnQnLCB0eXBlOiAnc3lzdGVtJywgZGF0YTogJ0hPWScgfSwKICB7IHRhcmdldDogJ2NsaWVudCcsIHR5cGU6ICd1c2VyJywgZGF0YTogJ0J1ZW5vcyBkw61hcywgdmkgc3UgcMOhZ2luYSB5IG5lY2VzaXRvIGluZm9ybWFjacOzbiBzb2JyZSBhdWRpdG9yw61hIFNTVC4gRWwgTWluaXN0ZXJpbyBkZWwgVHJhYmFqbyBub3MgYW51bmNpw7MgdmlzaXRhIHkgcXVlcmVtb3MgcHJlcGFyYXJub3MuJywgZGVsYXk6IDgwMCB9LAogIHsgdGFyZ2V0OiAnY2xpZW50JywgdHlwZTogJ3R5cGluZycgfSwKICB7IHRhcmdldDogJ2NsaWVudCcsIHR5cGU6ICdib3QnLCBkYXRhOiAnwqFIb2xhISBTb3kgZWwgYXNpc3RlbnRlIGRlIEFudGljb2xhcHN1cyDwn5GLIEJpZW52ZW5pZGEuIFRlIGF5dWRvIGEgYWdlbmRhciB0dSBhdWRpdG9yw61hIFNTVCBjb24gbnVlc3RybyBlcXVpcG8uXG5cblBhcmEgY29uZWN0YXJ0ZSBjb24gZWwgYXVkaXRvciBjb3JyZWN0bywgZMOpamFtZSBoYWNlcnRlIHVuYXMgcHJlZ3VudGFzIHLDoXBpZGFzLicsIGRlbGF5OiAxMzAwIH0sCiAgeyB0YXJnZXQ6ICdjbGllbnQnLCB0eXBlOiAndHlwaW5nJyB9LAogIHsgdGFyZ2V0OiAnY2xpZW50JywgdHlwZTogJ2JvdCcsIGRhdGE6ICdQYXJhIGVtcGV6YXIsIMK/Y3XDoWwgZXMgdHUgbm9tYnJlIHkgZWwgZGUgbGEgZW1wcmVzYT8nLCBkZWxheTogMTAwMCB9LAogIHsgdGFyZ2V0OiAnY2xpZW50JywgdHlwZTogJ3VzZXInLCBkYXRhOiAnU295IENhbWlsYSBSZXN0cmVwbywgZ2VyZW50ZSBvcGVyYXRpdmEgZGUgTG9nw61zdGljYSBBbmRpbmEgUy5BLlMuJywgZGVsYXk6IDE3MDAgfSwKICB7IHRhcmdldDogJ2NsaWVudCcsIHR5cGU6ICd0eXBpbmcnIH0sCiAgeyB0YXJnZXQ6ICdjbGllbnQnLCB0eXBlOiAnYm90JywgZGF0YTogJ011Y2hvIGd1c3RvLCBDYW1pbGEg8J+ZjFxuXG7Cv0N1w6FudG9zIGNvbGFib3JhZG9yZXMgdGllbmUgTG9nw61zdGljYSBBbmRpbmEgYWN0dWFsbWVudGU/JywgZGVsYXk6IDEyMDAgfSwKICB7IHRhcmdldDogJ2NsaWVudCcsIHR5cGU6ICd1c2VyJywgZGF0YTogJzQ3IHBlcnNvbmFzIGVudHJlIHBsYW50YSB5IGFkbWluaXN0cmF0aXZvcycsIGRlbGF5OiAxNTAwIH0sCiAgeyB0YXJnZXQ6ICdjbGllbnQnLCB0eXBlOiAndHlwaW5nJyB9LAogIHsgdGFyZ2V0OiAnY2xpZW50JywgdHlwZTogJ2JvdCcsIGRhdGE6ICdQZXJmZWN0by4gwr9FbiBxdcOpIGNpdWRhZCBlc3TDoSBsYSBzZWRlIHByaW5jaXBhbD8nLCBkZWxheTogMTAwMCB9LAogIHsgdGFyZ2V0OiAnY2xpZW50JywgdHlwZTogJ3VzZXInLCBkYXRhOiAnQm9nb3TDoSwgZW4gZWwgc2VjdG9yIGRlIEZvbnRpYsOzbicsIGRlbGF5OiAxMzAwIH0sCiAgeyB0YXJnZXQ6ICdjbGllbnQnLCB0eXBlOiAndHlwaW5nJyB9LAogIHsgdGFyZ2V0OiAnY2xpZW50JywgdHlwZTogJ2JvdCcsIGRhdGE6ICfDmmx0aW1hIHByZWd1bnRhOiDCv3F1w6kgdGFuIHVyZ2VudGUgZXM/IMK/WWEgdGllbmVuIGZlY2hhIGRlIHZpc2l0YSBkZWwgTWluaXN0ZXJpbz8nLCBkZWxheTogMTEwMCB9LAogIHsgdGFyZ2V0OiAnY2xpZW50JywgdHlwZTogJ3VzZXInLCBkYXRhOiAnU8OtLCBub3MgYXZpc2Fyb24gcXVlIHZpZW5lbiBlbiAyIG1lc2VzLiBOZWNlc2l0YW1vcyBlc3RhciBhbCBkw61hIHBhcmEgZXZpdGFyIHNhbmNpb25lcy4nLCBkZWxheTogMTcwMCB9LAoKICB7IHRhcmdldDogJ2FkbWluJywgdHlwZTogJ3R5cGluZycgfSwKICB7IHRhcmdldDogJ2FkbWluJywgdHlwZTogJ25vdGlmJywgZGF0YTogewogICAgdGl0bGU6ICdOVUVWTyBMRUFEIMK3IFNDT1JFIDg3LzEwMCcsCiAgICB0YWdzOiBbe3R4dDonUFJJT1JJVEFSSU8nLCBjbHM6J3dhcm4nfSx7dHh0OidNSUQtTUFSS0VUJywgY2xzOicnfSx7dHh0OidTU1QnLCBjbHM6Jyd9XSwKICAgIGNhcmQ6ICdEYXRvcyBkZWwgcHJvc3BlY3RvJywKICAgIHJvd3M6IFsKICAgICAgWydOb21icmUnLCAnQ2FtaWxhIFJlc3RyZXBvJ10sCiAgICAgIFsnRW1wcmVzYScsICdMb2fDrXN0aWNhIEFuZGluYSBTLkEuUy4nXSwKICAgICAgWydTZXJ2aWNpbycsICdBdWRpdG9yw61hIFNTVCddLAogICAgICBbJ1RhbWHDsW8nLCAnNDcgY29sYWJvcmFkb3JlcyddLAogICAgICBbJ0NpdWRhZCcsICdCb2dvdMOhIC0gRm9udGliw7NuJ10sCiAgICAgIFsnVXJnZW5jaWEnLCAnQUxUQSDCtyAyIG1lc2VzJ10KICAgIF0sCiAgICBmb290ZXI6ICdBc2lnbmFkbyBhIEp1YW4gRmVsaXBlJwogIH0sIGRlbGF5OiAxMzAwIH0sCgogIHsgcGhhc2U6IDIgfSwKICB7IHRhcmdldDogJ2NsaWVudCcsIHR5cGU6ICd0eXBpbmcnIH0sCiAgeyB0YXJnZXQ6ICdjbGllbnQnLCB0eXBlOiAnYm90JywgZGF0YTogJ1BvciBsYSB1cmdlbmNpYSB5IGVsIHRhbWHDsW8gZGUgdHUgZW1wcmVzYSwgdGUgdm95IGEgY29uZWN0YXIgY29uIEp1YW4gRmVsaXBlIE1heW9yZ2EsIG51ZXN0cm8gYXVkaXRvciBsw61kZXIgZW4gU1NULlxuXG5SZXZpc28gc3UgYWdlbmRhLi4uIHVuIG1vbWVudG8g4o+zJywgZGVsYXk6IDE1MDAgfSwKICB7IHRhcmdldDogJ2NsaWVudCcsIHR5cGU6ICd0eXBpbmcnLCBkdXJhdGlvbjogMjAwMCB9LAogIHsgdGFyZ2V0OiAnY2xpZW50JywgdHlwZTogJ2JvdCcsIGRhdGE6IGBFc3RvcyBzb24gc3VzIGhvcmFyaW9zIGRpc3BvbmlibGVzIGVzdGEgc2VtYW5hOgo8ZGl2IGNsYXNzPSJ3YS1jYXJkIj4KICA8ZGl2IGNsYXNzPSJ3YS1jYXJkLXRpdGxlIj5Ib3JhcmlvcyBkaXNwb25pYmxlczwvZGl2PgogIDxkaXYgY2xhc3M9IndhLWNhcmQtcm93Ij48c3Bhbj5NacOpcmNvbGVzIDEzPC9zcGFuPjxzdHJvbmc+MTA6MDAgQU08L3N0cm9uZz48L2Rpdj4KICA8ZGl2IGNsYXNzPSJ3YS1jYXJkLXJvdyI+PHNwYW4+TWnDqXJjb2xlcyAxMzwvc3Bhbj48c3Ryb25nPjM6MDAgUE08L3N0cm9uZz48L2Rpdj4KICA8ZGl2IGNsYXNzPSJ3YS1jYXJkLXJvdyI+PHNwYW4+SnVldmVzIDE0PC9zcGFuPjxzdHJvbmc+OTowMCBBTTwvc3Ryb25nPjwvZGl2PgogIDxkaXYgY2xhc3M9IndhLWNhcmQtcm93Ij48c3Bhbj5WaWVybmVzIDE1PC9zcGFuPjxzdHJvbmc+MjowMCBQTTwvc3Ryb25nPjwvZGl2Pgo8L2Rpdj4Kwr9DdcOhbCB0ZSBxdWVkYSBtZWpvcj9gLCBkZWxheTogMTUwMCB9LAogIHsgdGFyZ2V0OiAnY2xpZW50JywgdHlwZTogJ3VzZXInLCBkYXRhOiAnRWwganVldmVzIDE0IGEgbGFzIDkgQU0gbWUgZnVuY2lvbmEgcGVyZmVjdG8nLCBkZWxheTogMTUwMCB9LAoKICB7IHRhcmdldDogJ2FkbWluJywgdHlwZTogJ3R5cGluZycgfSwKICB7IHRhcmdldDogJ2FkbWluJywgdHlwZTogJ25vdGlmJywgZGF0YTogewogICAgdGl0bGU6ICdBR0VOREFNSUVOVE8gQ09ORklSTUFETycsCiAgICB0ZXh0OiAnQ2FtaWxhIFJlc3RyZXBvIGVsaWdpw7MgaG9yYXJpbycsCiAgICBjYXJkOiAnRGV0YWxsZXMnLAogICAgcm93czogWwogICAgICBbJ0ZlY2hhJywgJ0p1ZXZlcyAxNCDCtyA5OjAwIEFNJ10sCiAgICAgIFsnRHVyYWNpw7NuJywgJzMgaG9yYXMgZW4gc2l0aW8nXSwKICAgICAgWydBdWRpdG9yJywgJ0p1YW4gRmVsaXBlIE1heW9yZ2EnXQogICAgXSwKICAgIGZvb3RlcjogJ0NyZWFkbyBlbiBHb29nbGUgQ2FsZW5kYXInCiAgfSwgZGVsYXk6IDEyMDAgfSwKICB7IHRhcmdldDogJ2FkbWluJywgdHlwZTogJ3R5cGluZycgfSwKICB7IHRhcmdldDogJ2FkbWluJywgdHlwZTogJ2JvdCcsIGRhdGE6ICfinJMgRXZlbnRvIGNyZWFkbyBlbiBHb29nbGUgQ2FsZW5kYXJcbuKckyBJbnZpdGFjacOzbiBlbnZpYWRhIGEgSnVhbiBGZWxpcGVcbuKckyBDbGllbnRlIG5vdGlmaWNhZG8gcG9yIFdoYXRzQXBwXG7inJMgUmVjb3JkYXRvcmlvcyBwcm9ncmFtYWRvcyAoMjRoIHkgMmggYW50ZXMpJywgZGVsYXk6IDE1MDAgfSwKCiAgeyB0YXJnZXQ6ICdjbGllbnQnLCB0eXBlOiAndHlwaW5nJyB9LAogIHsgdGFyZ2V0OiAnY2xpZW50JywgdHlwZTogJ2JvdCcsIGRhdGE6ICfCoUNvbmZpcm1hZG8sIENhbWlsYSEg4pyFXG5cbllhIHRlIGVudmnDqSBsYSBpbnZpdGFjacOzbiBhIHR1IGNvcnJlbyB5IHF1ZWRhIGFnZW5kYWRvIGVuIEdvb2dsZSBDYWxlbmRhci4nLCBkZWxheTogMTMwMCB9LAogIHsgdGFyZ2V0OiAnY2xpZW50JywgdHlwZTogJ3R5cGluZycgfSwKICB7IHRhcmdldDogJ2NsaWVudCcsIHR5cGU6ICdib3QnLCBkYXRhOiBgPGRpdiBjbGFzcz0id2EtY2FyZCI+CiAgPGRpdiBjbGFzcz0id2EtY2FyZC10aXRsZSI+VHUgYXVkaXRvcsOtYSBlc3TDoSBhZ2VuZGFkYTwvZGl2PgogIDxkaXYgY2xhc3M9IndhLWNhcmQtcm93Ij48c3Bhbj5BdWRpdG9yPC9zcGFuPjxzdHJvbmc+SnVhbiBGZWxpcGU8L3N0cm9uZz48L2Rpdj4KICA8ZGl2IGNsYXNzPSJ3YS1jYXJkLXJvdyI+PHNwYW4+RmVjaGE8L3NwYW4+PHN0cm9uZz5KdWUgMTQgwrcgOTowMCBBTTwvc3Ryb25nPjwvZGl2PgogIDxkaXYgY2xhc3M9IndhLWNhcmQtcm93Ij48c3Bhbj5EdXJhY2nDs248L3NwYW4+PHN0cm9uZz4zIGhvcmFzPC9zdHJvbmc+PC9kaXY+CiAgPGRpdiBjbGFzcz0id2EtY2FyZC1yb3ciPjxzcGFuPkx1Z2FyPC9zcGFuPjxzdHJvbmc+U2VkZSBGb250aWLDs248L3N0cm9uZz48L2Rpdj4KPC9kaXY+YCwgZGVsYXk6IDExMDAgfSwKCiAgeyBwaGFzZTogMyB9LAogIHsgdGFyZ2V0OiAnY2xpZW50JywgdHlwZTogJ3R5cGluZycgfSwKICB7IHRhcmdldDogJ2NsaWVudCcsIHR5cGU6ICdib3QnLCBkYXRhOiBgUGFyYSBhc2VndXJhciBlbCBjdXBvLCB0ZSBwYXNvIGVsIGxpbmsgZGUgcGFnbyBkZWwgYW50aWNpcG8gKDUwJSk6CjxkaXYgY2xhc3M9IndhLXBheSI+CiAgPGRpdiBjbGFzcz0id2EtcGF5LWxhYmVsIj5QYWdvIGFudGljaXBvIMK3IEF1ZGl0b3LDrWEgU1NUPC9kaXY+CiAgPGRpdiBjbGFzcz0id2EtcGF5LWFtb3VudCI+JCAxLjI1MC4wMDAgQ09QPC9kaXY+CiAgPGRpdiBjbGFzcz0id2EtcGF5LXN1YiI+U2FsZG8gJDEuMjUwLjAwMCBhbCBlbnRyZWdhciBpbmZvcm1lPC9kaXY+CiAgPGRpdiBjbGFzcz0id2EtcGF5LWJ0biI+UGFnYXIgYWhvcmE8L2Rpdj4KPC9kaXY+YCwgZGVsYXk6IDE1MDAgfSwKICB7IHRhcmdldDogJ2NsaWVudCcsIHR5cGU6ICdzeXN0ZW0nLCBkYXRhOiAnMTQgbWludXRvcyBkZXNwdcOpcycgfSwKICB7IHRhcmdldDogJ2NsaWVudCcsIHR5cGU6ICd1c2VyJywgZGF0YTogJ0xpc3RvLCB5YSBwYWd1w6kg8J+ZjCcsIGRlbGF5OiAxMDAwIH0sCiAgeyB0YXJnZXQ6ICdjbGllbnQnLCB0eXBlOiAndHlwaW5nJyB9LAogIHsgdGFyZ2V0OiAnY2xpZW50JywgdHlwZTogJ2JvdCcsIGRhdGE6ICdQYWdvIHJlY2liaWRvIOKck1xuXG7CoVRvZG8gY29uZmlybWFkbywgQ2FtaWxhISBUZSB2ZW8gZWwganVldmVzLiBDdWFscXVpZXIgZHVkYSBlc2Nyw61iZW1lIHBvciBhcXXDrS4nLCBkZWxheTogMTEwMCB9LAoKICB7IHRhcmdldDogJ2FkbWluJywgdHlwZTogJ25vdGlmJywgZGF0YTogewogICAgdGl0bGU6ICdQQUdPIFJFQ0lCSURPJywKICAgIGNhcmQ6ICdUcmFuc2FjY2nDs24nLAogICAgcm93czogWwogICAgICBbJ0NsaWVudGUnLCAnTG9nw61zdGljYSBBbmRpbmEnXSwKICAgICAgWydNb250bycsICckIDEuMjUwLjAwMCBDT1AnXSwKICAgICAgWydFc3RhZG8nLCAnQW50aWNpcG8gNTAlJ10KICAgIF0KICB9LCBkZWxheTogMTIwMCB9LAoKICB7IHBoYXNlOiA0IH0sCiAgeyB0YXJnZXQ6ICdhZG1pbicsIHR5cGU6ICdzeXN0ZW0nLCBkYXRhOiAnSnVldmVzIDE0IMK3IDEyOjMwIFBNIMK3IEp1YW4gRmVsaXBlIHRlcm1pbsOzIGxhIHZpc2l0YScgfSwKICB7IHRhcmdldDogJ2FkbWluJywgdHlwZTogJ3VzZXInLCBkYXRhOiAnL3JlcG9ydGUgTG9naXN0aWNhIEFuZGluYScsIGRlbGF5OiAxMDAwIH0sCiAgeyB0YXJnZXQ6ICdhZG1pbicsIHR5cGU6ICd0eXBpbmcnIH0sCiAgeyB0YXJnZXQ6ICdhZG1pbicsIHR5cGU6ICdib3QnLCBkYXRhOiAnwr9Dw7NtbyB0ZSBmdWUsIEp1YW4gRmVsaXBlPyBDdcOpbnRhbWUgbG9zIGhhbGxhemdvcyBlbiBsZW5ndWFqZSBuYXR1cmFsLCB5byBtZSBlbmNhcmdvIGRlIG9yZ2FuaXphcmxvcy4nLCBkZWxheTogMTMwMCB9LAogIHsgdGFyZ2V0OiAnYWRtaW4nLCB0eXBlOiAndXNlcicsIGRhdGE6ICdFbXByZXNhIHRpZW5lIG1hdHJpeiBJUEVSIGRlc2FjdHVhbGl6YWRhIGRlc2RlIDIwMjQuIE5vIHRpZW5lbiBicmlnYWRpc3RhcyBjZXJ0aWZpY2Fkb3MuIEV4dGludG9yZXMgY29uIHJlY2FyZ2EgdmVuY2lkYS4gQ09QQVNTVCBubyBzZSByZcO6bmUgaGFjZSA0IG1lc2VzLiBSaWVzZ28gbWVkaW8tYWx0by4nLCBkZWxheTogMjIwMCB9LAogIHsgdGFyZ2V0OiAnYWRtaW4nLCB0eXBlOiAndHlwaW5nJyB9LAogIHsgdGFyZ2V0OiAnYWRtaW4nLCB0eXBlOiAnYm90JywgZGF0YTogJ8K/UmVjb21lbmRhY2lvbmVzIHkgdGllbXBvIGVzdGltYWRvIGRlIGltcGxlbWVudGFjacOzbj8nLCBkZWxheTogMTMwMCB9LAogIHsgdGFyZ2V0OiAnYWRtaW4nLCB0eXBlOiAndXNlcicsIGRhdGE6ICdBY3R1YWxpemFyIElQRVIsIGNhcGFjaXRhciBicmlnYWRhLCByZWFjdGl2YXIgQ09QQVNTVCwgbWFudGVuaW1pZW50byBleHRpbnRvcmVzLiBFc3RpbW8gNiBzZW1hbmFzLicsIGRlbGF5OiAyMDAwIH0sCiAgeyB0YXJnZXQ6ICdhZG1pbicsIHR5cGU6ICd0eXBpbmcnIH0sCiAgeyB0YXJnZXQ6ICdhZG1pbicsIHR5cGU6ICdib3QnLCBkYXRhOiBg4pyTIFJlcG9ydGUgZ3VhcmRhZG8gZW4gZXhwZWRpZW50ZVxu4pyTIEJvcnJhZG9yIFBERiBnZW5lcmFkb1xu4pyTIFNlcnZpY2lvcyBhZGljaW9uYWxlcyBjYWxjdWxhZG9zCjxkaXYgY2xhc3M9IndhLWNhcmQiPgogIDxkaXYgY2xhc3M9IndhLWNhcmQtdGl0bGUiPkF1ZGl0b3LDrWEgU1NUIMK3IExvZ8Otc3RpY2EgQW5kaW5hPC9kaXY+CiAgPGRpdiBjbGFzcz0id2EtY2FyZC1yb3ciPjxzcGFuPkhhbGxhemdvcyBjcsOtdGljb3M8L3NwYW4+PHN0cm9uZz40PC9zdHJvbmc+PC9kaXY+CiAgPGRpdiBjbGFzcz0id2EtY2FyZC1yb3ciPjxzcGFuPk5pdmVsIHJpZXNnbzwvc3Bhbj48c3Ryb25nIHN0eWxlPSJjb2xvcjojZmY4YWE2Ij5NRURJTy1BTFRPPC9zdHJvbmc+PC9kaXY+CiAgPGRpdiBjbGFzcz0id2EtY2FyZC1yb3ciPjxzcGFuPlNlcnZpY2lvcyBzdWdlcmlkb3M8L3NwYW4+PHN0cm9uZyBzdHlsZT0iY29sb3I6IzAwZDlhYSI+JCA4LjQwMC4wMDA8L3N0cm9uZz48L2Rpdj4KICA8ZGl2IGNsYXNzPSJ3YS1jYXJkLXJvdyI+PHNwYW4+SW1wbGVtZW50YWNpw7NuPC9zcGFuPjxzdHJvbmc+NiBzZW1hbmFzPC9zdHJvbmc+PC9kaXY+CjwvZGl2PmAsIGRlbGF5OiAxODAwIH0sCgogIHsgcGhhc2U6IDUgfSwKICB7IHRhcmdldDogJ2NsaWVudCcsIHR5cGU6ICdzeXN0ZW0nLCBkYXRhOiAnVmllcm5lcyAxNSDCtyA4OjAwIEFNJyB9LAogIHsgdGFyZ2V0OiAnY2xpZW50JywgdHlwZTogJ3R5cGluZycgfSwKICB7IHRhcmdldDogJ2NsaWVudCcsIHR5cGU6ICdib3QnLCBkYXRhOiAnSG9sYSBDYW1pbGEsIGJ1ZW5vcyBkw61hcy4gWWEgdGVuZW1vcyBsaXN0byBlbCBpbmZvcm1lIGNvbXBsZXRvIGRlIGxhIGF1ZGl0b3LDrWEgZGUgYXllci4nLCBkZWxheTogMTQwMCB9LAogIHsgdGFyZ2V0OiAnY2xpZW50JywgdHlwZTogJ3R5cGluZycgfSwKICB7IHRhcmdldDogJ2NsaWVudCcsIHR5cGU6ICdib3QnLCBkYXRhOiBgPGRpdiBjbGFzcz0id2EtZmlsZSI+CiAgPGRpdiBjbGFzcz0id2EtZmlsZS1pY29uIj5QREY8L2Rpdj4KICA8ZGl2IGNsYXNzPSJ3YS1maWxlLWluZm8iPgogICAgPGRpdiBjbGFzcz0id2EtZmlsZS1uYW1lIj5JbmZvcm1lLUF1ZGl0b3JpYS1TU1QucGRmPC9kaXY+CiAgICA8ZGl2IGNsYXNzPSJ3YS1maWxlLW1ldGEiPjIuNCBNQiDCtyAyNCBww6FnaW5hczwvZGl2PgogIDwvZGl2Pgo8L2Rpdj5FbmNvbnRyYW1vcyA0IGhhbGxhemdvcyBjcsOtdGljb3MgcXVlIG5lY2VzaXRhbiBhdGVuY2nDs24gYW50ZXMgZGUgbGEgdmlzaXRhIGRlbCBNaW5pc3RlcmlvLiBKdWFuIEZlbGlwZSBwcmVwYXLDsyB1biBwbGFuIGEgNiBzZW1hbmFzLiDCv0FnZW5kYW1vcyByZXVuacOzbiBwYXJhIHJldmlzYXJsbz9gLCBkZWxheTogMTcwMCB9LAogIHsgdGFyZ2V0OiAnY2xpZW50JywgdHlwZTogJ3VzZXInLCBkYXRhOiAnU8OtLCBwb3IgZmF2b3IuIEVzdG8gc2UgdmUgc2VyaW8nLCBkZWxheTogMTUwMCB9LAogIHsgdGFyZ2V0OiAnY2xpZW50JywgdHlwZTogJ3R5cGluZycgfSwKICB7IHRhcmdldDogJ2NsaWVudCcsIHR5cGU6ICdib3QnLCBkYXRhOiAnVHJhbnF1aWxhLCBwYXJhIGVzbyBlc3RhbW9zIPCfpJ1cblxuSnVhbiBGZWxpcGUgdGllbmUgZXNwYWNpbyBlbCBsdW5lcyAxOCBhIGxhcyAxMCBBTSBvIG1hcnRlcyAxOSBhIGxhcyAzIFBNLiDCv0N1w6FsIHByZWZpZXJlcz8nLCBkZWxheTogMTQwMCB9LAogIHsgdGFyZ2V0OiAnY2xpZW50JywgdHlwZTogJ3VzZXInLCBkYXRhOiAnTHVuZXMgMTAgQU0gcGVyZmVjdG8nLCBkZWxheTogMTIwMCB9LAogIHsgdGFyZ2V0OiAnY2xpZW50JywgdHlwZTogJ3R5cGluZycgfSwKICB7IHRhcmdldDogJ2NsaWVudCcsIHR5cGU6ICdib3QnLCBkYXRhOiAn4pyFIEFnZW5kYWRvIHBhcmEgZWwgbHVuZXMgMTggYSBsYXMgMTAgQU0uXG5cblRlIGxsZWdhcsOhIHJlY29yZGF0b3JpbyBlbCBkb21pbmdvIGEgbGFzIDYgUE0geSBvdHJvIDIgaG9yYXMgYW50ZXMuJywgZGVsYXk6IDEzMDAgfSwKCiAgeyB0YXJnZXQ6ICdjbGllbnQnLCB0eXBlOiAnc3lzdGVtJywgZGF0YTogJ0RvbWluZ28gMTcgwrcgNjowMCBQTSDCtyBSZWNvcmRhdG9yaW8gYXV0b23DoXRpY28nIH0sCiAgeyB0YXJnZXQ6ICdjbGllbnQnLCB0eXBlOiAndHlwaW5nJyB9LAogIHsgdGFyZ2V0OiAnY2xpZW50JywgdHlwZTogJ2JvdCcsIGRhdGE6IGBIb2xhIENhbWlsYSDwn5GLIFJlY29yZGF0b3JpbzogbWHDsWFuYSBsdW5lcyAxMCBBTSB0aWVuZXMgcmV1bmnDs24gY29uIEp1YW4gRmVsaXBlLgo8ZGl2IGNsYXNzPSJ3YS1jYXJkIj4KICA8ZGl2IGNsYXNzPSJ3YS1jYXJkLXRpdGxlIj5UcmFlIHByZXBhcmFkbzwvZGl2PgogIDxkaXYgY2xhc3M9IndhLWNhcmQtcm93Ij48c3Bhbj7igKI8L3NwYW4+PHN0cm9uZz5BY3RhcyBDT1BBU1NUPC9zdHJvbmc+PC9kaXY+CiAgPGRpdiBjbGFzcz0id2EtY2FyZC1yb3ciPjxzcGFuPuKAojwvc3Bhbj48c3Ryb25nPkxpc3RhZG8gZXh0aW50b3Jlczwvc3Ryb25nPjwvZGl2PgogIDxkaXYgY2xhc3M9IndhLWNhcmQtcm93Ij48c3Bhbj7igKI8L3NwYW4+PHN0cm9uZz5NYXRyaXogSVBFUjwvc3Ryb25nPjwvZGl2Pgo8L2Rpdj4Kwr9Db25maXJtYXMgYXNpc3RlbmNpYT9gLCBkZWxheTogMTYwMCB9LAogIHsgdGFyZ2V0OiAnY2xpZW50JywgdHlwZTogJ3VzZXInLCBkYXRhOiAnQ29uZmlybWFkbyDinIUnLCBkZWxheTogMTEwMCB9LAoKICB7IHRhcmdldDogJ2FkbWluJywgdHlwZTogJ3N5c3RlbScsIGRhdGE6ICdMdW5lcyAxOCDCtyA3OjAwIEFNIMK3IEFsZXJ0YSBhdXRvbcOhdGljYScgfSwKICB7IHRhcmdldDogJ2FkbWluJywgdHlwZTogJ2FsZXJ0JywgZGF0YTogewogICAgdGl0bGU6ICdBTEVSVEEgwrcgNSBWRU5DSU1JRU5UT1MgUFLDk1hJTU9TJywKICAgIHRleHQ6ICc1IGNsaWVudGVzIHRpZW5lbiBjZXJ0aWZpY2FjaW9uZXMgdmVuY2llbmRvIGVuIG1lbm9zIGRlIDkwIGTDrWFzLicsCiAgICBjYXJkOiAnVmVuY2ltaWVudG9zJywKICAgIHJvd3M6IFsKICAgICAgWydDb25zdHJ1Y3RvcmEgQW5kZXMgwrcgU1NUJywgJzE1IGTDrWFzJ10sCiAgICAgIFsnVHJhbnNwb3J0ZXMgU3VyIMK3IFBFU1YnLCAnMjggZMOtYXMnXSwKICAgICAgWydJbnZlcnNpb25lcyBNWiDCtyBJU08nLCAnNDUgZMOtYXMnXSwKICAgICAgWydUZWNub2xvZ8OtYSBQbHVzIMK3IFNTVCcsICc2MiBkw61hcyddLAogICAgICBbJ0FsbWFjZW5lcyBSTiDCtyBBbWJpZW50YWwnLCAnNzggZMOtYXMnXQogICAgXSwKICAgIGZvb3RlcjogJ09wb3J0dW5pZGFkOiAkIDI0LjUwMC4wMDAgQ09QJwogIH0sIGRlbGF5OiAxNTAwIH0sCgogIHsgdGFyZ2V0OiAnYWRtaW4nLCB0eXBlOiAndXNlcicsIGRhdGE6ICdNYW5kYSBvZmVydGFzIGRlIHJlbm92YWNpw7NuIGEgbG9zIDUsIGNvbiAxNSUgZGUgZGVzY3VlbnRvIHBvciBhbnRpY2lwYWNpw7NuJywgZGVsYXk6IDIwMDAgfSwKICB7IHRhcmdldDogJ2FkbWluJywgdHlwZTogJ3R5cGluZycgfSwKICB7IHRhcmdldDogJ2FkbWluJywgdHlwZTogJ2JvdCcsIGRhdGE6IGDinJMgNSBwcm9wdWVzdGFzIHBlcnNvbmFsaXphZGFzIGdlbmVyYWRhc1xu4pyTIE1lbnNhamVzIGVudmlhZG9zIHBvciBXaGF0c0FwcCBjb24gbm9tYnJlLCBzZXJ2aWNpbywgZmVjaGEgeSBkZXNjdWVudG8gMTUlXG7inJMgVHJhY2tpbmcgYWN0aXZvXG5cblRlIGF2aXNvIGN1YW5kbyByZXNwb25kYW4uYCwgZGVsYXk6IDE1MDAgfSwKCiAgeyB0YXJnZXQ6ICdhZG1pbicsIHR5cGU6ICd0eXBpbmcnIH0sCiAgeyB0YXJnZXQ6ICdhZG1pbicsIHR5cGU6ICdub3RpZicsIGRhdGE6IHsKICAgIHRpdGxlOiAnUkVTUFVFU1RBIMK3IENPTlNUUlVDVE9SQSBBTkRFUycsCiAgICB0ZXh0OiAnQW5kcmVhIENpZnVlbnRlczogIlPDrSwgcXVpZXJvIGFnZW5kYXIgbGEgcmVub3ZhY2nDs24gYW50aWNpcGFkYSInLAogICAgY2FyZDogJ09wb3J0dW5pZGFkIGFjdGl2YScsCiAgICByb3dzOiBbCiAgICAgIFsnQ2xpZW50ZSBkZXNkZScsICcxNCBtZXNlcyddLAogICAgICBbJ0xUVicsICckIDE4LjcwMC4wMDAnXSwKICAgICAgWydWYWxvciByZW5vdmFjacOzbicsICckIDQuMDgwLjAwMCddLAogICAgICBbJ1Byb2JhYmlsaWRhZCBjaWVycmUnLCAnOTIlJ10KICAgIF0KICB9LCBkZWxheTogMjIwMCB9LAoKICB7IHRhcmdldDogJ2FkbWluJywgdHlwZTogJ3N5c3RlbScsIGRhdGE6ICdNw6FzIHRhcmRlIMK3IFNlZ21lbnRhY2nDs24geSBvZmVydGFzJyB9LAogIHsgdGFyZ2V0OiAnYWRtaW4nLCB0eXBlOiAndXNlcicsIGRhdGE6ICdRdWllcm8gbGFuemFyIHByb21vY2nDs24gZGUgY2FwYWNpdGFjacOzbiBncmF0aXMgcGFyYSBtaXMgcHltZXMgY29uIFNTVCBhY3Rpdm8nLCBkZWxheTogMTgwMCB9LAogIHsgdGFyZ2V0OiAnYWRtaW4nLCB0eXBlOiAndHlwaW5nJyB9LAogIHsgdGFyZ2V0OiAnYWRtaW4nLCB0eXBlOiAnYm90JywgZGF0YTogYExpc3RvLiBTZWdtZW50w6kgdHUgYmFzZToKPGRpdiBjbGFzcz0id2EtY2FyZCI+CiAgPGRpdiBjbGFzcz0id2EtY2FyZC10aXRsZSI+U2VnbWVudG8gb2JqZXRpdm88L2Rpdj4KICA8ZGl2IGNsYXNzPSJ3YS1jYXJkLXJvdyI+PHNwYW4+Q2F0ZWdvcsOtYTwvc3Bhbj48c3Ryb25nPlBZTUU8L3N0cm9uZz48L2Rpdj4KICA8ZGl2IGNsYXNzPSJ3YS1jYXJkLXJvdyI+PHNwYW4+U2VydmljaW8gYWN0aXZvPC9zcGFuPjxzdHJvbmc+U1NUPC9zdHJvbmc+PC9kaXY+CiAgPGRpdiBjbGFzcz0id2EtY2FyZC1yb3ciPjxzcGFuPkNsaWVudGVzPC9zcGFuPjxzdHJvbmcgc3R5bGU9ImNvbG9yOiMwMGQ5YWEiPjI4IGVtcHJlc2FzPC9zdHJvbmc+PC9kaXY+CjwvZGl2PgrCv0NvbmZpcm1hcyBlbnbDrW8gbWFzaXZvP2AsIGRlbGF5OiAxNjAwIH0sCiAgeyB0YXJnZXQ6ICdhZG1pbicsIHR5cGU6ICd1c2VyJywgZGF0YTogJ1PDrSwgY29uZsOtcm1hbG8nLCBkZWxheTogMTEwMCB9LAogIHsgdGFyZ2V0OiAnYWRtaW4nLCB0eXBlOiAndHlwaW5nJyB9LAogIHsgdGFyZ2V0OiAnYWRtaW4nLCB0eXBlOiAnYm90JywgZGF0YTogJ+KckyAyOCBtZW5zYWplcyBlbnZpYWRvcyBwb3IgV2hhdHNBcHAgQnVzaW5lc3NcbuKckyBUcmFja2luZyBhY3Rpdm86IGFwZXJ0dXJhcywgcmVzcHVlc3RhcywgY29udmVyc2lvbmVzXG7inJMgRGFzaGJvYXJkIGFjdHVhbGl6YWRvIGVuIHRpZW1wbyByZWFsJywgZGVsYXk6IDE1MDAgfSwKCiAgeyB0YXJnZXQ6ICdhZG1pbicsIHR5cGU6ICd1c2VyJywgZGF0YTogJ011w6lzdHJhbWUgZWwgcmVzdW1lbiBkZWwgbWVzJywgZGVsYXk6IDE4MDAgfSwKICB7IHRhcmdldDogJ2FkbWluJywgdHlwZTogJ3R5cGluZycgfSwKICB7IHRhcmdldDogJ2FkbWluJywgdHlwZTogJ2JvdCcsIGRhdGE6IGA8ZGl2IGNsYXNzPSJ3YS1jYXJkIj4KICA8ZGl2IGNsYXNzPSJ3YS1jYXJkLXRpdGxlIj5EYXNoYm9hcmQgbm92aWVtYnJlPC9kaXY+CiAgPGRpdiBjbGFzcz0id2EtY2FyZC1yb3ciPjxzcGFuPkxlYWRzIHJlY2liaWRvczwvc3Bhbj48c3Ryb25nPjQ3PC9zdHJvbmc+PC9kaXY+CiAgPGRpdiBjbGFzcz0id2EtY2FyZC1yb3ciPjxzcGFuPkNhbGlmaWNhZG9zPC9zcGFuPjxzdHJvbmc+MzIgKDY4JSk8L3N0cm9uZz48L2Rpdj4KICA8ZGl2IGNsYXNzPSJ3YS1jYXJkLXJvdyI+PHNwYW4+QWdlbmRhZGFzPC9zcGFuPjxzdHJvbmc+MTg8L3N0cm9uZz48L2Rpdj4KICA8ZGl2IGNsYXNzPSJ3YS1jYXJkLXJvdyI+PHNwYW4+Q2VycmFkYXM8L3NwYW4+PHN0cm9uZyBzdHlsZT0iY29sb3I6IzAwZDlhYSI+MTQ8L3N0cm9uZz48L2Rpdj4KICA8ZGl2IGNsYXNzPSJ3YS1jYXJkLXJvdyI+PHNwYW4+SW5ncmVzb3M8L3NwYW4+PHN0cm9uZyBzdHlsZT0iY29sb3I6IzAwZDlhYSI+JCAzOC41TTwvc3Ryb25nPjwvZGl2Pgo8L2Rpdj4KPGRpdiBjbGFzcz0id2EtY2FyZCI+CiAgPGRpdiBjbGFzcz0id2EtY2FyZC10aXRsZSI+UGlwZWxpbmUgYWN0aXZvPC9kaXY+CiAgPGRpdiBjbGFzcz0id2EtY2FyZC1yb3ciPjxzcGFuPlJlbm92YWNpb25lczwvc3Bhbj48c3Ryb25nPjU8L3N0cm9uZz48L2Rpdj4KICA8ZGl2IGNsYXNzPSJ3YS1jYXJkLXJvdyI+PHNwYW4+T3BvcnR1bmlkYWQ8L3NwYW4+PHN0cm9uZyBzdHlsZT0iY29sb3I6IzAwZDlhYSI+JCAyNC41TTwvc3Ryb25nPjwvZGl2PgogIDxkaXYgY2xhc3M9IndhLWNhcmQtcm93Ij48c3Bhbj5DYW1wYcOxYXM8L3NwYW4+PHN0cm9uZz4yIGFjdGl2YXM8L3N0cm9uZz48L2Rpdj4KPC9kaXY+YCwgZGVsYXk6IDE4MDAgfSwKCiAgeyB0YXJnZXQ6ICdjbGllbnQnLCB0eXBlOiAnc3lzdGVtJywgZGF0YTogJ0RlbW8gY29tcGxldGFkbyDCtyBjaWNsbyBjb21wbGV0bycgfSwKICB7IHRhcmdldDogJ2FkbWluJywgdHlwZTogJ3N5c3RlbScsIGRhdGE6ICdEZW1vIGNvbXBsZXRhZG8gwrcgQm90IDI0LzcnIH0KXTsKCmZ1bmN0aW9uIGVsKGlkKSB7IHJldHVybiBkb2N1bWVudC5nZXRFbGVtZW50QnlJZChpZCk7IH0KZnVuY3Rpb24gc2Nyb2xsQ2hhdChjaGF0SWQpIHsgY29uc3QgYyA9IGVsKGNoYXRJZCk7IGMuc2Nyb2xsVG9wID0gYy5zY3JvbGxIZWlnaHQ7IH0KZnVuY3Rpb24gdGltZSgpIHsKICBjb25zdCBoID0gbmV3IERhdGUoKS5nZXRIb3VycygpOwogIGNvbnN0IG0gPSBTdHJpbmcobmV3IERhdGUoKS5nZXRNaW51dGVzKCkpLnBhZFN0YXJ0KDIsICcwJyk7CiAgcmV0dXJuIChoICUgMTIgfHwgMTIpICsgJzonICsgbSArICcgJyArIChoID49IDEyID8gJ3AubS4nIDogJ2EubS4nKTsKfQoKZnVuY3Rpb24gc2V0UGhhc2UobikgewogIGRvY3VtZW50LnF1ZXJ5U2VsZWN0b3JBbGwoJy5waGFzZS1pdGVtJykuZm9yRWFjaChpdGVtID0+IHsKICAgIGNvbnN0IHAgPSBwYXJzZUludChpdGVtLmRhdGFzZXQucGhhc2UpOwogICAgaXRlbS5jbGFzc0xpc3QucmVtb3ZlKCdhY3RpdmUnLCAnZG9uZScpOwogICAgaWYgKHAgPCBuKSBpdGVtLmNsYXNzTGlzdC5hZGQoJ2RvbmUnKTsKICAgIGlmIChwID09PSBuKSBpdGVtLmNsYXNzTGlzdC5hZGQoJ2FjdGl2ZScpOwogIH0pOwp9CgpmdW5jdGlvbiBzaG93VHlwaW5nKGNoYXRJZCkgewogIGhpZGVUeXBpbmcoY2hhdElkKTsKICBjb25zdCBzdGF0dXNJZCA9IGNoYXRJZCA9PT0gJ2NsaWVudENoYXQnID8gJ2NsaWVudFN0YXR1cycgOiAnYWRtaW5TdGF0dXMnOwogIGVsKHN0YXR1c0lkKS50ZXh0Q29udGVudCA9ICdlc2NyaWJpZW5kby4uLic7CiAgY29uc3QgdCA9IGRvY3VtZW50LmNyZWF0ZUVsZW1lbnQoJ2RpdicpOwogIHQuY2xhc3NOYW1lID0gJ3R5cGluZyc7CiAgdC5pZCA9ICd0eXBpbmctJyArIGNoYXRJZDsKICB0LmlubmVySFRNTCA9ICc8c3Bhbj48L3NwYW4+PHNwYW4+PC9zcGFuPjxzcGFuPjwvc3Bhbj4nOwogIGVsKGNoYXRJZCkuYXBwZW5kQ2hpbGQodCk7CiAgc2Nyb2xsQ2hhdChjaGF0SWQpOwp9CgpmdW5jdGlvbiBoaWRlVHlwaW5nKGNoYXRJZCkgewogIGNvbnN0IHQgPSBlbCgndHlwaW5nLScgKyBjaGF0SWQpOwogIGlmICh0KSB0LnJlbW92ZSgpOwogIGNvbnN0IHN0YXR1c0lkID0gY2hhdElkID09PSAnY2xpZW50Q2hhdCcgPyAnY2xpZW50U3RhdHVzJyA6ICdhZG1pblN0YXR1cyc7CiAgZWwoc3RhdHVzSWQpLnRleHRDb250ZW50ID0gJ2VuIGzDrW5lYSc7Cn0KCmZ1bmN0aW9uIGFkZE1lc3NhZ2UoY2hhdElkLCB0eXBlLCBodG1sKSB7CiAgaGlkZVR5cGluZyhjaGF0SWQpOwogIGlmICh0eXBlID09PSAnc3lzdGVtJykgewogICAgY29uc3QgbXNnID0gZG9jdW1lbnQuY3JlYXRlRWxlbWVudCgnZGl2Jyk7CiAgICBtc2cuY2xhc3NOYW1lID0gJ21zZy1zeXN0ZW0nOwogICAgbXNnLmlubmVySFRNTCA9IGh0bWw7CiAgICBlbChjaGF0SWQpLmFwcGVuZENoaWxkKG1zZyk7CiAgfSBlbHNlIGlmICh0eXBlID09PSAnbm90aWYnIHx8IHR5cGUgPT09ICdhbGVydCcpIHsKICAgIGNvbnN0IG1zZyA9IGRvY3VtZW50LmNyZWF0ZUVsZW1lbnQoJ2RpdicpOwogICAgbXNnLmNsYXNzTmFtZSA9ICdtc2cgJyArIHR5cGU7CiAgICBtc2cuaW5uZXJIVE1MID0gaHRtbCArIGA8c3BhbiBjbGFzcz0ibXNnLXRpbWUiPiR7dGltZSgpfTwvc3Bhbj5gOwogICAgZWwoY2hhdElkKS5hcHBlbmRDaGlsZChtc2cpOwogIH0gZWxzZSB7CiAgICBjb25zdCBtc2cgPSBkb2N1bWVudC5jcmVhdGVFbGVtZW50KCdkaXYnKTsKICAgIG1zZy5jbGFzc05hbWUgPSAnbXNnICcgKyB0eXBlOwogICAgbXNnLmlubmVySFRNTCA9IGh0bWwgKyBgPHNwYW4gY2xhc3M9Im1zZy10aW1lIj4ke3RpbWUoKX08L3NwYW4+YDsKICAgIGVsKGNoYXRJZCkuYXBwZW5kQ2hpbGQobXNnKTsKICB9CiAgc2Nyb2xsQ2hhdChjaGF0SWQpOwp9CgpmdW5jdGlvbiByZW5kZXJOb3RpZihkYXRhKSB7CiAgbGV0IHRhZ3NIdG1sID0gJyc7CiAgaWYgKGRhdGEudGFncykgewogICAgdGFnc0h0bWwgPSAnPGRpdiBzdHlsZT0ibWFyZ2luLWJvdHRvbTo1cHgiPicgKyBkYXRhLnRhZ3MubWFwKHQgPT4gYDxzcGFuIGNsYXNzPSJ0YWctcGlsbCAke3QuY2xzfSI+JHt0LnR4dH08L3NwYW4+YCkuam9pbignJykgKyAnPC9kaXY+JzsKICB9CiAgbGV0IHRleHRIdG1sID0gZGF0YS50ZXh0ID8gYDxkaXYgc3R5bGU9Im1hcmdpbi1ib3R0b206NHB4Ij4ke2RhdGEudGV4dH08L2Rpdj5gIDogJyc7CiAgbGV0IGNhcmRIdG1sID0gJyc7CiAgaWYgKGRhdGEuY2FyZCAmJiBkYXRhLnJvd3MpIHsKICAgIGNhcmRIdG1sID0gYDxkaXYgY2xhc3M9IndhLWNhcmQiPjxkaXYgY2xhc3M9IndhLWNhcmQtdGl0bGUiPiR7ZGF0YS5jYXJkfTwvZGl2PmAgKwogICAgICBkYXRhLnJvd3MubWFwKHIgPT4gYDxkaXYgY2xhc3M9IndhLWNhcmQtcm93Ij48c3Bhbj4ke3JbMF19PC9zcGFuPjxzdHJvbmc+JHtyWzFdfTwvc3Ryb25nPjwvZGl2PmApLmpvaW4oJycpICsKICAgICAgYDwvZGl2PmA7CiAgfQogIGxldCBmb290ZXJIdG1sID0gZGF0YS5mb290ZXIgPyBgPGRpdiBzdHlsZT0iZm9udC1zaXplOjEwcHg7Y29sb3I6Izg2OTZhMDttYXJnaW4tdG9wOjRweDtmb250LWZhbWlseTpKZXRCcmFpbnMgTW9ubyxtb25vc3BhY2UiPiR7ZGF0YS5mb290ZXJ9PC9kaXY+YCA6ICcnOwogIHJldHVybiBgPGRpdiBjbGFzcz0ibm90aWYtaGVhZGVyIj4ke2RhdGEudGl0bGV9PC9kaXY+JHt0YWdzSHRtbH0ke3RleHRIdG1sfSR7Y2FyZEh0bWx9JHtmb290ZXJIdG1sfWA7Cn0KCmZ1bmN0aW9uIHJlbmRlckFsZXJ0KGRhdGEpIHsKICBsZXQgdGV4dEh0bWwgPSBkYXRhLnRleHQgPyBgPGRpdiBzdHlsZT0ibWFyZ2luLWJvdHRvbTo0cHgiPiR7ZGF0YS50ZXh0fTwvZGl2PmAgOiAnJzsKICBsZXQgY2FyZEh0bWwgPSAnJzsKICBpZiAoZGF0YS5jYXJkICYmIGRhdGEucm93cykgewogICAgY2FyZEh0bWwgPSBgPGRpdiBjbGFzcz0id2EtY2FyZCI+PGRpdiBjbGFzcz0id2EtY2FyZC10aXRsZSI+JHtkYXRhLmNhcmR9PC9kaXY+YCArCiAgICAgIGRhdGEucm93cy5tYXAociA9PiBgPGRpdiBjbGFzcz0id2EtY2FyZC1yb3ciPjxzcGFuPiR7clswXX08L3NwYW4+PHN0cm9uZz4ke3JbMV19PC9zdHJvbmc+PC9kaXY+YCkuam9pbignJykgKwogICAgICBgPC9kaXY+YDsKICB9CiAgbGV0IGZvb3Rlckh0bWwgPSBkYXRhLmZvb3RlciA/IGA8ZGl2IHN0eWxlPSJmb250LXNpemU6MTBweDtjb2xvcjojZmZkMTY2O21hcmdpbi10b3A6NHB4O2ZvbnQtZmFtaWx5OkpldEJyYWlucyBNb25vLG1vbm9zcGFjZSI+JHtkYXRhLmZvb3Rlcn08L2Rpdj5gIDogJyc7CiAgcmV0dXJuIGA8ZGl2IGNsYXNzPSJhbGVydC1oZWFkZXIiPiR7ZGF0YS50aXRsZX08L2Rpdj4ke3RleHRIdG1sfSR7Y2FyZEh0bWx9JHtmb290ZXJIdG1sfWA7Cn0KCmZ1bmN0aW9uIGV4ZWN1dGVTdGVwKHN0ZXApIHsKICBpZiAoc3RlcC5waGFzZSAhPT0gdW5kZWZpbmVkKSB7CiAgICBzZXRQaGFzZShzdGVwLnBoYXNlKTsKICAgIHJldHVybiAxMDA7CiAgfQogIGNvbnN0IGNoYXRJZCA9IHN0ZXAudGFyZ2V0ID09PSAnY2xpZW50JyA/ICdjbGllbnRDaGF0JyA6ICdhZG1pbkNoYXQnOwogIGlmIChzdGVwLnR5cGUgPT09ICd0eXBpbmcnKSB7CiAgICBzaG93VHlwaW5nKGNoYXRJZCk7CiAgICByZXR1cm4gKHN0ZXAuZHVyYXRpb24gfHwgMTAwMCkgKiBzcGVlZDsKICB9CiAgaWYgKHN0ZXAudHlwZSA9PT0gJ3N5c3RlbScpIHsKICAgIGFkZE1lc3NhZ2UoY2hhdElkLCAnc3lzdGVtJywgc3RlcC5kYXRhKTsKICAgIHJldHVybiA3MDAgKiBzcGVlZDsKICB9CiAgaWYgKHN0ZXAudHlwZSA9PT0gJ3VzZXInKSB7CiAgICBhZGRNZXNzYWdlKGNoYXRJZCwgJ3VzZXInLCBzdGVwLmRhdGEpOwogICAgcmV0dXJuIChzdGVwLmRlbGF5IHx8IDEwMDApICogc3BlZWQ7CiAgfQogIGlmIChzdGVwLnR5cGUgPT09ICdib3QnKSB7CiAgICBhZGRNZXNzYWdlKGNoYXRJZCwgJ2JvdCcsIHN0ZXAuZGF0YSk7CiAgICByZXR1cm4gKHN0ZXAuZGVsYXkgfHwgMTAwMCkgKiBzcGVlZDsKICB9CiAgaWYgKHN0ZXAudHlwZSA9PT0gJ25vdGlmJykgewogICAgYWRkTWVzc2FnZShjaGF0SWQsICdub3RpZicsIHJlbmRlck5vdGlmKHN0ZXAuZGF0YSkpOwogICAgcmV0dXJuIChzdGVwLmRlbGF5IHx8IDEyMDApICogc3BlZWQ7CiAgfQogIGlmIChzdGVwLnR5cGUgPT09ICdhbGVydCcpIHsKICAgIGFkZE1lc3NhZ2UoY2hhdElkLCAnYWxlcnQnLCByZW5kZXJBbGVydChzdGVwLmRhdGEpKTsKICAgIHJldHVybiAoc3RlcC5kZWxheSB8fCAxMjAwKSAqIHNwZWVkOwogIH0KICByZXR1cm4gNTAwOwp9CgpmdW5jdGlvbiB1cGRhdGVQcm9ncmVzcygpIHsKICBlbCgnc3RlcE51bScpLnRleHRDb250ZW50ID0gY3VycmVudFN0ZXA7CiAgZWwoJ3N0ZXBUb3RhbCcpLnRleHRDb250ZW50ID0gc2NyaXB0Lmxlbmd0aDsKfQoKZnVuY3Rpb24gcGxheU5leHRBdXRvKCkgewogIGlmICghcGxheWluZykgcmV0dXJuOwogIGlmIChjdXJyZW50U3RlcCA+PSBzY3JpcHQubGVuZ3RoKSB7CiAgICBwbGF5aW5nID0gZmFsc2U7CiAgICBlbCgncGxheUJ0bicpLmlubmVySFRNTCA9ICfinJMgQ09NUExFVE8nOwogICAgcmV0dXJuOwogIH0KICBjb25zdCBzdGVwID0gc2NyaXB0W2N1cnJlbnRTdGVwXTsKICBjb25zdCBkdXJhdGlvbiA9IGV4ZWN1dGVTdGVwKHN0ZXApOwogIGN1cnJlbnRTdGVwKys7CiAgdXBkYXRlUHJvZ3Jlc3MoKTsKICBjb25zdCB0ID0gc2V0VGltZW91dChwbGF5TmV4dEF1dG8sIGR1cmF0aW9uKTsKICB0aW1lb3V0cy5wdXNoKHQpOwp9CgpmdW5jdGlvbiB0b2dnbGVQbGF5KCkgewogIGlmIChjdXJyZW50U3RlcCA+PSBzY3JpcHQubGVuZ3RoKSB7CiAgICByZXNldERlbW8oKTsKICAgIHJldHVybjsKICB9CiAgcGxheWluZyA9ICFwbGF5aW5nOwogIGlmIChwbGF5aW5nKSB7CiAgICBlbCgncGxheUJ0bicpLmlubmVySFRNTCA9ICfij7ggUEFVU0FSJzsKICAgIHBsYXlOZXh0QXV0bygpOwogIH0gZWxzZSB7CiAgICBlbCgncGxheUJ0bicpLmlubmVySFRNTCA9ICfilrYgQ09OVElOVUFSJzsKICAgIHRpbWVvdXRzLmZvckVhY2godCA9PiBjbGVhclRpbWVvdXQodCkpOwogICAgdGltZW91dHMgPSBbXTsKICB9Cn0KCmZ1bmN0aW9uIG5leHRTdGVwKCkgewogIGlmIChwbGF5aW5nKSB7CiAgICBwbGF5aW5nID0gZmFsc2U7CiAgICBlbCgncGxheUJ0bicpLmlubmVySFRNTCA9ICfilrYgQ09OVElOVUFSJzsKICAgIHRpbWVvdXRzLmZvckVhY2godCA9PiBjbGVhclRpbWVvdXQodCkpOwogICAgdGltZW91dHMgPSBbXTsKICB9CiAgaWYgKGN1cnJlbnRTdGVwID49IHNjcmlwdC5sZW5ndGgpIHJldHVybjsKICBjb25zdCBzdGVwID0gc2NyaXB0W2N1cnJlbnRTdGVwXTsKICBleGVjdXRlU3RlcChzdGVwKTsKICBjdXJyZW50U3RlcCsrOwogIHVwZGF0ZVByb2dyZXNzKCk7Cn0KCmZ1bmN0aW9uIGNoYW5nZVNwZWVkKCkgewogIHNwZWVkID0gcGFyc2VGbG9hdChlbCgnc3BlZWRTZWxlY3QnKS52YWx1ZSk7Cn0KCmZ1bmN0aW9uIHJlc2V0RGVtbygpIHsKICBwbGF5aW5nID0gZmFsc2U7CiAgY3VycmVudFN0ZXAgPSAwOwogIHRpbWVvdXRzLmZvckVhY2godCA9PiBjbGVhclRpbWVvdXQodCkpOwogIHRpbWVvdXRzID0gW107CiAgZWwoJ2NsaWVudENoYXQnKS5pbm5lckhUTUwgPSAnJzsKICBlbCgnYWRtaW5DaGF0JykuaW5uZXJIVE1MID0gJyc7CiAgc2V0UGhhc2UoMSk7CiAgdXBkYXRlUHJvZ3Jlc3MoKTsKICBzZXRUaW1lb3V0KCgpID0+IHsKICAgIHBsYXlpbmcgPSB0cnVlOwogICAgZWwoJ3BsYXlCdG4nKS5pbm5lckhUTUwgPSAn4o+4IFBBVVNBUic7CiAgICBwbGF5TmV4dEF1dG8oKTsKICB9LCA1MDApOwp9Cgp3aW5kb3cuYWRkRXZlbnRMaXN0ZW5lcignbG9hZCcsICgpID0+IHsKICB1cGRhdGVQcm9ncmVzcygpOwogIHNldFRpbWVvdXQoKCkgPT4gewogICAgcGxheWluZyA9IHRydWU7CiAgICBwbGF5TmV4dEF1dG8oKTsKICB9LCA4MDApOwp9KTsKPC9zY3JpcHQ+Cgo8L2JvZHk+CjwvaHRtbD4K" title="Demo Bot Auditorías"></iframe>
+    </div>
 
-  { target: 'admin', type: 'typing' },
-  { target: 'admin', type: 'notif', data: {
-    title: 'NUEVO LEAD · SCORE 87/100',
-    tags: [{txt:'PRIORITARIO', cls:'warn'},{txt:'MID-MARKET', cls:''},{txt:'SST', cls:''}],
-    card: 'Datos del prospecto',
-    rows: [
-      ['Nombre', 'Camila Restrepo'],
-      ['Empresa', 'Logística Andina S.A.S.'],
-      ['Servicio', 'Auditoría SST'],
-      ['Tamaño', '47 colaboradores'],
-      ['Ciudad', 'Bogotá - Fontibón'],
-      ['Urgencia', 'ALTA · 2 meses']
-    ],
-    footer: 'Asignado a Juan Felipe'
-  }, delay: 1300 },
-
-  { phase: 2 },
-  { target: 'client', type: 'typing' },
-  { target: 'client', type: 'bot', data: 'Por la urgencia y el tamaño de tu empresa, te voy a conectar con Juan Felipe Mayorga, nuestro auditor líder en SST.\n\nReviso su agenda... un momento ⏳', delay: 1500 },
-  { target: 'client', type: 'typing', duration: 2000 },
-  { target: 'client', type: 'bot', data: `Estos son sus horarios disponibles esta semana:
-<div class="wa-card">
-  <div class="wa-card-title">Horarios disponibles</div>
-  <div class="wa-card-row"><span>Miércoles 13</span><strong>10:00 AM</strong></div>
-  <div class="wa-card-row"><span>Miércoles 13</span><strong>3:00 PM</strong></div>
-  <div class="wa-card-row"><span>Jueves 14</span><strong>9:00 AM</strong></div>
-  <div class="wa-card-row"><span>Viernes 15</span><strong>2:00 PM</strong></div>
-</div>
-¿Cuál te queda mejor?`, delay: 1500 },
-  { target: 'client', type: 'user', data: 'El jueves 14 a las 9 AM me funciona perfecto', delay: 1500 },
-
-  { target: 'admin', type: 'typing' },
-  { target: 'admin', type: 'notif', data: {
-    title: 'AGENDAMIENTO CONFIRMADO',
-    text: 'Camila Restrepo eligió horario',
-    card: 'Detalles',
-    rows: [
-      ['Fecha', 'Jueves 14 · 9:00 AM'],
-      ['Duración', '3 horas en sitio'],
-      ['Auditor', 'Juan Felipe Mayorga']
-    ],
-    footer: 'Creado en Google Calendar'
-  }, delay: 1200 },
-  { target: 'admin', type: 'typing' },
-  { target: 'admin', type: 'bot', data: '✓ Evento creado en Google Calendar\n✓ Invitación enviada a Juan Felipe\n✓ Cliente notificado por WhatsApp\n✓ Recordatorios programados (24h y 2h antes)', delay: 1500 },
-
-  { target: 'client', type: 'typing' },
-  { target: 'client', type: 'bot', data: '¡Confirmado, Camila! ✅\n\nYa te envié la invitación a tu correo y queda agendado en Google Calendar.', delay: 1300 },
-  { target: 'client', type: 'typing' },
-  { target: 'client', type: 'bot', data: `<div class="wa-card">
-  <div class="wa-card-title">Tu auditoría está agendada</div>
-  <div class="wa-card-row"><span>Auditor</span><strong>Juan Felipe</strong></div>
-  <div class="wa-card-row"><span>Fecha</span><strong>Jue 14 · 9:00 AM</strong></div>
-  <div class="wa-card-row"><span>Duración</span><strong>3 horas</strong></div>
-  <div class="wa-card-row"><span>Lugar</span><strong>Sede Fontibón</strong></div>
-</div>`, delay: 1100 },
-
-  { phase: 3 },
-  { target: 'client', type: 'typing' },
-  { target: 'client', type: 'bot', data: `Para asegurar el cupo, te paso el link de pago del anticipo (50%):
-<div class="wa-pay">
-  <div class="wa-pay-label">Pago anticipo · Auditoría SST</div>
-  <div class="wa-pay-amount">$ 1.250.000 COP</div>
-  <div class="wa-pay-sub">Saldo $1.250.000 al entregar informe</div>
-  <div class="wa-pay-btn">Pagar ahora</div>
-</div>`, delay: 1500 },
-  { target: 'client', type: 'system', data: '14 minutos después' },
-  { target: 'client', type: 'user', data: 'Listo, ya pagué 🙌', delay: 1000 },
-  { target: 'client', type: 'typing' },
-  { target: 'client', type: 'bot', data: 'Pago recibido ✓\n\n¡Todo confirmado, Camila! Te veo el jueves. Cualquier duda escríbeme por aquí.', delay: 1100 },
-
-  { target: 'admin', type: 'notif', data: {
-    title: 'PAGO RECIBIDO',
-    card: 'Transacción',
-    rows: [
-      ['Cliente', 'Logística Andina'],
-      ['Monto', '$ 1.250.000 COP'],
-      ['Estado', 'Anticipo 50%']
-    ]
-  }, delay: 1200 },
-
-  { phase: 4 },
-  { target: 'admin', type: 'system', data: 'Jueves 14 · 12:30 PM · Juan Felipe terminó la visita' },
-  { target: 'admin', type: 'user', data: '/reporte Logistica Andina', delay: 1000 },
-  { target: 'admin', type: 'typing' },
-  { target: 'admin', type: 'bot', data: '¿Cómo te fue, Juan Felipe? Cuéntame los hallazgos en lenguaje natural, yo me encargo de organizarlos.', delay: 1300 },
-  { target: 'admin', type: 'user', data: 'Empresa tiene matriz IPER desactualizada desde 2024. No tienen brigadistas certificados. Extintores con recarga vencida. COPASST no se reúne hace 4 meses. Riesgo medio-alto.', delay: 2200 },
-  { target: 'admin', type: 'typing' },
-  { target: 'admin', type: 'bot', data: '¿Recomendaciones y tiempo estimado de implementación?', delay: 1300 },
-  { target: 'admin', type: 'user', data: 'Actualizar IPER, capacitar brigada, reactivar COPASST, mantenimiento extintores. Estimo 6 semanas.', delay: 2000 },
-  { target: 'admin', type: 'typing' },
-  { target: 'admin', type: 'bot', data: `✓ Reporte guardado en expediente\n✓ Borrador PDF generado\n✓ Servicios adicionales calculados
-<div class="wa-card">
-  <div class="wa-card-title">Auditoría SST · Logística Andina</div>
-  <div class="wa-card-row"><span>Hallazgos críticos</span><strong>4</strong></div>
-  <div class="wa-card-row"><span>Nivel riesgo</span><strong style="color:#ff8aa6">MEDIO-ALTO</strong></div>
-  <div class="wa-card-row"><span>Servicios sugeridos</span><strong style="color:#00d9aa">$ 8.400.000</strong></div>
-  <div class="wa-card-row"><span>Implementación</span><strong>6 semanas</strong></div>
-</div>`, delay: 1800 },
-
-  { phase: 5 },
-  { target: 'client', type: 'system', data: 'Viernes 15 · 8:00 AM' },
-  { target: 'client', type: 'typing' },
-  { target: 'client', type: 'bot', data: 'Hola Camila, buenos días. Ya tenemos listo el informe completo de la auditoría de ayer.', delay: 1400 },
-  { target: 'client', type: 'typing' },
-  { target: 'client', type: 'bot', data: `<div class="wa-file">
-  <div class="wa-file-icon">PDF</div>
-  <div class="wa-file-info">
-    <div class="wa-file-name">Informe-Auditoria-SST.pdf</div>
-    <div class="wa-file-meta">2.4 MB · 24 páginas</div>
+    <div class="demo-hint">↑ <span>El demo arranca automáticamente</span> · pausa, avanza o reinicia con los controles</div>
   </div>
-</div>Encontramos 4 hallazgos críticos que necesitan atención antes de la visita del Ministerio. Juan Felipe preparó un plan a 6 semanas. ¿Agendamos reunión para revisarlo?`, delay: 1700 },
-  { target: 'client', type: 'user', data: 'Sí, por favor. Esto se ve serio', delay: 1500 },
-  { target: 'client', type: 'typing' },
-  { target: 'client', type: 'bot', data: 'Tranquila, para eso estamos 🤝\n\nJuan Felipe tiene espacio el lunes 18 a las 10 AM o martes 19 a las 3 PM. ¿Cuál prefieres?', delay: 1400 },
-  { target: 'client', type: 'user', data: 'Lunes 10 AM perfecto', delay: 1200 },
-  { target: 'client', type: 'typing' },
-  { target: 'client', type: 'bot', data: '✅ Agendado para el lunes 18 a las 10 AM.\n\nTe llegará recordatorio el domingo a las 6 PM y otro 2 horas antes.', delay: 1300 },
+</section>
 
-  { target: 'client', type: 'system', data: 'Domingo 17 · 6:00 PM · Recordatorio automático' },
-  { target: 'client', type: 'typing' },
-  { target: 'client', type: 'bot', data: `Hola Camila 👋 Recordatorio: mañana lunes 10 AM tienes reunión con Juan Felipe.
-<div class="wa-card">
-  <div class="wa-card-title">Trae preparado</div>
-  <div class="wa-card-row"><span>•</span><strong>Actas COPASST</strong></div>
-  <div class="wa-card-row"><span>•</span><strong>Listado extintores</strong></div>
-  <div class="wa-card-row"><span>•</span><strong>Matriz IPER</strong></div>
-</div>
-¿Confirmas asistencia?`, delay: 1600 },
-  { target: 'client', type: 'user', data: 'Confirmado ✅', delay: 1100 },
+<section>
+  <div class="container">
+    <div class="section-label">/ SOLUCIÓN POR FASES</div>
+    <h2 class="section-title">3 bots. 3 fases. 1 sistema completo.</h2>
 
-  { target: 'admin', type: 'system', data: 'Lunes 18 · 7:00 AM · Alerta automática' },
-  { target: 'admin', type: 'alert', data: {
-    title: 'ALERTA · 5 VENCIMIENTOS PRÓXIMOS',
-    text: '5 clientes tienen certificaciones venciendo en menos de 90 días.',
-    card: 'Vencimientos',
-    rows: [
-      ['Constructora Andes · SST', '15 días'],
-      ['Transportes Sur · PESV', '28 días'],
-      ['Inversiones MZ · ISO', '45 días'],
-      ['Tecnología Plus · SST', '62 días'],
-      ['Almacenes RN · Ambiental', '78 días']
-    ],
-    footer: 'Oportunidad: $ 24.500.000 COP'
-  }, delay: 1500 },
+    <div class="fase">
+      <div class="fase-tag">
+        <span class="num">01</span>
+        FASE COMERCIAL
+      </div>
+      <div class="fase-content">
+        <h3>Bot Captador & Calificador</h3>
+        <p class="resumen">El bot reemplaza el formulario web y atiende cada lead que llega por WhatsApp o Telegram en menos de 30 segundos, 24/7.</p>
+        <ul class="fase-features">
+          <li>Califica al prospecto: tamaño de empresa, sector, urgencia, presupuesto</li>
+          <li>Segmenta automáticamente por servicio: SST, ISO, PESV, ambiental, auditoría</li>
+          <li>Agenda directamente en tu calendario la reunión de diagnóstico</li>
+          <li>Envía portafolio personalizado según el interés detectado</li>
+          <li>Notifica a tu equipo cuando entra un lead caliente con score asignado</li>
+        </ul>
+        <div class="fase-deliverable"><strong>ENTREGABLE:</strong> Bot operativo + integración WhatsApp Business + dashboard de leads + capacitación equipo. Tiempo: 30 días.</div>
+      </div>
+    </div>
 
-  { target: 'admin', type: 'user', data: 'Manda ofertas de renovación a los 5, con 15% de descuento por anticipación', delay: 2000 },
-  { target: 'admin', type: 'typing' },
-  { target: 'admin', type: 'bot', data: `✓ 5 propuestas personalizadas generadas\n✓ Mensajes enviados por WhatsApp con nombre, servicio, fecha y descuento 15%\n✓ Tracking activo\n\nTe aviso cuando respondan.`, delay: 1500 },
+    <div class="fase">
+      <div class="fase-tag">
+        <span class="num">02</span>
+        FASE OPERATIVA
+      </div>
+      <div class="fase-content">
+        <h3>Bot de Cumplimiento & Renovaciones</h3>
+        <p class="resumen">Este es el bot que te genera plata pasiva. Lleva el control interno de los vencimientos de cada cliente y te avisa cuándo es momento de vender la renovación.</p>
+        <ul class="fase-features">
+          <li>Base de datos centralizada de certificaciones por cliente</li>
+          <li>Alertas automáticas 90, 60 y 30 días antes de cada vencimiento</li>
+          <li>Genera propuesta de renovación pre-llenada lista para enviar</li>
+          <li>Dashboard de proyección de ingresos por renovaciones futuras</li>
+          <li>Recordatorios de entregables internos del equipo (auditorías, informes)</li>
+        </ul>
+        <div class="fase-deliverable"><strong>ENTREGABLE:</strong> Bot interno + base de datos + sistema de alertas + reporte mensual de oportunidades. Tiempo: 30 días.</div>
+      </div>
+    </div>
 
-  { target: 'admin', type: 'typing' },
-  { target: 'admin', type: 'notif', data: {
-    title: 'RESPUESTA · CONSTRUCTORA ANDES',
-    text: 'Andrea Cifuentes: "Sí, quiero agendar la renovación anticipada"',
-    card: 'Oportunidad activa',
-    rows: [
-      ['Cliente desde', '14 meses'],
-      ['LTV', '$ 18.700.000'],
-      ['Valor renovación', '$ 4.080.000'],
-      ['Probabilidad cierre', '92%']
-    ]
-  }, delay: 2200 },
+    <div class="fase">
+      <div class="fase-tag">
+        <span class="num">03</span>
+        FASE FIDELIZACIÓN
+      </div>
+      <div class="fase-content">
+        <h3>Bot Cliente & Soporte</h3>
+        <p class="resumen">Cada cliente activo de Anticolapsus tiene su propio canal con el bot. Eleva tu servicio percibido sin sumar carga operativa al equipo.</p>
+        <ul class="fase-features">
+          <li>Estado en tiempo real de proyectos, auditorías y entregables</li>
+          <li>Repositorio de documentos: políticas SST, planes PESV, manuales ISO</li>
+          <li>Calendario de capacitaciones y recordatorios automáticos al personal</li>
+          <li>Canal directo para reportar incidentes o solicitar soporte</li>
+          <li>Encuestas automáticas de satisfacción post-entrega</li>
+        </ul>
+        <div class="fase-deliverable"><strong>ENTREGABLE:</strong> Bot multi-cliente + onboarding de empresas + integración con tu equipo de outsourcing. Tiempo: 30 días.</div>
+      </div>
+    </div>
 
-  { target: 'admin', type: 'system', data: 'Más tarde · Segmentación y ofertas' },
-  { target: 'admin', type: 'user', data: 'Quiero lanzar promoción de capacitación gratis para mis pymes con SST activo', delay: 1800 },
-  { target: 'admin', type: 'typing' },
-  { target: 'admin', type: 'bot', data: `Listo. Segmenté tu base:
-<div class="wa-card">
-  <div class="wa-card-title">Segmento objetivo</div>
-  <div class="wa-card-row"><span>Categoría</span><strong>PYME</strong></div>
-  <div class="wa-card-row"><span>Servicio activo</span><strong>SST</strong></div>
-  <div class="wa-card-row"><span>Clientes</span><strong style="color:#00d9aa">28 empresas</strong></div>
-</div>
-¿Confirmas envío masivo?`, delay: 1600 },
-  { target: 'admin', type: 'user', data: 'Sí, confírmalo', delay: 1100 },
-  { target: 'admin', type: 'typing' },
-  { target: 'admin', type: 'bot', data: '✓ 28 mensajes enviados por WhatsApp Business\n✓ Tracking activo: aperturas, respuestas, conversiones\n✓ Dashboard actualizado en tiempo real', delay: 1500 },
+  </div>
+</section>
 
-  { target: 'admin', type: 'user', data: 'Muéstrame el resumen del mes', delay: 1800 },
-  { target: 'admin', type: 'typing' },
-  { target: 'admin', type: 'bot', data: `<div class="wa-card">
-  <div class="wa-card-title">Dashboard noviembre</div>
-  <div class="wa-card-row"><span>Leads recibidos</span><strong>47</strong></div>
-  <div class="wa-card-row"><span>Calificados</span><strong>32 (68%)</strong></div>
-  <div class="wa-card-row"><span>Agendadas</span><strong>18</strong></div>
-  <div class="wa-card-row"><span>Cerradas</span><strong style="color:#00d9aa">14</strong></div>
-  <div class="wa-card-row"><span>Ingresos</span><strong style="color:#00d9aa">$ 38.5M</strong></div>
-</div>
-<div class="wa-card">
-  <div class="wa-card-title">Pipeline activo</div>
-  <div class="wa-card-row"><span>Renovaciones</span><strong>5</strong></div>
-  <div class="wa-card-row"><span>Oportunidad</span><strong style="color:#00d9aa">$ 24.5M</strong></div>
-  <div class="wa-card-row"><span>Campañas</span><strong>2 activas</strong></div>
-</div>`, delay: 1800 },
+<section>
+  <div class="container">
+    <div class="section-label">/ POR QUÉ JARVIS</div>
+    <h2 class="section-title">El diferencial es radical: todo desde Telegram.</h2>
 
-  { target: 'client', type: 'system', data: 'Demo completado · ciclo completo' },
-  { target: 'admin', type: 'system', data: 'Demo completado · Bot 24/7' }
-];
+    <div class="dif-grid">
+      <div class="dif-card">
+        <div class="icon">01</div>
+        <h4>Sin paneles web</h4>
+        <p>Tu equipo no aprende software nuevo. Si saben usar WhatsApp, ya saben usar Jarvis.</p>
+      </div>
+      <div class="dif-card">
+        <div class="icon">02</div>
+        <h4>Adopción inmediata</h4>
+        <p>Curva de aprendizaje cero. El bot se siente como una conversación natural.</p>
+      </div>
+      <div class="dif-card">
+        <div class="icon">03</div>
+        <h4>Escalable</h4>
+        <p>Maneja 10 leads o 10.000 sin contratar gente nueva. La operación crece sola.</p>
+      </div>
+      <div class="dif-card">
+        <div class="icon">04</div>
+        <h4>Construido a la medida</h4>
+        <p>No es una plantilla. Cada bot se diseña al lenguaje, procesos y servicios de Anticolapsus.</p>
+      </div>
+    </div>
+  </div>
+</section>
 
-function el(id) { return document.getElementById(id); }
-function scrollChat(chatId) { const c = el(chatId); c.scrollTop = c.scrollHeight; }
-function time() {
-  const h = new Date().getHours();
-  const m = String(new Date().getMinutes()).padStart(2, '0');
-  return (h % 12 || 12) + ':' + m + ' ' + (h >= 12 ? 'p.m.' : 'a.m.');
-}
+<section>
+  <div class="container">
+    <div class="section-label">/ ROADMAP</div>
+    <h2 class="section-title">Cómo se ejecuta cada fase.</h2>
 
-function setPhase(n) {
-  document.querySelectorAll('.phase-item').forEach(item => {
-    const p = parseInt(item.dataset.phase);
-    item.classList.remove('active', 'done');
-    if (p < n) item.classList.add('done');
-    if (p === n) item.classList.add('active');
-  });
-}
+    <div class="timeline">
+      <div class="timeline-step">
+        <div class="week">SEMANA 01</div>
+        <h5>Discovery</h5>
+        <p>Levantamos procesos actuales, scripts comerciales y datos de clientes.</p>
+      </div>
+      <div class="timeline-step">
+        <div class="week">SEMANA 02</div>
+        <h5>Diseño</h5>
+        <p>Construimos flujos conversacionales y validamos contigo cada respuesta.</p>
+      </div>
+      <div class="timeline-step">
+        <div class="week">SEMANA 03</div>
+        <h5>Build & Test</h5>
+        <p>Desarrollo del bot, pruebas internas con leads reales en ambiente controlado.</p>
+      </div>
+      <div class="timeline-step">
+        <div class="week">SEMANA 04</div>
+        <h5>Lanzamiento</h5>
+        <p>Salida en vivo, capacitación equipo, monitoreo y ajustes de la primera semana.</p>
+      </div>
+    </div>
+  </div>
+</section>
 
-function showTyping(chatId) {
-  hideTyping(chatId);
-  const statusId = chatId === 'clientChat' ? 'clientStatus' : 'adminStatus';
-  el(statusId).textContent = 'escribiendo...';
-  const t = document.createElement('div');
-  t.className = 'typing';
-  t.id = 'typing-' + chatId;
-  t.innerHTML = '<span></span><span></span><span></span>';
-  el(chatId).appendChild(t);
-  scrollChat(chatId);
-}
 
-function hideTyping(chatId) {
-  const t = el('typing-' + chatId);
-  if (t) t.remove();
-  const statusId = chatId === 'clientChat' ? 'clientStatus' : 'adminStatus';
-  el(statusId).textContent = 'en línea';
-}
+<section>
+  <div class="container">
+    <div class="section-label">/ INVERSIÓN</div>
+    <h2 class="section-title">Un pago único + mantenimiento mensual claro.</h2>
 
-function addMessage(chatId, type, html) {
-  hideTyping(chatId);
-  if (type === 'system') {
-    const msg = document.createElement('div');
-    msg.className = 'msg-system';
-    msg.innerHTML = html;
-    el(chatId).appendChild(msg);
-  } else if (type === 'notif' || type === 'alert') {
-    const msg = document.createElement('div');
-    msg.className = 'msg ' + type;
-    msg.innerHTML = html + `<span class="msg-time">${time()}</span>`;
-    el(chatId).appendChild(msg);
-  } else {
-    const msg = document.createElement('div');
-    msg.className = 'msg ' + type;
-    msg.innerHTML = html + `<span class="msg-time">${time()}</span>`;
-    el(chatId).appendChild(msg);
-  }
-  scrollChat(chatId);
-}
+    <div class="quote-wrapper">
+      <div class="quote-main">
+        <div class="quote-label">/ DESARROLLO BOT AUDITORÍAS</div>
+        <div class="quote-price"><span class="currency">$</span>5.000.000<span class="cop"> COP</span></div>
+        <div class="quote-sub">Pago único de desarrollo · Se divide 50/50</div>
 
-function renderNotif(data) {
-  let tagsHtml = '';
-  if (data.tags) {
-    tagsHtml = '<div style="margin-bottom:5px">' + data.tags.map(t => `<span class="tag-pill ${t.cls}">${t.txt}</span>`).join('') + '</div>';
-  }
-  let textHtml = data.text ? `<div style="margin-bottom:4px">${data.text}</div>` : '';
-  let cardHtml = '';
-  if (data.card && data.rows) {
-    cardHtml = `<div class="wa-card"><div class="wa-card-title">${data.card}</div>` +
-      data.rows.map(r => `<div class="wa-card-row"><span>${r[0]}</span><strong>${r[1]}</strong></div>`).join('') +
-      `</div>`;
-  }
-  let footerHtml = data.footer ? `<div style="font-size:10px;color:#8696a0;margin-top:4px;font-family:JetBrains Mono,monospace">${data.footer}</div>` : '';
-  return `<div class="notif-header">${data.title}</div>${tagsHtml}${textHtml}${cardHtml}${footerHtml}`;
-}
+        <div class="payment-split">
+          <div class="pay-item">
+            <div class="pay-pct">50%</div>
+            <div class="pay-amount">$ 2.500.000 COP</div>
+            <div class="pay-when">Al firmar e iniciar desarrollo</div>
+          </div>
+          <div class="pay-item">
+            <div class="pay-pct">50%</div>
+            <div class="pay-amount">$ 2.500.000 COP</div>
+            <div class="pay-when">Al entregar el bot funcionando</div>
+          </div>
+        </div>
 
-function renderAlert(data) {
-  let textHtml = data.text ? `<div style="margin-bottom:4px">${data.text}</div>` : '';
-  let cardHtml = '';
-  if (data.card && data.rows) {
-    cardHtml = `<div class="wa-card"><div class="wa-card-title">${data.card}</div>` +
-      data.rows.map(r => `<div class="wa-card-row"><span>${r[0]}</span><strong>${r[1]}</strong></div>`).join('') +
-      `</div>`;
-  }
-  let footerHtml = data.footer ? `<div style="font-size:10px;color:#ffd166;margin-top:4px;font-family:JetBrains Mono,monospace">${data.footer}</div>` : '';
-  return `<div class="alert-header">${data.title}</div>${textHtml}${cardHtml}${footerHtml}`;
-}
+        <div class="monthly-block">
+          <div class="monthly-tag">+ MANTENIMIENTO MENSUAL</div>
+          <div class="monthly-price"><span class="currency">$</span>200.000<span class="cop"> COP / mes</span></div>
+          <div class="monthly-includes">
+            <div class="monthly-item">
+              <span class="check">✓</span>
+              <span><strong>Reporte semanal automático</strong> con estado de cada cliente activo</span>
+            </div>
+            <div class="monthly-item">
+              <span class="check">✓</span>
+              <span><strong>Alertas de vencimientos</strong> de certificaciones SST, ISO, PESV y ambientales</span>
+            </div>
+            <div class="monthly-item">
+              <span class="check">✓</span>
+              <span><strong>Recordatorios de auditorías</strong> próximas y pendientes por cobrar</span>
+            </div>
+            <div class="monthly-item">
+              <span class="check">✓</span>
+              <span><strong>Hosting y mantenimiento</strong> del bot 24/7 en infraestructura propia</span>
+            </div>
+            <div class="monthly-item">
+              <span class="check">✓</span>
+              <span><strong>Soporte continuo</strong> y pequeños ajustes mensuales sin costo adicional</span>
+            </div>
+          </div>
+        </div>
+      </div>
 
-function executeStep(step) {
-  if (step.phase !== undefined) {
-    setPhase(step.phase);
-    return 100;
-  }
-  const chatId = step.target === 'client' ? 'clientChat' : 'adminChat';
-  if (step.type === 'typing') {
-    showTyping(chatId);
-    return (step.duration || 1000) * speed;
-  }
-  if (step.type === 'system') {
-    addMessage(chatId, 'system', step.data);
-    return 700 * speed;
-  }
-  if (step.type === 'user') {
-    addMessage(chatId, 'user', step.data);
-    return (step.delay || 1000) * speed;
-  }
-  if (step.type === 'bot') {
-    addMessage(chatId, 'bot', step.data);
-    return (step.delay || 1000) * speed;
-  }
-  if (step.type === 'notif') {
-    addMessage(chatId, 'notif', renderNotif(step.data));
-    return (step.delay || 1200) * speed;
-  }
-  if (step.type === 'alert') {
-    addMessage(chatId, 'alert', renderAlert(step.data));
-    return (step.delay || 1200) * speed;
-  }
-  return 500;
-}
+      <div class="quote-side">
+        <div class="quote-card">
+          <div class="step-num">PASO 01 · DISCOVERY</div>
+          <h4>Documentos de arranque</h4>
+          <p>Primero te envío unos documentos para que llenes con la información clave del bot: qué responder, tono, servicios, precios, scripts comerciales, preguntas frecuentes. Esto define cómo va a hablar tu bot.</p>
+        </div>
+        <div class="quote-card">
+          <div class="step-num">PASO 02 · DESARROLLO</div>
+          <h4>Construcción y validación</h4>
+          <p>Con esa información construyo el bot, lo entreno y te lo paso para pruebas. Lo ajustamos hasta que te quede como lo quieres. Después lo dejamos en producción.</p>
+        </div>
+      </div>
+    </div>
 
-function updateProgress() {
-  el('stepNum').textContent = currentStep;
-  el('stepTotal').textContent = script.length;
-}
+    <h3 style="font-family:'Syne',sans-serif;font-size:24px;font-weight:700;margin-top:48px;margin-bottom:16px;letter-spacing:-0.02em">Qué incluye exactamente</h3>
 
-function playNextAuto() {
-  if (!playing) return;
-  if (currentStep >= script.length) {
-    playing = false;
-    el('playBtn').innerHTML = '✓ COMPLETO';
-    return;
-  }
-  const step = script[currentStep];
-  const duration = executeStep(step);
-  currentStep++;
-  updateProgress();
-  const t = setTimeout(playNextAuto, duration);
-  timeouts.push(t);
-}
+    <div class="includes-grid">
+      <div class="include-item">
+        <div class="num-tag">/ 01</div>
+        <h5>Bot comercial WhatsApp</h5>
+        <p>Atiende leads 24/7, los califica, segmenta por servicio (SST, ISO, PESV, etc.) y responde dudas iniciales con la información que tú definas.</p>
+      </div>
+      <div class="include-item">
+        <div class="num-tag">/ 02</div>
+        <h5>Agendamiento automático</h5>
+        <p>El bot muestra horarios disponibles, agenda directo en Google Calendar e invita al auditor. Sin intervención manual.</p>
+      </div>
+      <div class="include-item">
+        <div class="num-tag">/ 03</div>
+        <h5>Cierre y link de pago</h5>
+        <p>Genera y envía el link de pago al cliente, confirma cuando se recibe el anticipo y notifica al admin.</p>
+      </div>
+      <div class="include-item">
+        <div class="num-tag">/ 04</div>
+        <h5>Chat para auditores</h5>
+        <p>Canal separado donde los auditores cargan reportes de visita en lenguaje natural. El bot organiza, guarda y notifica al admin.</p>
+      </div>
+      <div class="include-item">
+        <div class="num-tag">/ 05</div>
+        <h5>Base de datos centralizada</h5>
+        <p>Toda la información (clientes, reportes, citas, pagos) queda almacenada y consultable desde el chat de administración.</p>
+      </div>
+      <div class="include-item">
+        <div class="num-tag">/ 06</div>
+        <h5>Seguimiento post-venta</h5>
+        <p>Recordatorios automáticos de citas, entrega de informes y seguimiento de implementación con el cliente.</p>
+      </div>
+    </div>
 
-function togglePlay() {
-  if (currentStep >= script.length) {
-    resetDemo();
-    return;
-  }
-  playing = !playing;
-  if (playing) {
-    el('playBtn').innerHTML = '⏸ PAUSAR';
-    playNextAuto();
-  } else {
-    el('playBtn').innerHTML = '▶ CONTINUAR';
-    timeouts.forEach(t => clearTimeout(t));
-    timeouts = [];
-  }
-}
+    <div class="bonus-section">
+      <span class="bonus-tag">BONUS · sin costo adicional</span>
+      <h3>Funciones extra que incluyo en estos $5M</h3>
+      <p style="color:var(--text-dim);font-size:14px;margin-bottom:12px">Para que el bot quede lo más completo posible:</p>
+      <ul class="bonus-list">
+        <li><strong>Categorización automática</strong> de clientes por tamaño, urgencia y servicio</li>
+        <li><strong>Alertas de vencimiento</strong> de certificaciones SST, ISO y PESV</li>
+        <li><strong>Envío de ofertas segmentadas</strong> (renovaciones, capacitaciones, paquetes)</li>
+        <li><strong>Dashboard de métricas</strong> consultable desde el chat admin</li>
+        <li><strong>Recordatorios programables</strong> en lenguaje natural</li>
+        <li><strong>Capacitación a tu equipo</strong> en el uso del sistema</li>
+        <li><strong>30 días de soporte</strong> post-entrega para ajustes</li>
+      </ul>
+    </div>
+  </div>
+</section>
 
-function nextStep() {
-  if (playing) {
-    playing = false;
-    el('playBtn').innerHTML = '▶ CONTINUAR';
-    timeouts.forEach(t => clearTimeout(t));
-    timeouts = [];
-  }
-  if (currentStep >= script.length) return;
-  const step = script[currentStep];
-  executeStep(step);
-  currentStep++;
-  updateProgress();
-}
+<section class="cta">
+  <div class="container">
+    <h2>Listos para <em>arrancar</em>.</h2>
+    <p>Firmamos, pagas el primer 50%, te envío los documentos de discovery y en pocas semanas tienes tu bot funcionando. Sin contratos largos. Sin lock-in.</p>
+    <a class="cta-btn" href="#">→ AGENDEMOS ARRANQUE</a>
+  </div>
+</section>
 
-function changeSpeed() {
-  speed = parseFloat(el('speedSelect').value);
-}
-
-function resetDemo() {
-  playing = false;
-  currentStep = 0;
-  timeouts.forEach(t => clearTimeout(t));
-  timeouts = [];
-  el('clientChat').innerHTML = '';
-  el('adminChat').innerHTML = '';
-  setPhase(1);
-  updateProgress();
-  setTimeout(() => {
-    playing = true;
-    el('playBtn').innerHTML = '⏸ PAUSAR';
-    playNextAuto();
-  }, 500);
-}
-
-window.addEventListener('load', () => {
-  updateProgress();
-  setTimeout(() => {
-    playing = true;
-    playNextAuto();
-  }, 800);
-});
-</script>
+<footer>
+  <div class="container">
+    <div class="footer-row">
+      <div>JARVIS_AGENCY · AI BOTS FOR LATAM SMBS</div>
+      <div>jarvis-pg.vercel.app</div>
+    </div>
+  </div>
+</footer>
 
 </body>
 </html>
