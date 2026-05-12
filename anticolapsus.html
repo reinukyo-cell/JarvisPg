@@ -686,11 +686,149 @@
   }
   .footer-row { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 16px; }
   @media (max-width: 768px) {
-    .fase { grid-template-columns: 1fr; gap: 16px; }
-    .fase-tag .num { font-size: 48px; }
+    /* GLOBAL */
+    .container { padding: 0 16px; }
+
+    /* HEADER */
+    header { padding: 14px 0; }
+    .nav { padding: 0 16px; }
+    .logo { font-size: 18px; }
+    .nav-meta { font-size: 9px; }
+
+    /* HERO */
+    .hero { padding: 50px 0 40px; }
+    .hero-tag { font-size: 10px; margin-bottom: 16px; }
+    .hero-tag::before { width: 20px; }
+    .hero h1 {
+      font-size: 36px !important;
+      line-height: 1;
+      word-wrap: break-word;
+      overflow-wrap: break-word;
+    }
+    .hero p.lead { font-size: 16px; }
+    .hero-meta {
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-top: 36px;
+      padding-top: 28px;
+    }
+    .meta-item .label { font-size: 9px; }
+    .meta-item .value { font-size: 14px; }
+
+    /* SECCIONES */
+    section { padding: 50px 0; }
+    .section-title { font-size: 28px !important; margin-bottom: 32px; }
+    .section-label { font-size: 10px; }
+
+    /* DIAGNÓSTICO */
+    .diag-grid { grid-template-columns: 1fr; }
+    .diag-card { padding: 22px; }
+
+    /* FASES */
+    .fase { grid-template-columns: 1fr; gap: 16px; padding: 32px 0; }
+    .fase-tag .num { font-size: 44px; }
+    .fase-content h3 { font-size: 24px; }
+    .fase-content .resumen { font-size: 15px; }
+    .fase-features li { font-size: 14px; }
+
+    /* DIFERENCIAL */
+    .dif-grid { grid-template-columns: 1fr 1fr; gap: 12px; }
+    .dif-card { padding: 20px; }
+    .dif-card .icon { font-size: 28px; }
+    .dif-card h4 { font-size: 15px; }
+    .dif-card p { font-size: 12.5px; }
+
+    /* TIMELINE */
     .timeline { grid-template-columns: 1fr; }
     .timeline-step { border-right: none; border-bottom: 1px solid var(--line); }
     .timeline-step:last-child { border-bottom: none; }
+
+    /* DEMO */
+    .demo-iframe { height: 720px; }
+    .demo-intro p { font-size: 14px; }
+    .demo-frame-bar { padding: 10px 14px; }
+    .demo-frame-label { font-size: 10px; margin-left: 10px; }
+    .demo-frame-dot { width: 9px; height: 9px; }
+
+    /* COTIZACIÓN */
+    .quote-wrapper { grid-template-columns: 1fr; gap: 20px; margin-top: 24px; }
+    .quote-main {
+      padding: 24px 20px;
+      border-left-width: 3px;
+    }
+    .quote-main::before { width: 120px; height: 120px; }
+    .quote-label { font-size: 10px; margin-bottom: 12px; }
+    .quote-price {
+      font-size: 48px !important;
+      line-height: 1;
+      word-wrap: break-word;
+    }
+    .quote-price .currency {
+      font-size: 0.35em;
+      margin-right: 4px;
+    }
+    .quote-price .cop {
+      font-size: 0.22em;
+      display: inline-block;
+      margin-left: 4px;
+    }
+    .quote-sub { font-size: 13px; margin-bottom: 20px; }
+    .payment-split { gap: 10px; margin-top: 18px; }
+    .pay-item { padding: 14px 12px; }
+    .pay-item .pay-pct { font-size: 28px; }
+    .pay-item .pay-amount { font-size: 12px; }
+    .pay-item .pay-when { font-size: 11px; }
+
+    /* MENSUALIDAD */
+    .monthly-block { margin-top: 24px; padding-top: 22px; }
+    .monthly-tag { font-size: 9px; padding: 4px 10px; margin-bottom: 12px; }
+    .monthly-price {
+      font-size: 32px !important;
+      word-wrap: break-word;
+      margin-bottom: 14px;
+    }
+    .monthly-price .currency { font-size: 0.4em; }
+    .monthly-price .cop {
+      font-size: 0.26em;
+      display: inline-block;
+    }
+    .monthly-includes { gap: 8px; }
+    .monthly-item { font-size: 12.5px; gap: 10px; }
+
+    /* QUOTE SIDE */
+    .quote-side { gap: 12px; }
+    .quote-card { padding: 22px 20px; }
+    .quote-card h4 { font-size: 16px; }
+    .quote-card p { font-size: 13px; }
+    .step-num { font-size: 10px; }
+
+    /* INCLUDES */
+    .includes-grid { grid-template-columns: 1fr; gap: 12px; margin-top: 22px; }
+    .include-item { padding: 18px; }
+    .include-item h5 { font-size: 15px; }
+
+    /* BONUS */
+    .bonus-section { padding: 24px 20px; margin-top: 32px; }
+    .bonus-section h3 { font-size: 18px; }
+    .bonus-list { grid-template-columns: 1fr; gap: 8px; }
+    .bonus-list li { font-size: 13px; padding: 10px 14px; }
+    .bonus-tag { font-size: 9px; padding: 3px 10px; }
+
+    /* CTA */
+    .cta { padding: 60px 0; }
+    .cta h2 { font-size: 36px; }
+    .cta p { font-size: 15px; }
+    .cta-btn { padding: 14px 28px; font-size: 12px; }
+  }
+
+  @media (max-width: 480px) {
+    .hero h1 { font-size: 28px !important; }
+    .section-title { font-size: 22px !important; }
+    .quote-price { font-size: 38px !important; }
+    .monthly-price { font-size: 26px !important; }
+    .hero-meta { grid-template-columns: 1fr; }
+    .dif-grid { grid-template-columns: 1fr; }
+    .payment-split { grid-template-columns: 1fr; }
   }
   .fade-in { opacity: 0; transform: translateY(20px); animation: fadeIn 0.8s forwards; }
   .fade-in:nth-child(2) { animation-delay: 0.1s; }
