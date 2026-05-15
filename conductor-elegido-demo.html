@@ -1,0 +1,845 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Demo Bot Conductor Elegido — Jarvis Agency AI</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0e0d;
+    --panel: #111817;
+    --panel-2: #161f1d;
+    --border: #1f2c29;
+    --green: #25d366;
+    --green-dark: #128c7e;
+    --whatsapp-bg: #efeae2;
+    --whatsapp-out: #d9fdd3;
+    --whatsapp-in: #ffffff;
+    --text: #e8f0ee;
+    --text-dim: #7a8f8a;
+    --accent: #ff6b35;
+    --warning: #ffb627;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Space Grotesk', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    overflow-x: hidden;
+    background-image:
+      radial-gradient(circle at 20% 10%, rgba(37,211,102,0.06) 0%, transparent 40%),
+      radial-gradient(circle at 80% 80%, rgba(255,107,53,0.04) 0%, transparent 40%);
+  }
+
+  /* Header */
+  header {
+    padding: 24px 40px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: rgba(10,14,13,0.8);
+    backdrop-filter: blur(10px);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .logo {
+    font-weight: 700;
+    font-size: 18px;
+    letter-spacing: -0.02em;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .logo-dot {
+    width: 10px;
+    height: 10px;
+    background: var(--green);
+    border-radius: 50%;
+    box-shadow: 0 0 12px var(--green);
+    animation: pulse 2s infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
+  }
+  .header-meta {
+    display: flex;
+    gap: 24px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--text-dim);
+  }
+  .status-live {
+    color: var(--green);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  /* Main grid */
+  .container {
+    padding: 32px 40px;
+    max-width: 1600px;
+    margin: 0 auto;
+  }
+  .hero {
+    margin-bottom: 32px;
+  }
+  .hero h1 {
+    font-size: clamp(28px, 4vw, 42px);
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    line-height: 1.05;
+    margin-bottom: 8px;
+  }
+  .hero h1 span {
+    color: var(--green);
+  }
+  .hero p {
+    color: var(--text-dim);
+    font-size: 15px;
+    max-width: 600px;
+  }
+
+  /* Stats */
+  .stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin-bottom: 32px;
+  }
+  .stat {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px;
+    position: relative;
+    overflow: hidden;
+  }
+  .stat-label {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--text-dim);
+    margin-bottom: 8px;
+    font-family: 'JetBrains Mono', monospace;
+  }
+  .stat-value {
+    font-size: 32px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+  }
+  .stat-trend {
+    font-size: 12px;
+    color: var(--green);
+    margin-top: 4px;
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  /* Main layout */
+  .main-grid {
+    display: grid;
+    grid-template-columns: 320px 1fr 320px;
+    gap: 20px;
+  }
+
+  /* Sidebar drivers */
+  .panel {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    overflow: hidden;
+  }
+  .panel-header {
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .panel-title {
+    font-weight: 600;
+    font-size: 14px;
+    letter-spacing: -0.01em;
+  }
+  .panel-count {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--text-dim);
+    background: var(--panel-2);
+    padding: 3px 8px;
+    border-radius: 6px;
+  }
+
+  .driver {
+    padding: 14px 20px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    transition: all 0.3s;
+  }
+  .driver:last-child { border-bottom: none; }
+  .driver-avatar {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #2a3936, #1a2624);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    font-size: 14px;
+    color: var(--text);
+    flex-shrink: 0;
+    position: relative;
+  }
+  .driver-status {
+    position: absolute;
+    bottom: -2px;
+    right: -2px;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    border: 2px solid var(--panel);
+  }
+  .status-free { background: var(--green); }
+  .status-busy { background: var(--warning); }
+  .status-off { background: #555; }
+
+  .driver-info {
+    flex: 1;
+    min-width: 0;
+  }
+  .driver-name {
+    font-size: 13px;
+    font-weight: 500;
+    margin-bottom: 2px;
+  }
+  .driver-meta {
+    font-size: 11px;
+    color: var(--text-dim);
+    font-family: 'JetBrains Mono', monospace;
+  }
+  .driver.assigning {
+    background: rgba(37, 211, 102, 0.08);
+    animation: flashGreen 1s ease;
+  }
+  @keyframes flashGreen {
+    0% { background: rgba(37, 211, 102, 0.3); }
+    100% { background: rgba(37, 211, 102, 0.08); }
+  }
+
+  /* WhatsApp chat */
+  .chat-stage {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+  .phone {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    height: 620px;
+  }
+  .phone-header {
+    background: var(--green-dark);
+    padding: 12px 16px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: white;
+  }
+  .phone-avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    font-weight: 600;
+  }
+  .phone-name {
+    flex: 1;
+  }
+  .phone-name-top {
+    font-size: 14px;
+    font-weight: 600;
+  }
+  .phone-name-bottom {
+    font-size: 11px;
+    opacity: 0.85;
+  }
+  .phone-tag {
+    font-size: 10px;
+    background: rgba(255,255,255,0.15);
+    padding: 3px 8px;
+    border-radius: 4px;
+    font-family: 'JetBrains Mono', monospace;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  .phone-body {
+    flex: 1;
+    background: var(--whatsapp-bg);
+    background-image:
+      repeating-linear-gradient(45deg, rgba(0,0,0,0.015) 0, rgba(0,0,0,0.015) 1px, transparent 1px, transparent 12px);
+    padding: 16px 12px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .phone-body::-webkit-scrollbar { width: 4px; }
+  .phone-body::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.15); border-radius: 2px; }
+
+  .msg {
+    max-width: 78%;
+    padding: 7px 10px 8px 10px;
+    border-radius: 8px;
+    font-size: 13px;
+    line-height: 1.4;
+    color: #111;
+    position: relative;
+    word-wrap: break-word;
+    opacity: 0;
+    transform: translateY(8px);
+    animation: msgIn 0.35s ease forwards;
+    box-shadow: 0 1px 0.5px rgba(0,0,0,0.13);
+  }
+  @keyframes msgIn {
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .msg-in {
+    background: var(--whatsapp-in);
+    align-self: flex-start;
+    border-top-left-radius: 2px;
+  }
+  .msg-out {
+    background: var(--whatsapp-out);
+    align-self: flex-end;
+    border-top-right-radius: 2px;
+  }
+  .msg-time {
+    font-size: 10px;
+    color: rgba(0,0,0,0.45);
+    text-align: right;
+    margin-top: 2px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 3px;
+  }
+  .msg-check {
+    color: #53bdeb;
+    font-size: 12px;
+  }
+  .msg strong { font-weight: 600; }
+
+  /* Group chat - sender label */
+  .msg-sender {
+    font-size: 11px;
+    font-weight: 600;
+    margin-bottom: 2px;
+    display: block;
+  }
+  .sender-c1 { color: #e91e63; }
+  .sender-c2 { color: #1976d2; }
+  .sender-c3 { color: #388e3c; }
+  .sender-c4 { color: #f57c00; }
+  .sender-c5 { color: #7b1fa2; }
+  .sender-bot { color: #128c7e; }
+
+  .phone-avatar-group {
+    background: linear-gradient(135deg, #25d366, #128c7e) !important;
+  }
+  .msg-system {
+    background: rgba(255,235,180,0.85);
+    align-self: center;
+    font-size: 11px;
+    color: #5a4a1a;
+    padding: 5px 12px;
+    border-radius: 8px;
+    text-align: center;
+    max-width: 90%;
+  }
+  .msg-bot-action {
+    background: rgba(37,211,102,0.1);
+    border-left: 3px solid var(--green);
+    align-self: center;
+    font-size: 11px;
+    font-family: 'JetBrains Mono', monospace;
+    color: #1a5938;
+    padding: 6px 12px;
+    border-radius: 4px;
+    max-width: 92%;
+  }
+  .typing {
+    display: inline-flex;
+    gap: 3px;
+    padding: 4px 0;
+  }
+  .typing span {
+    width: 6px;
+    height: 6px;
+    background: #999;
+    border-radius: 50%;
+    animation: typing 1.4s infinite;
+  }
+  .typing span:nth-child(2) { animation-delay: 0.2s; }
+  .typing span:nth-child(3) { animation-delay: 0.4s; }
+  @keyframes typing {
+    0%, 60%, 100% { transform: translateY(0); opacity: 0.4; }
+    30% { transform: translateY(-4px); opacity: 1; }
+  }
+
+  /* Right sidebar - logs */
+  .log {
+    padding: 12px 20px;
+    border-bottom: 1px solid var(--border);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    opacity: 0;
+    transform: translateX(8px);
+    animation: logIn 0.4s ease forwards;
+  }
+  @keyframes logIn {
+    to { opacity: 1; transform: translateX(0); }
+  }
+  .log-time {
+    color: var(--text-dim);
+    font-size: 10px;
+    margin-bottom: 4px;
+  }
+  .log-event {
+    color: var(--text);
+    line-height: 1.5;
+  }
+  .log-event b { color: var(--green); font-weight: 500; }
+  .log-event .tag-warn { color: var(--warning); }
+  .log-event .tag-alert { color: var(--accent); }
+
+  /* Replay button */
+  .replay {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    background: var(--green);
+    color: #003c1f;
+    border: none;
+    padding: 14px 22px;
+    border-radius: 100px;
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 600;
+    font-size: 14px;
+    cursor: pointer;
+    box-shadow: 0 8px 24px rgba(37,211,102,0.3);
+    transition: transform 0.2s;
+    z-index: 200;
+  }
+  .replay:hover { transform: translateY(-2px); }
+
+  .scenario-tag {
+    display: inline-block;
+    background: var(--panel-2);
+    border: 1px solid var(--border);
+    color: var(--text-dim);
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    padding: 4px 10px;
+    border-radius: 4px;
+    font-family: 'JetBrains Mono', monospace;
+    margin-bottom: 12px;
+  }
+
+  @media (max-width: 1200px) {
+    .main-grid { grid-template-columns: 1fr; }
+    .stats { grid-template-columns: repeat(2, 1fr); }
+  }
+
+  @media (max-width: 768px) {
+    header { padding: 16px 16px; }
+    .logo { font-size: 13px; }
+    .header-meta { display: none; }
+    .container { padding: 16px 10px; }
+    .hero h1 { font-size: 22px; }
+    .hero p { font-size: 13px; }
+    .stats { grid-template-columns: repeat(2, 1fr); gap: 8px; margin-bottom: 16px; }
+    .stat { padding: 12px; }
+    .stat-value { font-size: 22px; }
+    .stat-label { font-size: 9px; }
+    .main-grid { gap: 12px; }
+
+    /* Chats side by side on mobile */
+    .chat-stage {
+      grid-template-columns: 1fr 1fr;
+      gap: 6px;
+    }
+    .phone { height: 500px; border-radius: 10px; }
+    .phone-header { padding: 8px 8px; gap: 6px; }
+    .phone-avatar { width: 26px; height: 26px; font-size: 12px; }
+    .phone-name-top { font-size: 11px; }
+    .phone-name-bottom { font-size: 9px; }
+    .phone-tag { font-size: 8px; padding: 2px 5px; }
+    .phone-body { padding: 8px 6px; gap: 4px; }
+    .msg {
+      font-size: 11px;
+      padding: 5px 7px 6px 7px;
+      max-width: 92%;
+      line-height: 1.35;
+    }
+    .msg-time { font-size: 9px; }
+    .msg-system { font-size: 9px; padding: 3px 8px; }
+    .msg-bot-action { font-size: 9px; padding: 4px 8px; }
+
+    .replay {
+      bottom: 12px;
+      right: 12px;
+      padding: 10px 16px;
+      font-size: 12px;
+    }
+  }
+
+  @media (max-width: 380px) {
+    .msg { font-size: 10px; }
+    .phone { height: 460px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">
+    <div class="logo-dot"></div>
+    JARVIS · Admin Demo / Conductor Elegido
+  </div>
+  <div class="header-meta">
+    <span>v1.0.0 · WhatsApp Cloud API</span>
+    <span class="status-live">
+      <span class="logo-dot"></span> SISTEMA ACTIVO
+    </span>
+  </div>
+</header>
+
+<div class="container">
+
+  <div class="hero">
+    <div class="scenario-tag">Demo en vivo · flujo automatizado</div>
+    <h1>Cliente solicita viaje. <span>Bot asigna conductor.</span></h1>
+    <p>Mira en tiempo real cómo el bot recibe la solicitud, asigna automáticamente al conductor disponible más cercano, gestiona rechazos, reasigna y envía recordatorios. Todo sobre WhatsApp.</p>
+  </div>
+
+  <div class="stats">
+    <div class="stat">
+      <div class="stat-label">Viajes hoy</div>
+      <div class="stat-value" id="stat-trips">47</div>
+      <div class="stat-trend">+12% vs ayer</div>
+    </div>
+    <div class="stat">
+      <div class="stat-label">Conductores activos</div>
+      <div class="stat-value" id="stat-drivers">8 / 12</div>
+      <div class="stat-trend">3 libres ahora</div>
+    </div>
+    <div class="stat">
+      <div class="stat-label">Tiempo respuesta avg</div>
+      <div class="stat-value">42<span style="font-size:18px;color:var(--text-dim)">s</span></div>
+      <div class="stat-trend">Asignación auto</div>
+    </div>
+    <div class="stat">
+      <div class="stat-label">Tasa confirmación</div>
+      <div class="stat-value">96<span style="font-size:18px;color:var(--text-dim)">%</span></div>
+      <div class="stat-trend">+4% este mes</div>
+    </div>
+  </div>
+
+  <div class="main-grid">
+
+    <!-- Drivers list -->
+    <div class="panel">
+      <div class="panel-header">
+        <div class="panel-title">Conductores</div>
+        <div class="panel-count" id="drivers-count">3 libres</div>
+      </div>
+      <div id="drivers-list">
+        <div class="driver" data-id="d1">
+          <div class="driver-avatar">CG<div class="driver-status status-free"></div></div>
+          <div class="driver-info">
+            <div class="driver-name">Carlos Gómez</div>
+            <div class="driver-meta">Placa ABC-123 · libre</div>
+          </div>
+        </div>
+        <div class="driver" data-id="d2">
+          <div class="driver-avatar">JM<div class="driver-status status-busy"></div></div>
+          <div class="driver-info">
+            <div class="driver-name">Julián Mejía</div>
+            <div class="driver-meta">Placa XYZ-892 · en viaje</div>
+          </div>
+        </div>
+        <div class="driver" data-id="d3">
+          <div class="driver-avatar">AR<div class="driver-status status-free"></div></div>
+          <div class="driver-info">
+            <div class="driver-name">Andrés Rojas</div>
+            <div class="driver-meta">Placa DEF-456 · libre</div>
+          </div>
+        </div>
+        <div class="driver" data-id="d4">
+          <div class="driver-avatar">MS<div class="driver-status status-free"></div></div>
+          <div class="driver-info">
+            <div class="driver-name">Mateo Silva</div>
+            <div class="driver-meta">Placa GHI-741 · libre</div>
+          </div>
+        </div>
+        <div class="driver" data-id="d5">
+          <div class="driver-avatar">RL<div class="driver-status status-off"></div></div>
+          <div class="driver-info">
+            <div class="driver-name">Ricardo Lara</div>
+            <div class="driver-meta">Placa JKL-302 · fuera turno</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Chat stage: cliente + conductor -->
+    <div>
+      <div class="chat-stage">
+
+        <!-- Cliente -->
+        <div class="phone">
+          <div class="phone-header">
+            <div class="phone-avatar">L</div>
+            <div class="phone-name">
+              <div class="phone-name-top">Laura Pérez</div>
+              <div class="phone-name-bottom">cliente · en línea</div>
+            </div>
+            <div class="phone-tag">Cliente</div>
+          </div>
+          <div class="phone-body" id="chat-cliente"></div>
+        </div>
+
+        <!-- Conductor - Grupo -->
+        <div class="phone">
+          <div class="phone-header">
+            <div class="phone-avatar phone-avatar-group">
+              <span>👥</span>
+            </div>
+            <div class="phone-name">
+              <div class="phone-name-top">Conductores Activos</div>
+              <div class="phone-name-bottom" id="group-members">Carlos, Julián, Andrés, Mateo, Ricardo</div>
+            </div>
+            <div class="phone-tag">Grupo</div>
+          </div>
+          <div class="phone-body" id="chat-conductor"></div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Logs -->
+    <div class="panel">
+      <div class="panel-header">
+        <div class="panel-title">Eventos del bot</div>
+        <div class="panel-count">en vivo</div>
+      </div>
+      <div id="logs"></div>
+    </div>
+
+  </div>
+</div>
+
+<button class="replay" onclick="startFlow()">↻ Reiniciar demo</button>
+
+<script>
+const cliente = document.getElementById('chat-cliente');
+const conductor = document.getElementById('chat-conductor');
+const logs = document.getElementById('logs');
+const driversList = document.getElementById('drivers-list');
+
+function addMsg(target, type, text, time) {
+  const div = document.createElement('div');
+  div.className = `msg ${type}`;
+  if (type === 'msg-in' || type === 'msg-out') {
+    div.innerHTML = text + `<div class="msg-time">${time || ahora()} ${type==='msg-out'?'<span class="msg-check">✓✓</span>':''}</div>`;
+  } else {
+    div.innerHTML = text;
+  }
+  target.appendChild(div);
+  target.scrollTop = target.scrollHeight;
+}
+
+function addTyping(target) {
+  const div = document.createElement('div');
+  div.className = 'msg msg-in';
+  div.id = 'typing-' + target.id;
+  div.innerHTML = '<div class="typing"><span></span><span></span><span></span></div>';
+  target.appendChild(div);
+  target.scrollTop = target.scrollHeight;
+  return div;
+}
+
+function removeTyping(target) {
+  const t = document.getElementById('typing-' + target.id);
+  if (t) t.remove();
+}
+
+function ahora() {
+  const d = new Date();
+  return d.getHours().toString().padStart(2,'0')+':'+d.getMinutes().toString().padStart(2,'0');
+}
+
+function addLog(event) {
+  const log = document.createElement('div');
+  log.className = 'log';
+  log.innerHTML = `<div class="log-time">${ahora()}</div><div class="log-event">${event}</div>`;
+  logs.insertBefore(log, logs.firstChild);
+}
+
+function setDriverStatus(id, status, meta) {
+  const d = driversList.querySelector(`[data-id="${id}"]`);
+  if (!d) return;
+  const dot = d.querySelector('.driver-status');
+  dot.className = 'driver-status status-' + status;
+  if (meta) d.querySelector('.driver-meta').textContent = meta;
+  d.classList.add('assigning');
+  setTimeout(() => d.classList.remove('assigning'), 1000);
+}
+
+const sleep = ms => new Promise(r => setTimeout(r, ms));
+
+async function startFlow() {
+  cliente.innerHTML = '';
+  conductor.innerHTML = '';
+  logs.innerHTML = '';
+
+  // === ESCENA 1: Cliente solicita ===
+  await sleep(400);
+  addMsg(cliente, 'msg-out', 'Hola, necesito un conductor para hoy a las 8pm 🙏');
+  addLog('<b>NUEVA SOLICITUD</b> · cliente Laura Pérez');
+
+  await sleep(900);
+  const t1 = addTyping(cliente);
+  await sleep(1100);
+  removeTyping(cliente);
+  addMsg(cliente, 'msg-in', '¡Hola Laura! 👋 Soy el asistente de <b>Conductor Elegido</b>.<br><br>Para agendar tu viaje necesito:<br>📍 Dirección de recogida<br>🎯 Destino<br>🕗 Hora exacta');
+
+  await sleep(1800);
+  addMsg(cliente, 'msg-out', 'Recogen en Cra 11 #93-45, Chicó. Voy al Parque 93. 8:00pm');
+  addLog('<b>DATOS CAPTURADOS</b> · origen, destino, hora');
+
+  await sleep(900);
+  const t2 = addTyping(cliente);
+  await sleep(1200);
+  removeTyping(cliente);
+  addMsg(cliente, 'msg-bot-action', '⚙️ Procesando solicitud · buscando conductor disponible...');
+
+  await sleep(1000);
+  addLog('🔍 <b>BUSCANDO CONDUCTOR</b> · zona Chicó · hora 20:00');
+
+  // === ESCENA 2: Bot publica solicitud en GRUPO ===
+  await sleep(800);
+  setDriverStatus('d1', 'busy', 'Placa ABC-123 · evaluando...');
+  addLog('📢 <b>PUBLICADO EN GRUPO</b> · ofreciendo a Carlos primero');
+
+  await sleep(600);
+  addMsg(conductor, 'msg-in', '<span class="msg-sender sender-bot">🤖 Jarvis Bot</span>🚗 <b>Nueva solicitud de viaje</b><br><br>👤 Cliente: Laura P.<br>📍 Recoger: Cra 11 #93-45<br>🎯 Destino: Parque 93<br>🕗 Hora: 8:00 PM hoy<br>💰 Tarifa: $35.000<br><br>Asignado a: <b>@Carlos</b><br>Responde <b>1</b> Aceptar · <b>2</b> Rechazar');
+  addLog('📨 <b>OFERTA #1</b> · @Carlos G.');
+
+  // === ESCENA 3: Carlos rechaza, otro pregunta ===
+  await sleep(2500);
+  addMsg(conductor, 'msg-out', '<span class="msg-sender sender-c1">Carlos G.</span>2 — estoy a 40min de allá 🙏');
+  addLog('<span class="tag-warn">⚠️ RECHAZO</span> · Carlos G.');
+
+  await sleep(900);
+  addMsg(conductor, 'msg-in', '<span class="msg-sender sender-bot">🤖 Jarvis Bot</span>Entendido Carlos, liberado. Reasignando...');
+  setDriverStatus('d1', 'free', 'Placa ABC-123 · libre');
+
+  await sleep(800);
+  addMsg(conductor, 'msg-bot-action', '🔄 Buscando conductor más cercano a Chicó...');
+  addLog('🔄 <b>REASIGNANDO</b> · zona Chicó');
+
+  // === ESCENA 4: Bot asigna a Andrés en el grupo ===
+  await sleep(1200);
+  setDriverStatus('d3', 'busy', 'Placa DEF-456 · asignado');
+  addLog('✅ <b>MATCH</b> · @Andrés Rojas (3 min de allá)');
+
+  await sleep(500);
+  addMsg(conductor, 'msg-in', '<span class="msg-sender sender-bot">🤖 Jarvis Bot</span>🎯 <b>Nueva asignación</b><br><br>Asignado a: <b>@Andrés</b><br>👤 Laura P. · 8:00 PM<br>📍 Cra 11 #93-45 → Parque 93<br>💰 $35.000<br><br>Responde <b>1</b> Aceptar · <b>2</b> Rechazar');
+
+  // Otro conductor comenta
+  await sleep(1500);
+  addMsg(conductor, 'msg-out', '<span class="msg-sender sender-c4">Mateo S.</span>Yo también estaba cerca, para la próxima 👍');
+
+  await sleep(1000);
+  addMsg(conductor, 'msg-out', '<span class="msg-sender sender-c3">Andrés R.</span>1 ✅ voy en camino');
+  addLog('<b style="color:var(--green)">✓ ACEPTADO</b> · @Andrés R.');
+
+  await sleep(700);
+  addMsg(conductor, 'msg-in', '<span class="msg-sender sender-bot">🤖 Jarvis Bot</span>¡Listo @Andrés! 🎯<br><br>📲 Cliente: +57 311 ***4567<br>📍 <a style="color:#039be5;text-decoration:underline">Ruta en Maps</a><br><br>Aviso 30 min antes al grupo.');
+
+  // Conversación natural del grupo
+  await sleep(1200);
+  addMsg(conductor, 'msg-out', '<span class="msg-sender sender-c2">Julián M.</span>Acabo de terminar viaje, ya quedo libre 🙋‍♂️');
+  await sleep(800);
+  setDriverStatus('d2', 'free', 'Placa XYZ-892 · libre');
+  addLog('🔄 <b>ESTADO ACTUALIZADO</b> · Julián M. libre');
+
+  await sleep(700);
+  addMsg(conductor, 'msg-in', '<span class="msg-sender sender-bot">🤖 Jarvis Bot</span>Perfecto @Julián, te marco disponible ✅');
+
+  // === ESCENA 5: Confirmación al cliente ===
+  await sleep(800);
+  addMsg(cliente, 'msg-in', '✅ <b>¡Viaje confirmado!</b><br><br>🧑‍✈️ Conductor: <b>Andrés Rojas</b><br>🚙 Vehículo: Mazda 3 blanco<br>🔢 Placa: DEF-456<br>⭐ Calificación: 4.9<br><br>🕗 Te recoge a las 8:00 PM<br>📍 Cra 11 #93-45<br><br>Te enviaré recordatorios automáticos.');
+  addLog('📤 <b>CONFIRMACIÓN ENVIADA</b> · cliente');
+
+  await sleep(1500);
+  addMsg(cliente, 'msg-out', 'Perfecto, mil gracias 🙌');
+
+  // === ESCENA 6: Recordatorio en grupo ===
+  await sleep(1800);
+  addMsg(cliente, 'msg-system', '— 30 minutos antes —');
+  addLog('⏰ <b>RECORDATORIO AUTO</b> · T-30min · cliente');
+
+  await sleep(600);
+  addMsg(cliente, 'msg-in', '⏰ <b>Recordatorio</b><br><br>Hola Laura, tu conductor <b>Andrés</b> llegará en 30 min a Cra 11 #93-45.<br><br>📱 Cualquier cambio responde aquí.');
+
+  await sleep(900);
+  addMsg(conductor, 'msg-system', '— 30 minutos antes —');
+  addLog('⏰ <b>RECORDATORIO AUTO</b> · T-30min · grupo');
+
+  await sleep(500);
+  addMsg(conductor, 'msg-in', '<span class="msg-sender sender-bot">🤖 Jarvis Bot</span>⏰ <b>@Andrés</b> recoges a Laura en 30 min · Cra 11 #93-45<br><br>📍 <a style="color:#039be5;text-decoration:underline">Abrir Maps</a>');
+
+  // === ESCENA 7: Conductor en camino ===
+  await sleep(1800);
+  addMsg(conductor, 'msg-out', '<span class="msg-sender sender-c3">Andrés R.</span>En camino, llegando en 5 min 🚗');
+  addLog('🚗 <b>EN RUTA</b> · Andrés notifica');
+
+  await sleep(700);
+  addMsg(cliente, 'msg-in', '🚗 <b>Tu conductor está en camino</b><br><br>Andrés llega en 5 min aprox.<br>Placa: DEF-456');
+
+  await sleep(1500);
+  addLog('<span class="tag-alert">📍 VIAJE INICIADO</span> · timer activo');
+  addMsg(cliente, 'msg-system', 'Viaje iniciado · 8:02 PM');
+  addMsg(conductor, 'msg-in', '<span class="msg-sender sender-bot">🤖 Jarvis Bot</span>✅ Viaje de @Andrés iniciado · 8:02 PM');
+
+  await sleep(1500);
+  addLog('✅ <b>FLUJO COMPLETADO</b> · todo automático sin admin');
+
+  // Update stats
+  document.getElementById('stat-trips').textContent = '48';
+}
+
+startFlow();
+</script>
+
+</body>
+</html>
