@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Jarvis Gym Coach · Demo</title>
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif; }
+  body {
+    background: linear-gradient(135deg, #0F1B2D 0%, #1a2842 50%, #0F1B2D 100%);
+    min-height:100vh; padding:16px 10px; color:#F5F0E6;
+  }
+  .wrap { max-width:1300px; margin:0 auto; }
+  .header { text-align:center; margin-bottom:20px; }
+  .header h1 { color:#C9A961; font-size:22px; letter-spacing:1.5px; margin-bottom:6px; font-weight:700; }
+  .header p { font-size:12px; opacity:0.7; letter-spacing:0.3px; }
+  .scenarios { display:flex; gap:6px; justify-content:center; margin-bottom:18px; flex-wrap:wrap; }
+  .sc-btn {
+    background:rgba(201,169,97,0.08); border:1px solid rgba(201,169,97,0.4);
+    color:#C9A961; padding:8px 12px; border-radius:20px; font-size:12px;
+    cursor:pointer; transition:all 0.25s; font-weight:500;
+  }
+  .sc-btn:hover { background:#C9A961; color:#0F1B2D; }
+  .sc-btn.active { background:#C9A961; color:#0F1B2D; box-shadow:0 0 20px rgba(201,169,97,0.4); }
+  .demo-grid { display:grid; grid-template-columns: 1fr 1fr; gap:12px; max-width:900px; margin:0 auto; }
+  .phone {
+    background:#0a0f1a; border-radius:22px; padding:8px;
+    box-shadow:0 20px 50px rgba(0,0,0,0.6), inset 0 0 0 2px rgba(201,169,97,0.3);
+  }
+  .phone-label { text-align:center; font-size:10px; letter-spacing:1.5px; color:#C9A961; margin-bottom:8px; opacity:0.8; font-weight:600; }
+  .chat-header.wa { background:#075e54; padding:10px 12px; border-radius:14px 14px 0 0; display:flex; align-items:center; gap:8px; }
+  .chat-header.tg { background:#2b5278; padding:10px 12px; border-radius:14px 14px 0 0; display:flex; align-items:center; gap:8px; }
+  .avatar { width:32px; height:32px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:bold; font-size:13px; flex-shrink:0; }
+  .av-bot { background:linear-gradient(135deg,#C9A961,#8a7340); color:#0F1B2D; }
+  .av-coach { background:linear-gradient(135deg,#4a90e2,#2d5a8e); color:#fff; }
+  .chat-header-info h3 { font-size:13px; }
+  .chat-header-info span { font-size:9px; opacity:0.85; }
+  .chat-body { height:500px; overflow-y:auto; padding:10px 8px; display:flex; flex-direction:column; gap:5px; }
+  .chat-body.wa { background:#0b141a; }
+  .chat-body.tg { background:#17212b; background-image: radial-gradient(circle at 30% 20%, rgba(74,144,226,0.05), transparent 50%); }
+  .chat-body::-webkit-scrollbar { width:3px; }
+  .chat-body::-webkit-scrollbar-thumb { background:#C9A961; border-radius:2px; }
+  .msg { max-width:85%; padding:6px 9px; border-radius:7px; font-size:12px; line-height:1.35; animation:fadeIn 0.4s ease; word-wrap:break-word; }
+  @keyframes fadeIn { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:translateY(0); } }
+  .wa .msg.in { background:#1f2c34; color:#e9edef; align-self:flex-start; border-bottom-left-radius:2px; }
+  .wa .msg.out { background:#005c4b; color:#e9edef; align-self:flex-end; border-bottom-right-radius:2px; }
+  .tg .msg.in { background:#182533; color:#e9edef; align-self:flex-start; border-bottom-left-radius:2px; }
+  .tg .msg.out { background:#2b5278; color:#fff; align-self:flex-end; border-bottom-right-radius:2px; }
+  .time { font-size:9px; opacity:0.55; margin-left:5px; }
+  .typing { padding:8px 11px; border-radius:7px; align-self:flex-start; display:flex; gap:3px; }
+  .wa .typing { background:#1f2c34; }
+  .tg .typing { background:#182533; }
+  .typing span { width:5px; height:5px; border-radius:50%; animation:bounce 1.2s infinite; }
+  .wa .typing span { background:#C9A961; }
+  .tg .typing span { background:#4a90e2; }
+  .typing span:nth-child(2) { animation-delay:0.2s; }
+  .typing span:nth-child(3) { animation-delay:0.4s; }
+  @keyframes bounce { 0%,60%,100% { transform:translateY(0); opacity:0.4; } 30% { transform:translateY(-5px); opacity:1; } }
+  .card-alert { align-self:flex-start; max-width:92%; background:linear-gradient(135deg,#2d1818,#3d1f1f); border-left:3px solid #e74c3c; padding:8px 10px; border-radius:7px; font-size:11px; line-height:1.4; animation:fadeIn 0.4s ease; }
+  .card-alert .ttl { color:#ff6b6b; font-weight:bold; font-size:10px; letter-spacing:0.8px; margin-bottom:4px; }
+  .card-notif { align-self:flex-start; max-width:92%; background:linear-gradient(135deg,#1a2842,#0F1B2D); border-left:3px solid #C9A961; padding:8px 10px; border-radius:7px; font-size:11px; line-height:1.4; animation:fadeIn 0.4s ease; }
+  .card-notif .ttl { color:#C9A961; font-weight:bold; font-size:10px; letter-spacing:0.8px; margin-bottom:4px; }
+  .card-booking { align-self:flex-start; max-width:92%; background:#0f2419; border:1px solid #1f8b5c; padding:8px 10px; border-radius:7px; font-size:11px; line-height:1.45; animation:fadeIn 0.4s ease; }
+  .card-booking .ttl { color:#4ade80; font-weight:bold; font-size:10px; letter-spacing:0.8px; margin-bottom:5px; }
+  .card-booking .row { display:flex; justify-content:space-between; padding:2px 0; gap:6px; }
+  .card-booking .row span:first-child { opacity:0.65; flex-shrink:0; }
+  .card-booking .row span:last-child { text-align:right; }
+  .card-stats { align-self:flex-start; max-width:92%; background:#0f1820; border:1px solid #4a90e2; padding:8px 10px; border-radius:7px; font-size:11px; animation:fadeIn 0.4s ease; }
+  .card-stats .ttl { color:#4a90e2; font-weight:bold; font-size:10px; letter-spacing:0.8px; margin-bottom:5px; }
+  .card-stats .bar-row { display:flex; align-items:center; gap:6px; margin:3px 0; }
+  .card-stats .bar-row .lbl { min-width:60px; font-size:10px; opacity:0.8; }
+  .card-stats .bar { flex:1; height:5px; background:#1a2842; border-radius:3px; overflow:hidden; }
+  .card-stats .bar div { height:100%; background:linear-gradient(90deg,#4a90e2,#C9A961); border-radius:3px; }
+  .card-stats .val { font-size:10px; color:#C9A961; font-weight:bold; min-width:42px; text-align:right; }
+  .info-panel { margin-top:24px; background:rgba(201,169,97,0.04); border:1px solid rgba(201,169,97,0.2); padding:16px; border-radius:12px; max-width:900px; margin-left:auto; margin-right:auto; }
+  .info-panel h3 { color:#C9A961; font-size:13px; margin-bottom:12px; letter-spacing:0.8px; }
+  .features-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:8px 20px; font-size:12px; line-height:1.5; opacity:0.88; }
+  .features-grid div::before { content:"→  "; color:#C9A961; }
+
+  /* TABLET (768-1024px) - mantiene 2 columnas pero más compacto */
+  @media (max-width:1024px) {
+    body { padding:14px 8px; }
+    .demo-grid { gap:10px; max-width:100%; }
+    .chat-body { height:480px; padding:8px 6px; }
+    .msg { font-size:11.5px; padding:5px 8px; }
+    .phone { padding:6px; border-radius:18px; }
+  }
+
+  /* MÓVIL (max 640px) - 1 columna apilada */
+  @media (max-width:640px) {
+    body { padding:12px 8px; }
+    .header h1 { font-size:18px; letter-spacing:1px; }
+    .header p { font-size:11px; }
+    .scenarios { gap:5px; margin-bottom:14px; }
+    .sc-btn { padding:7px 10px; font-size:11px; }
+    .demo-grid { grid-template-columns:1fr; gap:14px; }
+    .phone { padding:8px; border-radius:20px; }
+    .chat-body { height:420px; padding:10px 8px; }
+    .msg { font-size:13px; padding:7px 10px; max-width:82%; }
+    .chat-header.wa, .chat-header.tg { padding:11px 13px; }
+    .chat-header-info h3 { font-size:14px; }
+    .chat-header-info span { font-size:10px; }
+    .avatar { width:36px; height:36px; font-size:14px; }
+    .card-alert, .card-notif, .card-booking, .card-stats { font-size:12px; padding:9px 11px; max-width:88%; }
+    .card-alert .ttl, .card-notif .ttl, .card-booking .ttl, .card-stats .ttl { font-size:10.5px; }
+    .card-stats .bar-row .lbl { min-width:70px; font-size:11px; }
+    .card-stats .val { font-size:11px; }
+    .features-grid { grid-template-columns:1fr; font-size:12px; }
+    .info-panel { padding:14px; }
+  }
+
+  /* MÓVIL CHICO (max 380px) */
+  @media (max-width:380px) {
+    .header h1 { font-size:16px; }
+    .sc-btn { padding:6px 9px; font-size:10px; }
+    .msg { font-size:12px; }
+    .chat-body { height:380px; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="header">
+    <h1>JARVIS · GYM COACH</h1>
+    <p>Cliente conversa por WhatsApp · Coach recibe todo en Telegram</p>
+  </div>
+  <div class="scenarios">
+    <button class="sc-btn active" onclick="run('agendar', this)">Agendar primera sesión</button>
+    <button class="sc-btn" onclick="run('lesion', this)">Alerta de lesión previa</button>
+    <button class="sc-btn" onclick="run('seguimiento', this)">Seguimiento post-sesión</button>
+    <button class="sc-btn" onclick="run('pago', this)">Cobro y cierre de día</button>
+  </div>
+  <div class="demo-grid">
+    <div class="phone">
+      <div class="phone-label">CLIENTE · WHATSAPP</div>
+      <div class="chat-header wa">
+        <div class="avatar av-bot">J</div>
+        <div class="chat-header-info"><h3>Coach Andrés</h3><span>en línea</span></div>
+      </div>
+      <div class="chat-body wa" id="chatClient"></div>
+    </div>
+    <div class="phone">
+      <div class="phone-label">COACH · TELEGRAM</div>
+      <div class="chat-header tg">
+        <div class="avatar av-coach">J</div>
+        <div class="chat-header-info"><h3>Jarvis · tu asistente</h3><span>siempre activo</span></div>
+      </div>
+      <div class="chat-body tg" id="chatCoach"></div>
+    </div>
+  </div>
+  <div class="info-panel">
+    <h3>QUÉ HACE JARVIS POR EL COACH</h3>
+    <div class="features-grid">
+      <div>Agenda sesiones 24/7 sin que tengas que responder</div>
+      <div>Te avisa lesiones y restricciones antes de cada sesión</div>
+      <div>Cobra anticipo automático con link de pago</div>
+      <div>Envía recordatorios al cliente 24h y 1h antes</div>
+      <div>Pide feedback después de cada sesión</div>
+      <div>Calcula tu ocupación semanal y horarios pico</div>
+      <div>Bloquea horarios si te quieres tomar un día</div>
+      <div>Genera planes nutricionales y rutinas con IA</div>
+    </div>
+  </div>
+</div>
+<script>
+const cli = document.getElementById('chatClient');
+const co = document.getElementById('chatCoach');
+let currentRun = 0;
+function now(){ const d=new Date(); return d.getHours().toString().padStart(2,'0')+':'+d.getMinutes().toString().padStart(2,'0'); }
+function clearAll(){ cli.innerHTML=''; co.innerHTML=''; }
+function wait(ms, runId){ return new Promise((res,rej)=>{ setTimeout(()=>{ if(runId!==currentRun) rej('x'); else res(); }, ms); }); }
+function showTyping(panel, runId){
+  return new Promise((res,rej)=>{
+    const t=document.createElement('div'); t.className='typing';
+    t.innerHTML='<span></span><span></span><span></span>';
+    panel.appendChild(t); panel.scrollTop=panel.scrollHeight;
+    setTimeout(()=>{ t.remove(); if(runId!==currentRun) rej('x'); else res(); }, 700);
+  });
+}
+async function msg(panel, side, text, delay, withTyping, runId){
+  await wait(delay, runId);
+  if(withTyping && side==='in') await showTyping(panel, runId);
+  if(runId!==currentRun) return;
+  const m=document.createElement('div'); m.className=`msg ${side}`;
+  m.innerHTML=text+`<span class="time">${now()}</span>`;
+  panel.appendChild(m); panel.scrollTop=panel.scrollHeight;
+}
+async function card(panel, type, html, delay, runId){
+  await wait(delay, runId);
+  if(runId!==currentRun) return;
+  const c=document.createElement('div'); c.className=type; c.innerHTML=html;
+  panel.appendChild(c); panel.scrollTop=panel.scrollHeight;
+}
+function run(type, btn){
+  currentRun++;
+  const myRun=currentRun;
+  document.querySelectorAll('.sc-btn').forEach(b=>b.classList.remove('active'));
+  if(btn) btn.classList.add('active');
+  clearAll();
+  if(type==='agendar') flowAgendar(myRun).catch(()=>{});
+  if(type==='lesion') flowLesion(myRun).catch(()=>{});
+  if(type==='seguimiento') flowSeguimiento(myRun).catch(()=>{});
+  if(type==='pago') flowPago(myRun).catch(()=>{});
+}
+
+async function flowAgendar(r){
+  await msg(cli,'out','Hola, vi tu Instagram y quiero empezar a entrenar contigo',400,false,r);
+  await msg(cli,'in','¡Qué bueno que escribas! Soy el asistente de Andrés. Cuéntame tu nombre y qué te motivó a buscar un coach',800,true,r);
+  await msg(cli,'out','Camila, quiero bajar unos kilos y tonificar',2200,false,r);
+  await msg(cli,'in','Te entiendo Camila. Para armarte algo realista, ¿has entrenado antes o vas a empezar de cero?',900,true,r);
+  await msg(cli,'out','Llevo como 2 años parada',2200,false,r);
+  await msg(cli,'in','Perfecto, sin presión, vamos a tu ritmo. Andrés tiene estos espacios esta semana:<br><br>Martes 27 · 6:00 AM<br>Martes 27 · 7:00 PM<br>Miércoles 28 · 6:00 AM',1000,true,r);
+  await msg(cli,'out','El martes a las 7 PM me sirve',2400,false,r);
+  await msg(cli,'in','Una última cosa: ¿tienes alguna lesión, dolor o restricción que Andrés deba saber?',900,true,r);
+  await msg(cli,'out','Tengo molestia en la rodilla derecha desde hace meses',2400,false,r);
+  await msg(cli,'in','Anotado. Andrés ya está enterado y va a planear la sesión sin impacto en esa rodilla',900,true,r);
+  await card(co,'card-notif','<div class="ttl">NUEVA SOLICITUD</div><b>Camila Rodríguez</b> quiere agendar contigo.<br><small style="opacity:0.7">Vía Instagram · primera vez</small>',300,r);
+  await msg(cli,'in','Confirmo tu sesión:',900,true,r);
+  await card(cli,'card-booking','<div class="ttl">SESIÓN AGENDADA</div><div class="row"><span>Coach</span><span>Andrés Martínez</span></div><div class="row"><span>Fecha</span><span>Mar 27 mayo</span></div><div class="row"><span>Hora</span><span>7:00 PM</span></div><div class="row"><span>Tipo</span><span>Evaluación inicial</span></div><div class="row"><span>Valor</span><span>$80.000 COP</span></div>',500,r);
+  await msg(cli,'in','Te paso el link de pago. Con 50% de anticipo queda confirmada 🔒<br><br>wompi.co/pago/cam-2705',800,true,r);
+  await card(co,'card-booking','<div class="ttl">AGENDA CONFIRMADA</div><div class="row"><span>Cliente</span><span>Camila Rodríguez</span></div><div class="row"><span>Fecha</span><span>Mar 27 · 7:00 PM</span></div><div class="row"><span>Objetivo</span><span>Bajar grasa · tonificar</span></div><div class="row"><span>Nivel</span><span>Principiante</span></div><div class="row"><span>Anticipo</span><span>Pendiente</span></div>',700,r);
+  await card(co,'card-alert','<div class="ttl">⚠ NOTA MÉDICA IMPORTANTE</div>Camila reporta <b>molestia en rodilla derecha</b>.<br>Recomendación: evitar sentadillas profundas, saltos y carrera. Trabajar isométricos y máquinas guiadas en la primera sesión.',700,r);
+  await msg(co,'in','¿Quieres que le prepare un plan inicial sugerido para que llegues con todo listo el martes?',1100,true,r);
+}
+
+async function flowLesion(r){
+  await card(co,'card-notif','<div class="ttl">🔔 RECORDATORIO · MAÑANA 6:00 AM</div>Sesión con <b>Camila Rodríguez</b><br><small style="opacity:0.7">En 14 horas</small>',400,r);
+  await card(co,'card-alert','<div class="ttl">⚠ REVISA ANTES DE ENTRENAR</div>• Camila tiene <b>molestia en rodilla derecha</b> (sin diagnóstico)<br>• Última sesión reportó <b>dolor leve después de plancha lateral</b><br>• Objetivo activo: bajar 5kg y tonificar piernas sin impacto',800,r);
+  await card(co,'card-stats','<div class="ttl">PROGRESO DE CAMILA · 3 SEMANAS</div><div class="bar-row"><div class="lbl">Asistencia</div><div class="bar"><div style="width:92%"></div></div><div class="val">92%</div></div><div class="bar-row"><div class="lbl">Peso</div><div class="bar"><div style="width:40%"></div></div><div class="val">2/5kg</div></div><div class="bar-row"><div class="lbl">Adherencia</div><div class="bar"><div style="width:85%"></div></div><div class="val">Alta</div></div>',800,r);
+  await msg(co,'in','Mi sugerencia para mañana:<br><br>• Calentamiento en bici sin resistencia (10 min)<br>• Cuádriceps en máquina guiada<br>• Core y tren superior con énfasis<br>• Cerrar con estiramiento de cadera',1000,true,r);
+  await msg(co,'out','Sí, regístralo. Y agréndale 10 min extra de movilidad al inicio',2400,false,r);
+  await msg(co,'in','Listo. Plan guardado. También le mando a Camila el recordatorio con su agua, llegar 10 min antes y traer la rodillera',900,true,r);
+  await msg(cli,'in','¡Hola Camila! Recordatorio amistoso 💪<br><br>Mañana <b>6:00 AM</b> tienes sesión con Andrés. No olvides:<br><br>• Llegar 10 min antes para movilidad<br>• Tu rodillera por la molestia<br>• Botella de agua llena<br>• Desayuno ligero 1h antes',1200,true,r);
+  await msg(cli,'out','Gracias, no se me olvidaba 🙌',2200,false,r);
+  await msg(cli,'in','Para eso estoy. Si necesitas reagendar avísame antes de las 9 PM',900,true,r);
+}
+
+async function flowSeguimiento(r){
+  await msg(cli,'in','¡Camila! ¿Cómo te sentiste hoy en la sesión con Andrés? 💪',400,true,r);
+  await msg(cli,'out','Muy bien, intenso pero llegable. La rodilla no me molestó',1800,false,r);
+  await msg(cli,'in','Eso es lo que queríamos escuchar. En escala 1-10, ¿qué tan cansada terminaste?',800,true,r);
+  await msg(cli,'out','Como un 7',1700,false,r);
+  await msg(cli,'in','Perfecto, intensidad justa para principiante. ¿Cómo está tu energía y ánimo en general?',800,true,r);
+  await msg(cli,'out','Mejor que la semana pasada, ya tengo más ganas',1900,false,r);
+  await msg(cli,'in','Eso es oro. La constancia es la que cambia el cuerpo, no la motivación. Tu próxima sesión queda el jueves 6:00 AM 📅',900,true,r);
+  await msg(cli,'in','Mientras tanto te dejo tu plan de alimentación de hoy y un video corto de movilidad para la rodilla',800,true,r);
+  await card(co,'card-notif','<div class="ttl">📊 FEEDBACK POST-SESIÓN · CAMILA</div>Cansancio: 7/10 (intensidad ideal)<br>Rodilla: sin molestia ✅<br>Ánimo: subiendo ↗<br>Adherencia mental: alta',1200,r);
+  await msg(co,'in','Camila respondió el feedback. Está respondiendo muy bien al entrenamiento sin impacto. Recomendación:',900,true,r);
+  await card(co,'card-stats','<div class="ttl">SUGERENCIA DE PROGRESIÓN</div><div class="bar-row"><div class="lbl">Semana 4</div><div class="bar"><div style="width:50%"></div></div><div class="val">+20%</div></div><div class="bar-row"><div class="lbl">Cardio</div><div class="bar"><div style="width:60%"></div></div><div class="val">Bici</div></div><div class="bar-row"><div class="lbl">Fuerza</div><div class="bar"><div style="width:70%"></div></div><div class="val">+peso</div></div>',700,r);
+  await msg(co,'in','¿Aplico el ajuste para la sesión del jueves?',700,true,r);
+  await msg(co,'out','Sí, aplícalo. Y avísame si reporta dolor',2200,false,r);
+  await msg(co,'in','Hecho. Voy a monitorear y te aviso de inmediato si algo cambia 🎯',800,true,r);
+}
+
+async function flowPago(r){
+  await msg(cli,'in','¡Camila! Recordatorio: tu mensualidad de junio vence mañana 💳<br><br>4 sesiones semanales · $320.000 COP',400,true,r);
+  await msg(cli,'out','Cierto, gracias por avisar. ¿Me pasas el link?',2200,false,r);
+  await msg(cli,'in','Claro 👇<br><br>wompi.co/jarvis/cam-junio<br><br>Si pagas hoy te aplico 10% de descuento por pago anticipado',900,true,r);
+  await msg(cli,'out','Listo, pago ahora',2000,false,r);
+  await msg(cli,'in','Pago recibido ✅ Mensualidad activa hasta el 30 de junio<br><br>Te envío la factura al correo',1500,true,r);
+  await msg(cli,'out','Mil gracias 🙌',2000,false,r);
+  await card(co,'card-booking','<div class="ttl">💰 PAGO RECIBIDO</div><div class="row"><span>Cliente</span><span>Camila Rodríguez</span></div><div class="row"><span>Concepto</span><span>Mensualidad junio</span></div><div class="row"><span>Monto</span><span>$288.000 COP</span></div><div class="row"><span>Método</span><span>Wompi · PSE</span></div>',900,r);
+  await msg(co,'in','Buenas noches Andrés. Resumen del día:',1100,true,r);
+  await card(co,'card-stats','<div class="ttl">CIERRE DE DÍA · LUN 26 MAY</div><div class="bar-row"><div class="lbl">Sesiones</div><div class="bar"><div style="width:100%"></div></div><div class="val">6/6</div></div><div class="bar-row"><div class="lbl">Ingresos</div><div class="bar"><div style="width:85%"></div></div><div class="val">$680k</div></div><div class="bar-row"><div class="lbl">Leads</div><div class="bar"><div style="width:60%"></div></div><div class="val">3</div></div><div class="bar-row"><div class="lbl">Renovaciones</div><div class="bar"><div style="width:75%"></div></div><div class="val">2</div></div>',700,r);
+  await card(co,'card-notif','<div class="ttl">🎯 PARA MAÑANA</div>• 5 sesiones agendadas (6 AM a 7 PM)<br>• <b>Camila</b> primera sesión 6 AM · revisar rodilla<br>• <b>Sebastián</b> renovación pendiente · enviar recordatorio<br>• Bloque libre 11 AM - 3 PM (descanso o leads)',700,r);
+  await msg(co,'in','Tu ocupación esta semana va en 87%. Si quieres subir precio el próximo mes, ya tienes data para justificarlo 📈',900,true,r);
+}
+
+run('agendar', document.querySelector('.sc-btn'));
+</script>
+</body>
+</html>
