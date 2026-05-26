@@ -3,632 +3,178 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>VetBot / Alertas & Agenda</title>
+<title>VetBot / Demo</title>
 <style>
-@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@300;400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@300;400;500&display=swap');
 
 :root {
-  --bg: #080b0f;
-  --surface: #0e1318;
-  --surface2: #131920;
-  --surface3: #1a2330;
-  --border: #1e2d3d;
-  --border2: #253545;
-  --accent: #00d4aa;
-  --accent-dim: rgba(0,212,170,.12);
-  --accent-glow: rgba(0,212,170,.06);
-  --amber: #f59e0b;
-  --amber-dim: rgba(245,158,11,.12);
-  --red: #ef4444;
-  --red-dim: rgba(239,68,68,.12);
-  --blue: #3b82f6;
-  --blue-dim: rgba(59,130,246,.12);
-  --text: #e2f0ff;
-  --text2: #7a9bb5;
-  --text3: #3d5a73;
-  --mono: 'IBM Plex Mono', monospace;
-  --sans: 'IBM Plex Sans', sans-serif;
+  --bg:#080b0f;
+  --s1:#0e1318;
+  --s2:#131920;
+  --s3:#1a2330;
+  --b1:#1e2d3d;
+  --b2:#253545;
+  --accent:#00d4aa;
+  --adim:rgba(0,212,170,.12);
+  --amber:#f59e0b;
+  --adim2:rgba(245,158,11,.1);
+  --red:#ef4444;
+  --rdim:rgba(239,68,68,.1);
+  --blue:#3b82f6;
+  --bdim:rgba(59,130,246,.1);
+  --tx:#e2f0ff;
+  --tx2:#7a9bb5;
+  --tx3:#3d5a73;
+  --mono:'IBM Plex Mono',monospace;
+  --sans:'IBM Plex Sans',sans-serif;
 }
-
-* { margin:0; padding:0; box-sizing:border-box; }
-
-body {
-  font-family: var(--sans);
-  background: var(--bg);
-  color: var(--text);
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 32px 16px 48px;
-}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:var(--sans);background:var(--bg);color:var(--tx);min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:28px 16px 48px}
 
 /* HEADER */
-header {
-  width: 100%;
-  max-width: 820px;
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  margin-bottom: 28px;
-  padding-bottom: 20px;
-  border-bottom: 1px solid var(--border);
-}
-.header-dot {
-  width: 10px; height: 10px;
-  border-radius: 50%;
-  background: var(--accent);
-  box-shadow: 0 0 8px var(--accent);
-  animation: pulse 2s ease infinite;
-}
-@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.4} }
-.header-title {
-  font-family: var(--mono);
-  font-size: .95rem;
-  font-weight: 600;
-  color: var(--text);
-  letter-spacing: .5px;
-}
-.header-title span { color: var(--text3); font-weight: 400; }
-.header-badge {
-  margin-left: auto;
-  font-family: var(--mono);
-  font-size: .65rem;
-  color: var(--accent);
-  border: 1px solid rgba(0,212,170,.25);
-  padding: 3px 9px;
-  border-radius: 4px;
-  letter-spacing: 1px;
-}
+header{width:100%;max-width:760px;display:flex;align-items:center;gap:10px;margin-bottom:24px;padding-bottom:18px;border-bottom:1px solid var(--b1)}
+.hdot{width:9px;height:9px;border-radius:50%;background:var(--accent);box-shadow:0 0 8px var(--accent);animation:pulse 2s ease infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
+.htitle{font-family:var(--mono);font-size:.9rem;font-weight:600;letter-spacing:.5px}
+.htitle span{color:var(--tx3);font-weight:400}
+.hbadge{margin-left:auto;font-family:var(--mono);font-size:.62rem;color:var(--accent);border:1px solid rgba(0,212,170,.22);padding:3px 8px;border-radius:4px;letter-spacing:1px}
 
 /* SCENARIOS */
-.scenarios {
-  width: 100%;
-  max-width: 820px;
-  margin-bottom: 22px;
-}
-.scenarios-label {
-  font-family: var(--mono);
-  font-size: .65rem;
-  color: var(--text3);
-  letter-spacing: 1.5px;
-  text-transform: uppercase;
-  margin-bottom: 10px;
-}
-.scenario-row {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-}
-.scenario-btn {
-  font-family: var(--mono);
-  font-size: .76rem;
-  padding: 7px 16px;
-  border-radius: 6px;
-  border: 1px solid var(--border2);
-  background: var(--surface2);
-  color: var(--text2);
-  cursor: pointer;
-  transition: all .15s;
-  letter-spacing: .3px;
-}
-.scenario-btn:hover { border-color: var(--accent); color: var(--text); }
-.scenario-btn.active {
-  border-color: var(--accent);
-  color: var(--accent);
-  background: var(--accent-dim);
-}
+.sc-label{font-family:var(--mono);font-size:.62rem;color:var(--tx3);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:9px;width:100%;max-width:760px}
+.sc-row{display:flex;flex-wrap:wrap;gap:7px;width:100%;max-width:760px;margin-bottom:20px}
+.sc-btn{font-family:var(--mono);font-size:.72rem;padding:6px 14px;border-radius:5px;border:1px solid var(--b2);background:var(--s2);color:var(--tx2);cursor:pointer;transition:all .15s}
+.sc-btn:hover{border-color:var(--accent);color:var(--tx)}
+.sc-btn.active{border-color:var(--accent);color:var(--accent);background:var(--adim)}
 
-/* MAIN LAYOUT */
-.layout {
-  width: 100%;
-  max-width: 820px;
-  display: grid;
-  grid-template-columns: 320px 1fr;
-  gap: 20px;
-  align-items: start;
-}
+/* DESC */
+.sc-desc{width:100%;max-width:760px;margin-bottom:18px;font-family:var(--mono);font-size:.68rem;color:var(--tx2);background:var(--s2);border-left:2px solid var(--accent);padding:9px 13px;border-radius:0 6px 6px 0;line-height:1.65}
+
+/* DUAL PHONES */
+.phones{display:grid;grid-template-columns:1fr 1fr;gap:18px;width:100%;max-width:760px}
 
 /* PHONE */
-.phone {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 20px;
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  box-shadow: 0 0 40px rgba(0,0,0,.6);
-  position: sticky;
-  top: 20px;
-}
+.phone{background:var(--s1);border:1px solid var(--b1);border-radius:18px;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 0 32px rgba(0,0,0,.5)}
+.ph-label{text-align:center;font-family:var(--mono);font-size:.6rem;color:var(--tx3);letter-spacing:1.5px;text-transform:uppercase;padding:5px 0 0}
 
-.tg-bar {
-  background: var(--surface2);
-  padding: 12px 14px;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  border-bottom: 1px solid var(--border);
-}
-.tg-avatar {
-  width: 36px; height: 36px;
-  border-radius: 50%;
-  background: linear-gradient(135deg, #00b894, #007a66);
-  display: flex; align-items: center; justify-content: center;
-  font-size: 17px;
-  flex-shrink: 0;
-  box-shadow: 0 0 10px rgba(0,212,170,.2);
-}
-.tg-name {
-  font-family: var(--mono);
-  font-size: .82rem;
-  font-weight: 600;
-  color: var(--text);
-}
-.tg-status {
-  font-size: .7rem;
-  color: var(--accent);
-  font-family: var(--mono);
-}
-.tg-back { color: var(--blue); font-size: 1rem; margin-right: 2px; }
+/* TOPBAR */
+.topbar{background:var(--s2);padding:10px 12px;display:flex;align-items:center;gap:8px;border-bottom:1px solid var(--b1)}
+.avatar{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0}
+.av-green{background:linear-gradient(135deg,#00b894,#007a66);box-shadow:0 0 8px rgba(0,212,170,.2)}
+.av-blue{background:linear-gradient(135deg,#1d4ed8,#1e3a8a);box-shadow:0 0 8px rgba(59,130,246,.2)}
+.tb-name{font-family:var(--mono);font-size:.78rem;font-weight:600}
+.tb-status{font-size:.65rem;color:var(--accent);font-family:var(--mono)}
+.tb-back{color:var(--blue);font-size:.9rem;margin-right:2px}
 
-/* PROGRESS BAR */
-.prog-bar {
-  height: 2px;
-  background: var(--border);
-}
-.prog-fill {
-  height: 100%;
-  background: var(--accent);
-  width: 0%;
-  transition: width .5s linear;
-  box-shadow: 0 0 6px var(--accent);
-}
+/* PROG */
+.prog{height:2px;background:var(--b1)}.progf{height:100%;background:var(--accent);width:0%;transition:width .4s linear;box-shadow:0 0 5px var(--accent)}
 
 /* CHAT */
-.chat {
-  height: 420px;
-  overflow-y: auto;
-  padding: 14px 12px;
-  display: flex;
-  flex-direction: column;
-  gap: 7px;
-  background: var(--bg);
-}
-.chat::-webkit-scrollbar { width: 3px; }
-.chat::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+.chat{height:380px;overflow-y:auto;padding:12px 10px;display:flex;flex-direction:column;gap:6px;background:var(--bg)}
+.chat::-webkit-scrollbar{width:2px}.chat::-webkit-scrollbar-thumb{background:var(--b1);border-radius:1px}
 
-/* MESSAGES */
-.msg-wrap { display: flex; flex-direction: column; }
-.msg-wrap.bot { align-items: flex-start; }
-.msg-wrap.user { align-items: flex-end; }
+/* BUBBLES */
+.mw{display:flex;flex-direction:column}
+.mw.bot{align-items:flex-start}.mw.user{align-items:flex-end}
+.bub{padding:8px 11px;border-radius:12px;font-size:.78rem;line-height:1.5;max-width:88%;animation:pop .2s cubic-bezier(.34,1.56,.64,1) both}
+@keyframes pop{from{opacity:0;transform:scale(.9) translateY(4px)}to{opacity:1;transform:none}}
+.mw.bot .bub{background:var(--s3);border:1px solid var(--b1);border-bottom-left-radius:3px;color:var(--tx)}
+.mw.user .bub{background:#0d3d5c;border:1px solid #1a5a7a;border-bottom-right-radius:3px;color:var(--tx)}
+.mt{font-size:.58rem;color:var(--tx3);font-family:var(--mono);margin-top:2px;padding:0 3px}
+.mw.user .mt{text-align:right}
 
-.bubble {
-  padding: 9px 13px;
-  border-radius: 14px;
-  font-size: .82rem;
-  line-height: 1.55;
-  max-width: 86%;
-  animation: popIn .22s cubic-bezier(.34,1.56,.64,1) both;
-}
-@keyframes popIn { from{opacity:0;transform:scale(.92) translateY(4px)} to{opacity:1;transform:none} }
-
-.msg-wrap.bot .bubble {
-  background: var(--surface3);
-  border: 1px solid var(--border);
-  border-bottom-left-radius: 4px;
-  color: var(--text);
-  font-family: var(--sans);
-}
-.msg-wrap.user .bubble {
-  background: #0d3d5c;
-  border: 1px solid #1a5a7a;
-  border-bottom-right-radius: 4px;
-  color: var(--text);
-}
-.msg-time {
-  font-size: .62rem;
-  color: var(--text3);
-  font-family: var(--mono);
-  margin-top: 3px;
-  padding: 0 4px;
-}
-.msg-wrap.user .msg-time { text-align: right; }
+/* NOTIFICATION CARD */
+.ncard{background:var(--s2);border:1px solid var(--b2);border-radius:9px;padding:9px 11px;max-width:92%;animation:pop .22s cubic-bezier(.34,1.56,.64,1) both;align-self:flex-start}
+.ncard.internal{border-left:2px solid var(--red);background:rgba(239,68,68,.04)}
+.ncard.warning{border-left:2px solid var(--amber);background:rgba(245,158,11,.04)}
+.ncard.ok{border-left:2px solid var(--accent);background:rgba(0,212,170,.04)}
+.ncard.info{border-left:2px solid var(--blue);background:rgba(59,130,246,.04)}
+.nlabel{font-family:var(--mono);font-size:.58rem;letter-spacing:1px;text-transform:uppercase;margin-bottom:5px}
+.nl-red{color:var(--red)}.nl-amber{color:var(--amber)}.nl-accent{color:var(--accent)}.nl-blue{color:var(--blue)}
+.nbody{font-size:.76rem;line-height:1.5;color:var(--tx)}
+.nmeta{display:flex;gap:5px;flex-wrap:wrap;margin-top:6px}
+.nchip{font-family:var(--mono);font-size:.56rem;border:1px solid var(--b2);padding:1px 6px;border-radius:3px;color:var(--tx3)}
 
 /* TYPING */
-.typing-wrap { align-items: flex-start; }
-.typing-bubble {
-  background: var(--surface3);
-  border: 1px solid var(--border);
-  border-radius: 14px;
-  border-bottom-left-radius: 4px;
-  padding: 10px 14px;
-  display: flex;
-  gap: 4px;
-  align-items: center;
-}
-.typing-dot {
-  width: 5px; height: 5px;
-  border-radius: 50%;
-  background: var(--text3);
-  animation: tdot 1.2s infinite;
-}
-.typing-dot:nth-child(2){animation-delay:.2s}
-.typing-dot:nth-child(3){animation-delay:.4s}
-@keyframes tdot{0%,60%,100%{transform:scale(1);background:var(--text3)}30%{transform:scale(1.5);background:var(--accent)}}
+.typing{align-items:flex-start}
+.tdots{background:var(--s3);border:1px solid var(--b1);border-radius:12px;border-bottom-left-radius:3px;padding:8px 12px;display:flex;gap:3px;align-items:center}
+.td{width:5px;height:5px;border-radius:50%;background:var(--tx3);animation:td 1.2s infinite}
+.td:nth-child(2){animation-delay:.2s}.td:nth-child(3){animation-delay:.4s}
+@keyframes td{0%,60%,100%{transform:scale(1);background:var(--tx3)}30%{transform:scale(1.5);background:var(--accent)}}
 
-/* DATE DIVIDER */
-.date-divider {
-  text-align: center;
-  font-family: var(--mono);
-  font-size: .64rem;
-  color: var(--text3);
-  padding: 4px 0 8px;
-  letter-spacing: 1px;
-}
+/* DIVIDER */
+.divline{text-align:center;font-family:var(--mono);font-size:.6rem;color:var(--tx3);padding:4px 0 6px;letter-spacing:.5px}
 
-/* NOTIFICATION CARD in chat */
-.notif-card {
-  background: var(--surface2);
-  border: 1px solid var(--border2);
-  border-radius: 11px;
-  padding: 11px 13px;
-  max-width: 90%;
-  animation: popIn .25s cubic-bezier(.34,1.56,.64,1) both;
-  align-self: flex-start;
-}
-.notif-card.sent { align-self: flex-start; }
-.notif-header {
-  font-family: var(--mono);
-  font-size: .64rem;
-  color: var(--accent);
-  letter-spacing: 1px;
-  margin-bottom: 6px;
-  text-transform: uppercase;
-}
-.notif-header.amber { color: var(--amber); }
-.notif-header.red { color: var(--red); }
-.notif-header.blue { color: var(--blue); }
-.notif-body { font-size: .82rem; line-height: 1.5; color: var(--text); }
-.notif-meta {
-  font-family: var(--mono);
-  font-size: .64rem;
-  color: var(--text3);
-  margin-top: 7px;
-  display: flex;
-  gap: 8px;
-  flex-wrap: wrap;
-}
-.notif-chip {
-  border: 1px solid var(--border2);
-  padding: 1px 7px;
-  border-radius: 3px;
-  font-size: .6rem;
-}
-
-/* QUICK REPLIES */
-.qr-wrap {
-  padding: 8px 10px 4px;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
-  background: var(--bg);
-  border-top: 1px solid var(--border);
-}
-.qr-btn {
-  font-family: var(--mono);
-  font-size: .7rem;
-  padding: 5px 12px;
-  border-radius: 5px;
-  border: 1px solid var(--border2);
-  background: var(--surface2);
-  color: var(--text2);
-  cursor: pointer;
-  transition: all .12s;
-}
-.qr-btn:hover { border-color: var(--accent); color: var(--accent); }
+/* QR */
+.qrw{padding:7px 8px 4px;display:flex;flex-wrap:wrap;gap:5px;background:var(--bg);border-top:1px solid var(--b1)}
+.qrb{font-family:var(--mono);font-size:.65rem;padding:4px 10px;border-radius:4px;border:1px solid var(--b2);background:var(--s2);color:var(--tx2);cursor:pointer;transition:all .12s}
+.qrb:hover{border-color:var(--accent);color:var(--accent)}
 
 /* INPUT */
-.input-bar {
-  padding: 10px;
-  border-top: 1px solid var(--border);
-  background: var(--surface2);
-  display: flex;
-  gap: 8px;
-}
-.input-field {
-  flex: 1;
-  background: var(--surface3);
-  border: 1px solid var(--border2);
-  border-radius: 8px;
-  padding: 8px 12px;
-  font-family: var(--sans);
-  font-size: .8rem;
-  color: var(--text);
-  outline: none;
-  transition: border-color .15s;
-}
-.input-field:focus { border-color: var(--accent); }
-.input-field::placeholder { color: var(--text3); }
-.send-btn {
-  width: 34px; height: 34px;
-  border-radius: 7px;
-  background: var(--accent);
-  border: none;
-  cursor: pointer;
-  display: flex; align-items: center; justify-content: center;
-  transition: opacity .15s;
-  flex-shrink: 0;
-}
-.send-btn:hover { opacity: .85; }
-.send-btn svg { width: 14px; height: 14px; }
+.ibar{padding:8px;border-top:1px solid var(--b1);background:var(--s2);display:flex;gap:6px}
+.ifield{flex:1;background:var(--s3);border:1px solid var(--b2);border-radius:6px;padding:7px 10px;font-family:var(--sans);font-size:.76rem;color:var(--tx);outline:none;transition:border-color .15s}
+.ifield:focus{border-color:var(--accent)}
+.ifield::placeholder{color:var(--tx3)}
+.isend{width:30px;height:30px;border-radius:5px;background:var(--accent);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;opacity:.9;transition:opacity .12s}
+.isend:hover{opacity:1}
+.isend svg{width:12px;height:12px}
 
-/* RIGHT PANEL */
-.right-panel { display: flex; flex-direction: column; gap: 16px; }
-
-.panel-card {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  overflow: hidden;
-}
-.panel-card-header {
-  padding: 11px 16px;
-  border-bottom: 1px solid var(--border);
-  font-family: var(--mono);
-  font-size: .72rem;
-  color: var(--text2);
-  letter-spacing: 1px;
-  text-transform: uppercase;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-.panel-card-body { padding: 13px 16px; }
-
-/* ALERT LIST */
-.alert-list-item {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 9px 0;
-  border-bottom: 1px solid var(--border);
-  font-size: .82rem;
-}
-.alert-list-item:last-child { border-bottom: none; }
-.a-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
-.a-red { background: var(--red); box-shadow: 0 0 6px var(--red); }
-.a-amber { background: var(--amber); box-shadow: 0 0 6px var(--amber); }
-.a-accent { background: var(--accent); box-shadow: 0 0 6px var(--accent); }
-.a-blue { background: var(--blue); box-shadow: 0 0 6px var(--blue); }
-.a-text { flex: 1; color: var(--text); }
-.a-sub { font-size: .7rem; color: var(--text3); font-family: var(--mono); margin-top: 1px; }
-.a-date { font-family: var(--mono); font-size: .66rem; color: var(--text3); white-space: nowrap; }
-.a-btn {
-  font-family: var(--mono);
-  font-size: .65rem;
-  padding: 3px 9px;
-  border-radius: 4px;
-  border: 1px solid var(--border2);
-  background: transparent;
-  color: var(--text2);
-  cursor: pointer;
-  transition: all .12s;
-  white-space: nowrap;
-}
-.a-btn:hover { border-color: var(--accent); color: var(--accent); }
-.a-btn.fire { background: var(--accent-dim); border-color: var(--accent); color: var(--accent); }
-
-/* AGENDA */
-.slot {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 8px 10px;
-  border-radius: 7px;
-  margin-bottom: 5px;
-  border: 1px solid transparent;
-  cursor: pointer;
-  transition: all .12s;
-}
-.slot:hover { background: var(--surface3); }
-.slot.busy { background: rgba(0,212,170,.05); border-color: rgba(0,212,170,.15); }
-.slot.nuevo { background: rgba(59,130,246,.05); border-color: rgba(59,130,246,.15); }
-.slot.pending { background: rgba(245,158,11,.05); border-color: rgba(245,158,11,.12); }
-.slot-time { font-family: var(--mono); font-size: .68rem; color: var(--text3); min-width: 38px; }
-.slot-bar { width: 2px; border-radius: 1px; align-self: stretch; flex-shrink: 0; }
-.slot-info { flex: 1; }
-.slot-title { font-size: .82rem; font-weight: 500; }
-.slot-sub { font-size: .7rem; color: var(--text2); margin-top: 1px; font-family: var(--mono); }
-.slot-tag {
-  font-family: var(--mono);
-  font-size: .6rem;
-  padding: 2px 7px;
-  border-radius: 3px;
-  font-weight: 600;
-  white-space: nowrap;
-}
-
-/* STATS */
-.stats-mini { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
-.stat-mini {
-  background: var(--surface2);
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  padding: 10px 12px;
-}
-.sm-num {
-  font-family: var(--mono);
-  font-size: 1.4rem;
-  font-weight: 600;
-  color: var(--accent);
-  line-height: 1;
-}
-.sm-label { font-size: .68rem; color: var(--text3); margin-top: 3px; font-family: var(--mono); }
-
-/* SCENARIO DESC */
-.scenario-desc {
-  background: var(--surface2);
-  border: 1px solid var(--border);
-  border-left: 2px solid var(--accent);
-  border-radius: 0 8px 8px 0;
-  padding: 10px 14px;
-  font-family: var(--mono);
-  font-size: .72rem;
-  color: var(--text2);
-  line-height: 1.6;
-  margin-bottom: 16px;
-}
-
-footer {
-  margin-top: 28px;
-  font-family: var(--mono);
-  font-size: .65rem;
-  color: var(--text3);
-  letter-spacing: .5px;
-}
+footer{margin-top:24px;font-family:var(--mono);font-size:.6rem;color:var(--tx3);letter-spacing:.5px}
 </style>
 </head>
 <body>
 
 <header>
-  <div class="header-dot"></div>
-  <div class="header-title">VetBot <span>/ Alertas & Agendamiento</span></div>
-  <div class="header-badge">DEMO v1.0</div>
+  <div class="hdot"></div>
+  <div class="htitle">VetBot <span>/ Demo interactiva</span></div>
+  <div class="hbadge">DEMO</div>
 </header>
 
-<div class="scenarios">
-  <div class="scenarios-label">Elegir escenario</div>
-  <div class="scenario-row">
-    <button class="scenario-btn active" onclick="loadScenario('vacuna')">💉 Alerta vacuna cliente</button>
-    <button class="scenario-btn" onclick="loadScenario('nuevo_cliente')">🆕 Nuevo cliente</button>
-    <button class="scenario-btn" onclick="loadScenario('cita')">📅 Agendar cita</button>
-    <button class="scenario-btn" onclick="loadScenario('tratamiento')">💊 Fin tratamiento</button>
-    <button class="scenario-btn" onclick="loadScenario('guarderia')">🏠 Novedad guardería</button>
-    <button class="scenario-btn" onclick="loadScenario('alerta_vet')">🔴 Alerta interna vet</button>
-  </div>
+<div class="sc-label">Elegir escenario</div>
+<div class="sc-row">
+  <button class="sc-btn active" onclick="load('vacuna',this)">💉 Alerta de vacuna</button>
+  <button class="sc-btn" onclick="load('nuevo_cliente',this)">🆕 Nuevo cliente</button>
+  <button class="sc-btn" onclick="load('cita',this)">📅 Agendar cita</button>
+  <button class="sc-btn" onclick="load('tratamiento',this)">💊 Fin de tratamiento</button>
+  <button class="sc-btn" onclick="load('guarderia',this)">🏠 Guardería</button>
+  <button class="sc-btn" onclick="load('resumen_vet',this)">🔴 Resumen matutino vet</button>
 </div>
+<div class="sc-desc" id="sc-desc"></div>
 
-<div class="layout">
-  <!-- PHONE -->
-  <div class="phone">
-    <div class="tg-bar">
-      <span class="tg-back">‹</span>
-      <div class="tg-avatar">🐾</div>
-      <div>
-        <div class="tg-name">VetBot</div>
-        <div class="tg-status" id="bot-status">● en línea</div>
+<div class="phones">
+  <!-- CLIENTE -->
+  <div>
+    <div class="ph-label" style="margin-bottom:6px">👤 cliente</div>
+    <div class="phone">
+      <div class="topbar">
+        <span class="tb-back">‹</span>
+        <div class="avatar av-green">🐾</div>
+        <div><div class="tb-name">VetBot</div><div class="tb-status">● en línea</div></div>
       </div>
-    </div>
-    <div class="prog-bar"><div class="prog-fill" id="prog"></div></div>
-    <div class="chat" id="chat"></div>
-    <div class="qr-wrap" id="qr-wrap"></div>
-    <div class="input-bar">
-      <input class="input-field" id="inputField" placeholder="Escribe un mensaje..." autocomplete="off">
-      <button class="send-btn" id="sendBtn" onclick="sendFree()">
-        <svg viewBox="0 0 24 24" fill="none" stroke="#080b0f" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-          <line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/>
-        </svg>
-      </button>
+      <div class="prog"><div class="progf" id="prog-c"></div></div>
+      <div class="chat" id="chat-c"></div>
+      <div class="qrw" id="qr-c"></div>
+      <div class="ibar">
+        <input class="ifield" placeholder="Escribe..." id="in-c" onkeydown="if(event.key==='Enter')freeMsg('c')">
+        <button class="isend" onclick="freeMsg('c')"><svg viewBox="0 0 24 24" fill="none" stroke="#080b0f" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg></button>
+      </div>
     </div>
   </div>
 
-  <!-- RIGHT PANEL -->
-  <div class="right-panel">
-    <div class="scenario-desc" id="scene-desc">Selecciona un escenario para ver cómo VetBot maneja alertas automáticas y agendamiento desde Telegram o WhatsApp.</div>
-
-    <!-- STATS -->
-    <div class="panel-card">
-      <div class="panel-card-header">Estado del sistema</div>
-      <div class="panel-card-body">
-        <div class="stats-mini">
-          <div class="stat-mini"><div class="sm-num" style="color:var(--red)">3</div><div class="sm-label">Alertas urgentes</div></div>
-          <div class="stat-mini"><div class="sm-num">8</div><div class="sm-label">Citas hoy</div></div>
-          <div class="stat-mini"><div class="sm-num" style="color:var(--accent)">12</div><div class="sm-label">Recordatorios / semana</div></div>
-          <div class="stat-mini"><div class="sm-num">4</div><div class="sm-label">En guardería</div></div>
-        </div>
+  <!-- VET -->
+  <div>
+    <div class="ph-label" style="margin-bottom:6px">👨‍⚕️ veterinario</div>
+    <div class="phone">
+      <div class="topbar">
+        <span class="tb-back">‹</span>
+        <div class="avatar av-blue">🤖</div>
+        <div><div class="tb-name">VetBot Admin</div><div class="tb-status" style="color:var(--blue)">● sistema</div></div>
       </div>
-    </div>
-
-    <!-- ALERTAS -->
-    <div class="panel-card">
-      <div class="panel-card-header">
-        <span>Alertas pendientes</span>
-        <span style="color:var(--red);font-size:.65rem">3 urgentes</span>
-      </div>
-      <div class="panel-card-body" style="padding:8px 16px">
-        <div class="alert-list-item">
-          <div class="a-dot a-red"></div>
-          <div>
-            <div class="a-text">Toby — Antirrábica vencida</div>
-            <div class="a-sub">Carlos R. · HC-001</div>
-          </div>
-          <div class="a-date">venc. 15 may</div>
-          <button class="a-btn fire" onclick="loadScenario('vacuna')">Ver</button>
-        </div>
-        <div class="alert-list-item">
-          <div class="a-dot a-amber"></div>
-          <div>
-            <div class="a-text">Luna — Desparasitación en 5d</div>
-            <div class="a-sub">Ana M. · HC-002</div>
-          </div>
-          <div class="a-date">20 may</div>
-          <button class="a-btn" onclick="loadScenario('tratamiento')">Ver</button>
-        </div>
-        <div class="alert-list-item">
-          <div class="a-dot a-blue"></div>
-          <div>
-            <div class="a-text">Santiago M. — Nuevo cliente</div>
-            <div class="a-sub">French Bulldog · 3 min</div>
-          </div>
-          <div class="a-date">ahora</div>
-          <button class="a-btn fire" onclick="loadScenario('nuevo_cliente')">Ver</button>
-        </div>
-        <div class="alert-list-item">
-          <div class="a-dot a-accent"></div>
-          <div>
-            <div class="a-text">Rex — Revisión anual mañana</div>
-            <div class="a-sub">Pedro G. · HC-003</div>
-          </div>
-          <div class="a-date">mañana</div>
-          <button class="a-btn" onclick="loadScenario('cita')">Ver</button>
-        </div>
-      </div>
-    </div>
-
-    <!-- AGENDA HOY -->
-    <div class="panel-card">
-      <div class="panel-card-header">Agenda de hoy</div>
-      <div class="panel-card-body">
-        <div class="slot nuevo">
-          <div class="slot-time">8:30</div>
-          <div class="slot-bar" style="background:var(--blue)"></div>
-          <div class="slot-info"><div class="slot-title">Santiago M. — Beto</div><div class="slot-sub">Primera consulta</div></div>
-          <span class="slot-tag" style="background:var(--blue-dim);color:var(--blue)">NUEVO</span>
-        </div>
-        <div class="slot busy">
-          <div class="slot-time">10:00</div>
-          <div class="slot-bar" style="background:var(--accent)"></div>
-          <div class="slot-info"><div class="slot-title">Carlos R. — Toby</div><div class="slot-sub">Vacuna antirrábica</div></div>
-          <span class="slot-tag" style="background:var(--accent-dim);color:var(--accent)">CONF.</span>
-        </div>
-        <div class="slot pending">
-          <div class="slot-time">11:30</div>
-          <div class="slot-bar" style="background:var(--amber)"></div>
-          <div class="slot-info"><div class="slot-title">Ana M. — Luna</div><div class="slot-sub">Control infección</div></div>
-          <span class="slot-tag" style="background:var(--amber-dim);color:var(--amber)">PEND.</span>
-        </div>
-        <div class="slot">
-          <div class="slot-time">2:00</div>
-          <div class="slot-bar" style="background:var(--border2)"></div>
-          <div class="slot-info"><div class="slot-title" style="color:var(--text3)">Disponible</div></div>
-        </div>
-        <div class="slot busy">
-          <div class="slot-time">3:30</div>
-          <div class="slot-bar" style="background:#8b5cf6)"></div>
-          <div class="slot-info"><div class="slot-title">Pedro G. — Rex</div><div class="slot-sub">Revisión anual</div></div>
-          <span class="slot-tag" style="background:rgba(139,92,246,.12);color:#8b5cf6">CONF.</span>
-        </div>
+      <div class="prog"><div class="progf" id="prog-v"></div></div>
+      <div class="chat" id="chat-v"></div>
+      <div class="qrw" id="qr-v"></div>
+      <div class="ibar">
+        <input class="ifield" placeholder="Responder..." id="in-v" onkeydown="if(event.key==='Enter')freeMsg('v')">
+        <button class="isend" onclick="freeMsg('v')"><svg viewBox="0 0 24 24" fill="none" stroke="#080b0f" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg></button>
       </div>
     </div>
   </div>
@@ -637,252 +183,288 @@ footer {
 <footer>demo simulada · sin conexión real a Telegram / WhatsApp</footer>
 
 <script>
-const chat = document.getElementById('chat');
-const qrWrap = document.getElementById('qr-wrap');
-const inputField = document.getElementById('inputField');
-let timers = [], isRunning = false;
-
-const now = () => {
-  const d = new Date();
-  return `${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`;
-};
-
-// ── SCENARIOS ──────────────────────────────────────────────────────────────
-const SCENARIOS = {
+/* ─── SCENARIOS ─────────────────────────────────────────────────────────── */
+const SC = {
 
   vacuna: {
-    desc: "VetBot detecta que la vacuna de Toby está próxima a vencer. Envía un recordatorio automático a Carlos (el dueño) por WhatsApp. Carlos responde y agenda la cita directamente desde el chat.",
-    context: "💬 Conversación: VetBot → Carlos Rodríguez (dueño de Toby)",
-    steps: [
-      { t: 'divider', txt: 'Hoy · 8:00 AM — Sistema automático', d: 0 },
-      { t: 'notif', color: 'amber', label: 'ALERTA PROGRAMADA · VACUNA', body: '🐕 Toby · Antirrábica\nVence en 2 días — 15 de mayo\nDueño: Carlos Rodríguez · +57 300 123 4567', meta: ['AUTOMÁTICO', 'WhatsApp + Telegram'], d: 400 },
-      { t: 'bot', txt: 'Hola Carlos 👋\n\n*Clínica VetSalud* te recuerda:\n\n🐕 *Toby* tiene su vacuna *Antirrábica* venciendo el *15 de mayo*.\n\n¿Quieres agendar una cita ahora?', d: 1200 },
-      { t: 'qr', options: ['Sí, agendar', 'Después', '¿Qué pasa si no la pongo?'], d: 2400 },
-      { t: 'user', txt: 'Sí, agendar', d: 3400 },
-      { t: 'bot', txt: 'Perfecto 🗓️ Tengo disponibilidad esta semana:\n\n📅 *Jue 16 may · 10:00 AM*\n📅 *Jue 16 may · 3:00 PM*\n📅 *Vie 17 may · 9:00 AM*\n\n¿Cuál te queda mejor?', d: 4600 },
-      { t: 'qr', options: ['Jue 10:00 AM', 'Jue 3:00 PM', 'Vie 9:00 AM'], d: 5800 },
-      { t: 'user', txt: 'Jue 10:00 AM', d: 6800 },
-      { t: 'bot', txt: '✅ *Cita confirmada*\n\n🐕 Toby — Vacuna antirrábica\n📅 Jueves 16 de mayo · 10:00 AM\n📍 Clínica VetSalud\n\nTe enviaré un recordatorio la noche anterior 🔔', d: 8000 },
-      { t: 'notif', color: 'accent', label: 'REGISTRO INTERNO · VET', body: '📝 Cita agendada por el dueño via Telegram\nToby · Antirrábica · Jue 16 may 10am\n✓ Confirmada automáticamente', meta: ['HC-001', 'Dr. García asignado'], d: 9200 },
+    desc: "VetBot detecta que Toby tiene la antirrábica vencida. El vet recibe alerta interna y el cliente recibe recordatorio automático. El cliente agenda la cita directamente desde el chat.",
+    c: [
+      {t:'div', txt:'Hoy · 8:00 AM', d:0},
+      {t:'bot', txt:'Hola Carlos 👋\n\n*Clínica VetSalud* te recuerda:\n\n🐕 *Toby* tiene su vacuna *Antirrábica* vencida desde el 15 de mayo.\n\n¿Agendamos una cita esta semana?', d:400},
+      {t:'qr', opts:['Sí, agendar','Después','¿Qué pasa si no la pongo?'], d:1600},
+      {t:'user', txt:'Sí, agendar', d:2600},
+      {t:'bot', txt:'Perfecto 📅 Tengo estos horarios disponibles:\n\n• Jue 29 may · 10:00 AM\n• Jue 29 may · 3:00 PM\n• Vie 30 may · 9:00 AM\n\n¿Cuál te queda bien?', d:3600},
+      {t:'qr', opts:['Jue 10:00 AM','Jue 3:00 PM','Vie 9:00 AM'], d:4800},
+      {t:'user', txt:'Jue 10:00 AM', d:5600},
+      {t:'bot', txt:'✅ *Cita confirmada*\n\n🐕 Toby — Vacuna antirrábica\n📅 Jueves 29 mayo · 10:00 AM\n📍 Clínica VetSalud\n\n🔔 Te recuerdo la noche anterior.', d:6600},
+    ],
+    v: [
+      {t:'div', txt:'Hoy · 7:58 AM — Sistema automático', d:0},
+      {t:'ncard', cls:'internal', lbl:'🔴 ALERTA · VACUNA VENCIDA', nlbl:'nl-red', body:'🐕 Toby (HC-001) — Antirrábica\nVencida hace 11 días · 15 may\nDueño: Carlos R. · +57 300 123 4567', chips:['URGENTE','WhatsApp enviado'], d:400},
+      {t:'qr', opts:['Notificar cliente','Ver ficha Toby','Agendar manual'], d:1400},
+      {t:'user', txt:'Notificar cliente', d:2200},
+      {t:'bot', txt:'📩 Recordatorio enviado a Carlos R. vía WhatsApp.\n\nEsperando respuesta...', d:3200},
+      {t:'div', txt:'8:03 AM — Cliente respondió', d:5400},
+      {t:'ncard', cls:'ok', lbl:'✅ CITA AGENDADA · AUTOMÁTICO', nlbl:'nl-accent', body:'Toby — Antirrábica\nJue 29 may · 10:00 AM\nAgendada por el cliente vía chat', chips:['HC-001','Dr. García asignado'], d:5800},
+      {t:'bot', txt:'✅ Carlos R. agendó la cita de Toby para el *jue 29 mayo a las 10am*.\n\nYa aparece en tu agenda del día 🗓️', d:6800},
     ]
   },
 
   nuevo_cliente: {
-    desc: "Santiago Morales se registra como nuevo cliente vía WhatsApp. VetBot alerta al veterinario, envía bienvenida automática al cliente, crea el perfil de su mascota y ofrece agendar la primera cita.",
-    context: "💬 Conversación: VetBot → Dr. García (alerta interna) + Santiago Morales (nuevo cliente)",
-    steps: [
-      { t: 'divider', txt: 'Hoy · 9:47 AM — Registro nuevo cliente', d: 0 },
-      { t: 'notif', color: 'blue', label: 'ALERTA INTERNA · NUEVO CLIENTE', body: '🆕 Santiago Morales se registró vía WhatsApp\nMascota: Beto — French Bulldog, 2 años\n+57 318 444 9900', meta: ['INMEDIATO', 'Sin historial previo'], d: 400 },
-      { t: 'bot', txt: '🔔 *Dr. García* — Nuevo cliente registrado:\n\n👤 Santiago Morales\n🐕 Beto — French Bulldog, 2 años\n📱 +57 318 444 9900\n\nSin historial previo. ¿Enviamos bienvenida?', d: 1200 },
-      { t: 'qr', options: ['Enviar bienvenida', 'Ver perfil', 'Agendar cita'], d: 2400 },
-      { t: 'user', txt: 'Enviar bienvenida', d: 3200 },
-      { t: 'divider', txt: 'VetBot → Santiago Morales', d: 3900 },
-      { t: 'notif', color: 'accent', label: 'MENSAJE ENVIADO A CLIENTE', body: '¡Hola Santiago! 🎉 Bienvenido a Clínica VetSalud.\n\nCreé el perfil de Beto en nuestro sistema. Puedes agendar su primera consulta respondiendo "CITA" o llamándonos. ¡Nos alegra tenerlos! 🐾', meta: ['WhatsApp', 'Entregado ✓'], d: 4600 },
-      { t: 'bot', txt: '✅ Bienvenida enviada a Santiago.\n\nPerfil de *Beto* creado en el sistema con ID *HC-005*.\n\n¿Agendamos la primera consulta ahora?', d: 5800 },
-      { t: 'qr', options: ['Sí, agendar', 'Dejar que el cliente agende', 'Ver disponibilidad'], d: 7000 },
-      { t: 'user', txt: 'Ver disponibilidad', d: 7800 },
-      { t: 'bot', txt: '📅 *Disponibilidad esta semana:*\n\n• Hoy 2:00 PM — disponible\n• Jue 27 · 8:30 AM — disponible\n• Vie 28 · 10:00 AM — disponible\n\nRespondió "CITA" por WhatsApp — enviando opciones a Santiago automáticamente 🔄', d: 9000 },
+    desc: "Santiago se registra como nuevo cliente por WhatsApp. El vet recibe alerta inmediata. VetBot da la bienvenida al cliente, crea el perfil de su mascota y ofrece agendar la primera cita.",
+    c: [
+      {t:'div', txt:'Hoy · 9:47 AM — Primer contacto', d:0},
+      {t:'bot', txt:'¡Hola Santiago! 🎉 Bienvenido a *Clínica VetSalud*.\n\nCreé el perfil de *Beto* (French Bulldog) en nuestro sistema.\n\n¿En qué te puedo ayudar?', d:500},
+      {t:'qr', opts:['Agendar primera cita','Ver servicios','Hablar con el vet'], d:1700},
+      {t:'user', txt:'Agendar primera cita', d:2500},
+      {t:'bot', txt:'Con gusto 📅 ¿Qué tipo de consulta necesita Beto?\n\n• Revisión general\n• Vacunación\n• Otro motivo', d:3400},
+      {t:'qr', opts:['Revisión general','Vacunación','Otro'], d:4600},
+      {t:'user', txt:'Revisión general', d:5400},
+      {t:'bot', txt:'Estos son los horarios disponibles para esta semana:\n\n• Hoy · 2:00 PM\n• Jue 29 · 8:30 AM\n• Vie 30 · 10:00 AM', d:6300},
+      {t:'qr', opts:['Hoy 2:00 PM','Jue 8:30 AM','Vie 10:00 AM'], d:7400},
+      {t:'user', txt:'Jue 8:30 AM', d:8200},
+      {t:'bot', txt:'✅ *Primera cita agendada*\n\n🐕 Beto — Revisión general\n📅 Jue 29 mayo · 8:30 AM\n👤 Primera consulta\n\nTe esperamos 🐾', d:9100},
+    ],
+    v: [
+      {t:'div', txt:'9:47 AM — Registro automático', d:0},
+      {t:'ncard', cls:'info', lbl:'🆕 NUEVO CLIENTE REGISTRADO', nlbl:'nl-blue', body:'Santiago Morales\nFrench Bulldog · Beto · 2 años\n+57 318 444 9900 · vía WhatsApp', chips:['INMEDIATO','Sin historial previo'], d:400},
+      {t:'bot', txt:'🆕 *Nuevo cliente registrado:*\n\n👤 Santiago Morales\n🐕 Beto — French Bulldog, 2 años\n\n¿Qué hago?', d:1400},
+      {t:'qr', opts:['Enviar bienvenida','Asignar veterinario','Ver perfil'], d:2400},
+      {t:'user', txt:'Enviar bienvenida', d:3100},
+      {t:'bot', txt:'✅ Bienvenida enviada a Santiago.\n\nPerfil *HC-005* creado en el sistema.\n\nSantiago está navegando las opciones del bot...', d:4000},
+      {t:'div', txt:'9:55 AM — Cliente agendó', d:8000},
+      {t:'ncard', cls:'ok', lbl:'📅 CITA AGENDADA · NUEVO CLIENTE', nlbl:'nl-accent', body:'Beto (HC-005) — Revisión general\nJue 29 may · 8:30 AM\nAgendado por el cliente vía chat', chips:['Primera consulta','Dr. García sugerido'], d:8400},
     ]
   },
 
   cita: {
-    desc: "Rex tiene una revisión anual programada mañana. VetBot envía confirmación automática a Pedro (el dueño) y pide OK o reagendar. Pedro confirma y recibe recordatorio 2 horas antes.",
-    context: "💬 Conversación: VetBot → Pedro García (dueño de Rex)",
-    steps: [
-      { t: 'divider', txt: 'Hoy · 8:00 AM — Confirmación automática 24h', d: 0 },
-      { t: 'notif', color: 'blue', label: 'RECORDATORIO DE CITA · 24H ANTES', body: '🐕 Rex · Revisión anual\nMañana 27 may · 3:30 PM\nDueño: Pedro García', meta: ['AUTOMÁTICO', 'Telegram + WhatsApp'], d: 400 },
-      { t: 'bot', txt: 'Hola Pedro 🐾\n\nTu cita de mañana está programada:\n\n📅 *Mañana 27 de mayo · 3:30 PM*\n🐕 Rex — Revisión anual\n📍 Clínica VetSalud · Cra 15 #45-12\n👨‍⚕️ Dr. García\n\nResponde *OK* para confirmar o *CAMBIAR* para reagendar.', d: 1200 },
-      { t: 'qr', options: ['OK, confirmo', 'CAMBIAR fecha', '¿Qué incluye la revisión?'], d: 2600 },
-      { t: 'user', txt: 'OK, confirmo', d: 3400 },
-      { t: 'bot', txt: '✅ *Cita confirmada*. Te esperamos mañana.\n\nAlgunos tips para la visita:\n• Trae el carnet de vacunación\n• Rex en ayuno de 4h si van a tomar muestras\n\n🔔 Te recordaré *2 horas antes* a la 1:30 PM.', d: 4600 },
-      { t: 'divider', txt: 'Mañana · 1:30 PM — Recordatorio 2h', d: 5600 },
-      { t: 'notif', color: 'amber', label: 'RECORDATORIO · 2H ANTES', body: '⏰ En 2 horas tienes cita con Rex\n3:30 PM · Clínica VetSalud\nDr. García — Revisión anual', meta: ['AUTOMÁTICO', 'Push Telegram'], d: 6200 },
-      { t: 'bot', txt: '⏰ Recordatorio: en *2 horas* tienes la cita de Rex.\n\n📍 Clínica VetSalud — Cra 15 #45-12\n\n¿Necesitas indicaciones o reagendar?', d: 7000 },
-      { t: 'qr', options: ['Ahí estaré', 'Indicaciones', 'Reagendar'], d: 8000 },
-      { t: 'user', txt: 'Ahí estaré', d: 8800 },
-      { t: 'bot', txt: '¡Perfecto! Nos vemos a las 3:30 PM 🐕', d: 9800 },
+    desc: "Rex tiene una revisión anual mañana. VetBot envía confirmación automática a Pedro 24h antes. Pedro confirma. El vet ve el estado en tiempo real. 2h antes llega recordatorio final.",
+    c: [
+      {t:'div', txt:'Hoy · 8:00 AM — Recordatorio 24h', d:0},
+      {t:'bot', txt:'Hola Pedro 🐾\n\nTu cita de mañana está confirmada:\n\n📅 *Mañana 27 may · 3:30 PM*\n🐕 Rex — Revisión anual\n📍 Clínica VetSalud · Cra 15 #45-12\n👨‍⚕️ Dr. García\n\nResponde *OK* para confirmar o *CAMBIAR* para reagendar.', d:400},
+      {t:'qr', opts:['OK, confirmo','CAMBIAR fecha','¿Qué incluye?'], d:1700},
+      {t:'user', txt:'OK, confirmo', d:2500},
+      {t:'bot', txt:'✅ Confirmado. Te esperamos mañana.\n\n📋 Trae el carnet de vacunación de Rex.\n\n🔔 Te recuerdo a la 1:30 PM (2h antes).', d:3400},
+      {t:'div', txt:'Mañana · 1:30 PM — Recordatorio 2h', d:5200},
+      {t:'bot', txt:'⏰ En *2 horas* tienes la cita de Rex.\n\n📍 Clínica VetSalud — Cra 15 #45-12\n\n¿Algún problema para llegar?', d:5700},
+      {t:'qr', opts:['Ahí estaré ✓','Llegaré tarde','Necesito reagendar'], d:6800},
+      {t:'user', txt:'Ahí estaré ✓', d:7600},
+      {t:'bot', txt:'¡Perfecto! Nos vemos a las 3:30 PM 🐕', d:8400},
+    ],
+    v: [
+      {t:'div', txt:'8:00 AM — Recordatorios automáticos', d:0},
+      {t:'ncard', cls:'info', lbl:'📅 CONFIRMACIÓN ENVIADA · 24H', nlbl:'nl-blue', body:'Rex (HC-003) — Revisión anual\nMañana 27 may · 3:30 PM\nRecordatorio enviado a Pedro G.', chips:['Telegram','Esperando confirmación'], d:400},
+      {t:'bot', txt:'📩 Recordatorio de cita enviado a Pedro G.\n\nEsperando confirmación de asistencia...', d:1300},
+      {t:'div', txt:'8:04 AM — Pedro confirmó', d:2300},
+      {t:'ncard', cls:'ok', lbl:'✅ CITA CONFIRMADA POR CLIENTE', nlbl:'nl-accent', body:'Rex (HC-003) — Revisión anual\nMañana 27 may · 3:30 PM\nPedro G. confirmó vía Telegram', chips:['Confirmada','Dr. García notificado'], d:2700},
+      {t:'bot', txt:'✅ Pedro confirmó la cita de Rex para mañana a las 3:30 PM.\n\nAgenda actualizada. Dr. García notificado.', d:3600},
+      {t:'div', txt:'Mañana · 1:30 PM', d:5200},
+      {t:'ncard', cls:'info', lbl:'⏰ RECORDATORIO 2H · ENVIADO', nlbl:'nl-blue', body:'Rex — Revisión anual · 3:30 PM\nRecordatorio enviado a Pedro G.\nRespuesta: "Ahí estaré ✓"', chips:['Asistencia confirmada'], d:5600},
     ]
   },
 
   tratamiento: {
-    desc: "El tratamiento de Luna (Amoxicilina) termina mañana. VetBot alerta al vet internamente y envía recordatorio a Ana para que coordine consulta de control y no interrumpa el seguimiento.",
-    context: "💬 Conversación: VetBot → Dr. García (alerta) + Ana Martínez (dueña de Luna)",
-    steps: [
-      { t: 'divider', txt: 'Hoy · 7:00 AM — Alerta de tratamiento', d: 0 },
-      { t: 'notif', color: 'red', label: 'ALERTA INTERNA · TRATAMIENTO', body: '💊 Luna (HC-002) — Amoxicilina 125mg\nTermina MAÑANA 30 de abril\nRevisar si hubo mejoría — agendar control', meta: ['Dr. García', 'Acción requerida'], d: 400 },
-      { t: 'bot', txt: '🔔 *Dr. García* — Alerta tratamiento:\n\n🐈 *Luna* — Amoxicilina 125mg\nTermina mañana · Infección urinaria\n\n¿Agendamos consulta de control automáticamente?', d: 1200 },
-      { t: 'qr', options: ['Sí, agendar control', 'Notificar a Ana primero', 'Ver historial Luna'], d: 2400 },
-      { t: 'user', txt: 'Notificar a Ana primero', d: 3200 },
-      { t: 'divider', txt: 'VetBot → Ana Martínez', d: 3900 },
-      { t: 'bot', txt: 'Hola Ana 🐈\n\nEl tratamiento de *Luna* (Amoxicilina) termina mañana.\n\nEl Dr. García recomienda una *consulta de control* para verificar la evolución.\n\n¿Agendamos?', d: 4800 },
-      { t: 'qr', options: ['Sí, agendar', '¿Luna está bien?', 'Llaman al número'], d: 6000 },
-      { t: 'user', txt: '¿Luna está bien?', d: 6800 },
-      { t: 'bot', txt: 'Según el último registro, Luna presentó mejoría en los síntomas urinarios. El control sirve para confirmar que la infección se eliminó completamente.\n\n¿Coordinamos la cita?', d: 8000 },
-      { t: 'qr', options: ['Sí, para esta semana', 'La semana próxima'], d: 9200 },
-      { t: 'user', txt: 'Sí, para esta semana', d: 10000 },
-      { t: 'bot', txt: '✅ *Control agendado*\n\n🐈 Luna — Control post-tratamiento\n📅 Jue 30 abr · 11:00 AM\n👩‍⚕️ Dra. Ramírez\n\n🔔 Recordatorio el día anterior.', d: 11200 },
+    desc: "El tratamiento de Luna termina mañana. VetBot alerta al vet para que evalúe si hay que agendar control. La dueña recibe aviso y agenda la consulta de seguimiento.",
+    c: [
+      {t:'div', txt:'Hoy · 9:00 AM', d:0},
+      {t:'bot', txt:'Hola Ana 🐈\n\nEl tratamiento de *Luna* (Amoxicilina 125mg) termina *mañana*.\n\nEl Dr. García recomienda una *consulta de control* para confirmar que la infección se eliminó.\n\n¿Agendamos?', d:500},
+      {t:'qr', opts:['Sí, esta semana','La semana próxima','¿Está bien Luna?'], d:1800},
+      {t:'user', txt:'¿Está bien Luna?', d:2600},
+      {t:'bot', txt:'Según el último registro Luna mejoró los síntomas 🐈\n\nPero la infección urinaria requiere confirmación con examen para asegurarse de que no queden bacterias.\n\n¿Coordinamos el control?', d:3500},
+      {t:'qr', opts:['Sí, esta semana','La semana próxima'], d:4800},
+      {t:'user', txt:'Sí, esta semana', d:5600},
+      {t:'bot', txt:'✅ *Control agendado*\n\n🐈 Luna — Control post-tratamiento\n📅 Jue 29 abr · 11:00 AM\n👩‍⚕️ Dra. Ramírez\n\n🔔 Recordatorio el día anterior.', d:6500},
+    ],
+    v: [
+      {t:'div', txt:'7:00 AM — Alerta automática', d:0},
+      {t:'ncard', cls:'internal', lbl:'🔴 TRATAMIENTO TERMINA MAÑANA', nlbl:'nl-red', body:'🐈 Luna (HC-002) — Amoxicilina 125mg\nFin: 30 abril · Infección urinaria\n→ Revisar evolución y agendar control', chips:['Acción requerida','Dr. García'], d:400},
+      {t:'bot', txt:'🔔 *Alerta tratamiento:*\n\n🐈 Luna — Amoxicilina termina mañana.\n\nInfección urinaria — ¿agendo control automáticamente?', d:1300},
+      {t:'qr', opts:['Sí, agendar control','Notificar a Ana primero','Ver historial'], d:2300},
+      {t:'user', txt:'Notificar a Ana primero', d:3000},
+      {t:'bot', txt:'📩 Mensaje enviado a Ana M. con recomendación de control.\n\nEsperando respuesta...', d:3900},
+      {t:'div', txt:'9:12 AM — Ana agendó', d:5400},
+      {t:'ncard', cls:'ok', lbl:'✅ CONTROL AGENDADO · CLIENTE', nlbl:'nl-accent', body:'Luna (HC-002) — Control post-tratamiento\nJue 29 abr · 11:00 AM\nAgendado por Ana vía chat', chips:['Dra. Ramírez','HC-002'], d:5800},
     ]
   },
 
   guarderia: {
-    desc: "Coco lleva 5 días en guardería y los dueños están de viaje. VetBot alerta al vet para enviar novedad del día con foto y estado. Los dueños reciben el reporte automáticamente.",
-    context: "💬 Conversación: VetBot → Familia Pérez (dueños de Coco)",
-    steps: [
-      { t: 'divider', txt: 'Hoy · 10:00 AM — Reporte diario guardería', d: 0 },
-      { t: 'notif', color: 'blue', label: 'GUARDERÍA · DÍA 5 — COCO', body: '🐕 Coco — Beagle, 3 años\nDueños de viaje hasta 30 may\nPendiente: enviar novedad del día', meta: ['Familia Pérez', '+57 321 000 1234'], d: 400 },
-      { t: 'bot', txt: '¡Hola! 🐕 Reporte del día de *Coco* en la guardería:\n\n📅 Día 5 de estadía\n\n🟢 *Estado general:* excelente\n🍽️ *Comidas:* completó desayuno y almuerzo\n🏃 *Actividad:* jugo con Rex en el patio esta mañana\n😴 *Siesta:* 2h después del almuerzo\n\n📸 Foto adjunta ↓', d: 1200 },
-      { t: 'notif', color: 'accent', label: 'FOTO DEL DÍA · ADJUNTA', body: '[ 📷 Coco jugando en el patio — 10:32 AM ]\nEstado: feliz y activo\nSin novedades médicas', meta: ['WhatsApp', 'Enviado ✓'], d: 2600 },
-      { t: 'bot', txt: '¿Alguna indicación especial para esta tarde?', d: 3800 },
-      { t: 'qr', options: ['Todo bien, gracias!', 'Darle su medicamento?', '¿Come solo pienso?'], d: 4800 },
-      { t: 'user', txt: '¡Todo bien, gracias!', d: 5600 },
-      { t: 'bot', txt: 'Con gusto 😊 Mañana a las 10am les enviamos el reporte del día 6.\n\n¿A qué hora llegan el 30 de mayo para el egreso?', d: 6600 },
-      { t: 'qr', options: ['3:00 PM', '5:00 PM', 'Les aviso'], d: 7800 },
-      { t: 'user', txt: '3:00 PM', d: 8600 },
-      { t: 'bot', txt: '✅ Registrado. Coco estará listo para el *30 de mayo a las 3:00 PM*.\n\n🔔 Les enviaré recordatorio de egreso ese día a las 9am.', d: 9600 },
+    desc: "Coco lleva 5 días en guardería. Los dueños están de viaje. VetBot recuerda al vet enviar la novedad diaria. Los dueños la reciben automáticamente con el estado del día.",
+    c: [
+      {t:'div', txt:'Hoy · 10:00 AM — Reporte día 5', d:0},
+      {t:'bot', txt:'¡Hola! 🐕 Reporte de *Coco* en guardería:\n\n📅 Día 5 de estadía\n🟢 Estado: excelente\n🍽️ Comió todo el desayuno y almuerzo\n🏃 Jugó con Rex en el patio esta mañana\n😴 Siesta de 2h después de almuerzo\n\n📸 Foto adjunta ↓', d:500},
+      {t:'ncard', cls:'ok', lbl:'📷 FOTO DEL DÍA', nlbl:'nl-accent', body:'[ 🐕 Coco jugando en el patio — 10:32 AM ]\nEstado: activo y feliz\nSin novedades médicas', chips:['WhatsApp','Entregado ✓'], d:1800},
+      {t:'qr', opts:['¡Gracias! Todo bien','¿Tiene medicamento?','¿Come solo pienso?'], d:3000},
+      {t:'user', txt:'¡Gracias! Todo bien', d:3800},
+      {t:'bot', txt:'Con gusto 😊\n\nMañana a las 10am les enviamos el reporte del día 6.\n\n¿A qué hora llegan el 30 de mayo para el egreso?', d:4700},
+      {t:'qr', opts:['3:00 PM','5:00 PM','Les aviso'], d:5900},
+      {t:'user', txt:'3:00 PM', d:6700},
+      {t:'bot', txt:'✅ Registrado. Coco estará listo para el *30 de mayo a las 3:00 PM*.\n\n🔔 Recordatorio de egreso ese día a las 9am.', d:7500},
+    ],
+    v: [
+      {t:'div', txt:'9:58 AM — Alerta guardería', d:0},
+      {t:'ncard', cls:'warning', lbl:'🏠 GUARDERÍA · DÍA 5 — COCO', nlbl:'nl-amber', body:'Coco — Beagle · 3 años\nDueños de viaje hasta 30 may\n→ Pendiente: enviar reporte del día', chips:['Familia Pérez','WhatsApp'], d:400},
+      {t:'bot', txt:'🔔 *Recordatorio guardería:*\n\n🐕 Coco — día 5 de estadía.\nDueños en viaje hasta 30 may.\n\n¿Envío el reporte diario ahora?', d:1300},
+      {t:'qr', opts:['Sí, enviar reporte','Enviar foto también','Ver registro Coco'], d:2300},
+      {t:'user', txt:'Enviar foto también', d:3000},
+      {t:'bot', txt:'📩 Reporte del día + foto enviados a Familia Pérez vía WhatsApp.\n\nEsperando confirmación de lectura...', d:3900},
+      {t:'div', txt:'10:07 AM — Familia respondió', d:5200},
+      {t:'ncard', cls:'ok', lbl:'✅ EGRESO CONFIRMADO', nlbl:'nl-accent', body:'Coco — Egreso programado\n30 mayo · 3:00 PM\nFamilia Pérez confirmó horario', chips:['Recordatorio agendado'], d:5600},
     ]
   },
 
-  alerta_vet: {
-    desc: "Resumen automático de alertas que VetBot envía al veterinario cada mañana a las 7am: vacunas vencidas, citas del día, tratamientos que terminan y nuevos clientes.",
-    context: "💬 Conversación: VetBot → Dr. García (resumen interno diario)",
-    steps: [
-      { t: 'divider', txt: 'Hoy · 7:00 AM — Resumen automático diario', d: 0 },
-      { t: 'bot', txt: '☀️ Buenos días *Dr. García*\n\nResumen del *26 de mayo*:', d: 600 },
-      { t: 'notif', color: 'red', label: '🔴 URGENTE — VACUNAS VENCIDAS', body: '• Toby (HC-001) — Antirrábica · vencida 15 may\n• Toby (HC-001) — Polivalente · vencida 10 mar\n\nDueño: Carlos R. — sin respuesta aún', meta: ['2 vacunas', 'Acción inmediata'], d: 1800 },
-      { t: 'notif', color: 'amber', label: '🟡 PRÓXIMAS — ESTA SEMANA', body: '• Luna (HC-002) — Desparasitación · 20 may (5 días)\n• Luna (HC-002) — Amoxicilina termina mañana\n  → Agendar control', meta: ['2 acciones pendientes'], d: 3200 },
-      { t: 'notif', color: 'blue', label: '📅 CITAS DE HOY — 4 AGENDADAS', body: '• 8:30am — Santiago M. · Beto (primera consulta)\n• 10:00am — Carlos R. · Toby (vacuna)\n• 11:30am — Ana M. · Luna (control)\n• 3:30pm — Pedro G. · Rex (revisión anual)', meta: ['2 confirmadas', '1 pendiente', '1 nuevo'], d: 4600 },
-      { t: 'notif', color: 'accent', label: '🆕 NUEVO CLIENTE', body: '• Santiago Morales · French Bulldog (Beto)\n  Registrado ayer 9:47am via WhatsApp', meta: ['Bienvenida enviada ✓'], d: 5800 },
-      { t: 'bot', txt: '¿Envío los recordatorios pendientes a los dueños automáticamente?', d: 7000 },
-      { t: 'qr', options: ['Sí, enviar todos', 'Revisar uno a uno', 'Solo los urgentes'], d: 8000 },
-      { t: 'user', txt: 'Solo los urgentes', d: 8800 },
-      { t: 'bot', txt: '✅ *Enviando alertas urgentes:*\n\n📩 Carlos R. — Toby · vacunas vencidas × 2\n📩 Ana M. — Luna · tratamiento termina mañana\n\n_2 mensajes despachados por WhatsApp + Telegram_', d: 10000 },
+  resumen_vet: {
+    desc: "Cada mañana a las 7am VetBot envía al vet un resumen completo: vacunas vencidas, citas del día, tratamientos que terminan y nuevos clientes. El vet responde y despacha acciones.",
+    c: [
+      {t:'div', txt:'7:00 AM — Resumen automático diario', d:0},
+      {t:'bot', txt:'☀️ Buenos días *Dr. García*\n\nResumen del *26 de mayo*:', d:500},
+      {t:'ncard', cls:'internal', lbl:'🔴 URGENTE — VACUNAS VENCIDAS', nlbl:'nl-red', body:'• Toby (HC-001) — Antirrábica · vencida 15 may\n• Toby (HC-001) — Polivalente · vencida 10 mar\n\nDueño: Carlos R. — sin respuesta aún', chips:['2 vacunas','Acción inmediata'], d:1500},
+      {t:'ncard', cls:'warning', lbl:'🟡 PRÓXIMAS — ESTA SEMANA', nlbl:'nl-amber', body:'• Luna (HC-002) — Desparasitación · 20 may\n• Luna (HC-002) — Amoxicilina termina mañana', chips:['2 acciones','Agendar control'], d:2800},
+      {t:'ncard', cls:'info', lbl:'📅 CITAS DE HOY — 4 AGENDADAS', nlbl:'nl-blue', body:'• 8:30am — Santiago M. · Beto (1ª consulta)\n• 10:00am — Carlos R. · Toby (vacuna)\n• 11:30am — Ana M. · Luna (control)\n• 3:30pm — Pedro G. · Rex (revisión)', chips:['2 confirmadas','1 pendiente','1 nuevo'], d:4100},
+      {t:'ncard', cls:'ok', lbl:'🆕 NUEVO CLIENTE', nlbl:'nl-accent', body:'• Santiago Morales · Beto (French Bulldog)\n  Registrado ayer 9:47am · Bienvenida enviada ✓', chips:['HC-005','Primera cita: jue 8:30am'], d:5300},
+      {t:'bot', txt:'¿Envío los recordatorios urgentes a los dueños automáticamente?', d:6500},
+      {t:'qr', opts:['Sí, enviar todos','Solo los urgentes','Revisar uno a uno'], d:7500},
+      {t:'user', txt:'Solo los urgentes', d:8300},
+      {t:'bot', txt:'✅ *Enviando alertas urgentes:*\n\n📩 Carlos R. — Toby · 2 vacunas vencidas\n📩 Ana M. — Luna · tratamiento termina mañana\n\n_2 mensajes despachados · WhatsApp + Telegram_', d:9200},
+    ],
+    v: [
+      // espejo — mismo teléfono (solo vet en este escenario)
+      {t:'div', txt:'Vista del veterinario — mismo chat', d:0},
+      {t:'ncard', cls:'info', lbl:'ℹ️ ESTE ESCENARIO', nlbl:'nl-blue', body:'En este flujo VetBot habla directamente con el veterinario.\n\nEl chat izquierdo muestra la conversación completa del resumen matutino.', chips:['Solo vet'], d:500},
     ]
   }
 };
 
-// ── ENGINE ─────────────────────────────────────────────────────────────────
-let typingEl = null;
+/* ─── ENGINE ──────────────────────────────────────────────────────────────── */
+let timers = [], typingC = null, typingV = null;
 
 function clearAll() {
   timers.forEach(clearTimeout); timers = [];
-  chat.innerHTML = ''; qrWrap.innerHTML = '';
-  typingEl = null; isRunning = false;
-  document.getElementById('prog').style.width = '0%';
+  ['chat-c','chat-v','qr-c','qr-v'].forEach(id => document.getElementById(id).innerHTML = '');
+  ['prog-c','prog-v'].forEach(id => document.getElementById(id).style.width = '0%');
+  typingC = null; typingV = null;
 }
 
-function getTime() {
+function nowTime() {
   const d = new Date();
   return `${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`;
 }
 
-function addDivider(txt) {
-  const d = document.createElement('div');
-  d.className = 'date-divider'; d.textContent = txt;
-  chat.appendChild(d); chat.scrollTop = chat.scrollHeight;
-}
-
-function addBubble(role, txt) {
-  const wrap = document.createElement('div');
-  wrap.className = `msg-wrap ${role}`;
-  const bub = document.createElement('div');
-  bub.className = 'bubble';
-  bub.innerHTML = txt.replace(/\n/g,'<br>').replace(/\*([^*]+)\*/g,'<strong>$1</strong>').replace(/_([^_]+)_/g,'<em style="color:var(--text2)">$1</em>');
-  const time = document.createElement('div');
-  time.className = 'msg-time'; time.textContent = getTime();
-  wrap.appendChild(bub); wrap.appendChild(time);
-  chat.appendChild(wrap); chat.scrollTop = chat.scrollHeight;
-}
-
-function addNotif(color, label, body, meta) {
+function addDivider(pane, txt) {
   const el = document.createElement('div');
-  el.className = 'notif-card';
-  const metaHtml = meta.map(m=>`<span class="notif-chip">${m}</span>`).join('');
-  el.innerHTML = `<div class="notif-header ${color}">${label}</div><div class="notif-body">${body.replace(/\n/g,'<br>')}</div><div class="notif-meta">${metaHtml}</div>`;
-  chat.appendChild(el); chat.scrollTop = chat.scrollHeight;
+  el.className = 'divline'; el.textContent = txt;
+  document.getElementById('chat-'+pane).appendChild(el);
+  scroll(pane);
 }
 
-function showTyping() {
-  typingEl = document.createElement('div');
-  typingEl.className = 'msg-wrap typing-wrap';
-  typingEl.innerHTML = `<div class="typing-bubble"><div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div></div>`;
-  chat.appendChild(typingEl); chat.scrollTop = chat.scrollHeight;
+function addBubble(pane, role, txt) {
+  const c = document.getElementById('chat-'+pane);
+  const w = document.createElement('div');
+  w.className = `mw ${role}`;
+  const b = document.createElement('div');
+  b.className = 'bub';
+  b.innerHTML = txt.replace(/\n/g,'<br>')
+    .replace(/\*([^*]+)\*/g,'<strong>$1</strong>')
+    .replace(/_([^_]+)_/g,'<em style="color:var(--tx2)">$1</em>');
+  const mt = document.createElement('div');
+  mt.className = 'mt'; mt.textContent = nowTime();
+  w.appendChild(b); w.appendChild(mt);
+  c.appendChild(w); scroll(pane);
 }
-function hideTyping() { if (typingEl) { typingEl.remove(); typingEl = null; } }
 
-function showQR(options) {
-  qrWrap.innerHTML = '';
-  options.forEach(opt => {
-    const btn = document.createElement('button');
-    btn.className = 'qr-btn'; btn.textContent = opt;
-    btn.onclick = () => { qrWrap.innerHTML = ''; addBubble('user', opt); };
-    qrWrap.appendChild(btn);
+function addNotif(pane, cls, lbl, nlbl, body, chips) {
+  const c = document.getElementById('chat-'+pane);
+  const el = document.createElement('div');
+  el.className = `ncard ${cls}`;
+  el.innerHTML = `<div class="nlabel ${nlbl}">${lbl}</div><div class="nbody">${body.replace(/\n/g,'<br>')}</div><div class="nmeta">${chips.map(ch=>`<span class="nchip">${ch}</span>`).join('')}</div>`;
+  c.appendChild(el); scroll(pane);
+}
+
+function showTyp(pane) {
+  const c = document.getElementById('chat-'+pane);
+  const el = document.createElement('div');
+  el.className = 'mw typing';
+  el.innerHTML = `<div class="tdots"><div class="td"></div><div class="td"></div><div class="td"></div></div>`;
+  c.appendChild(el); scroll(pane);
+  if (pane==='c') typingC = el; else typingV = el;
+}
+function hideTyp(pane) {
+  const el = pane==='c' ? typingC : typingV;
+  if (el) { el.remove(); if(pane==='c') typingC=null; else typingV=null; }
+}
+
+function addQR(pane, opts) {
+  const w = document.getElementById('qr-'+pane);
+  w.innerHTML = '';
+  opts.forEach(o => {
+    const b = document.createElement('button');
+    b.className = 'qrb'; b.textContent = o;
+    b.onclick = () => { w.innerHTML = ''; addBubble(pane, 'user', o); };
+    w.appendChild(b);
   });
 }
 
-function loadScenario(key) {
+function scroll(pane) {
+  const c = document.getElementById('chat-'+pane);
+  c.scrollTop = c.scrollHeight;
+}
+
+function setProgress(pane, pct) {
+  document.getElementById('prog-'+pane).style.width = pct + '%';
+}
+
+function load(key, btn) {
   clearAll();
-  document.querySelectorAll('.scenario-btn').forEach(b => b.classList.remove('active'));
-  document.querySelectorAll('.scenario-btn').forEach(b => {
-    if (b.textContent.toLowerCase().includes(
-      {vacuna:'vacuna',nuevo_cliente:'nuevo',cita:'cita',tratamiento:'trat',guarderia:'guard',alerta_vet:'alerta'}[key]
-    )) b.classList.add('active');
-  });
+  document.querySelectorAll('.sc-btn').forEach(b => b.classList.remove('active'));
+  if (btn) btn.classList.add('active');
 
-  const sc = SCENARIOS[key];
-  document.getElementById('scene-desc').textContent = sc.desc;
+  const sc = SC[key];
+  document.getElementById('sc-desc').textContent = sc.desc;
 
-  const hdr = document.createElement('div');
-  hdr.style.cssText = 'font-family:var(--mono);font-size:.65rem;color:var(--text3);text-align:center;padding:6px 0 10px;letter-spacing:.5px;';
-  hdr.textContent = sc.context;
-  chat.appendChild(hdr);
+  const runPane = (pane, steps) => {
+    const total = steps[steps.length-1].d + 2000;
+    steps.forEach((step, i) => {
+      const t = setTimeout(() => {
+        hideTyp(pane);
+        if (step.t==='div')    addDivider(pane, step.txt);
+        else if (step.t==='bot')   addBubble(pane, 'bot', step.txt);
+        else if (step.t==='user')  addBubble(pane, 'user', step.txt);
+        else if (step.t==='ncard') addNotif(pane, step.cls, step.lbl, step.nlbl, step.body, step.chips);
+        else if (step.t==='qr')    addQR(pane, step.opts);
 
-  const total = sc.steps[sc.steps.length-1].d + 2000;
+        // show typing before next bot/ncard
+        const nxt = steps[i+1];
+        if (nxt && (nxt.t==='bot'||nxt.t==='ncard')) {
+          const gap = nxt.d - step.d;
+          if (gap > 150) timers.push(setTimeout(() => showTyp(pane), Math.max(80, step.d + gap*0.35 - step.d)));
+        }
 
-  sc.steps.forEach((step, i) => {
-    const t = setTimeout(() => {
-      hideTyping();
-      if (step.t === 'divider') addDivider(step.txt);
-      else if (step.t === 'bot') addBubble('bot', step.txt);
-      else if (step.t === 'user') addBubble('user', step.txt);
-      else if (step.t === 'notif') addNotif(step.color, step.label, step.body, step.meta);
-      else if (step.t === 'qr') showQR(step.options);
+        setProgress(pane, Math.min(97, ((step.d+300)/total)*100));
+      }, step.d);
+      timers.push(t);
+    });
+    timers.push(setTimeout(() => setProgress(pane, 100), total));
+  };
 
-      // show typing before next bot step
-      const next = sc.steps[i+1];
-      if (next && (next.t === 'bot' || next.t === 'notif')) {
-        const tdelay = next.d - step.d - 600;
-        if (tdelay > 100) timers.push(setTimeout(showTyping, Math.max(100, next.d - step.d - 700)));
-      }
-
-      const pct = Math.min(98, ((step.d + 400) / total) * 100);
-      document.getElementById('prog').style.width = pct + '%';
-    }, step.d);
-    timers.push(t);
-  });
-
-  timers.push(setTimeout(() => {
-    document.getElementById('prog').style.width = '100%';
-  }, total));
+  runPane('c', sc.c);
+  runPane('v', sc.v);
 }
 
-function sendFree() {
-  const txt = inputField.value.trim();
-  if (!txt) return;
-  inputField.value = '';
-  addBubble('user', txt);
+function freeMsg(pane) {
+  const inp = document.getElementById('in-'+pane);
+  const txt = inp.value.trim(); if (!txt) return;
+  inp.value = '';
+  addBubble(pane, 'user', txt);
   timers.push(setTimeout(() => {
-    showTyping();
+    showTyp(pane);
     timers.push(setTimeout(() => {
-      hideTyping();
-      addBubble('bot', 'Usa los botones de escenario para ver los flujos de alertas y agendamiento 👆');
+      hideTyp(pane);
+      addBubble(pane, 'bot', 'Usa los botones de escenario para explorar los flujos 👆');
     }, 900));
   }, 300));
 }
 
-inputField.addEventListener('keydown', e => { if (e.key === 'Enter') sendFree(); });
-
 // Init
-loadScenario('vacuna');
+load('vacuna', document.querySelector('.sc-btn.active'));
 </script>
 </body>
 </html>
