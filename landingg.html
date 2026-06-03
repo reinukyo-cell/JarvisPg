@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="es" style="background:#040810">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Jarvis Agency AI — El mismo negocio. Distintos resultados.</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#040810;--surface:#070e1c;--cyan:#00d4ff;--blue:#0057ff;--text:#ddeeff;--muted:#5a7a99;--border:rgba(0,212,255,.1);--border2:rgba(0,212,255,.06);--danger:#ff6b6b;--ok:#00ff88;}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;overflow-x:hidden;cursor:none;}
+#cur{width:8px;height:8px;background:var(--cyan);border-radius:50%;position:fixed;pointer-events:none;z-index:9999;mix-blend-mode:screen;transform:translate(-50%,-50%);}
+#cur2{width:28px;height:28px;border:1px solid rgba(0,212,255,.35);border-radius:50%;position:fixed;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:left .1s,top .1s;}
+#hud-bg{position:fixed;inset:0;pointer-events:none;z-index:0;opacity:.18;}
+body::after{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(0,212,255,.018) 1px,transparent 1px),linear-gradient(90deg,rgba(0,212,255,.018) 1px,transparent 1px);background-size:80px 80px;pointer-events:none;z-index:1;}
+.scanline{position:fixed;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(0,212,255,.1),transparent);pointer-events:none;z-index:6;animation:scanmove 9s linear infinite;}
+@keyframes scanmove{0%{top:-2px}100%{top:100vh}}
+.corners{position:fixed;inset:0;pointer-events:none;z-index:2;}
+.corners::before,.corners::after{content:'';position:absolute;width:40px;height:40px;border-color:rgba(0,212,255,.25);border-style:solid;}
+.corners::before{top:70px;left:16px;border-width:1.5px 0 0 1.5px;}
+.corners::after{top:70px;right:16px;border-width:1.5px 1.5px 0 0;}
+.corners2{position:fixed;inset:0;pointer-events:none;z-index:2;}
+.corners2::before,.corners2::after{content:'';position:absolute;width:40px;height:40px;border-color:rgba(0,212,255,.25);border-style:solid;}
+.corners2::before{bottom:16px;left:16px;border-width:0 0 1.5px 1.5px;}
+.corners2::after{bottom:16px;right:16px;border-width:0 1.5px 1.5px 0;}
+.ds{position:fixed;font-family:'Orbitron',monospace;font-size:.42rem;color:rgba(0,212,255,.18);letter-spacing:.1em;line-height:2.4;pointer-events:none;z-index:2;top:30%;animation:dsfade 5s ease-in-out infinite;}
+.ds.l{left:6px;}.ds.r{right:6px;}
+@keyframes dsfade{0%,100%{opacity:.08}50%{opacity:.28}}
+nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:16px 60px;background:rgba(4,8,16,.88);backdrop-filter:blur(24px);border-bottom:1px solid var(--border2);}
+.logo{font-family:'Orbitron',monospace;font-weight:900;font-size:1rem;color:var(--cyan);letter-spacing:.12em;text-decoration:none;}
+.nav-links{display:flex;gap:28px;list-style:none;}
+.nav-links a{color:var(--muted);text-decoration:none;font-size:.78rem;font-weight:500;letter-spacing:.08em;text-transform:uppercase;transition:color .2s;}
+.nav-links a:hover{color:var(--cyan);}
+.nav-cta{padding:9px 20px;border-radius:6px;background:var(--cyan);color:var(--bg);font-size:.74rem;font-weight:700;letter-spacing:.06em;text-decoration:none;transition:all .25s;box-shadow:0 0 22px rgba(0,212,255,.2);}
+.nav-cta:hover{transform:translateY(-2px);box-shadow:0 0 38px rgba(0,212,255,.4);}
+section{position:relative;z-index:3;padding:90px 60px;}
+.hero{min-height:100vh;display:flex;flex-direction:column;justify-content:center;padding:130px 60px 80px;}
+.orb{position:absolute;border-radius:50%;pointer-events:none;filter:blur(120px);z-index:2;}
+.orb1{width:500px;height:500px;background:radial-gradient(circle,rgba(0,87,255,.12) 0%,transparent 70%);top:-100px;right:-80px;animation:flt 12s ease-in-out infinite;}
+.orb2{width:300px;height:300px;background:radial-gradient(circle,rgba(0,212,255,.08) 0%,transparent 70%);bottom:-40px;left:60px;animation:flt 16s ease-in-out infinite reverse;}
+@keyframes flt{0%,100%{transform:translateY(0)}50%{transform:translateY(-28px)}}
+.pill{display:inline-flex;align-items:center;gap:8px;background:rgba(0,212,255,.07);border:1px solid rgba(0,212,255,.2);border-radius:100px;padding:6px 16px;width:fit-content;font-size:.68rem;color:var(--cyan);letter-spacing:.15em;text-transform:uppercase;margin-bottom:28px;animation:fadeUp .7s ease both;}
+.pdot{width:6px;height:6px;background:var(--cyan);border-radius:50%;animation:blnk 2s infinite;}
+@keyframes blnk{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.2;transform:scale(.6)}}
+h1{font-family:'Orbitron',monospace;font-size:clamp(2.2rem,5vw,4.6rem);font-weight:900;line-height:1.08;letter-spacing:-.01em;max-width:880px;animation:fadeUp .7s .1s ease both;}
+h1 em{font-style:normal;color:var(--cyan);}
+.hero-sub{margin-top:22px;font-size:1.02rem;color:var(--muted);max-width:560px;line-height:1.8;font-weight:300;animation:fadeUp .7s .2s ease both;}
+.hero-ctas{display:flex;gap:12px;flex-wrap:wrap;margin-top:36px;animation:fadeUp .7s .3s ease both;}
+.btn{padding:13px 28px;border-radius:6px;font-family:'DM Sans',sans-serif;font-size:.85rem;font-weight:700;letter-spacing:.04em;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:8px;transition:all .25s;border:none;}
+.btn-p{background:var(--cyan);color:var(--bg);box-shadow:0 0 28px rgba(0,212,255,.22);}
+.btn-p:hover{transform:translateY(-2px);box-shadow:0 0 44px rgba(0,212,255,.42);}
+.btn-g{background:transparent;color:var(--cyan);border:1px solid rgba(0,212,255,.3);}
+.btn-g:hover{background:rgba(0,212,255,.07);transform:translateY(-2px);}
+.hero-metrics{display:flex;gap:44px;flex-wrap:wrap;margin-top:56px;padding-top:40px;border-top:1px solid var(--border2);animation:fadeUp .7s .4s ease both;}
+.metric{display:flex;flex-direction:column;gap:3px;}
+.mv{font-family:'Orbitron',monospace;font-size:1.8rem;font-weight:900;color:var(--cyan);}
+.ml{font-size:.68rem;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+.ey{font-family:'Orbitron',monospace;font-size:.62rem;color:var(--cyan);letter-spacing:.25em;text-transform:uppercase;margin-bottom:12px;}
+.sh2{font-family:'Orbitron',monospace;font-size:clamp(1.5rem,2.6vw,2.4rem);font-weight:900;line-height:1.15;}
+.sh2 .accent{color:var(--cyan);}
+.slead{font-size:.95rem;color:var(--muted);max-width:560px;line-height:1.8;margin-top:14px;margin-bottom:50px;}
+.alt{background:rgba(7,14,28,.95);border-top:1px solid var(--border2);border-bottom:1px solid var(--border2);}
+
+/* BLOQUE 2 — Comparativa Sin/Con Jarvis */
+.cmp-wrap{display:flex;flex-direction:column;gap:36px;margin-top:48px;}
+.cmp-block{}
+.cmp-label{font-family:'Orbitron',monospace;font-size:.9rem;font-weight:700;color:var(--cyan);margin-bottom:6px;letter-spacing:.04em;}
+.cmp-time{font-size:.7rem;color:var(--muted);letter-spacing:.1em;text-transform:uppercase;margin-top:10px;}
+.cmp-table{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--border2);border:1px solid var(--border2);border-radius:10px;overflow:hidden;}
+.cmp-head{padding:14px 20px;font-family:'Orbitron',monospace;font-size:.8rem;font-weight:700;letter-spacing:.05em;}
+.cmp-head.bad{background:rgba(255,107,107,.07);color:var(--danger);}
+.cmp-head.good{background:rgba(0,255,136,.06);color:var(--ok);}
+.cmp-cell{padding:12px 20px;background:rgba(4,8,16,.9);font-size:.85rem;color:var(--muted);line-height:1.5;display:flex;align-items:flex-start;gap:8px;}
+.cmp-cell.good{color:var(--text);}
+.cmp-cell .mk{flex-shrink:0;font-weight:700;}
+.cmp-cell.bad .mk{color:var(--danger);}
+.cmp-cell.good .mk{color:var(--ok);}
+
+/* BLOQUE 3 — Se moldea a ti */
+.cap-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:var(--border2);border:1px solid var(--border2);border-radius:12px;overflow:hidden;margin-top:48px;}
+.cap-card{background:rgba(4,8,16,.9);padding:30px;transition:background .3s;position:relative;overflow:hidden;}
+.cap-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--cyan),transparent);opacity:0;transition:opacity .3s;}
+.cap-card:hover{background:rgba(0,212,255,.04);}.cap-card:hover::before{opacity:1;}
+.ci{font-size:1.5rem;margin-bottom:12px;display:block;}
+.ct{font-family:'Orbitron',monospace;font-size:.82rem;font-weight:700;color:var(--cyan);letter-spacing:.04em;margin-bottom:8px;}
+.cd{font-size:.85rem;color:var(--muted);line-height:1.7;}
+
+/* BLOQUE 4 — Módulos / servicios */
+.mods{display:flex;flex-direction:column;gap:14px;margin-top:48px;}
+.mod{background:rgba(4,8,16,.9);border:1px solid var(--border2);border-radius:12px;overflow:hidden;transition:border-color .3s;}
+.mod.open,.mod:hover{border-color:rgba(0,212,255,.25);}
+.mod-head{display:flex;align-items:center;gap:20px;padding:24px 28px;cursor:pointer;}
+.mod-num{font-family:'Orbitron',monospace;font-size:2rem;font-weight:900;color:rgba(0,212,255,.3);line-height:1;}
+.mod-tt{flex:1;}
+.mod-tt h3{font-family:'Orbitron',monospace;font-size:1.05rem;font-weight:700;margin-bottom:4px;}
+.mod-tt p{font-size:.82rem;color:var(--muted);}
+.mod-tog{font-family:'Orbitron',monospace;font-size:.66rem;color:var(--cyan);letter-spacing:.12em;text-transform:uppercase;white-space:nowrap;}
+.mod-body{max-height:0;overflow:hidden;transition:max-height .4s ease;}
+.mod.open .mod-body{max-height:700px;}
+.mod-inner{padding:0 28px 28px;display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.mod-inner li{list-style:none;font-size:.8rem;color:var(--muted);padding:10px 14px;background:rgba(0,212,255,.03);border:1px solid var(--border2);border-radius:7px;line-height:1.45;}
+.mod-inner li::before{content:'→ ';color:var(--cyan);}
+
+/* BLOQUE 5 — proceso */
+.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:0;margin-top:48px;position:relative;}
+.steps::before{content:'';position:absolute;top:27px;left:12%;right:12%;height:1px;background:linear-gradient(90deg,transparent,var(--cyan),var(--blue),var(--cyan),transparent);opacity:.2;}
+.step{padding:0 20px;text-align:center;}
+.snum{width:54px;height:54px;margin:0 auto 18px;background:var(--bg);border:1px solid rgba(0,212,255,.3);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Orbitron',monospace;font-size:.95rem;font-weight:900;color:var(--cyan);position:relative;z-index:1;box-shadow:0 0 18px rgba(0,212,255,.1);}
+.stitle{font-family:'Orbitron',monospace;font-size:.74rem;font-weight:700;margin-bottom:8px;letter-spacing:.05em;}
+.sdesc{font-size:.8rem;color:var(--muted);line-height:1.65;}
+
+/* BLOQUE 6 — sectores */
+.cases-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:48px;}
+.case-card{background:rgba(4,8,16,.9);border:1px solid var(--border2);border-radius:10px;padding:24px;transition:all .3s;position:relative;overflow:hidden;}
+.case-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--cyan),var(--blue));transform:scaleX(0);transition:transform .3s;}
+.case-card:hover{border-color:rgba(0,212,255,.22);transform:translateY(-3px);}.case-card:hover::before{transform:scaleX(1);}
+.ctype{font-size:.64rem;color:var(--cyan);letter-spacing:.15em;text-transform:uppercase;margin-bottom:8px;font-weight:600;display:flex;justify-content:space-between;align-items:center;}
+.cactive{color:var(--ok);font-size:.6rem;display:inline-flex;align-items:center;gap:4px;}
+.cactive::before{content:'';width:5px;height:5px;background:var(--ok);border-radius:50%;animation:blnk 2s infinite;}
+.cname{font-family:'Orbitron',monospace;font-size:.9rem;font-weight:700;margin-bottom:10px;}
+.cdsc{font-size:.78rem;color:var(--muted);line-height:1.6;}
+
+/* BLOQUE 7 — demos grid */
+.demos-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:48px;}
+.dcard{background:rgba(7,14,28,.95);border:1px solid var(--border2);border-radius:12px;padding:26px;text-align:center;transition:all .3s;text-decoration:none;display:block;}
+.dcard:hover{border-color:rgba(0,212,255,.3);transform:translateY(-4px);box-shadow:0 0 30px rgba(0,212,255,.07);}
+.dav{width:48px;height:48px;border-radius:12px;margin:0 auto 16px;background:linear-gradient(135deg,var(--blue),var(--cyan));display:flex;align-items:center;justify-content:center;font-family:'Orbitron',monospace;font-size:.95rem;font-weight:900;color:var(--bg);}
+.dcard h4{font-family:'Orbitron',monospace;font-size:.85rem;font-weight:700;margin-bottom:6px;color:var(--text);}
+.dcard p{font-size:.76rem;color:var(--muted);line-height:1.6;margin-bottom:14px;}
+.dlink{font-size:.7rem;color:var(--cyan);font-family:'Orbitron',monospace;font-weight:700;letter-spacing:.08em;}
+
+/* BLOQUE 8 — caso en vivo */
+.live{background:rgba(7,14,28,.95);border-top:1px solid var(--border2);}
+.live-frame{background:rgba(4,8,16,.95);border:1px solid var(--border2);border-radius:12px;overflow:hidden;margin-top:40px;}
+.live-bar{padding:12px 18px;border-bottom:1px solid var(--border2);display:flex;align-items:center;gap:8px;}
+.lb-dot{width:9px;height:9px;border-radius:50%;}.lb-dot.r{background:#ff5f57;}.lb-dot.y{background:#febc2e;}.lb-dot.g{background:#28c840;}
+.lb-url{margin-left:12px;font-size:.7rem;color:var(--muted);font-family:'Orbitron',monospace;}
+.live-iframe{width:100%;height:520px;border:none;display:block;}
+.live-ctas{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-top:32px;}
+
+/* BLOQUE 9 — ventajas */
+.bens{background:rgba(7,14,28,.95);border-top:1px solid var(--border2);}
+.bens-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:var(--border2);border:1px solid var(--border2);border-radius:12px;overflow:hidden;margin-top:48px;}
+.ben{background:rgba(4,8,16,.9);padding:30px;display:flex;gap:20px;align-items:flex-start;transition:background .3s;}
+.ben:hover{background:rgba(0,212,255,.04);}
+.ben-n{font-family:'Orbitron',monospace;font-size:1.6rem;font-weight:900;color:rgba(0,212,255,.3);line-height:1;}
+.ben h4{font-family:'Orbitron',monospace;font-size:.92rem;font-weight:700;margin-bottom:8px;}
+.ben p{font-size:.82rem;color:var(--muted);line-height:1.7;}
+.ben-quote{font-family:'Orbitron',monospace;font-size:clamp(1.1rem,1.8vw,1.5rem);font-weight:700;line-height:1.5;text-align:center;max-width:760px;margin:56px auto 0;color:var(--text);}
+.ben-quote span{color:var(--cyan);}
+
+/* BLOQUE 10 — precio / cupos */
+.price{background:rgba(4,8,16,.97);border-top:1px solid var(--border2);text-align:center;overflow:hidden;}
+.pg{position:absolute;width:700px;height:400px;background:radial-gradient(ellipse,rgba(0,212,255,.06) 0%,transparent 70%);left:50%;top:30%;transform:translate(-50%,-50%);pointer-events:none;}
+.scarcity{display:inline-flex;align-items:center;gap:8px;background:rgba(255,149,0,.08);border:1px solid rgba(255,149,0,.3);color:var(--warn,#ff9500);border-radius:100px;padding:7px 18px;font-size:.7rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;margin-bottom:22px;}
+.scarcity::before{content:'';width:6px;height:6px;background:#ff9500;border-radius:50%;animation:blnk 1.6s infinite;}
+.price-box{max-width:520px;margin:44px auto 0;padding:44px 36px;background:rgba(7,14,28,.95);border:1px solid rgba(0,212,255,.2);border-radius:18px;box-shadow:0 0 50px rgba(0,212,255,.06);}
+.po-label{font-size:.7rem;color:var(--muted);letter-spacing:.12em;text-transform:uppercase;}
+.po{font-family:'Orbitron',monospace;font-size:1.6rem;font-weight:700;color:var(--muted);text-decoration:line-through;text-decoration-color:rgba(255,107,107,.5);margin:6px 0;}
+.po small{font-size:.7rem;-webkit-text-decoration:none;text-decoration:none;display:block;color:var(--text-dim,#5a7a90);margin-top:2px;}
+.price-div{height:1px;background:var(--border2);margin:28px 0;}
+.pb-label{font-size:.72rem;color:var(--cyan);letter-spacing:.12em;text-transform:uppercase;font-weight:700;}
+.pb{font-family:'Orbitron',monospace;font-size:3rem;font-weight:900;color:var(--cyan);margin:8px 0;text-shadow:0 0 30px rgba(0,212,255,.25);}
+.pb-save{font-size:.78rem;color:var(--ok);font-weight:600;}
+.plans{display:grid;grid-template-columns:1fr 1fr;gap:16px;max-width:760px;margin:48px auto 0;text-align:left;}
+.plan{background:rgba(7,14,28,.95);border:1px solid var(--border2);border-radius:14px;padding:28px;transition:all .3s;}
+.plan.feat{border-color:rgba(0,212,255,.35);box-shadow:0 0 30px rgba(0,212,255,.07);}
+.plan-tag{font-size:.62rem;color:var(--cyan);letter-spacing:.12em;text-transform:uppercase;font-weight:700;margin-bottom:8px;}
+.plan-name{font-family:'Orbitron',monospace;font-size:1rem;font-weight:700;margin-bottom:8px;}
+.plan-price{font-family:'Orbitron',monospace;font-size:1.7rem;font-weight:900;color:var(--text);}
+.plan-price .per{font-size:.8rem;color:var(--muted);font-weight:400;}
+.plan-note{font-size:.74rem;color:var(--muted);margin-top:8px;line-height:1.5;}
+.plan ul{list-style:none;margin-top:16px;display:flex;flex-direction:column;gap:8px;}
+.plan ul li{font-size:.78rem;color:var(--muted);padding-left:16px;position:relative;line-height:1.4;}
+.plan ul li::before{content:'✓';position:absolute;left:0;color:var(--cyan);}
+.final{max-width:560px;margin:56px auto 0;padding:40px;background:rgba(0,212,255,.04);border:1px solid rgba(0,212,255,.2);border-radius:16px;}
+.final h3{font-family:'Orbitron',monospace;font-size:1.3rem;font-weight:900;margin-bottom:10px;}
+.final p{font-size:.88rem;color:var(--muted);margin-bottom:24px;}
+
+footer{position:relative;z-index:3;border-top:1px solid var(--border2);padding:32px 60px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;background:rgba(4,8,16,.95);}
+.flogo{font-family:'Orbitron',monospace;font-size:.82rem;font-weight:900;color:var(--cyan);}
+.ftxt{font-size:.72rem;color:var(--muted);}
+.wa-fab{position:fixed;bottom:24px;right:24px;width:58px;height:58px;background:#25D366;border-radius:50%;display:flex;align-items:center;justify-content:center;z-index:200;box-shadow:0 4px 24px rgba(37,211,102,.45);text-decoration:none;transition:transform .25s;animation:wapulse 2.5s ease-in-out infinite;}
+.wa-fab:hover{transform:scale(1.1);}
+@keyframes wapulse{0%,100%{box-shadow:0 4px 24px rgba(37,211,102,.45)}50%{box-shadow:0 4px 24px rgba(37,211,102,.45),0 0 0 12px rgba(37,211,102,0)}}
+.reveal{opacity:0;transform:translateY(22px);transition:opacity .7s ease,transform .7s ease;}
+.reveal.in{opacity:1;transform:translateY(0);}
+@media(max-width:960px){
+  nav{padding:14px 20px;}.nav-links{display:none;}
+  section{padding:60px 20px;}
+  .cap-grid,.cases-grid,.demos-grid,.bens-grid,.plans,.mod-inner{grid-template-columns:1fr;}
+  .steps{grid-template-columns:1fr 1fr;gap:24px;}.steps::before{display:none;}
+  .live-iframe{height:440px;}
+  .ds{display:none;}
+  .wa-fab{bottom:18px;right:18px;width:52px;height:52px;}
+  footer{flex-direction:column;text-align:center;padding:24px 20px;}
+}
+@media(max-width:560px){.cmp-table{grid-template-columns:1fr;}.mod-head{gap:14px;padding:20px;}.mod-num{font-size:1.5rem;}}
+</style>
+</head>
+<body>
+
+<svg id="hud-bg" viewBox="0 0 1440 900" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" fill="none">
+  <defs><filter id="gw"><feGaussianBlur stdDeviation="2" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>
+  <style>
+    .hr1{transform-origin:720px 450px;animation:hsp1 14s linear infinite;}
+    .hr2{transform-origin:720px 450px;animation:hsp2 9s linear infinite;}
+    .hr3{transform-origin:720px 450px;animation:hsp1 22s linear infinite;}
+    .hr4{transform-origin:720px 450px;animation:hsp2 34s linear infinite;}
+    .hscan{animation:hscanr 4s linear infinite;}
+    .hcore{animation:hcorepulse 4s ease-in-out infinite;}
+    @keyframes hsp1{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+    @keyframes hsp2{from{transform:rotate(0deg)}to{transform:rotate(-360deg)}}
+    @keyframes hscanr{from{stroke-dashoffset:0}to{stroke-dashoffset:-1885}}
+    @keyframes hcorepulse{0%,100%{opacity:.5}50%{opacity:1}}
+  </style>
+  <g class="hr4"><circle cx="720" cy="450" r="420" stroke="rgba(0,212,255,.12)" stroke-width="1"/><circle cx="720" cy="450" r="420" stroke="rgba(0,212,255,.2)" stroke-width="1" stroke-dasharray="10 40 5 80 8 60 3 100 6 50" stroke-linecap="round"/></g>
+  <g class="hr3"><circle cx="720" cy="450" r="360" stroke="rgba(0,212,255,.09)" stroke-width="1"/><path d="M720 91 A359 359 0 0 1 1079 450" stroke="rgba(0,212,255,.4)" stroke-width="2" stroke-linecap="round"/></g>
+  <g class="hr2"><circle cx="720" cy="450" r="290" stroke="rgba(0,212,255,.28)" stroke-width="1.5" stroke-dasharray="50 12 6 28 5 75 10 20" stroke-linecap="round"/></g>
+  <g class="hr1"><circle cx="720" cy="450" r="220" stroke="rgba(0,212,255,.08)" stroke-width="1"/><circle cx="720" cy="450" r="220" stroke="rgba(0,212,255,.55)" stroke-width="2" stroke-dasharray="138 1244" stroke-linecap="round" class="hscan" filter="url(#gw)"/></g>
+  <circle cx="720" cy="450" r="160" stroke="rgba(0,212,255,.3)" stroke-width="1.5" stroke-dasharray="80 48 14 64 28 276" stroke-linecap="round" class="hr2"/>
+  <g class="hcore"><circle cx="720" cy="450" r="80" fill="rgba(0,15,35,.6)" stroke="rgba(0,212,255,.4)" stroke-width="1.5"/><circle cx="720" cy="450" r="12" fill="rgba(0,212,255,.25)" filter="url(#gw)"/><circle cx="720" cy="450" r="5" fill="rgba(0,212,255,.5)"/></g>
+</svg>
+
+<div id="cur"></div><div id="cur2"></div>
+<div class="scanline"></div>
+<div class="corners"></div><div class="corners2"></div>
+<div class="ds l">SYS.ONLINE<br>AUTH.OK<br>NODE:01<br>SYNC:100%<br>MEM:OK</div>
+<div class="ds r">NET.ACTIVE<br>API:LIVE<br>BOT:RUN<br>DB:SYNC<br>ALERT:0</div>
+
+<nav>
+  <a href="#" class="logo">JARVIS<span style="color:var(--muted)"> AI</span></a>
+  <ul class="nav-links">
+    <li><a href="#comparativa">Comparación</a></li>
+    <li><a href="#agente">Agente</a></li>
+    <li><a href="#modulos">Servicios</a></li>
+    <li><a href="#demos">Demos</a></li>
+    <li><a href="#precio">Inversión</a></li>
+  </ul>
+  <a href="#precio" class="nav-cta">Quiero mi cupo →</a>
+</nav>
+
+<!-- BIENVENIDA / HERO -->
+<section class="hero">
+  <div class="orb orb1"></div><div class="orb orb2"></div>
+  <div class="pill"><span class="pdot"></span>Dos realidades · Un mismo negocio</div>
+  <h1>El mismo negocio.<br><em>Distintos resultados.</em></h1>
+  <p class="hero-sub">Mira qué le pasa al mismo negocio en el mismo momento. Uno corre entre 5 apps. El otro solo le escribe a un chat. Eso es Jarvis: el sistema operativo de tu negocio.</p>
+  <div class="hero-ctas">
+    <a href="#comparativa" class="btn btn-p">Ver la diferencia →</a>
+    <a href="#demos" class="btn btn-g">Ver demos en vivo</a>
+  </div>
+  <div class="hero-metrics">
+    <div class="metric"><span class="mv">24/7</span><span class="ml">operando</span></div>
+    <div class="metric"><span class="mv">1</span><span class="ml">solo chat</span></div>
+    <div class="metric"><span class="mv">0</span><span class="ml">paneles</span></div>
+    <div class="metric"><span class="mv">+6</span><span class="ml">sectores activos</span></div>
+  </div>
+</section>
+
+<!-- BLOQUE 2 — COMPARATIVA NEGOCIO VS AI -->
+<section id="comparativa" class="alt">
+  <div class="ey">Comparativa · Negocio vs Jarvis</div>
+  <h2 class="sh2">Para cada producto, <span class="accent">dos formas de operar.</span></h2>
+  <p class="slead">El trabajo es el mismo. El esfuerzo, no. A la izquierda como se hace hoy. A la derecha con Jarvis.</p>
+
+  <div class="cmp-wrap reveal">
+    <!-- Ventas -->
+    <div class="cmp-block">
+      <div class="cmp-label">Ventas</div>
+      <div class="cmp-table">
+        <div class="cmp-head bad">Sin Jarvis</div>
+        <div class="cmp-head good">Con Jarvis</div>
+        <div class="cmp-cell bad"><span class="mk">✗</span>Revisión manual</div>
+        <div class="cmp-cell good"><span class="mk">✓</span>Hablas en tu chat</div>
+        <div class="cmp-cell bad"><span class="mk">✗</span>Buscas y revisas existencias</div>
+        <div class="cmp-cell good"><span class="mk">✓</span>Preguntas por existencias</div>
+        <div class="cmp-cell bad"><span class="mk">✗</span>Anotar la salida del producto</div>
+        <div class="cmp-cell good"><span class="mk">✓</span>Escribes que vendiste el producto</div>
+        <div class="cmp-cell bad"><span class="mk">✗</span>No hay sincronización entre lo físico y lo digital, todo es manual</div>
+        <div class="cmp-cell good"><span class="mk">✓</span>Se sincronizan todos los sistemas al escribir en tu chat</div>
+      </div>
+      <div class="cmp-time">⏱ ~15 min por producto · vs · segundos</div>
+    </div>
+
+    <!-- Cierre -->
+    <div class="cmp-block">
+      <div class="cmp-label">Cierre de día</div>
+      <div class="cmp-table">
+        <div class="cmp-head bad">Sin Jarvis</div>
+        <div class="cmp-head good">Con Jarvis</div>
+        <div class="cmp-cell bad"><span class="mk">✗</span>Unificar inventario entre vendedores</div>
+        <div class="cmp-cell good"><span class="mk">✓</span>Se actualiza en cada mensaje</div>
+        <div class="cmp-cell bad"><span class="mk">✗</span>Datos sueltos como pendientes o señas</div>
+        <div class="cmp-cell good"><span class="mk">✓</span>Con un mensaje se centralizan</div>
+        <div class="cmp-cell bad"><span class="mk">✗</span>Cierres de caja largos</div>
+        <div class="cmp-cell good"><span class="mk">✓</span>Reporte al día, actualizado</div>
+        <div class="cmp-cell bad"><span class="mk">✗</span>Cada día es repetir el proceso</div>
+        <div class="cmp-cell good"><span class="mk">✓</span>Los reportes salen automatizados</div>
+        <div class="cmp-cell bad"><span class="mk">✗</span>Si estás fuera, esperar a que lo envíen</div>
+        <div class="cmp-cell good"><span class="mk">✓</span>Te llega automático</div>
+        <div class="cmp-cell bad"><span class="mk">✗</span>Solicitar que apliquen cambios a la web</div>
+        <div class="cmp-cell good"><span class="mk">✓</span>Se hizo a través del día</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BLOQUE 3 — CAMBIOS MÍNIMOS / SE MOLDEA A TI -->
+<section id="agente">
+  <div class="ey">Cambios mínimos para ti</div>
+  <h2 class="sh2">Un agente que <span class="accent">se acopla a tu forma de trabajar.</span></h2>
+  <p class="slead">No es un bot genérico. Cada Jarvis aprende cómo hablas, qué vendes, cómo atiendes y gestiona tu inventario y catálogo al detalle.</p>
+  <div class="cap-grid reveal">
+    <div class="cap-card"><span class="ci">🗣️</span><div class="ct">Habla como hablas tú</div><p class="cd">Aprende el tono de tu marca, tus frases típicas y la forma como te diriges a tus clientes. No suena a robot.</p></div>
+    <div class="cap-card"><span class="ci">📦</span><div class="ct">Conoce tu catálogo al detalle</div><p class="cd">Productos, referencias, colores, tallas, precios, combos. Si tu negocio lo vende, el agente lo sabe y lo recomienda.</p></div>
+    <div class="cap-card"><span class="ci">🔁</span><div class="ct">Se adapta a tu flujo real</div><p class="cd">¿Pides seña? ¿Aceptas Nequi? ¿Envías por Servientrega? El flujo se diseña según cómo operas, no sobre una plantilla.</p></div>
+    <div class="cap-card"><span class="ci">📈</span><div class="ct">Crece contigo</div><p class="cd">Cada mes se revisan conversaciones reales y el agente aprende más de tu negocio. Mejora sin que tengas que moverte.</p></div>
+  </div>
+</section>
+
+<!-- BLOQUE 4 — SERVICIOS / MÓDULOS -->
+<section id="modulos" class="alt">
+  <div class="ey">Qué incluye</div>
+  <h2 class="sh2">Tres módulos. <span class="accent">Un ecosistema completo.</span></h2>
+  <p class="slead">Cada módulo se activa según lo que tu negocio necesita. Puedes empezar por uno y escalar, o tomarlos todos.</p>
+  <div class="mods reveal">
+    <div class="mod" data-mod>
+      <div class="mod-head" data-tog>
+        <div class="mod-num">01</div>
+        <div class="mod-tt"><h3>Bot de WhatsApp</h3><p>Automatización completa del canal de ventas.</p></div>
+        <div class="mod-tog">Ver ↓</div>
+      </div>
+      <div class="mod-body"><ul class="mod-inner">
+        <li>Bot entrenado con respuestas personalizadas para tu marca</li>
+        <li>Catálogo completo cargado: productos, referencias, colores, precios</li>
+        <li>Flujo de pedido: bienvenida → producto → talla → pago → confirmación</li>
+        <li>Confirmación de pago automática al recibir comprobante</li>
+        <li>Notificación automática al proveedor al confirmar pedido</li>
+        <li>Recordatorio de seguimiento a los 5 días si no hay novedad</li>
+        <li>1 semana de programación y pruebas reales antes de salir en vivo</li>
+        <li>Coordinación con tu equipo para ajustar y entrenar el bot</li>
+      </ul></div>
+    </div>
+    <div class="mod" data-mod>
+      <div class="mod-head" data-tog>
+        <div class="mod-num">02</div>
+        <div class="mod-tt"><h3>Página Web</h3><p>Vitrina digital con catálogo y compra directa.</p></div>
+        <div class="mod-tog">Ver ↓</div>
+      </div>
+      <div class="mod-body"><ul class="mod-inner">
+        <li>Diseño responsive optimizado para móvil y escritorio</li>
+        <li>Catálogo de productos conectado al sistema del bot</li>
+        <li>Botón directo a WhatsApp por producto</li>
+        <li>Secciones personalizadas: marca, productos, testimonios, contacto</li>
+        <li>Formulario de contacto con notificación automática</li>
+        <li>SEO básico para que te encuentren en Google</li>
+        <li>Dominio y hosting configurado</li>
+        <li>Carga rápida y animaciones suaves</li>
+      </ul></div>
+    </div>
+    <div class="mod" data-mod>
+      <div class="mod-head" data-tog>
+        <div class="mod-num">03</div>
+        <div class="mod-tt"><h3>Reportes + Marketing con IA</h3><p>Datos reales y estrategia de contenido con IA.</p></div>
+        <div class="mod-tog">Ver ↓</div>
+      </div>
+      <div class="mod-body"><ul class="mod-inner">
+        <li>Reportes semanales automáticos a tu correo</li>
+        <li>Dashboard con ventas, inventario y clientes recurrentes</li>
+        <li>Prompts de marketing personalizados para tu negocio</li>
+        <li>Ideas de contenido para redes generadas con IA</li>
+        <li>Alertas automáticas de productos por reponer</li>
+        <li>Seguimiento de leads que no compraron</li>
+        <li>Analítica de qué productos se venden más y cuándo</li>
+        <li>Integración con Meta Ads para análisis de campañas</li>
+      </ul></div>
+    </div>
+  </div>
+</section>
+
+<!-- BLOQUE 5 — PROCESO -->
+<section>
+  <div class="ey">El proceso</div>
+  <h2 class="sh2">De conversación a sistema <span class="accent">en días.</span></h2>
+  <div class="steps reveal">
+    <div class="step"><div class="snum">01</div><div class="stitle">Analizamos</div><p class="sdesc">Mapeamos tu negocio: flujos, problemas, oportunidades. Sin costo.</p></div>
+    <div class="step"><div class="snum">02</div><div class="stitle">Diseñamos</div><p class="sdesc">Arquitecturamos tu sistema a medida. Qué módulos, qué automatizar primero.</p></div>
+    <div class="step"><div class="snum">03</div><div class="stitle">Construimos</div><p class="sdesc">Desarrollamos, probamos y conectamos tu Jarvis a tus herramientas actuales.</p></div>
+    <div class="step"><div class="snum">04</div><div class="stitle">Escalamos</div><p class="sdesc">Lanzas. Nosotros monitoreamos, optimizamos y expandimos contigo.</p></div>
+  </div>
+</section>
+
+<!-- BLOQUE 6 — SECTORES / MARCAS -->
+<section id="sectores" class="alt">
+  <div class="ey">Ya lo estamos haciendo</div>
+  <h2 class="sh2">Activo en <span class="accent">varios sectores.</span></h2>
+  <p class="slead">Cada proyecto se personaliza según tu modelo de negocio. Algunas marcas que ya operan con Jarvis:</p>
+  <div class="cases-grid reveal">
+    <div class="case-card"><div class="ctype">Retail de tecnología<span class="cactive">Activo</span></div><div class="cname">Helena Store</div><p class="cdsc">E-commerce responsive, catálogo completo y agente de ventas por WhatsApp.</p></div>
+    <div class="case-card"><div class="ctype">Diseño de interiores<span class="cactive">Activo</span></div><div class="cname">OPORTUN</div><p class="cdsc">Sistema multi-agente con 5 bots especializados, kanban Scrum y flujo de caja en vivo.</p></div>
+    <div class="case-card"><div class="ctype">Inmobiliaria<span class="cactive">Activo</span></div><div class="cname">Captación digital</div><p class="cdsc">Captación y calificación automática de leads, seguimiento de clientes y portafolio digital.</p></div>
+    <div class="case-card"><div class="ctype">Veterinarias<span class="cactive">Activo</span></div><div class="cname">VetBot</div><p class="cdsc">Agendamiento automático, recordatorios de vacunación e historial clínico digital.</p></div>
+    <div class="case-card"><div class="ctype">Construcción<span class="cactive">Activo</span></div><div class="cname">Control de obra</div><p class="cdsc">Dashboard de proyectos, avance de obra y reportes automatizados.</p></div>
+    <div class="case-card"><div class="ctype">Retail móvil<span class="cactive">Activo</span></div><div class="cname">Transporte / mayorista</div><p class="cdsc">Agentes de ventas, inventario automatizado y atención post-venta por canales digitales.</p></div>
+  </div>
+</section>
+
+<!-- BLOQUE 7 — DEMOS -->
+<section id="demos">
+  <div class="ey">Explora nuestras demos</div>
+  <h2 class="sh2">No lo creas. <span class="accent">Pruébalo.</span></h2>
+  <p class="slead">Entra a cualquiera de nuestras demos actuales y conversa con un agente como si fueras un cliente real.</p>
+  <div class="demos-grid reveal">
+    <a class="dcard" href="https://reinukyo-cell.github.io/JarvisPg/demo-helena-store.html" target="_blank" rel="noopener">
+      <div class="dav">H</div><h4>Helena Bot</h4><p>Tienda · ventas + inventario por chat.</p><span class="dlink">Abrir demo →</span>
+    </a>
+    <a class="dcard" href="https://reinukyo-cell.github.io/JarvisPg/demo-flota.html" target="_blank" rel="noopener">
+      <div class="dav" style="background:linear-gradient(135deg,#0057ff,#2AABEE)">T</div><h4>Transport Bot</h4><p>Empresa · control operativo en vivo.</p><span class="dlink">Abrir demo →</span>
+    </a>
+    <a class="dcard" href="https://reinukyo-cell.github.io/JarvisPg/" target="_blank" rel="noopener">
+      <div class="dav" style="background:linear-gradient(135deg,#00d4ff,#00ff88)">+</div><h4>Más demos</h4><p>Veterinaria, gimnasio, SST y más sectores.</p><span class="dlink">Ver todas →</span>
+    </a>
+  </div>
+</section>
+
+<!-- BLOQUE 8 — CASO EN VIVO -->
+<section class="live">
+  <div class="ey">Caso en vivo</div>
+  <h2 class="sh2">Helena Store. <span class="accent">Bot + web, operando.</span></h2>
+  <p class="slead">Mira cómo opera el agente en Telegram. Luego entra a la tienda real que construimos. Todo esto ya está funcionando hoy.</p>
+
+  <div class="live-frame reveal">
+    <div class="live-bar"><span class="lb-dot r"></span><span class="lb-dot y"></span><span class="lb-dot g"></span><span class="lb-url">demo · Helena Bot</span></div>
+    <iframe class="live-iframe" src="https://reinukyo-cell.github.io/JarvisPg/demo-helena-store.html" loading="lazy" title="Helena Bot"></iframe>
+  </div>
+
+  <div class="live-ctas">
+    <a href="https://reinukyo-cell.github.io/JarvisPg/demo-helena-store.html" target="_blank" rel="noopener" class="btn btn-g">▶ Ver el bot funcionando</a>
+    <a href="https://helena-store-web.vercel.app/" target="_blank" rel="noopener" class="btn btn-p">🌐 Entrar a la web real →</a>
+  </div>
+</section>
+
+<!-- BLOQUE 9 — VENTAJAS -->
+<section class="bens">
+  <div class="ey">Por qué es rentable</div>
+  <h2 class="sh2">Un activo que <span class="accent">trabaja por ti</span> las 24 horas.</h2>
+  <p class="slead">Más que ahorrar minutos: te devuelve el tiempo, la tranquilidad y la vida fuera del negocio.</p>
+  <div class="bens-grid reveal">
+    <div class="ben"><div class="ben-n">01</div><div><h4>Recuperas tu tiempo</h4><p>El agente atiende, vende y reporta mientras tú vives. Vuelves a tener noches, fines de semana y cabeza libre.</p></div></div>
+    <div class="ben"><div class="ben-n">02</div><div><h4>Atiendes 24/7 sin turno nocturno</h4><p>Tu negocio factura mientras duermes. Cada cliente fuera de horario se convierte en venta.</p></div></div>
+    <div class="ben"><div class="ben-n">03</div><div><h4>Cierras más respondiendo rápido</h4><p>La mayoría compra con quien responde primero. Tu agente responde en segundos, siempre.</p></div></div>
+    <div class="ben"><div class="ben-n">04</div><div><h4>Decides con datos, no con intuición</h4><p>Reportes en tiempo real te muestran qué funciona, qué no y dónde está el dinero que hoy no ves.</p></div></div>
+    <div class="ben"><div class="ben-n">05</div><div><h4>Escalas sin contratar más gente</h4><p>Pasa de 50 a 500 clientes sin aumentar tu operación. El sistema crece contigo.</p></div></div>
+    <div class="ben"><div class="ben-n">06</div><div><h4>Operas como empresa del futuro</h4><p>Mientras la competencia sigue con WhatsApp manual, tu marca se ve sólida, moderna y en control.</p></div></div>
+  </div>
+  <p class="ben-quote">"Un solo cliente extra cerrado al mes ya paga el mantenimiento. <span>Todo lo demás es ganancia y tiempo de vuelta para ti.</span>"</p>
+</section>
+
+<!-- BLOQUE 10 — PRECIO / CUPOS -->
+<section id="precio" class="price">
+  <div class="pg"></div>
+  <div class="scarcity">Cupos beta limitados · queda último cupo</div>
+  <h2 class="sh2" style="margin:0 auto">Precio <span class="accent">beta de lanzamiento.</span></h2>
+  <p class="slead" style="margin:14px auto 0">Entras al sistema completo por una fracción de su valor. Después, sube a precio regular.</p>
+
+  <div class="price-box reveal">
+    <div class="po-label">Valor real del sistema</div>
+    <div class="po">$15.000.000<small>COP · precio regular · sube según el equipo que reemplaza</small></div>
+    <div class="price-div"></div>
+    <div class="pb-label">Tu precio beta hoy</div>
+    <div class="pb">$4.000.000</div>
+    <div class="pb-save">Ahorro directo de $11.000.000 COP</div>
+  </div>
+
+  <h3 class="sh2" style="font-size:1.3rem;margin:64px 0 0">Planes de mantenimiento</h3>
+  <p class="slead" style="margin:12px auto 0">Todos incluyen soporte, actualizaciones, mejoras y ajustes al agente. La diferencia es cuánto ahorras al pagar por más tiempo.</p>
+  <div class="plans reveal">
+    <div class="plan">
+      <div class="plan-tag">Flexible</div>
+      <div class="plan-name">Mensual</div>
+      <div class="plan-price">$200.000<span class="per">/mes</span></div>
+      <div class="plan-note">Sin compromisos de largo plazo. Pagas mes a mes.</div>
+      <ul><li>Soporte técnico prioritario</li><li>Actualizaciones incluidas</li><li>Ajustes al agente cuando los necesites</li><li>Mejoras continuas sin costo extra</li><li>Sin permanencia mínima</li></ul>
+    </div>
+    <div class="plan feat">
+      <div class="plan-tag">Recomendado · 50% OFF</div>
+      <div class="plan-name">Anual</div>
+      <div class="plan-price">$1.200.000<span class="per">/año</span></div>
+      <div class="plan-note">Equivale a $100.000/mes · Ahorras $1.200.000 vs. mensual</div>
+      <ul><li>Todo lo del plan mensual</li><li>Prioridad máxima en soporte</li><li>Optimización trimestral del agente</li><li>Reporte anual de impacto y crecimiento</li><li>Precio bloqueado por 12 meses</li></ul>
+    </div>
+  </div>
+
+  <div class="final reveal">
+    <h3>Listo para automatizar tu negocio.</h3>
+    <p>Agenda tu sesión de activación y personalización. Respondemos en menos de 24 horas.</p>
+    <a href="https://wa.me/573015055913?text=Hola,%20quiero%20mi%20cupo%20beta%20de%20Jarvis" target="_blank" rel="noopener" class="btn btn-p" style="justify-content:center">Quiero mi cupo beta →</a>
+  </div>
+</section>
+
+<footer>
+  <div class="flogo">JARVIS AGENCY AI</div>
+  <div class="ftxt">Automatizamos tu negocio con IA · Beta 2026</div>
+  <div class="ftxt">Construido con IA.</div>
+</footer>
+
+<a href="https://wa.me/573015055913?text=Hola,%20quiero%20info%20de%20Jarvis%20Agency%20AI" target="_blank" rel="noopener" class="wa-fab" aria-label="WhatsApp">
+  <svg width="30" height="30" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+</a>
+
+<script>
+const cur=document.getElementById('cur'),cur2=document.getElementById('cur2');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cur.style.left=mx+'px';cur.style.top=my+'px';});
+(function loop(){rx+=(mx-rx)*.12;ry+=(my-ry)*.12;cur2.style.left=rx+'px';cur2.style.top=ry+'px';requestAnimationFrame(loop);})();
+const obs=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('in');}),{threshold:.07});
+document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+document.querySelectorAll('[data-tog]').forEach(h=>h.addEventListener('click',()=>{
+  const m=h.closest('[data-mod]'),open=m.classList.contains('open');
+  document.querySelectorAll('[data-mod]').forEach(x=>x.classList.remove('open'));
+  if(!open)m.classList.add('open');
+}));
+</script>
+</body>
+</html>
