@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Aether — El mismo negocio. Distintos resultados.</title>
+<link rel="icon" type="image/png" href="aether-favicon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,600;0,9..144,800;0,9..144,900;1,9..144,400&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -90,7 +91,7 @@ h1 .it{font-style:italic;color:var(--accent);}
 .cd{font-size:1.02rem;color:var(--muted);line-height:1.75;font-weight:300;}
 
 /* PLANES */
-.plans{display:grid;grid-template-columns:1fr 1fr;gap:22px;}
+.plans{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;align-items:start;}
 .plan{padding:40px;transition:transform .2s,border-color .2s;}
 .plan:hover{transform:translateY(-3px);}
 .plan.feat{border-color:var(--bstrong);box-shadow:0 0 40px rgba(0,195,255,.08);}
@@ -205,7 +206,7 @@ footer{position:relative;z-index:2;border-top:1px solid var(--border2);padding:4
 <div class="glow glow1"></div><div class="glow glow2"></div>
 
 <nav>
-  <a href="#" class="logo"><span class="mk"></span>Aether</a>
+  <a href="#" class="logo"><img src="aether-logo-transparent.png" alt="Aether" style="height:38px;display:block"></a>
   <ul class="nav-links">
     <li><a href="#comparativa">Comparación</a></li>
     <li><a href="#agente">El agente</a></li>
@@ -290,32 +291,42 @@ footer{position:relative;z-index:2;border-top:1px solid var(--border2);padding:4
 
 <!-- PLANES -->
 <section id="planes" class="alt">
-  <div class="ey">Planes</div>
-  <h2 class="sh2">Un plan base. <span class="it">Especializado en ti.</span></h2>
-  <p class="slead">No vendemos módulos sueltos. El Plan Básico es un equipo de 4 agentes especializados que ya gestionan tu operación. ¿Necesitas más? Le sumas módulos extra.</p>
+  <div class="ey">Servicios</div>
+  <h2 class="sh2">Un plan para <span class="it">cada etapa de tu negocio.</span></h2>
+  <p class="slead">Empiezas por lo esencial y escalas cuando lo necesites. Cada plan se ajusta a cómo operas hoy.</p>
   <div class="plans">
-    <div class="plan feat panel">
-      <div class="plan-tag">El núcleo · recomendado</div>
+    <div class="plan panel">
+      <div class="plan-tag">Para arrancar</div>
       <div class="plan-name">Plan Básico</div>
-      <div class="plan-note">4 agentes especializados, enfocados a tus necesidades + tu web conectada.</div>
+      <div class="plan-note">El producto base. Lo esencial para no perder un cliente.</div>
       <ul>
-        <li><b>Agente de Ventas</b> — atiende, asesora y cierra por WhatsApp con tu catálogo cargado.</li>
-        <li><b>Agente de Inventario</b> — stock sincronizado en cada mensaje y alertas de stock muerto.</li>
-        <li><b>Agente de Caja &amp; Reportes</b> — ventas, señas y deudas registradas; reporte del día automático.</li>
-        <li><b>Agente de Seguimiento</b> — recupera clientes, recordatorios de pago y post-venta.</li>
-        <li><b>Página web</b> conectada al sistema, responsive y con SEO básico.</li>
+        <li><b>Consultas básicas</b> — responde horarios, precios, envíos o una lista que el cliente envíe.</li>
+        <li><b>Toma de datos</b> — nombre, necesidad y datos generales del cliente, guardados.</li>
+        <li><b>Agenda</b> de citas y solicitudes.</li>
+      </ul>
+    </div>
+    <div class="plan feat panel">
+      <div class="plan-tag">Recomendado</div>
+      <div class="plan-name">Plan Normal</div>
+      <div class="plan-note">El sistema completo que opera tu negocio.</div>
+      <ul>
+        <li><b>Chatbot de WhatsApp</b> — hasta 1.000 consultas diarias, habla como humano y escala a una persona cuando hace falta.</li>
+        <li><b>Web tipo e-commerce</b> — dominio y hosting incluidos; tienda que nunca cierra y se actualiza con tu inventario (personalización con costo aparte).</li>
+        <li><b>Gestor de inventarios</b> — registro de ventas, alertas de agotamiento y sincronización en vivo con web y asesores.</li>
+        <li><b>Dashboards de gestión</b> — inventarios, agentes, ventas y clientes en un solo lugar.</li>
+        <li><b>Reportes periódicos</b> — CRM, facturación y cierres en la frecuencia que prefieras.</li>
       </ul>
     </div>
     <div class="plan panel">
       <div class="plan-tag">A tu medida</div>
       <div class="plan-name">Plan Especializado</div>
-      <div class="plan-note">Todo el Plan Básico + los módulos extra que tu negocio necesite.</div>
+      <div class="plan-note">Estudiamos tu negocio a fondo y el sistema se acopla a tus necesidades.</div>
       <ul>
-        <li>Incluye los 4 agentes del Plan Básico</li>
-        <li>Sumas Agente de Marketing, Contador y/o Calendario</li>
-        <li>Se arma según tu sector y tu forma de operar</li>
-        <li>Escala agregando agentes cuando lo necesites</li>
+        <li>Análisis completo de tu operación</li>
+        <li>Agentes y módulos a la medida de tu sector</li>
+        <li>Integraciones según tus herramientas</li>
       </ul>
+      <a href="https://wa.me/573015055913?text=Hola,%20quiero%20el%20Plan%20Especializado%20de%20Aether" target="_blank" rel="noopener" class="btn btn-g" style="margin-top:24px;width:100%;justify-content:center">Contáctanos</a>
     </div>
   </div>
 </section>
@@ -429,12 +440,8 @@ footer{position:relative;z-index:2;border-top:1px solid var(--border2);padding:4
 <section class="alt">
   <div class="ey">Caso en vivo</div>
   <h2 class="sh2">Helena Store. <span class="it">Bot + web, operando.</span></h2>
-  <p class="slead">Mira cómo opera el agente en tiempo real. Luego entra a la tienda real que construimos. Todo esto ya está funcionando hoy.</p>
-  <div class="live-frame panel">
-    <div class="live-bar"><span class="lb-dot r"></span><span class="lb-dot y"></span><span class="lb-dot g"></span><span class="lb-url">demo · Helena Bot</span></div>
-    <iframe class="live-iframe" src="https://reinukyo-cell.github.io/JarvisPg/demo-helena-store.html" loading="lazy" title="Helena Bot"></iframe>
-  </div>
-  <div class="live-ctas">
+  <p class="slead">Mira el agente funcionando en tiempo real y entra a la tienda real que construimos. Todo esto ya está operando hoy.</p>
+  <div class="live-ctas" style="justify-content:flex-start">
     <a href="https://reinukyo-cell.github.io/JarvisPg/demo-helena-store.html" target="_blank" rel="noopener" class="btn btn-g">▶ Ver el bot funcionando</a>
     <a href="https://helena-store-web.vercel.app/" target="_blank" rel="noopener" class="btn btn-p">Entrar a la web real →</a>
   </div>
@@ -443,29 +450,12 @@ footer{position:relative;z-index:2;border-top:1px solid var(--border2);padding:4
 <!-- PRECIO -->
 <section id="precio" class="price">
   <div class="scarcity">Cupos beta limitados · queda último cupo</div>
-  <h2 class="sh2" style="margin:0 auto">Precio <span class="it">beta de lanzamiento.</span></h2>
-  <p class="slead" style="margin:18px auto 0">Entras al sistema completo por una fracción de su valor. Después, sube a precio regular.</p>
+  <h2 class="sh2" style="margin:0 auto">La <span class="it">inversión.</span></h2>
+  <p class="slead" style="margin:18px auto 0">El valor final depende del plan y del estudio de tu negocio. Te damos el precio exacto en la primera llamada.</p>
   <div class="price-box panel">
-    <div class="po-label">Valor real del sistema</div>
-    <div class="po">$15.000.000<small>COP · precio regular</small></div>
-    <div class="price-div"></div>
-    <div class="pb-label">Tu precio beta hoy</div>
-    <div class="pb">$4.000.000</div>
-    <div class="pb-save">Ahorro directo de $11.000.000 COP</div>
-  </div>
-  <h3 class="sh2" style="font-size:1.9rem;margin:74px 0 0">Planes de mantenimiento</h3>
-  <p class="slead" style="margin:16px auto 0">Todos incluyen soporte, actualizaciones, mejoras y ajustes al agente. La diferencia es cuánto ahorras al pagar por más tiempo.</p>
-  <div class="maint">
-    <div class="plan panel">
-      <div class="plan-tag">Flexible</div><div class="plan-name">Mensual</div>
-      <div class="plan-note">$200.000 / mes · sin permanencia mínima.</div>
-      <ul><li>Soporte técnico prioritario</li><li>Actualizaciones incluidas</li><li>Ajustes al agente cuando los necesites</li><li>Mejoras continuas sin costo extra</li></ul>
-    </div>
-    <div class="plan feat panel">
-      <div class="plan-tag">Recomendado · 50% OFF</div><div class="plan-name">Anual</div>
-      <div class="plan-note">$1.200.000 / año · equivale a $100.000/mes.</div>
-      <ul><li>Todo lo del plan mensual</li><li>Prioridad máxima en soporte</li><li>Optimización trimestral del agente</li><li>Reporte anual de impacto y crecimiento</li><li>Precio bloqueado por 12 meses</li></ul>
-    </div>
+    <div class="pb-label">Desde</div>
+    <div class="pb">USD $1.000</div>
+    <div class="pb-save">Precio beta de lanzamiento</div>
   </div>
   <div class="final panel">
     <h3>Listo para automatizar tu negocio.</h3>
@@ -475,7 +465,7 @@ footer{position:relative;z-index:2;border-top:1px solid var(--border2);padding:4
 </section>
 
 <footer>
-  <div class="flogo">Aether</div>
+  <div class="flogo"><img src="aether-logo-transparent.png" alt="Aether" style="height:30px;display:block"></div>
   <div class="ftxt">El cerebro que mueve tu negocio · Beta 2026</div>
   <div class="ftxt">Hecho con IA.</div>
 </footer>
