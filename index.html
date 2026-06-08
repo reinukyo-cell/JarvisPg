@@ -138,7 +138,7 @@ h1 .it{font-style:italic;color:var(--accent);}
 .cdsc{font-size:.96rem;color:var(--muted);line-height:1.65;font-weight:300;}
 
 /* DEMOS */
-.demos-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;}
+.demos-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:18px;}
 .dcard{padding:32px;text-align:center;text-decoration:none;display:block;transition:transform .2s,border-color .2s;}
 a.dcard:hover{transform:translateY(-3px);border-color:var(--bstrong);}
 .dav{width:58px;height:58px;border-radius:14px;margin:0 auto 18px;display:flex;align-items:center;justify-content:center;font-family:var(--display);font-size:1.5rem;font-weight:600;color:#04070d;}
@@ -407,13 +407,14 @@ footer{position:relative;z-index:2;border-top:1px solid var(--border2);padding:4
   <h2 class="sh2">No lo creas. <span class="it">Pruébalo.</span></h2>
   <p class="slead">Estos son algunos de los bots que ya hemos construido. ¿Quieres ver uno de tu sector funcionando? Escríbenos.</p>
   <div class="demos-grid">
-    <a class="dcard panel" href="https://reinukyo-cell.github.io/JarvisPg/demo-flota.html" target="_blank" rel="noopener">
+    <a class="dcard panel" href="https://aether-in.vercel.app/demo-flota.html" target="_blank" rel="noopener">
       <div class="dav" style="background:linear-gradient(135deg,#0088ff,#00c3ff)">T</div><h4>Transport Bot</h4><p>Empresa de transporte · control operativo.</p><span class="dlink">Abrir demo →</span></a>
-    <div class="dcard panel"><div class="dav" style="background:linear-gradient(135deg,#00c3ff,#4ade80)">V</div><h4>VetBot</h4><p>Veterinaria · agenda y recordatorios.</p></div>
-    <div class="dcard panel"><div class="dav" style="background:linear-gradient(135deg,#0088ff,#00c3ff)">O</div><h4>Oportun</h4><p>Diseño de interiores · 5 agentes.</p></div>
-    <div class="dcard panel"><div class="dav" style="background:linear-gradient(135deg,#00c3ff,#0088ff)">G</div><h4>Gym Coach</h4><p>Gimnasio · planes y seguimiento.</p></div>
-    <div class="dcard panel"><div class="dav" style="background:linear-gradient(135deg,#0088ff,#00c3ff)">S</div><h4>SST Bot</h4><p>Seguridad y salud en el trabajo.</p></div>
-    <div class="dcard panel"><div class="dav" style="background:linear-gradient(135deg,#00c3ff,#0088ff)">M</div><h4>Mayorista</h4><p>Distribuidora · pedidos y cartera.</p></div>
+    <a class="dcard panel" href="https://aether-in.vercel.app/demo-agro.html" target="_blank" rel="noopener">
+      <div class="dav" style="background:linear-gradient(135deg,#4ade80,#00c3ff)">A</div><h4>AgroBot</h4><p>Agro · pedidos, precios y campo.</p><span class="dlink">Abrir demo →</span></a>
+    <a class="dcard panel" href="https://aether-in.vercel.app/demo_bot_contador.html" target="_blank" rel="noopener">
+      <div class="dav" style="background:linear-gradient(135deg,#00c3ff,#0088ff)">C</div><h4>Contador Bot</h4><p>Finanzas · registros y reportes.</p><span class="dlink">Abrir demo →</span></a>
+    <a class="dcard panel" href="https://aether-in.vercel.app/gym-demo.html" target="_blank" rel="noopener">
+      <div class="dav" style="background:linear-gradient(135deg,#0088ff,#00c3ff)">G</div><h4>Gym Coach</h4><p>Gimnasio · planes y seguimiento.</p><span class="dlink">Abrir demo →</span></a>
   </div>
   <div style="text-align:center;margin-top:38px">
     <a href="https://wa.me/573015055913?text=Hola,%20quiero%20ver%20una%20demo%20de%20mi%20sector" target="_blank" rel="noopener" class="btn btn-p">Pedir una demo de mi sector</a>
