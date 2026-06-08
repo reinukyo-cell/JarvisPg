@@ -20,14 +20,12 @@
 *{margin:0;padding:0;box-sizing:border-box;}
 html{scroll-behavior:smooth;}
 body{background:var(--bg);color:var(--text);font-family:var(--body);font-size:1.06rem;line-height:1.65;overflow-x:hidden;position:relative;}
-/* fondo estático sutil */
 body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
   background-image:linear-gradient(90deg,transparent 97%,rgba(0,195,255,.05) 100%),linear-gradient(0deg,transparent 97%,rgba(0,195,255,.04) 100%);
   background-size:54px 54px;mask:radial-gradient(130% 100% at 50% 0%,#000 35%,transparent 85%);-webkit-mask:radial-gradient(130% 100% at 50% 0%,#000 35%,transparent 85%);}
 .glow{position:fixed;border-radius:50%;filter:blur(50px);pointer-events:none;z-index:0;}
 .glow1{top:-120px;right:-200px;width:620px;height:620px;background:radial-gradient(circle,rgba(0,195,255,.1) 0%,transparent 65%);}
 .glow2{bottom:-220px;left:-200px;width:560px;height:560px;background:radial-gradient(circle,rgba(0,136,255,.08) 0%,transparent 65%);}
-
 a{color:inherit;}
 section{position:relative;z-index:2;padding:120px 60px;}
 .ey{font-family:var(--body);font-size:.74rem;font-weight:600;letter-spacing:.26em;text-transform:uppercase;color:var(--accent);margin-bottom:18px;display:flex;align-items:center;gap:12px;}
@@ -35,21 +33,22 @@ section{position:relative;z-index:2;padding:120px 60px;}
 .sh2{font-family:var(--display);font-size:clamp(2.2rem,3.6vw,3.3rem);font-weight:400;line-height:1.12;letter-spacing:-.01em;}
 .sh2 .it{font-style:italic;color:var(--accent);}
 .slead{font-size:1.18rem;color:var(--muted);max-width:640px;line-height:1.8;margin-top:20px;margin-bottom:58px;font-weight:300;}
-
 /* NAV */
 nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:18px 60px;background:rgba(4,7,13,.82);backdrop-filter:blur(20px);border-bottom:1px solid var(--border2);}
-.logo{font-family:var(--display);font-weight:600;font-size:1.75rem;letter-spacing:.04em;text-decoration:none;color:var(--text);display:flex;align-items:center;gap:11px;}
-.logo .mk{width:10px;height:10px;border-radius:50%;background:var(--accent);box-shadow:0 0 14px var(--accent);}
+.logo{display:flex;align-items:center;text-decoration:none;}
 .nav-links{display:flex;gap:32px;list-style:none;}
 .nav-links a{color:var(--muted);text-decoration:none;font-size:.82rem;font-weight:500;letter-spacing:.1em;text-transform:uppercase;transition:color .2s;}
 .nav-links a:hover{color:var(--accent);}
-.nav-cta{padding:11px 24px;border-radius:8px;background:var(--accent);color:#04070d;font-size:.82rem;font-weight:600;letter-spacing:.04em;text-decoration:none;transition:all .2s;box-shadow:0 0 24px rgba(0,195,255,.25);}
+.nav-right{display:flex;align-items:center;gap:16px;}
+.lang-sw{display:flex;border:1px solid var(--border);border-radius:8px;overflow:hidden;}
+.lang-sw button{background:transparent;color:var(--muted);border:none;padding:7px 12px;font-family:var(--body);font-size:.74rem;font-weight:600;letter-spacing:.06em;cursor:pointer;transition:all .2s;}
+.lang-sw button.on{background:var(--accent);color:#04070d;}
+.nav-cta{padding:11px 24px;border-radius:8px;background:var(--accent);color:#04070d;font-size:.82rem;font-weight:600;letter-spacing:.04em;text-decoration:none;transition:all .2s;box-shadow:0 0 24px rgba(0,195,255,.25);white-space:nowrap;}
 .nav-cta:hover{background:#fff;}
-
 /* HERO */
 .hero{min-height:100vh;display:flex;flex-direction:column;justify-content:center;padding:150px 60px 90px;}
 .pill{display:inline-flex;align-items:center;gap:10px;background:var(--soft);border:1px solid var(--border);border-radius:100px;padding:8px 20px;width:fit-content;font-size:.78rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:32px;}
-.pdot{width:8px;height:8px;border-radius:50%;background:var(--accent);box-shadow:0 0 12px var(--accent);}
+.pdot{width:8px;height:8px;border-radius:50%;background:var(--accent);box-shadow:0 0 12px var(--accent);flex-shrink:0;}
 h1{font-family:var(--display);font-size:clamp(3.2rem,7vw,6.2rem);font-weight:400;line-height:1.04;letter-spacing:-.015em;max-width:15ch;}
 h1 .it{font-style:italic;color:var(--accent);}
 .hero-sub{margin-top:30px;font-size:1.28rem;color:var(--muted);max-width:580px;line-height:1.85;font-weight:300;}
@@ -57,17 +56,14 @@ h1 .it{font-style:italic;color:var(--accent);}
 .btn{padding:16px 34px;border-radius:8px;font-family:var(--body);font-size:.98rem;font-weight:600;letter-spacing:.02em;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:9px;transition:all .2s;border:none;}
 .btn-p{background:var(--accent);color:#04070d;box-shadow:0 0 28px rgba(0,195,255,.28);}
 .btn-p:hover{background:#fff;transform:translateY(-2px);}
-.btn-g{background:transparent;color:var(--accent);border:1px solid var(--border-strong,rgba(0,195,255,.35));}
+.btn-g{background:transparent;color:var(--accent);border:1px solid rgba(0,195,255,.35);}
 .btn-g:hover{background:var(--soft);transform:translateY(-2px);}
 .hero-metrics{display:flex;gap:54px;flex-wrap:wrap;margin-top:66px;padding-top:44px;border-top:1px solid var(--border2);}
 .metric{display:flex;flex-direction:column;gap:5px;}
 .mv{font-family:var(--display);font-size:2.7rem;font-weight:600;color:var(--accent);line-height:1;}
 .ml{font-size:.78rem;color:var(--dim);text-transform:uppercase;letter-spacing:.14em;}
-
-/* panel base */
 .panel{background:var(--surface);border:1px solid var(--border);border-radius:16px;}
 .alt{background:var(--bg2);}
-
 /* COMPARATIVA */
 .cmp-wrap{display:flex;flex-direction:column;gap:34px;}
 .cmp-label{font-family:var(--display);font-style:italic;font-size:1.7rem;margin-bottom:14px;}
@@ -81,15 +77,13 @@ h1 .it{font-style:italic;color:var(--accent);}
 .cmp-cell .mk{flex-shrink:0;font-weight:600;}
 .cmp-cell.bad .mk{color:var(--danger);}
 .cmp-cell.good .mk{color:var(--accent);}
-
-/* CARDS cambios mínimos */
+/* CARDS */
 .cap-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:20px;}
 .cap-card{padding:36px;transition:transform .2s,border-color .2s;}
 .cap-card:hover{transform:translateY(-3px);border-color:var(--bstrong);}
 .ci{font-size:1.7rem;display:block;margin-bottom:16px;}
 .ct{font-family:var(--display);font-size:1.55rem;font-weight:600;margin-bottom:10px;}
 .cd{font-size:1.02rem;color:var(--muted);line-height:1.75;font-weight:300;}
-
 /* PLANES */
 .plans{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;align-items:start;}
 .plan{padding:40px;transition:transform .2s,border-color .2s;}
@@ -102,8 +96,7 @@ h1 .it{font-style:italic;color:var(--accent);}
 .plan ul li{font-size:.98rem;color:var(--muted);padding-left:24px;position:relative;line-height:1.55;font-weight:300;}
 .plan ul li b{color:var(--text);font-weight:600;}
 .plan ul li::before{content:'';position:absolute;left:0;top:.5em;width:8px;height:8px;border-radius:50%;background:var(--accent);}
-
-/* MÓDULOS EXTRA */
+/* MÓDULOS */
 .mods{display:flex;flex-direction:column;gap:14px;}
 .mod{overflow:hidden;}
 .mod-head{display:flex;align-items:center;gap:22px;padding:28px 34px;cursor:pointer;}
@@ -118,7 +111,6 @@ h1 .it{font-style:italic;color:var(--accent);}
 .mod-inner li{list-style:none;font-size:.94rem;color:var(--muted);padding:13px 17px;background:var(--soft);border:1px solid var(--border2);border-radius:10px;line-height:1.5;font-weight:300;}
 .mod-inner li::before{content:'+ ';color:var(--accent);font-weight:600;}
 .note{font-size:1.15rem;color:var(--dim);text-align:center;margin-top:28px;font-style:italic;font-family:var(--display);}
-
 /* PROCESO */
 .steps{display:grid;grid-template-columns:repeat(4,1fr);gap:0;position:relative;margin-top:54px;}
 .steps::before{content:'';position:absolute;top:32px;left:12%;right:12%;height:1px;background:var(--border);}
@@ -126,17 +118,15 @@ h1 .it{font-style:italic;color:var(--accent);}
 .snum{width:64px;height:64px;margin:0 auto 24px;border-radius:50%;background:var(--surface);border:1px solid var(--bstrong);display:flex;align-items:center;justify-content:center;font-family:var(--display);font-size:1.6rem;color:var(--accent);position:relative;z-index:1;}
 .stitle{font-family:var(--display);font-size:1.4rem;font-weight:600;margin-bottom:8px;}
 .sdesc{font-size:.98rem;color:var(--muted);line-height:1.7;font-weight:300;}
-
 /* SECTORES */
 .cases-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;}
 .case-card{padding:30px;transition:transform .2s,border-color .2s;}
 .case-card:hover{transform:translateY(-3px);border-color:var(--bstrong);}
-.ctype{font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:var(--dim);margin-bottom:12px;display:flex;justify-content:space-between;align-items:center;}
-.cactive{color:var(--success);display:inline-flex;align-items:center;gap:6px;}
+.ctype{font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:var(--dim);margin-bottom:12px;display:flex;justify-content:space-between;align-items:center;gap:8px;}
+.cactive{color:var(--success);display:inline-flex;align-items:center;gap:6px;white-space:nowrap;}
 .cactive::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--success);}
 .cname{font-family:var(--display);font-size:1.55rem;font-weight:600;margin-bottom:10px;}
 .cdsc{font-size:.96rem;color:var(--muted);line-height:1.65;font-weight:300;}
-
 /* DEMOS */
 .demos-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:18px;}
 .dcard{padding:32px;text-align:center;text-decoration:none;display:block;transition:transform .2s,border-color .2s;}
@@ -145,15 +135,8 @@ a.dcard:hover{transform:translateY(-3px);border-color:var(--bstrong);}
 .dcard h4{font-family:var(--display);font-size:1.45rem;font-weight:600;margin-bottom:7px;color:var(--text);}
 .dcard p{font-size:.92rem;color:var(--muted);line-height:1.55;font-weight:300;margin-bottom:14px;}
 .dlink{font-size:.78rem;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);font-weight:500;}
-
 /* LIVE */
-.live-frame{border-radius:16px;overflow:hidden;}
-.live-bar{padding:14px 20px;border-bottom:1px solid var(--border2);display:flex;align-items:center;gap:8px;}
-.lb-dot{width:10px;height:10px;border-radius:50%;}.lb-dot.r{background:#ff5f57;}.lb-dot.y{background:#febc2e;}.lb-dot.g{background:#28c840;}
-.lb-url{margin-left:12px;font-size:.8rem;color:var(--dim);letter-spacing:.04em;}
-.live-iframe{width:100%;height:560px;border:none;display:block;background:var(--surface);}
-.live-ctas{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-top:36px;}
-
+.live-ctas{display:flex;gap:14px;justify-content:flex-start;flex-wrap:wrap;margin-top:36px;}
 /* VENTAJAS */
 .bens-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:18px;}
 .ben{padding:34px;display:flex;gap:24px;align-items:flex-start;transition:transform .2s,border-color .2s;}
@@ -163,7 +146,6 @@ a.dcard:hover{transform:translateY(-3px);border-color:var(--bstrong);}
 .ben p{font-size:.98rem;color:var(--muted);line-height:1.8;font-weight:300;}
 .ben-quote{font-family:var(--display);font-style:italic;font-size:clamp(1.6rem,2.6vw,2.2rem);font-weight:300;line-height:1.5;text-align:center;max-width:860px;margin:64px auto 0;}
 .ben-quote .it{color:var(--accent);}
-
 /* PRECIO */
 .price{text-align:center;}
 .scarcity{display:inline-flex;align-items:center;gap:10px;background:rgba(255,149,0,.08);border:1px solid rgba(255,149,0,.3);color:var(--warn);border-radius:100px;padding:10px 22px;font-size:.78rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;margin-bottom:28px;}
@@ -171,44 +153,38 @@ a.dcard:hover{transform:translateY(-3px);border-color:var(--bstrong);}
 .price-box{max-width:540px;margin:50px auto 0;padding:50px 42px;}
 .po-label{font-size:.8rem;color:var(--dim);letter-spacing:.12em;text-transform:uppercase;}
 .po{font-family:var(--display);font-size:2.1rem;color:var(--dim);text-decoration:line-through;text-decoration-color:rgba(255,107,107,.4);margin:8px 0;}
-.po small{display:block;font-size:.72rem;text-decoration:none;color:var(--dim);margin-top:4px;letter-spacing:.04em;}
 .price-div{height:1px;background:var(--border2);margin:32px 0;}
 .pb-label{font-size:.8rem;color:var(--accent);letter-spacing:.12em;text-transform:uppercase;font-weight:600;}
 .pb{font-family:var(--display);font-size:4.4rem;font-weight:600;color:var(--accent);margin:8px 0;line-height:1;text-shadow:0 0 30px rgba(0,195,255,.25);}
 .pb-save{font-size:.92rem;color:var(--success);font-weight:400;}
-.maint{display:grid;grid-template-columns:1fr 1fr;gap:18px;max-width:780px;margin:54px auto 0;text-align:left;}
 .final{max-width:600px;margin:64px auto 0;padding:48px;text-align:center;}
 .final h3{font-family:var(--display);font-size:2.1rem;font-weight:600;margin-bottom:12px;}
 .final p{font-size:1.02rem;color:var(--muted);margin-bottom:30px;font-weight:300;}
-
 /* FOOTER */
 footer{position:relative;z-index:2;border-top:1px solid var(--border2);padding:42px 60px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;}
-.flogo{font-family:var(--display);font-size:1.4rem;font-weight:600;letter-spacing:.04em;}
+.flogo{display:flex;align-items:center;}
 .ftxt{font-size:.84rem;color:var(--dim);font-weight:300;}
-
 /* WA FAB */
 .wa-fab{position:fixed;bottom:26px;right:26px;width:60px;height:60px;background:#25D366;border-radius:50%;display:flex;align-items:center;justify-content:center;z-index:200;box-shadow:0 4px 22px rgba(37,211,102,.4);text-decoration:none;transition:transform .2s;}
 .wa-fab:hover{transform:scale(1.08);}
-
 @media(max-width:960px){
   nav{padding:16px 22px;}.nav-links{display:none;}
   section{padding:76px 22px;}.hero{padding:130px 22px 70px;}
   body{font-size:1.02rem;}
-  .cap-grid,.plans,.cases-grid,.demos-grid,.bens-grid,.maint,.mod-inner{grid-template-columns:1fr;}
+  .cap-grid,.plans,.cases-grid,.demos-grid,.bens-grid,.mod-inner{grid-template-columns:1fr;}
   .steps{grid-template-columns:1fr 1fr;gap:32px;}.steps::before{display:none;}
-  .live-iframe{height:440px;}
   footer{flex-direction:column;text-align:center;}
 }
 @media(max-width:560px){
-  nav{padding:14px 18px;}
+  nav{padding:14px 16px;}
   .logo img{height:30px!important;}
-  .nav-cta{padding:9px 16px;font-size:.74rem;}
+  .nav-right{gap:10px;}.lang-sw button{padding:6px 9px;font-size:.7rem;}
+  .nav-cta{padding:9px 14px;font-size:.72rem;}
   .hero{padding:120px 18px 60px;}
   section{padding:64px 18px;}
   h1{font-size:clamp(2.4rem,10vw,3rem);line-height:1.08;}
   .hero-sub{font-size:1.12rem;margin-top:24px;}
-  .hero-ctas{gap:12px;}
-  .hero-ctas .btn{flex:1 1 100%;justify-content:center;}
+  .hero-ctas{gap:12px;}.hero-ctas .btn{flex:1 1 100%;justify-content:center;}
   .hero-metrics{gap:26px 36px;margin-top:48px;padding-top:34px;}
   .mv{font-size:2.1rem;}
   .sh2{font-size:1.9rem;}
@@ -230,69 +206,72 @@ footer{position:relative;z-index:2;border-top:1px solid var(--border2);padding:4
 <nav>
   <a href="#" class="logo"><img src="aether-logo-transparent.png" alt="Aether" style="height:38px;display:block"></a>
   <ul class="nav-links">
-    <li><a href="#comparativa">Comparación</a></li>
-    <li><a href="#agente">El agente</a></li>
-    <li><a href="#planes">Planes</a></li>
-    <li><a href="#demos">Demos</a></li>
-    <li><a href="#precio">Inversión</a></li>
+    <li><a href="#comparativa" data-i18n="nav.comp">Comparación</a></li>
+    <li><a href="#agente" data-i18n="nav.agent">El agente</a></li>
+    <li><a href="#planes" data-i18n="nav.plans">Planes</a></li>
+    <li><a href="#demos" data-i18n="nav.demos">Demos</a></li>
+    <li><a href="#precio" data-i18n="nav.price">Inversión</a></li>
   </ul>
-  <a href="#precio" class="nav-cta">Quiero mi cupo</a>
+  <div class="nav-right">
+    <div class="lang-sw"><button data-lang="es">ES</button><button data-lang="en">EN</button></div>
+    <a href="#precio" class="nav-cta" data-i18n="nav.cta">Quiero mi cupo</a>
+  </div>
 </nav>
 
 <!-- HERO -->
 <section class="hero">
-  <div class="pill"><span class="pdot"></span>Dos realidades · un mismo negocio</div>
-  <h1>El mismo negocio.<br><span class="it">Distintos resultados.</span></h1>
-  <p class="hero-sub">Mira qué le pasa al mismo negocio en el mismo instante. Uno corre entre cinco apps. El otro solo le escribe a un chat. Eso es Aether: el cerebro que mueve tu operación.</p>
+  <div class="pill"><span class="pdot"></span><span data-i18n="hero.pill">Dos realidades · un mismo negocio</span></div>
+  <h1 data-i18n="hero.h1">El mismo negocio.<br><span class="it">Distintos resultados.</span></h1>
+  <p class="hero-sub" data-i18n="hero.sub">Mira qué le pasa al mismo negocio en el mismo instante. Uno corre entre cinco apps. El otro solo le escribe a un chat. Eso es Aether: el cerebro que mueve tu operación.</p>
   <div class="hero-ctas">
-    <a href="#comparativa" class="btn btn-p">Ver la diferencia</a>
-    <a href="#demos" class="btn btn-g">Ver demos en vivo</a>
+    <a href="#comparativa" class="btn btn-p" data-i18n="hero.cta1">Ver la diferencia</a>
+    <a href="#demos" class="btn btn-g" data-i18n="hero.cta2">Ver demos en vivo</a>
   </div>
   <div class="hero-metrics">
-    <div class="metric"><span class="mv">24/7</span><span class="ml">operando</span></div>
-    <div class="metric"><span class="mv">1</span><span class="ml">solo chat</span></div>
-    <div class="metric"><span class="mv">0</span><span class="ml">paneles</span></div>
-    <div class="metric"><span class="mv">+6</span><span class="ml">sectores activos</span></div>
+    <div class="metric"><span class="mv">24/7</span><span class="ml" data-i18n="hero.m1l">operando</span></div>
+    <div class="metric"><span class="mv">1</span><span class="ml" data-i18n="hero.m2l">solo chat</span></div>
+    <div class="metric"><span class="mv">0</span><span class="ml" data-i18n="hero.m3l">paneles</span></div>
+    <div class="metric"><span class="mv">+6</span><span class="ml" data-i18n="hero.m4l">sectores activos</span></div>
   </div>
 </section>
 
 <!-- COMPARATIVA -->
 <section id="comparativa" class="alt">
-  <div class="ey">Comparativa · negocio vs Aether</div>
-  <h2 class="sh2">Para cada producto, <span class="it">dos formas de operar.</span></h2>
-  <p class="slead">El trabajo es el mismo. El esfuerzo, no. A la izquierda como se hace hoy. A la derecha con Aether.</p>
+  <div class="ey" data-i18n="comp.ey">Comparativa · negocio vs Aether</div>
+  <h2 class="sh2" data-i18n="comp.h2">Para cada producto, <span class="it">dos formas de operar.</span></h2>
+  <p class="slead" data-i18n="comp.lead">El trabajo es el mismo. El esfuerzo, no. A la izquierda como se hace hoy. A la derecha con Aether.</p>
   <div class="cmp-wrap">
     <div>
-      <div class="cmp-label">Ventas</div>
+      <div class="cmp-label" data-i18n="comp.sales">Ventas</div>
       <div class="cmp-table">
-        <div class="cmp-head bad">Sin Aether</div><div class="cmp-head good">Con Aether</div>
-        <div class="cmp-cell bad"><span class="mk">✗</span>Revisión manual</div>
-        <div class="cmp-cell good"><span class="mk">✓</span>Hablas en tu chat</div>
-        <div class="cmp-cell bad"><span class="mk">✗</span>Buscas y revisas existencias</div>
-        <div class="cmp-cell good"><span class="mk">✓</span>Preguntas por existencias</div>
-        <div class="cmp-cell bad"><span class="mk">✗</span>Anotar la salida del producto</div>
-        <div class="cmp-cell good"><span class="mk">✓</span>Escribes que vendiste el producto</div>
-        <div class="cmp-cell bad"><span class="mk">✗</span>No hay sincronización entre lo físico y lo digital, todo manual</div>
-        <div class="cmp-cell good"><span class="mk">✓</span>Se sincronizan todos los sistemas al escribir en tu chat</div>
+        <div class="cmp-head bad" data-i18n="comp.without">Sin Aether</div><div class="cmp-head good" data-i18n="comp.with">Con Aether</div>
+        <div class="cmp-cell bad"><span class="mk">✗</span><span data-i18n="sb1">Revisión manual</span></div>
+        <div class="cmp-cell good"><span class="mk">✓</span><span data-i18n="sg1">Hablas en tu chat</span></div>
+        <div class="cmp-cell bad"><span class="mk">✗</span><span data-i18n="sb2">Buscas y revisas existencias</span></div>
+        <div class="cmp-cell good"><span class="mk">✓</span><span data-i18n="sg2">Preguntas por existencias</span></div>
+        <div class="cmp-cell bad"><span class="mk">✗</span><span data-i18n="sb3">Anotar la salida del producto</span></div>
+        <div class="cmp-cell good"><span class="mk">✓</span><span data-i18n="sg3">Escribes que vendiste el producto</span></div>
+        <div class="cmp-cell bad"><span class="mk">✗</span><span data-i18n="sb4">No hay sincronización entre lo físico y lo digital, todo manual</span></div>
+        <div class="cmp-cell good"><span class="mk">✓</span><span data-i18n="sg4">Se sincronizan todos los sistemas al escribir en tu chat</span></div>
       </div>
-      <div class="cmp-time">~15 min por producto · vs · segundos</div>
+      <div class="cmp-time" data-i18n="comp.time">~15 min por producto · vs · segundos</div>
     </div>
     <div>
-      <div class="cmp-label">Cierre de día</div>
+      <div class="cmp-label" data-i18n="comp.close">Cierre de día</div>
       <div class="cmp-table">
-        <div class="cmp-head bad">Sin Aether</div><div class="cmp-head good">Con Aether</div>
-        <div class="cmp-cell bad"><span class="mk">✗</span>Unificar inventario entre vendedores</div>
-        <div class="cmp-cell good"><span class="mk">✓</span>Se actualiza en cada mensaje</div>
-        <div class="cmp-cell bad"><span class="mk">✗</span>Datos sueltos como pendientes o señas</div>
-        <div class="cmp-cell good"><span class="mk">✓</span>Con un mensaje se centralizan</div>
-        <div class="cmp-cell bad"><span class="mk">✗</span>Cierres de caja largos</div>
-        <div class="cmp-cell good"><span class="mk">✓</span>Reporte al día, actualizado</div>
-        <div class="cmp-cell bad"><span class="mk">✗</span>Cada día es repetir el proceso</div>
-        <div class="cmp-cell good"><span class="mk">✓</span>Los reportes salen automatizados</div>
-        <div class="cmp-cell bad"><span class="mk">✗</span>Si estás fuera, esperar a que lo envíen</div>
-        <div class="cmp-cell good"><span class="mk">✓</span>Te llega automático</div>
-        <div class="cmp-cell bad"><span class="mk">✗</span>Solicitar que apliquen cambios a la web</div>
-        <div class="cmp-cell good"><span class="mk">✓</span>Se hizo a través del día</div>
+        <div class="cmp-head bad" data-i18n="comp.without">Sin Aether</div><div class="cmp-head good" data-i18n="comp.with">Con Aether</div>
+        <div class="cmp-cell bad"><span class="mk">✗</span><span data-i18n="cb1">Unificar inventario entre vendedores</span></div>
+        <div class="cmp-cell good"><span class="mk">✓</span><span data-i18n="cg1">Se actualiza en cada mensaje</span></div>
+        <div class="cmp-cell bad"><span class="mk">✗</span><span data-i18n="cb2">Datos sueltos como pendientes o señas</span></div>
+        <div class="cmp-cell good"><span class="mk">✓</span><span data-i18n="cg2">Con un mensaje se centralizan</span></div>
+        <div class="cmp-cell bad"><span class="mk">✗</span><span data-i18n="cb3">Cierres de caja largos</span></div>
+        <div class="cmp-cell good"><span class="mk">✓</span><span data-i18n="cg3">Reporte al día, actualizado</span></div>
+        <div class="cmp-cell bad"><span class="mk">✗</span><span data-i18n="cb4">Cada día es repetir el proceso</span></div>
+        <div class="cmp-cell good"><span class="mk">✓</span><span data-i18n="cg4">Los reportes salen automatizados</span></div>
+        <div class="cmp-cell bad"><span class="mk">✗</span><span data-i18n="cb5">Si estás fuera, esperar a que lo envíen</span></div>
+        <div class="cmp-cell good"><span class="mk">✓</span><span data-i18n="cg5">Te llega automático</span></div>
+        <div class="cmp-cell bad"><span class="mk">✗</span><span data-i18n="cb6">Solicitar que apliquen cambios a la web</span></div>
+        <div class="cmp-cell good"><span class="mk">✓</span><span data-i18n="cg6">Se hizo a través del día</span></div>
       </div>
     </div>
   </div>
@@ -300,207 +279,264 @@ footer{position:relative;z-index:2;border-top:1px solid var(--border2);padding:4
 
 <!-- CAMBIOS MÍNIMOS -->
 <section id="agente">
-  <div class="ey">Cambios mínimos para ti</div>
-  <h2 class="sh2">Un agente que <span class="it">se acopla a tu forma de trabajar.</span></h2>
-  <p class="slead">No es un bot genérico. Cada Aether aprende cómo hablas, atiendes, vendes; gestiona tu inventario y catálogo al detalle.</p>
+  <div class="ey" data-i18n="agent.ey">Cambios mínimos para ti</div>
+  <h2 class="sh2" data-i18n="agent.h2">Un agente que <span class="it">se acopla a tu forma de trabajar.</span></h2>
+  <p class="slead" data-i18n="agent.lead">No es un bot genérico. Cada Aether aprende cómo hablas, atiendes, vendes; gestiona tu inventario y catálogo al detalle.</p>
   <div class="cap-grid">
-    <div class="cap-card panel"><span class="ci">🗣️</span><div class="ct">Habla como hablas tú</div><p class="cd">Aprende el tono de tu marca, tus frases típicas y la forma en que te diriges a tus clientes. No suena a robot.</p></div>
-    <div class="cap-card panel"><span class="ci">📦</span><div class="ct">Conoce tu catálogo al detalle</div><p class="cd">Productos, referencias, colores, tallas, precios, combos. Si tu negocio lo vende, el agente lo sabe y lo recomienda.</p></div>
-    <div class="cap-card panel"><span class="ci">🔁</span><div class="ct">Se adapta a tu flujo real</div><p class="cd">¿Pides seña? ¿Aceptas Nequi? ¿Envías por Servientrega? El flujo se diseña según cómo operas, no sobre una plantilla.</p></div>
-    <div class="cap-card panel"><span class="ci">📈</span><div class="ct">Crece contigo</div><p class="cd">Cada mes se revisan conversaciones reales y el agente aprende más de tu negocio. Mejora sin que tengas que moverte.</p></div>
+    <div class="cap-card panel"><span class="ci">🗣️</span><div class="ct" data-i18n="agent.c1t">Habla como hablas tú</div><p class="cd" data-i18n="agent.c1d">Aprende el tono de tu marca, tus frases típicas y la forma en que te diriges a tus clientes. No suena a robot.</p></div>
+    <div class="cap-card panel"><span class="ci">📦</span><div class="ct" data-i18n="agent.c2t">Conoce tu catálogo al detalle</div><p class="cd" data-i18n="agent.c2d">Productos, referencias, colores, tallas, precios, combos. Si tu negocio lo vende, el agente lo sabe y lo recomienda.</p></div>
+    <div class="cap-card panel"><span class="ci">🔁</span><div class="ct" data-i18n="agent.c3t">Se adapta a tu flujo real</div><p class="cd" data-i18n="agent.c3d">¿Pides seña? ¿Aceptas Nequi? ¿Envías por Servientrega? El flujo se diseña según cómo operas, no sobre una plantilla.</p></div>
+    <div class="cap-card panel"><span class="ci">📈</span><div class="ct" data-i18n="agent.c4t">Crece contigo</div><p class="cd" data-i18n="agent.c4d">Cada mes se revisan conversaciones reales y el agente aprende más de tu negocio. Mejora sin que tengas que moverte.</p></div>
   </div>
 </section>
 
 <!-- PLANES -->
 <section id="planes" class="alt">
-  <div class="ey">Servicios</div>
-  <h2 class="sh2">Un plan para <span class="it">cada etapa de tu negocio.</span></h2>
-  <p class="slead">Empiezas por lo esencial y escalas cuando lo necesites. Cada plan se ajusta a cómo operas hoy.</p>
+  <div class="ey" data-i18n="plans.ey">Servicios</div>
+  <h2 class="sh2" data-i18n="plans.h2">Un plan para <span class="it">cada etapa de tu negocio.</span></h2>
+  <p class="slead" data-i18n="plans.lead">Empiezas por lo esencial y escalas cuando lo necesites. Cada plan se ajusta a cómo operas hoy.</p>
   <div class="plans">
     <div class="plan panel">
-      <div class="plan-tag">Para arrancar</div>
-      <div class="plan-name">Plan Básico</div>
-      <div class="plan-note">El producto base. Lo esencial para no perder un cliente.</div>
+      <div class="plan-tag" data-i18n="p1.tag">Para arrancar</div>
+      <div class="plan-name" data-i18n="p1.name">Plan Básico</div>
+      <div class="plan-note" data-i18n="p1.note">El producto base. Lo esencial para no perder un cliente.</div>
       <ul>
-        <li><b>Consultas básicas</b> — responde horarios, precios, envíos o una lista que el cliente envíe.</li>
-        <li><b>Toma de datos</b> — nombre, necesidad y datos generales del cliente, guardados.</li>
-        <li><b>Agenda</b> de citas y solicitudes.</li>
+        <li data-i18n="p1.l1"><b>Consultas básicas</b> — responde horarios, precios, envíos o una lista que el cliente envíe.</li>
+        <li data-i18n="p1.l2"><b>Toma de datos</b> — nombre, necesidad y datos generales del cliente, guardados.</li>
+        <li data-i18n="p1.l3"><b>Agenda</b> de citas y solicitudes.</li>
       </ul>
     </div>
     <div class="plan feat panel">
-      <div class="plan-tag">Recomendado</div>
-      <div class="plan-name">Plan Normal</div>
-      <div class="plan-note">El sistema completo que opera tu negocio.</div>
+      <div class="plan-tag" data-i18n="p2.tag">Recomendado</div>
+      <div class="plan-name" data-i18n="p2.name">Plan Normal</div>
+      <div class="plan-note" data-i18n="p2.note">El sistema completo que opera tu negocio.</div>
       <ul>
-        <li><b>Chatbot de WhatsApp</b> — hasta 1.000 consultas diarias, habla como humano y escala a una persona cuando hace falta.</li>
-        <li><b>Web tipo e-commerce</b> — dominio y hosting incluidos; tienda que nunca cierra y se actualiza con tu inventario (personalización con costo aparte).</li>
-        <li><b>Gestor de inventarios</b> — registro de ventas, alertas de agotamiento y sincronización en vivo con web y asesores.</li>
-        <li><b>Dashboards de gestión</b> — inventarios, agentes, ventas y clientes en un solo lugar.</li>
-        <li><b>Reportes periódicos</b> — CRM, facturación y cierres en la frecuencia que prefieras.</li>
+        <li data-i18n="p2.l1"><b>Chatbot de WhatsApp</b> — hasta 1.000 consultas diarias, habla como humano y escala a una persona cuando hace falta.</li>
+        <li data-i18n="p2.l2"><b>Web tipo e-commerce</b> — dominio y hosting incluidos; tienda que nunca cierra y se actualiza con tu inventario (personalización con costo aparte).</li>
+        <li data-i18n="p2.l3"><b>Gestor de inventarios</b> — registro de ventas, alertas de agotamiento y sincronización en vivo con web y asesores.</li>
+        <li data-i18n="p2.l4"><b>Dashboards de gestión</b> — inventarios, agentes, ventas y clientes en un solo lugar.</li>
+        <li data-i18n="p2.l5"><b>Reportes periódicos</b> — CRM, facturación y cierres en la frecuencia que prefieras.</li>
       </ul>
     </div>
     <div class="plan panel">
-      <div class="plan-tag">A tu medida</div>
-      <div class="plan-name">Plan Especializado</div>
-      <div class="plan-note">Estudiamos tu negocio a fondo y el sistema se acopla a tus necesidades.</div>
+      <div class="plan-tag" data-i18n="p3.tag">A tu medida</div>
+      <div class="plan-name" data-i18n="p3.name">Plan Especializado</div>
+      <div class="plan-note" data-i18n="p3.note">Estudiamos tu negocio a fondo y el sistema se acopla a tus necesidades.</div>
       <ul>
-        <li>Análisis completo de tu operación</li>
-        <li>Agentes y módulos a la medida de tu sector</li>
-        <li>Integraciones según tus herramientas</li>
+        <li data-i18n="p3.l1">Análisis completo de tu operación</li>
+        <li data-i18n="p3.l2">Agentes y módulos a la medida de tu sector</li>
+        <li data-i18n="p3.l3">Integraciones según tus herramientas</li>
       </ul>
-      <a href="https://wa.me/573015055913?text=Hola,%20quiero%20el%20Plan%20Especializado%20de%20Aether" target="_blank" rel="noopener" class="btn btn-g" style="margin-top:24px;width:100%;justify-content:center">Contáctanos</a>
+      <a href="https://wa.me/573015055913?text=Hola,%20quiero%20el%20Plan%20Especializado%20de%20Aether" data-wa-es="Hola, quiero el Plan Especializado de Aether" data-wa-en="Hi, I want the Aether Custom Plan" target="_blank" rel="noopener" class="btn btn-g" style="margin-top:24px;width:100%;justify-content:center" data-i18n="p3.btn">Contáctanos</a>
     </div>
   </div>
 </section>
 
 <!-- MÓDULOS EXTRA -->
 <section id="extra">
-  <div class="ey">Módulos extra</div>
-  <h2 class="sh2">Agentes que <span class="it">se suman a tu plan.</span></h2>
-  <p class="slead">Piezas individuales que potencian tu sistema. Se activan sobre el Plan Básico cuando tu negocio lo pide.</p>
+  <div class="ey" data-i18n="extra.ey">Módulos extra</div>
+  <h2 class="sh2" data-i18n="extra.h2">Agentes que <span class="it">se suman a tu plan.</span></h2>
+  <p class="slead" data-i18n="extra.lead">Piezas individuales que potencian tu sistema. Se activan sobre el Plan Básico cuando tu negocio lo pide.</p>
   <div class="mods">
     <div class="mod panel" data-mod>
-      <div class="mod-head" data-tog><div class="mod-num">+</div><div class="mod-tt"><h3>Agente de Marketing</h3><p>Un experto de marketing a tu alcance, 24/7.</p></div><div class="mod-tog">Ver</div></div>
+      <div class="mod-head" data-tog><div class="mod-num">+</div><div class="mod-tt"><h3 data-i18n="m1.h">Agente de Marketing</h3><p data-i18n="m1.s">Un experto de marketing a tu alcance, 24/7.</p></div><div class="mod-tog" data-i18n="extra.see">Ver</div></div>
       <div class="mod-body"><ul class="mod-inner">
-        <li>Detecta fechas clave y automatiza tu publicidad</li>
-        <li>Segmenta tu base de clientes y fideliza para vender más</li>
-        <li>Métricas que trabajan por ti: detecta oportunidades</li>
-        <li>Arma campañas: hashtags, focos de interés y plan operativo</li>
-        <li>Genera prompts replicables para crear contenido al menor costo</li>
-        <li>Monitorea a tu competencia y la convierte en estrategia</li>
+        <li data-i18n="m1.i1">Detecta fechas clave y automatiza tu publicidad</li>
+        <li data-i18n="m1.i2">Segmenta tu base de clientes y fideliza para vender más</li>
+        <li data-i18n="m1.i3">Métricas que trabajan por ti: detecta oportunidades</li>
+        <li data-i18n="m1.i4">Arma campañas: hashtags, focos de interés y plan operativo</li>
+        <li data-i18n="m1.i5">Genera prompts replicables para crear contenido al menor costo</li>
+        <li data-i18n="m1.i6">Monitorea a tu competencia y la convierte en estrategia</li>
       </ul></div>
     </div>
     <div class="mod panel" data-mod>
-      <div class="mod-head" data-tog><div class="mod-num">+</div><div class="mod-tt"><h3>Agente Contador</h3><p>Tus finanzas centralizadas y listas para decidir.</p></div><div class="mod-tog">Ver</div></div>
+      <div class="mod-head" data-tog><div class="mod-num">+</div><div class="mod-tt"><h3 data-i18n="m2.h">Agente Contador</h3><p data-i18n="m2.s">Tus finanzas centralizadas y listas para decidir.</p></div><div class="mod-tog" data-i18n="extra.see">Ver</div></div>
       <div class="mod-body"><ul class="mod-inner">
-        <li>Organiza y clasifica tus comprobantes y libro contable</li>
-        <li>Consolida movimientos y concilia extractos automáticamente</li>
-        <li>Detecta inconsistencias y alerta de anomalías a tiempo</li>
-        <li>Programa cobros/pagos y sigue tus obligaciones</li>
-        <li>Cierres por mes, trimestre o semestre automáticos</li>
-        <li>Proyecta tu caja y analiza rentabilidad por producto</li>
+        <li data-i18n="m2.i1">Organiza y clasifica tus comprobantes y libro contable</li>
+        <li data-i18n="m2.i2">Consolida movimientos y concilia extractos automáticamente</li>
+        <li data-i18n="m2.i3">Detecta inconsistencias y alerta de anomalías a tiempo</li>
+        <li data-i18n="m2.i4">Programa cobros/pagos y sigue tus obligaciones</li>
+        <li data-i18n="m2.i5">Cierres por mes, trimestre o semestre automáticos</li>
+        <li data-i18n="m2.i6">Proyecta tu caja y analiza rentabilidad por producto</li>
       </ul></div>
     </div>
     <div class="mod panel" data-mod>
-      <div class="mod-head" data-tog><div class="mod-num">+</div><div class="mod-tt"><h3>Agente Calendario</h3><p>Tu tiempo es tu activo más valioso.</p></div><div class="mod-tog">Ver</div></div>
+      <div class="mod-head" data-tog><div class="mod-num">+</div><div class="mod-tt"><h3 data-i18n="m3.h">Agente Calendario</h3><p data-i18n="m3.s">Tu tiempo es tu activo más valioso.</p></div><div class="mod-tog" data-i18n="extra.see">Ver</div></div>
       <div class="mod-body"><ul class="mod-inner">
-        <li>Anticipa obligaciones recurrentes y fechas críticas</li>
-        <li>Crea, edita y elimina eventos en lenguaje natural</li>
-        <li>Evita cruces de horarios y te avisa tu disponibilidad</li>
-        <li>Reprograma y reagenda solo cuando algo se interrumpe</li>
-        <li>Aprende tus patrones y prioriza por contexto</li>
-        <li>Se conecta a mensajería, correo y calendarios externos</li>
+        <li data-i18n="m3.i1">Anticipa obligaciones recurrentes y fechas críticas</li>
+        <li data-i18n="m3.i2">Crea, edita y elimina eventos en lenguaje natural</li>
+        <li data-i18n="m3.i3">Evita cruces de horarios y te avisa tu disponibilidad</li>
+        <li data-i18n="m3.i4">Reprograma y reagenda solo cuando algo se interrumpe</li>
+        <li data-i18n="m3.i5">Aprende tus patrones y prioriza por contexto</li>
+        <li data-i18n="m3.i6">Se conecta a mensajería, correo y calendarios externos</li>
       </ul></div>
     </div>
   </div>
-  <p class="note">El Agente Calendario rinde mejor sumado a un plan; se ofrece como complemento, no como agente suelto.</p>
+  <p class="note" data-i18n="extra.note">El Agente Calendario rinde mejor sumado a un plan; se ofrece como complemento, no como agente suelto.</p>
 </section>
 
 <!-- PROCESO -->
 <section>
-  <div class="ey">Proceso de conversión</div>
-  <h2 class="sh2">De conversación a sistema <span class="it">en días.</span></h2>
+  <div class="ey" data-i18n="proc.ey">Proceso de conversión</div>
+  <h2 class="sh2" data-i18n="proc.h2">De conversación a sistema <span class="it">en días.</span></h2>
   <div class="steps">
-    <div class="step"><div class="snum">01</div><div class="stitle">Analizamos</div><p class="sdesc">Mapeamos tu negocio: flujos, problemas, oportunidades. Sin costo.</p></div>
-    <div class="step"><div class="snum">02</div><div class="stitle">Diseñamos</div><p class="sdesc">Arquitecturamos tu sistema a medida. Qué agentes, qué automatizar primero.</p></div>
-    <div class="step"><div class="snum">03</div><div class="stitle">Construimos</div><p class="sdesc">Desarrollamos, probamos y conectamos tu Aether a tus herramientas actuales.</p></div>
-    <div class="step"><div class="snum">04</div><div class="stitle">Escalamos</div><p class="sdesc">Lanzas. Nosotros monitoreamos, optimizamos y expandimos contigo.</p></div>
+    <div class="step"><div class="snum">01</div><div class="stitle" data-i18n="proc.s1t">Analizamos</div><p class="sdesc" data-i18n="proc.s1d">Mapeamos tu negocio: flujos, problemas, oportunidades. Sin costo.</p></div>
+    <div class="step"><div class="snum">02</div><div class="stitle" data-i18n="proc.s2t">Diseñamos</div><p class="sdesc" data-i18n="proc.s2d">Arquitecturamos tu sistema a medida. Qué agentes, qué automatizar primero.</p></div>
+    <div class="step"><div class="snum">03</div><div class="stitle" data-i18n="proc.s3t">Construimos</div><p class="sdesc" data-i18n="proc.s3d">Desarrollamos, probamos y conectamos tu Aether a tus herramientas actuales.</p></div>
+    <div class="step"><div class="snum">04</div><div class="stitle" data-i18n="proc.s4t">Escalamos</div><p class="sdesc" data-i18n="proc.s4d">Lanzas. Nosotros monitoreamos, optimizamos y expandimos contigo.</p></div>
   </div>
 </section>
 
 <!-- SECTORES -->
 <section id="sectores" class="alt">
-  <div class="ey">Ya lo estamos haciendo</div>
-  <h2 class="sh2">Activo en <span class="it">varios sectores.</span></h2>
-  <p class="slead">Cada proyecto se personaliza según tu modelo de negocio. Algunas marcas que ya operan con Aether:</p>
+  <div class="ey" data-i18n="sect.ey">Ya lo estamos haciendo</div>
+  <h2 class="sh2" data-i18n="sect.h2">Activo en <span class="it">varios sectores.</span></h2>
+  <p class="slead" data-i18n="sect.lead">Cada proyecto se personaliza según tu modelo de negocio. Algunas marcas que ya operan con Aether:</p>
   <div class="cases-grid">
-    <div class="case-card panel"><div class="ctype">Retail de tecnología<span class="cactive">Activo</span></div><div class="cname">Helena Store</div><p class="cdsc">E-commerce responsive, catálogo completo y agente de ventas por WhatsApp.</p></div>
-    <div class="case-card panel"><div class="ctype">Diseño de interiores<span class="cactive">Activo</span></div><div class="cname">Oportun</div><p class="cdsc">Sistema multi-agente con 5 bots especializados, kanban Scrum y flujo de caja en vivo.</p></div>
-    <div class="case-card panel"><div class="ctype">Inmobiliaria<span class="cactive">Activo</span></div><div class="cname">Captación digital</div><p class="cdsc">Captación y calificación automática de leads, seguimiento y portafolio digital.</p></div>
-    <div class="case-card panel"><div class="ctype">Veterinarias<span class="cactive">Activo</span></div><div class="cname">VetBot</div><p class="cdsc">Agendamiento automático, recordatorios de vacunación e historial clínico digital.</p></div>
-    <div class="case-card panel"><div class="ctype">Construcción<span class="cactive">Activo</span></div><div class="cname">Control de obra</div><p class="cdsc">Dashboard de proyectos, avance de obra y reportes automatizados.</p></div>
-    <div class="case-card panel"><div class="ctype">Retail mayorista<span class="cactive">Activo</span></div><div class="cname">Distribuidora</div><p class="cdsc">Agentes de ventas, inventario automatizado y atención post-venta por canales digitales.</p></div>
+    <div class="case-card panel"><div class="ctype"><span data-i18n="sect.ct1">Retail de tecnología</span><span class="cactive" data-i18n="sect.active">Activo</span></div><div class="cname" data-i18n="sect.cn1">Helena Store</div><p class="cdsc" data-i18n="sect.cd1">E-commerce responsive, catálogo completo y agente de ventas por WhatsApp.</p></div>
+    <div class="case-card panel"><div class="ctype"><span data-i18n="sect.ct2">Diseño de interiores</span><span class="cactive" data-i18n="sect.active">Activo</span></div><div class="cname" data-i18n="sect.cn2">Oportun</div><p class="cdsc" data-i18n="sect.cd2">Sistema multi-agente con 5 bots especializados, kanban Scrum y flujo de caja en vivo.</p></div>
+    <div class="case-card panel"><div class="ctype"><span data-i18n="sect.ct3">Inmobiliaria</span><span class="cactive" data-i18n="sect.active">Activo</span></div><div class="cname" data-i18n="sect.cn3">Captación digital</div><p class="cdsc" data-i18n="sect.cd3">Captación y calificación automática de leads, seguimiento y portafolio digital.</p></div>
+    <div class="case-card panel"><div class="ctype"><span data-i18n="sect.ct4">Veterinarias</span><span class="cactive" data-i18n="sect.active">Activo</span></div><div class="cname" data-i18n="sect.cn4">VetBot</div><p class="cdsc" data-i18n="sect.cd4">Agendamiento automático, recordatorios de vacunación e historial clínico digital.</p></div>
+    <div class="case-card panel"><div class="ctype"><span data-i18n="sect.ct5">Construcción</span><span class="cactive" data-i18n="sect.active">Activo</span></div><div class="cname" data-i18n="sect.cn5">Control de obra</div><p class="cdsc" data-i18n="sect.cd5">Dashboard de proyectos, avance de obra y reportes automatizados.</p></div>
+    <div class="case-card panel"><div class="ctype"><span data-i18n="sect.ct6">Retail mayorista</span><span class="cactive" data-i18n="sect.active">Activo</span></div><div class="cname" data-i18n="sect.cn6">Distribuidora</div><p class="cdsc" data-i18n="sect.cd6">Agentes de ventas, inventario automatizado y atención post-venta por canales digitales.</p></div>
   </div>
 </section>
 
 <!-- DEMOS -->
 <section id="demos">
-  <div class="ey">Explora nuestras demos</div>
-  <h2 class="sh2">No lo creas. <span class="it">Pruébalo.</span></h2>
-  <p class="slead">Estos son algunos de los bots que ya hemos construido. ¿Quieres ver uno de tu sector funcionando? Escríbenos.</p>
+  <div class="ey" data-i18n="demos.ey">Explora nuestras demos</div>
+  <h2 class="sh2" data-i18n="demos.h2">No lo creas. <span class="it">Pruébalo.</span></h2>
+  <p class="slead" data-i18n="demos.lead">Estos son algunos de los bots que ya hemos construido. ¿Quieres ver uno de tu sector funcionando? Escríbenos.</p>
   <div class="demos-grid">
     <a class="dcard panel" href="https://aether-in.vercel.app/demo-flota.html" target="_blank" rel="noopener">
-      <div class="dav" style="background:linear-gradient(135deg,#0088ff,#00c3ff)">T</div><h4>Transport Bot</h4><p>Empresa de transporte · control operativo.</p><span class="dlink">Abrir demo →</span></a>
+      <div class="dav" style="background:linear-gradient(135deg,#0088ff,#00c3ff)">T</div><h4 data-i18n="d1.t">Transport Bot</h4><p data-i18n="d1.p">Empresa de transporte · control operativo.</p><span class="dlink" data-i18n="demos.link">Abrir demo →</span></a>
     <a class="dcard panel" href="https://aether-in.vercel.app/demo-agro.html" target="_blank" rel="noopener">
-      <div class="dav" style="background:linear-gradient(135deg,#4ade80,#00c3ff)">A</div><h4>AgroBot</h4><p>Agro · pedidos, precios y campo.</p><span class="dlink">Abrir demo →</span></a>
+      <div class="dav" style="background:linear-gradient(135deg,#4ade80,#00c3ff)">A</div><h4 data-i18n="d2.t">AgroBot</h4><p data-i18n="d2.p">Agro · pedidos, precios y campo.</p><span class="dlink" data-i18n="demos.link">Abrir demo →</span></a>
     <a class="dcard panel" href="https://aether-in.vercel.app/demo_bot_contador.html" target="_blank" rel="noopener">
-      <div class="dav" style="background:linear-gradient(135deg,#00c3ff,#0088ff)">C</div><h4>Contador Bot</h4><p>Finanzas · registros y reportes.</p><span class="dlink">Abrir demo →</span></a>
+      <div class="dav" style="background:linear-gradient(135deg,#00c3ff,#0088ff)">C</div><h4 data-i18n="d3.t">Contador Bot</h4><p data-i18n="d3.p">Finanzas · registros y reportes.</p><span class="dlink" data-i18n="demos.link">Abrir demo →</span></a>
     <a class="dcard panel" href="https://aether-in.vercel.app/gym-demo.html" target="_blank" rel="noopener">
-      <div class="dav" style="background:linear-gradient(135deg,#0088ff,#00c3ff)">G</div><h4>Gym Coach</h4><p>Gimnasio · planes y seguimiento.</p><span class="dlink">Abrir demo →</span></a>
+      <div class="dav" style="background:linear-gradient(135deg,#0088ff,#00c3ff)">G</div><h4 data-i18n="d4.t">Gym Coach</h4><p data-i18n="d4.p">Gimnasio · planes y seguimiento.</p><span class="dlink" data-i18n="demos.link">Abrir demo →</span></a>
   </div>
   <div style="text-align:center;margin-top:38px">
-    <a href="https://wa.me/573015055913?text=Hola,%20quiero%20ver%20una%20demo%20de%20mi%20sector" target="_blank" rel="noopener" class="btn btn-p">Pedir una demo de mi sector</a>
+    <a href="https://wa.me/573015055913?text=Hola,%20quiero%20ver%20una%20demo%20de%20mi%20sector" data-wa-es="Hola, quiero ver una demo de mi sector" data-wa-en="Hi, I'd like to see a demo for my industry" target="_blank" rel="noopener" class="btn btn-p" data-i18n="demos.btn">Pedir una demo de mi sector</a>
   </div>
 </section>
 
 <!-- VENTAJAS -->
 <section>
-  <div class="ey">Por qué es rentable</div>
-  <h2 class="sh2">Un activo que <span class="it">trabaja por ti</span> las 24 horas.</h2>
-  <p class="slead">Más que ahorrar minutos: te devuelve el tiempo, la tranquilidad y la vida fuera del negocio.</p>
+  <div class="ey" data-i18n="bens.ey">Por qué es rentable</div>
+  <h2 class="sh2" data-i18n="bens.h2">Un activo que <span class="it">trabaja por ti</span> las 24 horas.</h2>
+  <p class="slead" data-i18n="bens.lead">Más que ahorrar minutos: te devuelve el tiempo, la tranquilidad y la vida fuera del negocio.</p>
   <div class="bens-grid">
-    <div class="ben panel"><div class="ben-n">01</div><div><h4>Recuperas tu tiempo</h4><p>El agente atiende, vende y reporta mientras tú vives. Vuelves a tener noches, fines de semana y cabeza libre.</p></div></div>
-    <div class="ben panel"><div class="ben-n">02</div><div><h4>Atiendes 24/7 sin turno nocturno</h4><p>Tu negocio factura mientras duermes. Cada cliente fuera de horario se convierte en venta.</p></div></div>
-    <div class="ben panel"><div class="ben-n">03</div><div><h4>Cierras más respondiendo rápido</h4><p>La mayoría compra con quien responde primero. Tu agente responde en segundos, siempre.</p></div></div>
-    <div class="ben panel"><div class="ben-n">04</div><div><h4>Decides con datos, no con intuición</h4><p>Reportes en tiempo real te muestran qué funciona, qué no y dónde está el dinero que hoy no ves.</p></div></div>
-    <div class="ben panel"><div class="ben-n">05</div><div><h4>Escalas sin contratar más gente</h4><p>Pasa de 50 a 500 clientes sin aumentar tu operación. El sistema crece contigo.</p></div></div>
-    <div class="ben panel"><div class="ben-n">06</div><div><h4>Operas como empresa del futuro</h4><p>Mientras la competencia sigue con WhatsApp manual, tu marca se ve sólida, moderna y en control.</p></div></div>
+    <div class="ben panel"><div class="ben-n">01</div><div><h4 data-i18n="b1.h">Recuperas tu tiempo</h4><p data-i18n="b1.p">El agente atiende, vende y reporta mientras tú vives. Vuelves a tener noches, fines de semana y cabeza libre.</p></div></div>
+    <div class="ben panel"><div class="ben-n">02</div><div><h4 data-i18n="b2.h">Atiendes 24/7 sin turno nocturno</h4><p data-i18n="b2.p">Tu negocio factura mientras duermes. Cada cliente fuera de horario se convierte en venta.</p></div></div>
+    <div class="ben panel"><div class="ben-n">03</div><div><h4 data-i18n="b3.h">Cierras más respondiendo rápido</h4><p data-i18n="b3.p">La mayoría compra con quien responde primero. Tu agente responde en segundos, siempre.</p></div></div>
+    <div class="ben panel"><div class="ben-n">04</div><div><h4 data-i18n="b4.h">Decides con datos, no con intuición</h4><p data-i18n="b4.p">Reportes en tiempo real te muestran qué funciona, qué no y dónde está el dinero que hoy no ves.</p></div></div>
+    <div class="ben panel"><div class="ben-n">05</div><div><h4 data-i18n="b5.h">Escalas sin contratar más gente</h4><p data-i18n="b5.p">Pasa de 50 a 500 clientes sin aumentar tu operación. El sistema crece contigo.</p></div></div>
+    <div class="ben panel"><div class="ben-n">06</div><div><h4 data-i18n="b6.h">Operas como empresa del futuro</h4><p data-i18n="b6.p">Mientras la competencia sigue con WhatsApp manual, tu marca se ve sólida, moderna y en control.</p></div></div>
   </div>
-  <p class="ben-quote">"Un solo cliente extra cerrado al mes ya paga el mantenimiento. <span class="it">Todo lo demás es ganancia y tiempo de vuelta para ti.</span>"</p>
+  <p class="ben-quote" data-i18n="bens.quote">“Un solo cliente extra cerrado al mes ya paga el mantenimiento. <span class="it">Todo lo demás es ganancia y tiempo de vuelta para ti.</span>”</p>
 </section>
 
 <!-- CASO EN VIVO -->
 <section class="alt">
-  <div class="ey">Caso en vivo</div>
-  <h2 class="sh2">Helena Store. <span class="it">Bot + web, operando.</span></h2>
-  <p class="slead">Mira el agente funcionando en tiempo real y entra a la tienda real que construimos. Todo esto ya está operando hoy.</p>
-  <div class="live-ctas" style="justify-content:flex-start">
-    <a href="https://reinukyo-cell.github.io/JarvisPg/demo-helena-store.html" target="_blank" rel="noopener" class="btn btn-g">▶ Ver el bot funcionando</a>
-    <a href="https://helena-store-web.vercel.app/" target="_blank" rel="noopener" class="btn btn-p">Entrar a la web real →</a>
+  <div class="ey" data-i18n="live.ey">Caso en vivo</div>
+  <h2 class="sh2" data-i18n="live.h2">Helena Store. <span class="it">Bot + web, operando.</span></h2>
+  <p class="slead" data-i18n="live.lead">Mira el agente funcionando en tiempo real y entra a la tienda real que construimos. Todo esto ya está operando hoy.</p>
+  <div class="live-ctas">
+    <a href="https://reinukyo-cell.github.io/JarvisPg/demo-helena-store.html" target="_blank" rel="noopener" class="btn btn-g" data-i18n="live.cta1">▶ Ver el bot funcionando</a>
+    <a href="https://helena-store-web.vercel.app/" target="_blank" rel="noopener" class="btn btn-p" data-i18n="live.cta2">Entrar a la web real →</a>
   </div>
 </section>
 
 <!-- PRECIO -->
 <section id="precio" class="price">
-  <div class="scarcity">Cupos beta limitados · queda último cupo</div>
-  <h2 class="sh2" style="margin:0 auto">La <span class="it">inversión.</span></h2>
-  <p class="slead" style="margin:18px auto 0">El valor final depende del plan y del estudio de tu negocio. Te damos el precio exacto en la primera llamada.</p>
+  <div class="scarcity" data-i18n="price.scarcity">Cupos beta limitados · queda último cupo</div>
+  <h2 class="sh2" style="margin:0 auto" data-i18n="price.h2">La <span class="it">inversión.</span></h2>
+  <p class="slead" style="margin:18px auto 0" data-i18n="price.lead">El valor final depende del plan y del estudio de tu negocio. Te damos el precio exacto en la primera llamada.</p>
   <div class="price-box panel">
-    <div class="po-label">Después de la beta</div>
-    <div class="po">USD $1.900</div>
+    <div class="po-label" data-i18n="price.after">Después de la beta</div>
+    <div class="po" data-i18n="price.po">USD $1.900</div>
     <div class="price-div"></div>
-    <div class="pb-label">Precio beta hoy · desde</div>
-    <div class="pb">USD $1.249</div>
-    <div class="pb-save">Cupos limitados — al cerrar la beta vuelve a USD $1.900</div>
+    <div class="pb-label" data-i18n="price.betaLabel">Precio beta hoy · desde</div>
+    <div class="pb" data-i18n="price.pb">USD $1.249</div>
+    <div class="pb-save" data-i18n="price.save">Cupos limitados — al cerrar la beta vuelve a USD $1.900</div>
   </div>
   <div class="final panel">
-    <h3>Listo para automatizar tu negocio.</h3>
-    <p>Agenda tu sesión de activación y personalización. Respondemos en menos de 24 horas.</p>
-    <a href="https://wa.me/573015055913?text=Hola,%20quiero%20mi%20cupo%20beta%20de%20Aether" target="_blank" rel="noopener" class="btn btn-p">Quiero mi cupo beta</a>
+    <h3 data-i18n="final.h3">Listo para automatizar tu negocio.</h3>
+    <p data-i18n="final.p">Agenda tu sesión de activación y personalización. Respondemos en menos de 24 horas.</p>
+    <a href="https://wa.me/573015055913?text=Hola,%20quiero%20mi%20cupo%20beta%20de%20Aether" data-wa-es="Hola, quiero mi cupo beta de Aether" data-wa-en="Hi, I want my Aether beta spot" target="_blank" rel="noopener" class="btn btn-p" data-i18n="final.btn">Quiero mi cupo beta</a>
   </div>
 </section>
 
 <footer>
   <div class="flogo"><img src="aether-logo-transparent.png" alt="Aether" style="height:30px;display:block"></div>
-  <div class="ftxt">El cerebro que mueve tu negocio · Beta 2026</div>
-  <div class="ftxt">Hecho con IA.</div>
+  <div class="ftxt" data-i18n="footer.tag">El cerebro que mueve tu negocio · Beta 2026</div>
+  <div class="ftxt" data-i18n="footer.made">Hecho con IA.</div>
 </footer>
 
-<a href="https://wa.me/573015055913?text=Hola,%20quiero%20info%20de%20Aether" target="_blank" rel="noopener" class="wa-fab" aria-label="WhatsApp">
+<a href="https://wa.me/573015055913?text=Hola,%20quiero%20info%20de%20Aether" data-wa-es="Hola, quiero info de Aether" data-wa-en="Hi, I'd like info about Aether" target="_blank" rel="noopener" class="wa-fab" aria-label="WhatsApp">
   <svg width="30" height="30" viewBox="0 0 24 24" fill="#fff"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
 </a>
 
 <script>
+const I18N={
+ es:{
+  "nav.comp":"Comparación","nav.agent":"El agente","nav.plans":"Planes","nav.demos":"Demos","nav.price":"Inversión","nav.cta":"Quiero mi cupo",
+  "hero.pill":"Dos realidades · un mismo negocio","hero.h1":"El mismo negocio.<br><span class='it'>Distintos resultados.</span>","hero.sub":"Mira qué le pasa al mismo negocio en el mismo instante. Uno corre entre cinco apps. El otro solo le escribe a un chat. Eso es Aether: el cerebro que mueve tu operación.","hero.cta1":"Ver la diferencia","hero.cta2":"Ver demos en vivo","hero.m1l":"operando","hero.m2l":"solo chat","hero.m3l":"paneles","hero.m4l":"sectores activos",
+  "comp.ey":"Comparativa · negocio vs Aether","comp.h2":"Para cada producto, <span class='it'>dos formas de operar.</span>","comp.lead":"El trabajo es el mismo. El esfuerzo, no. A la izquierda como se hace hoy. A la derecha con Aether.","comp.sales":"Ventas","comp.close":"Cierre de día","comp.without":"Sin Aether","comp.with":"Con Aether","comp.time":"~15 min por producto · vs · segundos",
+  "sb1":"Revisión manual","sg1":"Hablas en tu chat","sb2":"Buscas y revisas existencias","sg2":"Preguntas por existencias","sb3":"Anotar la salida del producto","sg3":"Escribes que vendiste el producto","sb4":"No hay sincronización entre lo físico y lo digital, todo manual","sg4":"Se sincronizan todos los sistemas al escribir en tu chat",
+  "cb1":"Unificar inventario entre vendedores","cg1":"Se actualiza en cada mensaje","cb2":"Datos sueltos como pendientes o señas","cg2":"Con un mensaje se centralizan","cb3":"Cierres de caja largos","cg3":"Reporte al día, actualizado","cb4":"Cada día es repetir el proceso","cg4":"Los reportes salen automatizados","cb5":"Si estás fuera, esperar a que lo envíen","cg5":"Te llega automático","cb6":"Solicitar que apliquen cambios a la web","cg6":"Se hizo a través del día",
+  "agent.ey":"Cambios mínimos para ti","agent.h2":"Un agente que <span class='it'>se acopla a tu forma de trabajar.</span>","agent.lead":"No es un bot genérico. Cada Aether aprende cómo hablas, atiendes, vendes; gestiona tu inventario y catálogo al detalle.","agent.c1t":"Habla como hablas tú","agent.c1d":"Aprende el tono de tu marca, tus frases típicas y la forma en que te diriges a tus clientes. No suena a robot.","agent.c2t":"Conoce tu catálogo al detalle","agent.c2d":"Productos, referencias, colores, tallas, precios, combos. Si tu negocio lo vende, el agente lo sabe y lo recomienda.","agent.c3t":"Se adapta a tu flujo real","agent.c3d":"¿Pides seña? ¿Aceptas Nequi? ¿Envías por Servientrega? El flujo se diseña según cómo operas, no sobre una plantilla.","agent.c4t":"Crece contigo","agent.c4d":"Cada mes se revisan conversaciones reales y el agente aprende más de tu negocio. Mejora sin que tengas que moverte.",
+  "plans.ey":"Servicios","plans.h2":"Un plan para <span class='it'>cada etapa de tu negocio.</span>","plans.lead":"Empiezas por lo esencial y escalas cuando lo necesites. Cada plan se ajusta a cómo operas hoy.",
+  "p1.tag":"Para arrancar","p1.name":"Plan Básico","p1.note":"El producto base. Lo esencial para no perder un cliente.","p1.l1":"<b>Consultas básicas</b> — responde horarios, precios, envíos o una lista que el cliente envíe.","p1.l2":"<b>Toma de datos</b> — nombre, necesidad y datos generales del cliente, guardados.","p1.l3":"<b>Agenda</b> de citas y solicitudes.",
+  "p2.tag":"Recomendado","p2.name":"Plan Normal","p2.note":"El sistema completo que opera tu negocio.","p2.l1":"<b>Chatbot de WhatsApp</b> — hasta 1.000 consultas diarias, habla como humano y escala a una persona cuando hace falta.","p2.l2":"<b>Web tipo e-commerce</b> — dominio y hosting incluidos; tienda que nunca cierra y se actualiza con tu inventario (personalización con costo aparte).","p2.l3":"<b>Gestor de inventarios</b> — registro de ventas, alertas de agotamiento y sincronización en vivo con web y asesores.","p2.l4":"<b>Dashboards de gestión</b> — inventarios, agentes, ventas y clientes en un solo lugar.","p2.l5":"<b>Reportes periódicos</b> — CRM, facturación y cierres en la frecuencia que prefieras.",
+  "p3.tag":"A tu medida","p3.name":"Plan Especializado","p3.note":"Estudiamos tu negocio a fondo y el sistema se acopla a tus necesidades.","p3.l1":"Análisis completo de tu operación","p3.l2":"Agentes y módulos a la medida de tu sector","p3.l3":"Integraciones según tus herramientas","p3.btn":"Contáctanos",
+  "extra.ey":"Módulos extra","extra.h2":"Agentes que <span class='it'>se suman a tu plan.</span>","extra.lead":"Piezas individuales que potencian tu sistema. Se activan sobre el Plan Básico cuando tu negocio lo pide.","extra.see":"Ver","extra.note":"El Agente Calendario rinde mejor sumado a un plan; se ofrece como complemento, no como agente suelto.",
+  "m1.h":"Agente de Marketing","m1.s":"Un experto de marketing a tu alcance, 24/7.","m1.i1":"Detecta fechas clave y automatiza tu publicidad","m1.i2":"Segmenta tu base de clientes y fideliza para vender más","m1.i3":"Métricas que trabajan por ti: detecta oportunidades","m1.i4":"Arma campañas: hashtags, focos de interés y plan operativo","m1.i5":"Genera prompts replicables para crear contenido al menor costo","m1.i6":"Monitorea a tu competencia y la convierte en estrategia",
+  "m2.h":"Agente Contador","m2.s":"Tus finanzas centralizadas y listas para decidir.","m2.i1":"Organiza y clasifica tus comprobantes y libro contable","m2.i2":"Consolida movimientos y concilia extractos automáticamente","m2.i3":"Detecta inconsistencias y alerta de anomalías a tiempo","m2.i4":"Programa cobros/pagos y sigue tus obligaciones","m2.i5":"Cierres por mes, trimestre o semestre automáticos","m2.i6":"Proyecta tu caja y analiza rentabilidad por producto",
+  "m3.h":"Agente Calendario","m3.s":"Tu tiempo es tu activo más valioso.","m3.i1":"Anticipa obligaciones recurrentes y fechas críticas","m3.i2":"Crea, edita y elimina eventos en lenguaje natural","m3.i3":"Evita cruces de horarios y te avisa tu disponibilidad","m3.i4":"Reprograma y reagenda solo cuando algo se interrumpe","m3.i5":"Aprende tus patrones y prioriza por contexto","m3.i6":"Se conecta a mensajería, correo y calendarios externos",
+  "proc.ey":"Proceso de conversión","proc.h2":"De conversación a sistema <span class='it'>en días.</span>","proc.s1t":"Analizamos","proc.s1d":"Mapeamos tu negocio: flujos, problemas, oportunidades. Sin costo.","proc.s2t":"Diseñamos","proc.s2d":"Arquitecturamos tu sistema a medida. Qué agentes, qué automatizar primero.","proc.s3t":"Construimos","proc.s3d":"Desarrollamos, probamos y conectamos tu Aether a tus herramientas actuales.","proc.s4t":"Escalamos","proc.s4d":"Lanzas. Nosotros monitoreamos, optimizamos y expandimos contigo.",
+  "sect.ey":"Ya lo estamos haciendo","sect.h2":"Activo en <span class='it'>varios sectores.</span>","sect.lead":"Cada proyecto se personaliza según tu modelo de negocio. Algunas marcas que ya operan con Aether:","sect.active":"Activo","sect.ct1":"Retail de tecnología","sect.cn1":"Helena Store","sect.cd1":"E-commerce responsive, catálogo completo y agente de ventas por WhatsApp.","sect.ct2":"Diseño de interiores","sect.cn2":"Oportun","sect.cd2":"Sistema multi-agente con 5 bots especializados, kanban Scrum y flujo de caja en vivo.","sect.ct3":"Inmobiliaria","sect.cn3":"Captación digital","sect.cd3":"Captación y calificación automática de leads, seguimiento y portafolio digital.","sect.ct4":"Veterinarias","sect.cn4":"VetBot","sect.cd4":"Agendamiento automático, recordatorios de vacunación e historial clínico digital.","sect.ct5":"Construcción","sect.cn5":"Control de obra","sect.cd5":"Dashboard de proyectos, avance de obra y reportes automatizados.","sect.ct6":"Retail mayorista","sect.cn6":"Distribuidora","sect.cd6":"Agentes de ventas, inventario automatizado y atención post-venta por canales digitales.",
+  "demos.ey":"Explora nuestras demos","demos.h2":"No lo creas. <span class='it'>Pruébalo.</span>","demos.lead":"Estos son algunos de los bots que ya hemos construido. ¿Quieres ver uno de tu sector funcionando? Escríbenos.","demos.link":"Abrir demo →","demos.btn":"Pedir una demo de mi sector","d1.t":"Transport Bot","d1.p":"Empresa de transporte · control operativo.","d2.t":"AgroBot","d2.p":"Agro · pedidos, precios y campo.","d3.t":"Contador Bot","d3.p":"Finanzas · registros y reportes.","d4.t":"Gym Coach","d4.p":"Gimnasio · planes y seguimiento.",
+  "bens.ey":"Por qué es rentable","bens.h2":"Un activo que <span class='it'>trabaja por ti</span> las 24 horas.","bens.lead":"Más que ahorrar minutos: te devuelve el tiempo, la tranquilidad y la vida fuera del negocio.","b1.h":"Recuperas tu tiempo","b1.p":"El agente atiende, vende y reporta mientras tú vives. Vuelves a tener noches, fines de semana y cabeza libre.","b2.h":"Atiendes 24/7 sin turno nocturno","b2.p":"Tu negocio factura mientras duermes. Cada cliente fuera de horario se convierte en venta.","b3.h":"Cierras más respondiendo rápido","b3.p":"La mayoría compra con quien responde primero. Tu agente responde en segundos, siempre.","b4.h":"Decides con datos, no con intuición","b4.p":"Reportes en tiempo real te muestran qué funciona, qué no y dónde está el dinero que hoy no ves.","b5.h":"Escalas sin contratar más gente","b5.p":"Pasa de 50 a 500 clientes sin aumentar tu operación. El sistema crece contigo.","b6.h":"Operas como empresa del futuro","b6.p":"Mientras la competencia sigue con WhatsApp manual, tu marca se ve sólida, moderna y en control.","bens.quote":"“Un solo cliente extra cerrado al mes ya paga el mantenimiento. <span class='it'>Todo lo demás es ganancia y tiempo de vuelta para ti.</span>”",
+  "live.ey":"Caso en vivo","live.h2":"Helena Store. <span class='it'>Bot + web, operando.</span>","live.lead":"Mira el agente funcionando en tiempo real y entra a la tienda real que construimos. Todo esto ya está operando hoy.","live.cta1":"▶ Ver el bot funcionando","live.cta2":"Entrar a la web real →",
+  "price.scarcity":"Cupos beta limitados · queda último cupo","price.h2":"La <span class='it'>inversión.</span>","price.lead":"El valor final depende del plan y del estudio de tu negocio. Te damos el precio exacto en la primera llamada.","price.after":"Después de la beta","price.po":"USD $1.900","price.betaLabel":"Precio beta hoy · desde","price.pb":"USD $1.249","price.save":"Cupos limitados — al cerrar la beta vuelve a USD $1.900","final.h3":"Listo para automatizar tu negocio.","final.p":"Agenda tu sesión de activación y personalización. Respondemos en menos de 24 horas.","final.btn":"Quiero mi cupo beta",
+  "footer.tag":"El cerebro que mueve tu negocio · Beta 2026","footer.made":"Hecho con IA.","title":"Aether — El mismo negocio. Distintos resultados."
+ },
+ en:{
+  "nav.comp":"Comparison","nav.agent":"The agent","nav.plans":"Plans","nav.demos":"Demos","nav.price":"Investment","nav.cta":"I want my spot",
+  "hero.pill":"Two realities · one business","hero.h1":"The same business.<br><span class='it'>Different results.</span>","hero.sub":"See what happens to the same business at the same moment. One juggles five apps. The other just types into a chat. That's Aether: the brain that runs your operation.","hero.cta1":"See the difference","hero.cta2":"See live demos","hero.m1l":"running","hero.m2l":"just chat","hero.m3l":"dashboards","hero.m4l":"active industries",
+  "comp.ey":"Comparison · business vs Aether","comp.h2":"For every product, <span class='it'>two ways to operate.</span>","comp.lead":"The work is the same. The effort isn't. On the left, how it's done today. On the right, with Aether.","comp.sales":"Sales","comp.close":"Daily closing","comp.without":"Without Aether","comp.with":"With Aether","comp.time":"~15 min per product · vs · seconds",
+  "sb1":"Manual review","sg1":"You just chat","sb2":"You search and check stock","sg2":"You ask about stock","sb3":"You log the product that left","sg3":"You write that you sold it","sb4":"No sync between physical and digital, all manual","sg4":"Every system syncs the moment you type in your chat",
+  "cb1":"Merge inventory across sellers","cg1":"Updates with every message","cb2":"Scattered data like pending items or deposits","cg2":"One message centralizes them","cb3":"Long cash-register closings","cg3":"Up-to-date daily report","cb4":"Every day repeats the process","cg4":"Reports come out automated","cb5":"If you're away, wait for someone to send it","cg5":"It reaches you automatically","cb6":"Request changes be applied to the website","cg6":"Done throughout the day",
+  "agent.ey":"Minimal changes for you","agent.h2":"An agent that <span class='it'>adapts to the way you work.</span>","agent.lead":"It's not a generic bot. Each Aether learns how you talk, serve and sell; it manages your inventory and catalog in detail.","agent.c1t":"Talks the way you talk","agent.c1d":"It learns your brand's tone, your typical phrases and how you address customers. It doesn't sound robotic.","agent.c2t":"Knows your catalog in detail","agent.c2d":"Products, references, colors, sizes, prices, bundles. If your business sells it, the agent knows it and recommends it.","agent.c3t":"Adapts to your real flow","agent.c3d":"Do you take deposits? Accept local payments? Ship with a specific carrier? The flow is built around how you operate, not a template.","agent.c4t":"Grows with you","agent.c4d":"Every month real conversations are reviewed and the agent learns more about your business. It improves without you lifting a finger.",
+  "plans.ey":"Services","plans.h2":"A plan for <span class='it'>every stage of your business.</span>","plans.lead":"Start with the essentials and scale when you need to. Each plan adapts to how you operate today.",
+  "p1.tag":"To get started","p1.name":"Basic Plan","p1.note":"The base product. The essentials so you never lose a customer.","p1.l1":"<b>Basic queries</b> — answers hours, prices, shipping or a list the customer sends.","p1.l2":"<b>Data capture</b> — name, need and general customer details, stored.","p1.l3":"<b>Scheduling</b> of appointments and requests.",
+  "p2.tag":"Recommended","p2.name":"Standard Plan","p2.note":"The complete system that runs your business.","p2.l1":"<b>WhatsApp chatbot</b> — up to 1,000 queries a day, talks like a human and escalates to a person when needed.","p2.l2":"<b>E-commerce website</b> — domain and hosting included; a store that never closes and updates with your inventory (customization at extra cost).","p2.l3":"<b>Inventory manager</b> — sales logging, stock-out alerts and live sync with web and sales reps.","p2.l4":"<b>Management dashboards</b> — inventory, agents, sales and customers in one place.","p2.l5":"<b>Periodic reports</b> — CRM, billing and closings at the frequency you prefer.",
+  "p3.tag":"Tailored","p3.name":"Custom Plan","p3.note":"We study your business in depth and the system adapts to your needs.","p3.l1":"Full analysis of your operation","p3.l2":"Agents and modules tailored to your industry","p3.l3":"Integrations based on your tools","p3.btn":"Contact us",
+  "extra.ey":"Extra modules","extra.h2":"Agents that <span class='it'>add on to your plan.</span>","extra.lead":"Individual pieces that boost your system. They activate on top of the Basic Plan when your business needs them.","extra.see":"View","extra.note":"The Calendar Agent works best added to a plan; it's offered as a complement, not as a standalone agent.",
+  "m1.h":"Marketing Agent","m1.s":"A marketing expert at your fingertips, 24/7.","m1.i1":"Spots key dates and automates your ads","m1.i2":"Segments your customer base and builds loyalty to sell more","m1.i3":"Metrics that work for you: it spots opportunities","m1.i4":"Builds campaigns: hashtags, focus points and an action plan","m1.i5":"Generates reusable prompts to create content at the lowest cost","m1.i6":"Monitors your competition and turns it into strategy",
+  "m2.h":"Accounting Agent","m2.s":"Your finances centralized and ready for decisions.","m2.i1":"Organizes and classifies your receipts and ledger","m2.i2":"Consolidates transactions and reconciles statements automatically","m2.i3":"Detects inconsistencies and flags anomalies in time","m2.i4":"Schedules payments/collections and tracks your obligations","m2.i5":"Automatic monthly, quarterly or biannual closings","m2.i6":"Projects your cash flow and analyzes profitability by product",
+  "m3.h":"Calendar Agent","m3.s":"Your time is your most valuable asset.","m3.i1":"Anticipates recurring duties and critical dates","m3.i2":"Creates, edits and deletes events in natural language","m3.i3":"Avoids scheduling clashes and shows your availability","m3.i4":"Reschedules on its own when something is interrupted","m3.i5":"Learns your patterns and prioritizes by context","m3.i6":"Connects to messaging, email and external calendars",
+  "proc.ey":"Conversion process","proc.h2":"From conversation to system <span class='it'>in days.</span>","proc.s1t":"We analyze","proc.s1d":"We map your business: flows, problems, opportunities. Free.","proc.s2t":"We design","proc.s2d":"We architect your custom system. Which agents, what to automate first.","proc.s3t":"We build","proc.s3d":"We develop, test and connect your Aether to your current tools.","proc.s4t":"We scale","proc.s4d":"You launch. We monitor, optimize and expand with you.",
+  "sect.ey":"We're already doing it","sect.h2":"Active across <span class='it'>several industries.</span>","sect.lead":"Every project is customized to your business model. Some brands already running on Aether:","sect.active":"Active","sect.ct1":"Tech retail","sect.cn1":"Helena Store","sect.cd1":"Responsive e-commerce, full catalog and a WhatsApp sales agent.","sect.ct2":"Interior design","sect.cn2":"Oportun","sect.cd2":"Multi-agent system with 5 specialized bots, Scrum kanban and live cash flow.","sect.ct3":"Real estate","sect.cn3":"Digital lead gen","sect.cd3":"Automatic lead capture and qualification, follow-up and digital portfolio.","sect.ct4":"Veterinary","sect.cn4":"VetBot","sect.cd4":"Automatic scheduling, vaccination reminders and digital medical records.","sect.ct5":"Construction","sect.cn5":"Site control","sect.cd5":"Project dashboard, construction progress and automated reports.","sect.ct6":"Wholesale","sect.cn6":"Distributor","sect.cd6":"Sales agents, automated inventory and after-sales support across digital channels.",
+  "demos.ey":"Explore our demos","demos.h2":"Don't take our word. <span class='it'>Try it.</span>","demos.lead":"These are some of the bots we've already built. Want to see one for your industry in action? Message us.","demos.link":"Open demo →","demos.btn":"Request a demo for my industry","d1.t":"Transport Bot","d1.p":"Transport company · operations control.","d2.t":"AgroBot","d2.p":"Agriculture · orders, prices and field.","d3.t":"Accountant Bot","d3.p":"Finance · records and reports.","d4.t":"Gym Coach","d4.p":"Gym · plans and tracking.",
+  "bens.ey":"Why it pays off","bens.h2":"An asset that <span class='it'>works for you</span> around the clock.","bens.lead":"More than saving minutes: it gives you back your time, peace of mind and a life outside the business.","b1.h":"You get your time back","b1.p":"The agent serves, sells and reports while you live. You get your nights, weekends and headspace back.","b2.h":"You're open 24/7 with no night shift","b2.p":"Your business earns while you sleep. Every after-hours customer becomes a sale.","b3.h":"You close more by replying fast","b3.p":"Most people buy from whoever replies first. Your agent answers in seconds, always.","b4.h":"You decide with data, not gut feeling","b4.p":"Real-time reports show what works, what doesn't and where the money you can't see today is.","b5.h":"You scale without hiring more people","b5.p":"Go from 50 to 500 customers without growing your operation. The system scales with you.","b6.h":"You operate like a company of the future","b6.p":"While competitors stick to manual WhatsApp, your brand looks solid, modern and in control.","bens.quote":"“A single extra customer closed each month already pays for the maintenance. <span class='it'>Everything else is profit and time back for you.</span>”",
+  "live.ey":"Live case","live.h2":"Helena Store. <span class='it'>Bot + web, live.</span>","live.lead":"Watch the agent working in real time and visit the real store we built. All of this is already live today.","live.cta1":"▶ See the bot in action","live.cta2":"Visit the real site →",
+  "price.scarcity":"Limited beta spots · last spot left","price.h2":"The <span class='it'>investment.</span>","price.lead":"The final price depends on the plan and the study of your business. We'll give you the exact figure on the first call.","price.after":"After the beta","price.po":"USD $1,900","price.betaLabel":"Beta price today · from","price.pb":"USD $1,249","price.save":"Limited spots — once the beta closes it goes back to USD $1,900","final.h3":"Ready to automate your business.","final.p":"Book your activation and setup session. We reply in under 24 hours.","final.btn":"I want my beta spot",
+  "footer.tag":"The brain that runs your business · Beta 2026","footer.made":"Built with AI.","title":"Aether — The same business. Different results."
+ }
+};
+function setLang(l){
+  document.querySelectorAll('[data-i18n]').forEach(el=>{const k=el.getAttribute('data-i18n');if(I18N[l][k]!=null)el.innerHTML=I18N[l][k];});
+  document.querySelectorAll('[data-wa-es]').forEach(a=>{const msg=a.getAttribute('data-wa-'+l);if(msg)a.href='https://wa.me/573015055913?text='+encodeURIComponent(msg);});
+  document.documentElement.lang=l;
+  if(I18N[l]["title"])document.title=I18N[l]["title"];
+  document.querySelectorAll('.lang-sw button').forEach(b=>b.classList.toggle('on',b.getAttribute('data-lang')===l));
+}
+document.querySelectorAll('.lang-sw button').forEach(b=>b.addEventListener('click',()=>setLang(b.getAttribute('data-lang'))));
+setLang((navigator.language||'es').toLowerCase().startsWith('en')?'en':'es');
 document.querySelectorAll('[data-tog]').forEach(h=>h.addEventListener('click',()=>{
   const m=h.closest('[data-mod]'),o=m.classList.contains('open');
   document.querySelectorAll('[data-mod]').forEach(x=>x.classList.remove('open'));
