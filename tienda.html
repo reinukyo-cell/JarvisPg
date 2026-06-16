@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Demo · Bot de atención y agendamiento</title>
+<style>
+  :root{
+    --wa-header:#075E54;
+    --wa-bg:#E5DDD5;
+    --wa-bot:#FFFFFF;
+    --wa-user:#DCF8C6;
+    --wa-text:#111B21;
+    --wa-meta:#667781;
+    --wa-green:#25D366;
+    --wa-teal:#128C7E;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+  html,body{height:100%;}
+  body{
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    background:#0B141A;
+    display:flex;justify-content:center;
+  }
+  .phone{
+    width:100%;max-width:480px;height:100dvh;
+    display:flex;flex-direction:column;
+    background:var(--wa-bg);
+    position:relative;overflow:hidden;
+  }
+  .header{
+    background:var(--wa-header);
+    color:#fff;
+    padding:10px 14px;
+    display:flex;align-items:center;gap:12px;
+    flex-shrink:0;z-index:5;
+    box-shadow:0 1px 3px rgba(0,0,0,.25);
+  }
+  .avatar{
+    width:40px;height:40px;border-radius:50%;
+    background:#D9FDD3;
+    display:flex;align-items:center;justify-content:center;
+    flex-shrink:0;font-size:20px;
+  }
+  .header-info{flex:1;min-width:0;}
+  .header-name{font-size:16px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .header-status{font-size:12.5px;opacity:.85;}
+  .demo-pill{
+    font-size:10.5px;font-weight:700;letter-spacing:.08em;
+    background:rgba(255,255,255,.18);
+    border:1px solid rgba(255,255,255,.35);
+    padding:3px 9px;border-radius:99px;
+  }
+  .chat{
+    flex:1;overflow-y:auto;
+    padding:14px 12px 16px;
+    background:
+      radial-gradient(circle at 20% 30%, rgba(255,255,255,.06) 0 2px, transparent 3px),
+      radial-gradient(circle at 70% 60%, rgba(0,0,0,.025) 0 2px, transparent 3px),
+      var(--wa-bg);
+    background-size:90px 90px, 120px 120px, auto;
+    scroll-behavior:smooth;
+  }
+  .day-chip{
+    align-self:center;text-align:center;
+    margin:0 auto 12px;max-width:200px;
+    background:#FFF;color:var(--wa-meta);
+    font-size:12px;padding:5px 12px;border-radius:8px;
+    box-shadow:0 1px 1px rgba(0,0,0,.08);
+  }
+  .msg{
+    max-width:82%;
+    padding:7px 10px 6px;
+    border-radius:8px;
+    margin-bottom:6px;
+    font-size:14.5px;line-height:1.38;
+    color:var(--wa-text);
+    box-shadow:0 1px 1px rgba(0,0,0,.1);
+    white-space:pre-line;
+    animation:pop .18s ease-out;
+    word-wrap:break-word;
+    clear:both;
+  }
+  @keyframes pop{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:none;}}
+  .bot{background:var(--wa-bot);margin-right:auto;border-top-left-radius:0;}
+  .user{background:var(--wa-user);margin-left:auto;border-top-right-radius:0;}
+  .msg .time{
+    display:inline-block;float:right;
+    font-size:11px;color:var(--wa-meta);
+    margin:6px 0 0 8px;line-height:1;
+  }
+  .msg .ticks{color:#53BDEB;font-size:12px;margin-left:2px;}
+  .msg b{font-weight:600;}
+  .typing{
+    background:var(--wa-bot);
+    border-radius:8px;border-top-left-radius:0;
+    padding:12px 14px;margin-bottom:6px;
+    width:58px;display:flex;gap:4px;align-items:center;
+    box-shadow:0 1px 1px rgba(0,0,0,.1);
+    animation:pop .15s ease-out;
+  }
+  .typing.right{margin-left:auto;border-top-left-radius:8px;border-top-right-radius:0;background:var(--wa-user);}
+  .typing span{
+    width:7px;height:7px;border-radius:50%;
+    background:#9AA7AF;
+    animation:blink 1.2s infinite;
+  }
+  .typing span:nth-child(2){animation-delay:.2s;}
+  .typing span:nth-child(3){animation-delay:.4s;}
+  @keyframes blink{0%,80%,100%{opacity:.3;}40%{opacity:1;}}
+  .skip-bar{
+    flex-shrink:0;
+    padding:10px 12px calc(12px + env(safe-area-inset-bottom));
+    background:#F0F2F5;
+    border-top:1px solid rgba(0,0,0,.07);
+    display:flex;justify-content:center;align-items:center;gap:10px;
+  }
+  .skip-bar .note{font-size:12px;color:var(--wa-meta);}
+  .btn{
+    border:none;border-radius:99px;
+    padding:10px 20px;font-size:14px;font-weight:600;
+    cursor:pointer;
+  }
+  .btn-primary{background:var(--wa-green);color:#fff;}
+  .btn-ghost{background:#fff;color:var(--wa-teal);border:1.5px solid var(--wa-teal);}
+  .btn:focus-visible{outline:3px solid #53BDEB;outline-offset:2px;}
+  .end-panel{
+    position:absolute;inset:auto 0 0 0;
+    background:#fff;
+    border-radius:18px 18px 0 0;
+    padding:22px 20px calc(26px + env(safe-area-inset-bottom));
+    box-shadow:0 -8px 30px rgba(0,0,0,.25);
+    transform:translateY(105%);
+    transition:transform .35s cubic-bezier(.2,.9,.3,1);
+    z-index:10;text-align:center;
+  }
+  .end-panel.show{transform:translateY(0);}
+  .end-panel h2{font-size:18px;color:var(--wa-text);margin-bottom:8px;}
+  .end-panel p{font-size:14px;color:var(--wa-meta);line-height:1.5;margin-bottom:16px;}
+  @media (prefers-reduced-motion: reduce){
+    *{animation:none !important;transition:none !important;}
+    .chat{scroll-behavior:auto;}
+  }
+</style>
+</head>
+<body>
+<div class="phone">
+  <div class="header">
+    <div class="avatar">🛍️</div>
+    <div class="header-info">
+      <div class="header-name">Tu Tienda de Ropa</div>
+      <div class="header-status" id="status">en línea</div>
+    </div>
+    <div class="demo-pill">DEMO</div>
+  </div>
+
+  <div class="chat" id="chat">
+    <div class="day-chip">Hoy</div>
+  </div>
+
+  <div class="skip-bar" id="skipBar">
+    <span class="note">Conversación 100% automática del bot</span>
+    <button class="btn btn-ghost" id="speedBtn" onclick="speedUp()">Acelerar</button>
+  </div>
+
+  <div class="end-panel" id="endPanel">
+    <h2>Todo lo que viste fue automático</h2>
+    <p>El bot respondió, asesoró y agendó la cita solo, sin intervención humana. Así atiende a tus clientes 24/7 directo en tu WhatsApp, con tus productos y tus horarios.</p>
+    <button class="btn btn-primary" onclick="restart()">Ver de nuevo</button>
+  </div>
+</div>
+
+<script>
+const chat = document.getElementById('chat');
+const statusEl = document.getElementById('status');
+const endPanel = document.getElementById('endPanel');
+const speedBtn = document.getElementById('speedBtn');
+
+let speed = 1;
+function speedUp(){
+  speed = speed === 1 ? 0.35 : 1;
+  speedBtn.textContent = speed === 1 ? 'Acelerar' : 'Velocidad normal';
+}
+
+function now(){
+  const d = new Date();
+  let h = d.getHours(), m = d.getMinutes().toString().padStart(2,'0');
+  const ap = h >= 12 ? 'p. m.' : 'a. m.';
+  h = h % 12 || 12;
+  return h + ':' + m + ' ' + ap;
+}
+function manana(){
+  const d = new Date(); d.setDate(d.getDate()+1);
+  const dias = ['domingo','lunes','martes','miércoles','jueves','viernes','sábado'];
+  return dias[d.getDay()] + ' ' + d.getDate();
+}
+function scrollDown(){ chat.scrollTop = chat.scrollHeight; }
+
+function addMsg(side, html){
+  const el = document.createElement('div');
+  el.className = 'msg ' + side;
+  const ticks = side === 'user' ? ' <span class="ticks">✓✓</span>' : '';
+  el.innerHTML = html + '<span class="time">' + now() + ticks + '</span>';
+  chat.appendChild(el); scrollDown();
+}
+
+let typingEl = null;
+function showTyping(side){
+  if(side === 'bot') statusEl.textContent = 'escribiendo…';
+  typingEl = document.createElement('div');
+  typingEl.className = 'typing' + (side === 'user' ? ' right' : '');
+  typingEl.innerHTML = '<span></span><span></span><span></span>';
+  chat.appendChild(typingEl); scrollDown();
+}
+function hideTyping(){
+  statusEl.textContent = 'en línea';
+  if(typingEl){ typingEl.remove(); typingEl = null; }
+}
+
+/* Guion: la conversación completa, cliente y bot */
+function script(){
+  const m = manana();
+  return [
+    {side:'user', text:'Hola! Vi un sweater tejido en Instagram, ¿lo tienen disponible? 🙂', pause:1200},
+    {side:'bot',  text:'¡Hola! 👋 Soy <b>Ita</b>, la asistente virtual de la tienda. Con gusto te ayudo.', pause:400},
+    {side:'bot',  text:'Sí, el <b>sweater tejido oversize</b> está disponible ✅ Lo tenemos en tallas S, M y L, colores crema, vino y verde oliva.\n\n¿Qué talla buscas?', pause:1600},
+    {side:'user', text:'Talla M, en color vino', pause:1200},
+    {side:'bot',  text:'¡Perfecto! Talla M en vino está disponible 🧶 Es tejido a mano, 100% algodón.\n\nEl precio es de <b>$145.000</b>.', pause:1500},
+    {side:'user', text:'¿Hacen envíos o tengo que ir a la tienda?', pause:1300},
+    {side:'bot',  text:'Las dos opciones 📦\n\n• <b>Envío:</b> gratis si nos sigues en Instagram. Bogotá 2 días hábiles, otras ciudades 5 días.\n• <b>En tienda:</b> te agendo una cita para que vengas a medírtelo sin filas.', pause:1800},
+    {side:'user', text:'Prefiero ir a medírmelo. ¿Puedo mañana?', pause:1400},
+    {side:'bot',  text:'¡Claro! Para mañana <b>' + m + '</b> tengo estos horarios disponibles:\n\n🕐 10:30 a. m.\n🕐 2:00 p. m.\n🕐 5:30 p. m.\n\n¿Cuál te queda mejor?', pause:1700},
+    {side:'user', text:'A las 5:30 está perfecto', pause:1200},
+    {side:'bot',  text:'¿A nombre de quién agendo la cita?', pause:1100},
+    {side:'user', text:'Laura Méndez', pause:1100},
+    {side:'bot',  text:'¡Listo, Laura! ✅ Tu cita quedó agendada:\n\n📅 <b>' + m + '</b>\n🕐 <b>5:30 p. m.</b>\n🧶 Sweater tejido oversize, talla M, vino\n📍 Tu Tienda de Ropa — Centro\n\nTe enviaré un recordatorio automático mañana. Si necesitas cambiar la hora, solo escríbeme por aquí 💛', pause:2200},
+    {side:'user', text:'Genial, muchas gracias!!', pause:1100},
+    {side:'bot',  text:'¡Con gusto! Quedo atenta por aquí a cualquier hora. ¡Te esperamos! ✨', pause:1400}
+  ];
+}
+
+function play(){
+  const steps = script();
+  let i = 0;
+  function next(){
+    if(i >= steps.length){
+      setTimeout(()=> endPanel.classList.add('show'), 1200 * speed);
+      return;
+    }
+    const s = steps[i];
+    const readPause = (i === 0 ? 300 : s.pause) * speed;
+    setTimeout(()=>{
+      showTyping(s.side);
+      const plain = s.text.replace(/<[^>]+>/g,'');
+      const typeTime = Math.min(700 + plain.length * (s.side === 'bot' ? 16 : 28), 2600) * speed;
+      setTimeout(()=>{
+        hideTyping();
+        addMsg(s.side, s.text);
+        i++;
+        next();
+      }, typeTime);
+    }, readPause);
+  }
+  next();
+}
+
+function restart(){
+  endPanel.classList.remove('show');
+  chat.innerHTML = '<div class="day-chip">Hoy</div>';
+  setTimeout(play, 400);
+}
+
+setTimeout(play, 300);
+</script>
+</body>
+</html>
